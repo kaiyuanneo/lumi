@@ -1,15 +1,20 @@
-import express from 'express';
-import bodyParser from 'body-parser';
+import * as express from 'express';
+import * as functions from 'firebase-functions';
 
+import constants from './static/constants';
+
+
+const PAGE_ACCESS_TOKEN = functions.config().webhook.page_access_token;
 
 // Create express http server
-const app = express().use(bodyParser.json());
+const app = express();
 
 // Set server port and log message on success
-app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
+const port = process.env.PORT !== null ? process.env.PORT : 1337;
+app.listen(port, () => console.log('webhook is listening'));
 
 // Create the endpoint for our webhook
-app.post('/webhook', (req, res) => {
+app.post('/', (req, res) => {
   // Check this is an event from a page subscription
   if (req.body.object === 'page') {
     // Iterate over each entry - there may be multiple if batched
@@ -28,10 +33,7 @@ app.post('/webhook', (req, res) => {
 });
 
 // Add support for GET requests to our webhook
-app.get('/webhook', (req, res) => {
-  // Your verify token. Should be a random string.
-  const VERIFY_TOKEN = 'ABC';
-
+app.get('/', (req, res) => {
   // Parse the query params
   const mode = req.query['hub.mode'];
   const token = req.query['hub.verify_token'];
@@ -40,7 +42,7 @@ app.get('/webhook', (req, res) => {
   // Check if a token and mode is in the query string of the request
   if (mode && token) {
     // Check the mode and token sent is correct
-    if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+    if (mode === 'subscribe' && token === constants.VERIFY_TOKEN) {
       // Respond with the challenge token from the request
       console.log('WEBHOOK_VERIFIED');
       res.status(200).send(challenge);
@@ -50,3 +52,7 @@ app.get('/webhook', (req, res) => {
     }
   }
 });
+
+// Use outdated exports syntax to give the URL endpoint a name
+// If we use "export default" the webhook URL ends with "default"
+exports.webhook = functions.https.onRequest(app);

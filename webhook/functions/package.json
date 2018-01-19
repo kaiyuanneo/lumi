@@ -10,9 +10,11 @@
   },
   "main": "lib/app.js",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "firebase-admin": "~5.4.2",
-    "firebase-functions": "^0.7.5"
+    "firebase-functions": "^0.7.5",
+    "request": "^2.83.0"
   },
   "devDependencies": {
     "tslint": "^5.8.0",

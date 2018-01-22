@@ -1,10 +1,12 @@
+import * as admin from 'firebase-admin';
+import * as functions from 'firebase-functions';
 import * as request from 'request';
 
 import * as constants from '../static/constants';
 
 
 // Sends response messages via the Send API
-const callSendAPI = (senderPsid, response) => {
+const callSendApi = (senderPsid, response) => {
   // Construct the message body
   const requestBody = {
     recipient: {
@@ -17,7 +19,7 @@ const callSendAPI = (senderPsid, response) => {
   request(
     {
       uri: constants.URL_SEND_API,
-      qs: { access_token: constants.TOKEN_PAGE_ACCESS },
+      qs: { access_token: functions.config().webhook.token_page_access },
       method: 'POST',
       json: requestBody
     },
@@ -32,10 +34,17 @@ const callSendAPI = (senderPsid, response) => {
 };
 
 // Handles messages events
-const handleMessage = (senderPsid, receivedMessage) => {
+const handleMessage = async (senderPsid, webhookEvent) => {
   let response;
+  const receivedMessage = webhookEvent.message;
   // Check if the message contains text
   if (receivedMessage.text) {
+    // Save message to DB
+    const db = admin.database();
+    // TODO(kai): Don't wait for message to save to DB before responding?
+    await db.ref(`${constants.DB_PATH_NAME_MESSAGES}/${senderPsid}`).push({ ...receivedMessage });
+    console.log('Saved message to DB!');
+
     // Create the payload for a basic text message
     response = {
       text: `You sent the message: "${receivedMessage.text}". Now send me an image!`
@@ -70,7 +79,7 @@ const handleMessage = (senderPsid, receivedMessage) => {
     };
   }
   // Send the response message
-  callSendAPI(senderPsid, response);
+  callSendApi(senderPsid, response);
 };
 
 // Handles messaging_postbacks events
@@ -87,14 +96,14 @@ const handlePostback = (senderPsid, receivedPostback) => {
     response = { text: 'Oops, try sending another image.' };
   }
   // Send the message to acknowledge the postback
-  callSendAPI(senderPsid, response);
+  callSendApi(senderPsid, response);
 };
 
 export const message = (req, res) => {
   // Check this is an event from a page subscription
   if (req.body.object === 'page') {
     // Iterate over each entry - there may be multiple if batched
-    req.body.entry.forEach((entry) => {
+    req.body.entry.forEach(async (entry) => {
       // Gets the message. entry.messaging is an array, but
       // will only ever contain one message, so we get index 0
       const webhookEvent = entry.messaging[0];
@@ -107,7 +116,7 @@ export const message = (req, res) => {
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
       if (webhookEvent.message) {
-        handleMessage(senderPsid, webhookEvent.message);
+        await handleMessage(senderPsid, webhookEvent);
       } else if (webhookEvent.postback) {
         handlePostback(senderPsid, webhookEvent.postback);
       }

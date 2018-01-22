@@ -57,8 +57,8 @@
 
     // Do not allow any imports for modules that are not in package.json. These will almost certainly fail when
     // deployed.
-    // TODO(kai): Disabled because it is highlighting false positives. Figure out when we can
-    // enable this again
+    // TODO(kai): Disabled because it is highlighting false positives. Works as intended when we
+    // move package.json to the webhook dir, one level below the functions dir.
     // "no-implicit-dependencies": true,
 
     // The 'this' keyword can only be used inside of classes.

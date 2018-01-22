@@ -1,5 +1,7 @@
 {
   "name": "functions",
+  "private": true,
+  "main": "lib/app.js",
   "scripts": {
     "build": "./node_modules/.bin/tslint -p tslint.json && ./node_modules/.bin/tsc",
     "serve": "npm run build && firebase serve --only functions",
@@ -8,18 +10,16 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
   },
-  "main": "lib/app.js",
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
-    "firebase-admin": "~5.4.2",
-    "firebase-functions": "^0.7.5",
+    "firebase-admin": "^5.8.1",
+    "firebase-functions": "^0.8.1",
     "request": "^2.83.0"
   },
   "devDependencies": {
     "tslint": "^5.8.0",
     "tslint-config-airbnb": "^5.4.2",
     "typescript": "^2.5.3"
-  },
-  "private": true
+  }
 }

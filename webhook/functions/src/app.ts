@@ -1,12 +1,16 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
+import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 
 import * as constants from './static/constants';
 import routes from './routes';
 
 
-// Create express http server
+// Initialise DB
+admin.initializeApp(functions.config().firebase);
+
+// Create Express HTTP server
 const app = express();
 app.use(bodyParser.json());
 

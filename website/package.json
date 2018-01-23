@@ -13,7 +13,10 @@
     "firebase": "^4.9.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-scripts": "1.1.0"
+    "react-firebaseui": "^1.0.10",
+    "react-scripts": "1.1.0",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2"
   },
   "devDependencies": {
     "eslint": "^4.16.0",

@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
-import * as request from 'request';
+import * as rp from 'request-promise';
 
 import * as constants from '../static/constants';
 
@@ -25,8 +25,36 @@ export const verify = (req, res) => {
   }
 };
 
+// This function needs to happen in server-side code because we cannot expose
+// Lumi's app access token in the client
+export const getPsidFromAsid = async (req, res) => {
+  // Get PSIDs from FB Graph API
+  const psidRequestOptions = {
+    uri: `${constants.URL_FB_GRAPH_API}/${req.query.asid}`,
+    qs: {
+      fields: 'ids_for_pages',
+      access_token: functions.config().lumi.token_app_access,
+    },
+    json: true,
+  };
+  const psidParsedBody = await rp(psidRequestOptions);
+
+  // Get relevant PSID from psidParsedBody
+  let psid = null;
+  psidParsedBody.ids_for_pages.data.forEach((pageInfo) => {
+    if (pageInfo.page.id === constants.PAGE_ID_LUMI) {
+      psid = pageInfo.id;
+    }
+  });
+
+  // Send PSID back to client
+  // Set Access-Control-Allow-Origin header so Cloud Functions can respond to
+  // lumicares.com.
+  res.status(200).set('Access-Control-Allow-Origin', '*').json({ psid });
+};
+
 // Sends response messages via the Send API
-const callSendApi = (senderPsid, response) => {
+const callSendApi = async (senderPsid, response) => {
   // Construct the message body
   const requestBody = {
     recipient: {
@@ -35,22 +63,21 @@ const callSendApi = (senderPsid, response) => {
     message: response,
   };
 
-  // Send the HTTP request to the Messenger Platform
-  request(
-    {
-      uri: constants.URL_SEND_API,
-      qs: { access_token: functions.config().lumi.token_page_access },
-      method: 'POST',
-      json: requestBody
-    },
-    (err, res, body) => {
-      if (!err) {
-        console.log('Message sent!');
-      } else {
-        console.error(`Unable to send message: ${err}`);
-      }
-    }
-  );
+  // Construct request options
+  const sendApiRequestOptions = {
+    uri: constants.URL_SEND_API,
+    qs: { access_token: functions.config().lumi.token_page_access },
+    method: 'POST',
+    json: requestBody,
+  };
+
+  // Send HTTP request to Messenger Platform
+  try {
+    await rp(sendApiRequestOptions);
+    console.log('Message response sent!');
+  } catch (e) {
+    console.error(`Unable to send message: ${e}`);
+  }
 };
 
 // Handles messages events
@@ -61,10 +88,8 @@ const handleMessage = async (senderPsid, webhookEvent) => {
   if (receivedMessage.text) {
     // Save message to DB
     const db = admin.database();
-    // TODO(kai): Don't wait for message to save to DB before responding?
-    await db.ref(`${constants.DB_PATH_LUMI_MESSAGES}/${senderPsid}`).push({ ...receivedMessage });
+    db.ref(`${constants.DB_PATH_LUMI_MESSAGES}/${senderPsid}`).push({ ...receivedMessage });
     console.log('Saved Lumi message to DB!');
-    console.log(receivedMessage);
 
     // Create the payload for a basic text message
     response = {
@@ -100,11 +125,11 @@ const handleMessage = async (senderPsid, webhookEvent) => {
     };
   }
   // Send the response message
-  callSendApi(senderPsid, response);
+  await callSendApi(senderPsid, response);
 };
 
 // Handles messaging_postbacks events
-const handlePostback = (senderPsid, receivedPostback) => {
+const handlePostback = async (senderPsid, receivedPostback) => {
   let response;
 
   // Get the payload for the postback
@@ -117,7 +142,7 @@ const handlePostback = (senderPsid, receivedPostback) => {
     response = { text: 'Oops, try sending another image.' };
   }
   // Send the message to acknowledge the postback
-  callSendApi(senderPsid, response);
+  await callSendApi(senderPsid, response);
 };
 
 export const message = (req, res) => {
@@ -139,7 +164,7 @@ export const message = (req, res) => {
       if (webhookEvent.message) {
         await handleMessage(senderPsid, webhookEvent);
       } else if (webhookEvent.postback) {
-        handlePostback(senderPsid, webhookEvent.postback);
+        await handlePostback(senderPsid, webhookEvent.postback);
       }
     });
     // Return a '200 OK' response to all requests

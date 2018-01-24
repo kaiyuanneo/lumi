@@ -1,7 +1,6 @@
 export const DB_EVENT_NAME_CHILD_ADDED = 'child_added';
 
-export const DB_PATH_NAME_MESSAGES = 'messages';
-export const DB_PATH_NAME_USERS = 'users';
+export const DB_PATH_LUMI_MESSAGES = 'lumi-messages';
 
 export const FIREBASE_API_KEY = 'AIzaSyAbxVPlyTTq2AITU-fakTFU7ZiGUQRmG00';
 export const FIREBASE_AUTH_DOMAIN = 'lumi-cares.firebaseapp.com';

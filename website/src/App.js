@@ -23,7 +23,7 @@ class App extends Component {
   componentDidMount() {
     const db = firebase.database();
     // Update local message state on DB writes
-    const ref = db.ref(`${constants.DB_PATH_NAME_MESSAGES}/${constants.MESSENGER_PSID_KAI}`);
+    const ref = db.ref(`${constants.DB_PATH_LUMI_MESSAGES}/${constants.MESSENGER_PSID_KAI}`);
     ref.on(constants.DB_EVENT_NAME_CHILD_ADDED, (messageSnapshot) => {
       this.setState({ messages: this.state.messages.concat(messageSnapshot.val()) });
     });

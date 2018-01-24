@@ -5,21 +5,41 @@ import * as request from 'request';
 import * as constants from '../static/constants';
 
 
+export const verify = (req, res) => {
+  // Parse the query params
+  const mode = req.query['hub.mode'];
+  const token = req.query['hub.verify_token'];
+  const challenge = req.query['hub.challenge'];
+
+  // Check if a token and mode is in the query string of the request
+  if (mode && token) {
+    // Check the mode and token sent is correct
+    if (mode === 'subscribe' && token === functions.config().lumi.token_verify) {
+      // Respond with the challenge token from the request
+      console.log('WEBHOOK_VERIFIED');
+      res.status(200).send(challenge);
+    } else {
+      // Respond with '403 Forbidden' if verify tokens do not match
+      res.sendStatus(403);
+    }
+  }
+};
+
 // Sends response messages via the Send API
 const callSendApi = (senderPsid, response) => {
   // Construct the message body
   const requestBody = {
     recipient: {
-      id: senderPsid
+      id: senderPsid,
     },
-    message: response
+    message: response,
   };
 
   // Send the HTTP request to the Messenger Platform
   request(
     {
       uri: constants.URL_SEND_API,
-      qs: { access_token: functions.config().webhook.token_page_access },
+      qs: { access_token: functions.config().lumi.token_page_access },
       method: 'POST',
       json: requestBody
     },
@@ -42,8 +62,9 @@ const handleMessage = async (senderPsid, webhookEvent) => {
     // Save message to DB
     const db = admin.database();
     // TODO(kai): Don't wait for message to save to DB before responding?
-    await db.ref(`${constants.DB_PATH_NAME_MESSAGES}/${senderPsid}`).push({ ...receivedMessage });
-    console.log('Saved message to DB!');
+    await db.ref(`${constants.DB_PATH_LUMI_MESSAGES}/${senderPsid}`).push({ ...receivedMessage });
+    console.log('Saved Lumi message to DB!');
+    console.log(receivedMessage);
 
     // Create the payload for a basic text message
     response = {

@@ -38,7 +38,7 @@ export const message = (req, res) => {
       // Record messages sent to #pwfn-activity
       const db = admin.database();
       const pwfnEvent = req.body.event.attachments[0];
-      const userId = pwfnEvent.fallback.split('|')[0].split('projectweforgot.mn.co/members/')[1];
+      const userId = pwfnEvent.fallback.split('|')[0].split(constants.URL_PWFN_MEMBER_PREFIX)[1];
       db.ref(`${constants.DB_PATH_PWFN_MESSAGES}/${userId}`).push({
         ...pwfnEvent,
         timestamp: req.body.event_time,

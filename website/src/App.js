@@ -4,7 +4,7 @@ import { FirebaseAuth } from 'react-firebaseui';
 import * as rp from 'request-promise';
 
 import * as constants from './static/constants';
-import logo from './logo.svg';
+import logo from './logo.png';
 import './App.css';
 
 
@@ -29,6 +29,7 @@ class App extends Component {
       signedInUid: '',
     };
 
+    // Initialise Firebase Realtime Database instance
     this.db = firebase.database();
   }
 
@@ -132,7 +133,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Lumi Cares</h1>
+          <h1 className="App-title">{constants.WEBSITE_TITLE}</h1>
         </header>
         {body}
       </div>

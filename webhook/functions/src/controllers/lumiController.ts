@@ -25,7 +25,7 @@ export const verify = (req, res) => {
   }
 };
 
-// This function needs to happen in server-side code because we cannot expose
+// This function needs to happen server-side because we cannot expose
 // Lumi's app access token in the client
 export const getPsidFromAsid = async (req, res) => {
   // Get PSIDs from FB Graph API
@@ -48,8 +48,7 @@ export const getPsidFromAsid = async (req, res) => {
   });
 
   // Send PSID back to client
-  // Set Access-Control-Allow-Origin header so Cloud Functions can respond to
-  // lumicares.com.
+  // Set Access-Control-Allow-Origin header so Cloud Functions can respond to lumicares.com
   res.status(200).set('Access-Control-Allow-Origin', '*').json({ psid });
 };
 
@@ -65,7 +64,7 @@ const callSendApi = async (senderPsid, response) => {
 
   // Construct request options
   const sendApiRequestOptions = {
-    uri: constants.URL_SEND_API,
+    uri: constants.URL_FB_SEND_API,
     qs: { access_token: functions.config().lumi.token_page_access },
     method: 'POST',
     json: requestBody,
@@ -80,21 +79,175 @@ const callSendApi = async (senderPsid, response) => {
   }
 };
 
-// Handles messages events
-const handleMessage = async (senderPsid, webhookEvent) => {
+const getQuickReply = (messageRef, responseCode) => {
+  let title = '';
+  switch (responseCode) {
+    case constants.RESPONSE_CODE_SHOW_MESSAGE_YES:
+      title = constants.QUICK_REPLY_TITLE_YES;
+      break;
+    case constants.RESPONSE_CODE_SHOW_MESSAGE_NO:
+      title = constants.QUICK_REPLY_TITLE_NO;
+      break;
+    case constants.RESPONSE_CODE_CATEGORY_GENERAL:
+      title = constants.QUICK_REPLY_TITLE_CATEGORY_GENERAL;
+      break;
+    case constants.RESPONSE_CODE_CATEGORY_BEHAVIOUR:
+      title = constants.QUICK_REPLY_TITLE_CATEGORY_BEHAVIOUR;
+      break;
+    case constants.RESPONSE_CODE_CATEGORY_MEMORY:
+      title = constants.QUICK_REPLY_TITLE_CATEGORY_MEMORY;
+      break;
+    case constants.RESPONSE_CODE_CATEGORY_MEDICAL:
+      title = constants.QUICK_REPLY_TITLE_CATEGORY_MEDICAL;
+      break;
+    case constants.RESPONSE_CODE_ATTACH_PHOTO_YES:
+      title = constants.QUICK_REPLY_TITLE_YES;
+      break;
+    case constants.RESPONSE_CODE_ATTACH_PHOTO_NO:
+      title = constants.QUICK_REPLY_TITLE_NO;
+      break;
+    default:
+      console.error('Hit default in get quick reply menu');
+  }
+  return {
+    title,
+    content_type: constants.QUICK_REPLY_CONTENT_TYPE_TEXT,
+    // Save quickReply payload as JSON string because payload only supports string values
+    payload: JSON.stringify({
+      code: responseCode,
+      messageKey: messageRef.key,
+    }),
+  };
+};
+
+const getQuickRepliesAttachPhoto = messageRef => [
+  getQuickReply(messageRef, constants.RESPONSE_CODE_ATTACH_PHOTO_YES),
+  getQuickReply(messageRef, constants.RESPONSE_CODE_ATTACH_PHOTO_NO),
+];
+
+const getResponse = (receivedMessage, messageRef, responseCode) => {
+  let responseMessage = '';
+  let quickReplies = null;
+  switch (responseCode) {
+    case constants.RESPONSE_CODE_NEW_MESSAGE:
+      responseMessage = constants.RESPONSE_MESSAGE_NEW_MESSAGE(receivedMessage.text);
+      quickReplies = [
+        getQuickReply(messageRef, constants.RESPONSE_CODE_SHOW_MESSAGE_YES),
+        getQuickReply(messageRef, constants.RESPONSE_CODE_SHOW_MESSAGE_NO),
+      ];
+      break;
+    case constants.RESPONSE_CODE_SHOW_MESSAGE_YES:
+      responseMessage = constants.RESPONSE_MESSAGE_SHOW_MESSAGE_YES;
+      quickReplies = [
+        getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_GENERAL),
+        getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_BEHAVIOUR),
+        getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_MEMORY),
+        getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_MEDICAL),
+      ];
+      break;
+    case constants.RESPONSE_CODE_SHOW_MESSAGE_NO:
+      responseMessage = constants.RESPONSE_MESSAGE_SHOW_MESSAGE_NO;
+      break;
+    case constants.RESPONSE_CODE_CATEGORY_GENERAL:
+      responseMessage =
+        constants.RESPONSE_MESSAGE_CATEGORY(constants.QUICK_REPLY_TITLE_CATEGORY_GENERAL);
+      quickReplies = getQuickRepliesAttachPhoto(messageRef);
+      break;
+    case constants.RESPONSE_CODE_CATEGORY_BEHAVIOUR:
+      responseMessage =
+        constants.RESPONSE_MESSAGE_CATEGORY(constants.QUICK_REPLY_TITLE_CATEGORY_BEHAVIOUR);
+      quickReplies = getQuickRepliesAttachPhoto(messageRef);
+      break;
+    case constants.RESPONSE_CODE_CATEGORY_MEMORY:
+      responseMessage =
+        constants.RESPONSE_MESSAGE_CATEGORY(constants.QUICK_REPLY_TITLE_CATEGORY_MEMORY);
+      quickReplies = getQuickRepliesAttachPhoto(messageRef);
+      break;
+    case constants.RESPONSE_CODE_CATEGORY_MEDICAL:
+      responseMessage =
+        constants.RESPONSE_MESSAGE_CATEGORY(constants.QUICK_REPLY_TITLE_CATEGORY_MEDICAL);
+      quickReplies = getQuickRepliesAttachPhoto(messageRef);
+      break;
+    // TODO(kai): Activate camara when user selects yes to attach photo
+    case constants.RESPONSE_CODE_ATTACH_PHOTO_YES:
+    case constants.RESPONSE_CODE_ATTACH_PHOTO_NO:
+      responseMessage = constants.RESPONSE_MESSAGE_SAVE_MESSAGE;
+      break;
+    default:
+      console.error('Hit default in get response menu');
+  }
+  return {
+    text: responseMessage,
+    quick_replies: quickReplies,
+  };
+};
+
+// Handle message events
+const handleMessage = async (webhookEvent) => {
   let response;
   const receivedMessage = webhookEvent.message;
-  // Check if the message contains text
-  if (receivedMessage.text) {
-    // Save message to DB
-    const db = admin.database();
-    db.ref(`${constants.DB_PATH_LUMI_MESSAGES}/${senderPsid}`).push({ ...receivedMessage });
-    console.log('Saved Lumi message to DB!');
+  const senderPsid = webhookEvent.sender.id;
+  const messagesRef = admin.database().ref(`${constants.DB_PATH_LUMI_MESSAGES}/${senderPsid}`);
 
-    // Create the payload for a basic text message
-    response = {
-      text: `You sent the message: "${receivedMessage.text}". Now send me an image!`
-    };
+  // Handle quick replies separately from regular text
+  const quickReply = receivedMessage.quick_reply;
+  if (quickReply) {
+    // Save quickReply payload as JSON string because payload only supports string values
+    const quickReplyPayload = JSON.parse(quickReply.payload);
+    const messageRef = messagesRef.child(quickReplyPayload.messageKey);
+    switch (quickReplyPayload.code) {
+      case constants.RESPONSE_CODE_SHOW_MESSAGE_YES:
+        messageRef.update({ show_in_timeline: true });
+        response =
+          getResponse(receivedMessage, messageRef, constants.RESPONSE_CODE_SHOW_MESSAGE_YES);
+        break;
+      case constants.RESPONSE_CODE_SHOW_MESSAGE_NO:
+        messageRef.update({ show_in_timeline: false });
+        response =
+          getResponse(receivedMessage, messageRef, constants.RESPONSE_CODE_SHOW_MESSAGE_NO);
+        break;
+      case constants.RESPONSE_CODE_CATEGORY_GENERAL:
+        messageRef.update({ category: constants.MESSAGE_CATEGORY_CODE_GENERAL });
+        response =
+          getResponse(receivedMessage, messageRef, constants.RESPONSE_CODE_CATEGORY_GENERAL);
+        break;
+      case constants.RESPONSE_CODE_CATEGORY_BEHAVIOUR:
+        messageRef.update({ category: constants.MESSAGE_CATEGORY_CODE_BEHAVIOUR });
+        response =
+          getResponse(receivedMessage, messageRef, constants.RESPONSE_CODE_CATEGORY_BEHAVIOUR);
+        break;
+      case constants.RESPONSE_CODE_CATEGORY_MEMORY:
+        messageRef.update({ category: constants.MESSAGE_CATEGORY_CODE_MEMORY });
+        response =
+          getResponse(receivedMessage, messageRef, constants.RESPONSE_CODE_CATEGORY_MEMORY);
+        break;
+      case constants.RESPONSE_CODE_CATEGORY_MEDICAL:
+        messageRef.update({ category: constants.MESSAGE_CATEGORY_CODE_MEDICAL });
+        response =
+          getResponse(receivedMessage, messageRef, constants.RESPONSE_CODE_CATEGORY_MEDICAL);
+        break;
+      case constants.RESPONSE_CODE_ATTACH_PHOTO_YES:
+        // TODO(kai): Activate camara and/or photo stream when user selects yes to attach photo
+        response =
+          getResponse(receivedMessage, messageRef, constants.RESPONSE_CODE_ATTACH_PHOTO_YES);
+        break;
+      case constants.RESPONSE_CODE_ATTACH_PHOTO_NO:
+        response =
+          getResponse(receivedMessage, messageRef, constants.RESPONSE_CODE_ATTACH_PHOTO_NO);
+        break;
+      default:
+        console.error('Hit default in handle message menu');
+    }
+  } else if (receivedMessage.text) {
+    // Save message to DB
+    const newMessageRef = messagesRef.push({
+      ...receivedMessage,
+      category: constants.MESSAGE_CATEGORY_CODE_GENERAL,
+      show_in_timeline: false,
+    });
+    console.log('Saved Lumi message to DB!');
+    response = getResponse(receivedMessage, newMessageRef, constants.RESPONSE_CODE_NEW_MESSAGE);
+  // TODO(kai): Remove this nonsense
   } else if (receivedMessage.attachments) {
     // Gets the URL of the message attachment
     const attachmentUrl = receivedMessage.attachments[0].payload.url;
@@ -128,21 +281,18 @@ const handleMessage = async (senderPsid, webhookEvent) => {
   await callSendApi(senderPsid, response);
 };
 
-// Handles messaging_postbacks events
-const handlePostback = async (senderPsid, receivedPostback) => {
-  let response;
-
-  // Get the payload for the postback
-  const payload = receivedPostback.payload;
-
+// Handle messaging_postback events
+const handlePostback = async (webhookEvent) => {
   // Set the response based on the postback payload
+  let response;
+  const payload = webhookEvent.postback.payload;
   if (payload === 'yes') {
     response = { text: 'Thanks!' };
   } else if (payload === 'no') {
     response = { text: 'Oops, try sending another image.' };
   }
   // Send the message to acknowledge the postback
-  await callSendApi(senderPsid, response);
+  await callSendApi(webhookEvent.sender.id, response);
 };
 
 export const message = (req, res) => {
@@ -150,27 +300,24 @@ export const message = (req, res) => {
   if (req.body.object === 'page') {
     // Iterate over each entry - there may be multiple if batched
     req.body.entry.forEach(async (entry) => {
-      // Gets the message. entry.messaging is an array, but
-      // will only ever contain one message, so we get index 0
+      // Get the message. entry.messaging is an array, but
+      // will only ever contain one message, so we get index 0.
       const webhookEvent = entry.messaging[0];
+      // Log event for debugging
       console.log(webhookEvent);
-
-      // Get the sender PSID
-      const senderPsid = webhookEvent.sender.id;
-      console.log('Sender PSID: ' + senderPsid);
 
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
       if (webhookEvent.message) {
-        await handleMessage(senderPsid, webhookEvent);
+        await handleMessage(webhookEvent);
       } else if (webhookEvent.postback) {
-        await handlePostback(senderPsid, webhookEvent.postback);
+        await handlePostback(webhookEvent);
       }
     });
-    // Return a '200 OK' response to all requests
+    // Return 200 to all requests to Lumi the Page
     res.status(200).send('EVENT_RECEIVED');
   } else {
-    // Return a '404 Not Found' if event is not from a page subscription
+    // Return 404 if event not from page subscription
     res.sendStatus(404);
   }
 };

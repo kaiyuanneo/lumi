@@ -55,13 +55,28 @@ class TimelineComponent extends Component {
       }
       return false;
     };
+    const getMessageCategoryNameFromCode = (messageCategoryCode) => {
+      switch (messageCategoryCode) {
+        case undefined:
+        case constants.TIMELINE_CATEGORY_CODE_GENERAL:
+          return constants.TIMELINE_CATEGORY_NAME_GENERAL;
+        case constants.TIMELINE_CATEGORY_CODE_BEHAVIOUR:
+          return constants.TIMELINE_CATEGORY_NAME_BEHAVIOUR;
+        case constants.TIMELINE_CATEGORY_CODE_MEMORY:
+          return constants.TIMELINE_CATEGORY_NAME_MEMORY;
+        case constants.TIMELINE_CATEGORY_CODE_MEDICAL:
+          return constants.TIMELINE_CATEGORY_NAME_MEDICAL;
+        default:
+          return 'NA';
+      }
+    };
     const messageToTableRow = (message) => {
       if (!shouldRenderMessage(message)) {
         return null;
       }
       return (
         <tr key={message.mid}>
-          <td>{message.category ? message.category : constants.TIMELINE_CATEGORY_NAME_GENERAL}</td>
+          <td>{getMessageCategoryNameFromCode(message.category)}</td>
           <td>{message.text}</td>
         </tr>
       );

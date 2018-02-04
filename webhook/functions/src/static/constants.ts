@@ -32,7 +32,7 @@ export const RESPONSE_CODE_ATTACH_PHOTO_YES = 'attach-photo-yes';
 export const RESPONSE_CODE_ATTACH_PHOTO_NO = 'attach-photo-no';
 
 export const RESPONSE_MESSAGE_NEW_MESSAGE = messageText =>
-  `You sent the message ${messageText}. ` +
+  `You sent the message "${messageText}". ` +
   'Would you like to save it to your Lumi Timeline? ' +
   'You can view all your saved messages at lumicares.com!';
 export const RESPONSE_MESSAGE_SHOW_MESSAGE_YES = 'Ok! Which category?';

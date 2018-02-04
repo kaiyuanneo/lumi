@@ -4,7 +4,9 @@ import ReactDOM from 'react-dom';
 
 import App from './App';
 import * as constants from './static/constants';
+// Support styles for all classes in this app
 import './static/styles.css';
+// TODO(kai): Enable this once Lumi is stable enough to enable caching
 // import registerServiceWorker from './utils/registerServiceWorker';
 
 

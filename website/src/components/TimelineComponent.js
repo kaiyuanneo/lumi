@@ -1,6 +1,7 @@
 import firebase from 'firebase';
+import Flexbox from 'flexbox-react';
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import { Tab, Table, Tabs } from 'react-bootstrap';
 
 import * as constants from '../static/constants';
 
@@ -12,6 +13,7 @@ class TimelineComponent extends Component {
     // Initialise local message state
     this.state = {
       messages: [],
+      messageCategory: constants.TIMELINE_CATEGORY_CODE_ALL,
     };
 
     // Sync local message state with auth user message state in Firebase
@@ -34,14 +36,79 @@ class TimelineComponent extends Component {
   }
 
   render() {
-    const messages = this.state.messages.map(message => <li key={message.mid}>{message.text}</li>);
-    const signOut = () => {
-      firebase.auth().signOut();
+    const filterMessages = (category) => {
+      this.setState({
+        ...this.state,
+        messageCategory: category,
+      });
     };
+    const shouldRenderMessage = (message) => {
+      if (this.state.messageCategory === constants.TIMELINE_CATEGORY_CODE_ALL) {
+        return true;
+      }
+      if (message.category === this.state.messageCategory) {
+        return true;
+      }
+      if (message.category === undefined &&
+          this.state.messageCategory === constants.TIMELINE_CATEGORY_CODE_GENERAL) {
+        return true;
+      }
+      return false;
+    };
+    const messageToTableRow = (message) => {
+      if (!shouldRenderMessage(message)) {
+        return null;
+      }
+      return (
+        <tr key={message.mid}>
+          <td>{message.category ? message.category : constants.TIMELINE_CATEGORY_NAME_GENERAL}</td>
+          <td>{message.text}</td>
+        </tr>
+      );
+    };
+    const messages = this.state.messages.map(messageToTableRow);
     return (
       <div>
-        <ul>{messages}</ul>
-        <Button onClick={signOut}>Sign Out</Button>
+        <Flexbox flexDirection="row">
+          <Tabs
+            defaultActiveKey={constants.TIMELINE_CATEGORY_CODE_ALL}
+            className="timeline-tabs"
+            id="timeline-tabs"
+            onSelect={filterMessages}
+          >
+            <Tab
+              eventKey={constants.TIMELINE_CATEGORY_CODE_ALL}
+              title={constants.TIMELINE_CATEGORY_NAME_ALL}
+            />
+            <Tab
+              eventKey={constants.TIMELINE_CATEGORY_CODE_GENERAL}
+              title={constants.TIMELINE_CATEGORY_NAME_GENERAL}
+            />
+            <Tab
+              eventKey={constants.TIMELINE_CATEGORY_CODE_BEHAVIOUR}
+              title={constants.TIMELINE_CATEGORY_NAME_BEHAVIOUR}
+            />
+            <Tab
+              eventKey={constants.TIMELINE_CATEGORY_CODE_MEMORY}
+              title={constants.TIMELINE_CATEGORY_NAME_MEMORY}
+            />
+            <Tab
+              eventKey={constants.TIMELINE_CATEGORY_CODE_MEDICAL}
+              title={constants.TIMELINE_CATEGORY_NAME_MEDICAL}
+            />
+          </Tabs>
+        </Flexbox>
+        <Table bordered condensed hover>
+          <thead>
+            <tr>
+              <th className="timeline-table-header">{constants.TIMELINE_TABLE_HEADER_CATEGORY}</th>
+              <th className="timeline-table-header">{constants.TIMELINE_TABLE_HEADER_NOTE}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {messages}
+          </tbody>
+        </Table>
       </div>
     );
   }

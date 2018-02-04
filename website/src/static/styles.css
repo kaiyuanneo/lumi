@@ -21,6 +21,23 @@
   font-size: large;
 }
 
+.navbar-header-image {
+  width: 30px;
+  height: 30px;
+}
+
+.navbar-header-text {
+  margin-left: 10px;
+}
+
+.timeline-tabs {
+  margin: 0 auto;
+}
+
+.timeline-table-header {
+  text-align: center;
+}
+
 body {
   margin: 0;
   padding: 0;

@@ -9,6 +9,21 @@ export const FIREBASE_AUTH_DOMAIN = 'lumi-cares.firebaseapp.com';
 export const FIREBASE_DATABASE_URL = 'https://lumi-cares.firebaseio.com';
 export const FIREBASE_STORAGE_BUCKET = 'lumi-cares.appspot.com';
 
+export const TIMELINE_CATEGORY_CODE_ALL = 'all';
+export const TIMELINE_CATEGORY_CODE_GENERAL = 'general';
+export const TIMELINE_CATEGORY_CODE_BEHAVIOUR = 'behaviour';
+export const TIMELINE_CATEGORY_CODE_MEMORY = 'memory';
+export const TIMELINE_CATEGORY_CODE_MEDICAL = 'medical';
+
+export const TIMELINE_CATEGORY_NAME_ALL = 'All';
+export const TIMELINE_CATEGORY_NAME_GENERAL = 'General';
+export const TIMELINE_CATEGORY_NAME_BEHAVIOUR = 'Behaviour';
+export const TIMELINE_CATEGORY_NAME_MEMORY = 'Memory';
+export const TIMELINE_CATEGORY_NAME_MEDICAL = 'Medical';
+
+export const TIMELINE_TABLE_HEADER_CATEGORY = 'Category';
+export const TIMELINE_TABLE_HEADER_NOTE = 'Note';
+
 export const URL_BOOTSTRAP_CSS =
   'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css';
 export const URL_FACEBOOK_GRAPH_API = 'https://graph.facebook.com/v2.6';

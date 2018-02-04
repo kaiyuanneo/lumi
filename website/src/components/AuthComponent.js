@@ -4,7 +4,7 @@ import { FirebaseAuth } from 'react-firebaseui';
 import * as rp from 'request-promise';
 
 import * as constants from '../static/constants';
-
+import lumiLogo from '../static/images/logo.png';
 
 /**
  * After user signs in with Facebook credentials, collect user information from Facebook
@@ -78,7 +78,10 @@ const AuthComponent = () => {
 
   return (
     <div>
-      <p>Please sign in:</p>
+      <header className="App-header">
+        <img src={lumiLogo} className="App-logo" alt="logo" />
+        <h1 className="App-title">{constants.WEBSITE_TITLE}</h1>
+      </header>
       <FirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
     </div>
   );

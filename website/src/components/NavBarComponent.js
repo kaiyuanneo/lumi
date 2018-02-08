@@ -8,7 +8,7 @@ const signOut = () => {
 };
 
 const NavBarComponent = () => (
-  <Navbar collapseOnSelect>
+  <Navbar collapseOnSelect fixedTop>
     <Navbar.Header>
       <Navbar.Brand>
         <a href="/">Lumi</a>

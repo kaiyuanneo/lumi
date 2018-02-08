@@ -39,6 +39,21 @@ class TimelineComponent extends Component {
           messages: this.state.messages.concat(messageSnapshot.val()),
         });
       });
+      messagesRef.on(constants.DB_EVENT_NAME_CHILD_CHANGED, (messageSnapshot) => {
+        const numMessages = this.state.messages.length;
+        const messageVal = messageSnapshot.val();
+        for (let i = 0; i < numMessages; i += 1) {
+          if (this.state.messages[i].mid === messageVal.mid) {
+            this.state.messages[i] = {
+              ...messageVal,
+            };
+            // Trigger re-render with set state
+            this.setState({
+              ...this.state,
+            });
+          }
+        }
+      });
     });
   }
 
@@ -50,6 +65,9 @@ class TimelineComponent extends Component {
       });
     };
     const shouldRenderMessage = (message) => {
+      if (!message.show_in_timeline) {
+        return false;
+      }
       if (this.state.messageCategory === constants.TIMELINE_CATEGORY_CODE_ALL) {
         return true;
       }

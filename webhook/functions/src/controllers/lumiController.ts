@@ -168,7 +168,7 @@ const getResponse = (receivedMessage, messageRef, responseCode) => {
         constants.RESPONSE_MESSAGE_CATEGORY(constants.QUICK_REPLY_TITLE_CATEGORY_MEDICAL);
       quickReplies = getQuickRepliesAttachPhoto(messageRef);
       break;
-    // TODO(kai): Activate camara when user selects yes to attach photo
+    // TODO(kai): Activate camera when user selects yes to attach photo
     case constants.RESPONSE_CODE_ATTACH_PHOTO_YES:
     case constants.RESPONSE_CODE_ATTACH_PHOTO_NO:
       responseMessage = constants.RESPONSE_MESSAGE_SAVE_MESSAGE;
@@ -227,7 +227,7 @@ const handleMessage = async (webhookEvent) => {
           getResponse(receivedMessage, messageRef, constants.RESPONSE_CODE_CATEGORY_MEDICAL);
         break;
       case constants.RESPONSE_CODE_ATTACH_PHOTO_YES:
-        // TODO(kai): Activate camara and/or photo stream when user selects yes to attach photo
+        // TODO(kai): Activate camera and/or photo stream when user selects yes to attach photo
         response =
           getResponse(receivedMessage, messageRef, constants.RESPONSE_CODE_ATTACH_PHOTO_YES);
         break;

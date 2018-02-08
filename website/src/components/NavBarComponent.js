@@ -1,9 +1,6 @@
 import * as firebase from 'firebase';
-import Flexbox from 'flexbox-react';
 import React from 'react';
-import { Image, Nav, Navbar, NavItem } from 'react-bootstrap';
-
-import logo from '../static/images/logo.png';
+import { Nav, Navbar, NavItem } from 'react-bootstrap';
 
 
 const signOut = () => {
@@ -11,22 +8,12 @@ const signOut = () => {
 };
 
 const NavBarComponent = () => (
-  <Navbar>
+  <Navbar collapseOnSelect>
     <Navbar.Header>
       <Navbar.Brand>
-        <Flexbox flexDirection="row" justifyContent="center" alignItems="center">
-          <a href="/">
-            <Flexbox flexDirection="row" justifyContent="space-around" alignItems="center">
-              <Flexbox>
-                <Image src={logo} className="navbar-header-image" />
-              </Flexbox>
-              <Flexbox className="navbar-header-text" >
-                Lumi
-              </Flexbox>
-            </Flexbox>
-          </a>
-        </Flexbox>
+        <a href="/">Lumi</a>
       </Navbar.Brand>
+      <Navbar.Toggle />
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav>
@@ -35,7 +22,7 @@ const NavBarComponent = () => (
         </NavItem>
       </Nav>
       <Nav pullRight>
-        <NavItem eventKey={2} onClick={signOut}>
+        <NavItem eventKey={1} onClick={signOut}>
           Sign Out
         </NavItem>
       </Nav>

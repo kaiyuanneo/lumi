@@ -22,15 +22,22 @@ class TimelineComponent extends Component {
     if (!authUser) {
       throw new Error('Rendering Timeline component when no user has logged in');
     }
-    const userRef = db.ref(`${constants.DB_PATH_USERS}/${authUser.uid}`);
-    userRef.once(constants.DB_EVENT_NAME_VALUE, (userSnapshot) => {
-      // Get auth user PSID
-      const { psid } = userSnapshot.val();
-
+    const authUserPsidRef = db.ref(`${constants.DB_PATH_USERS}/${authUser.uid}/psid`);
+    authUserPsidRef.on(constants.DB_EVENT_NAME_VALUE, (authUserPsidSnapshot) => {
+      // Wait until auth user PSID is populated before listening on user messages
+      const authUserPsid = authUserPsidSnapshot.val();
+      if (!authUserPsid) {
+        return;
+      }
+      // Turn off this listener once auth user PSID is populated
+      authUserPsidRef.off(constants.DB_EVENT_NAME_VALUE);
       // Activate listener on auth user's messages
-      const messagesRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES}/${psid}`);
+      const messagesRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES}/${authUserPsid}`);
       messagesRef.on(constants.DB_EVENT_NAME_CHILD_ADDED, (messageSnapshot) => {
-        this.setState({ messages: this.state.messages.concat(messageSnapshot.val()) });
+        this.setState({
+          ...this.state,
+          messages: this.state.messages.concat(messageSnapshot.val()),
+        });
       });
     });
   }

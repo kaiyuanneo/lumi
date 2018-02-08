@@ -1,3 +1,8 @@
+export const BOOTSTRAP_CSS_URL =
+  'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css';
+export const BOOTSTRAP_CSS_HASH =
+  'sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u';
+
 export const DB_EVENT_NAME_CHILD_ADDED = 'child_added';
 export const DB_EVENT_NAME_VALUE = 'value';
 
@@ -24,8 +29,6 @@ export const TIMELINE_CATEGORY_NAME_MEDICAL = 'Medical';
 export const TIMELINE_TABLE_HEADER_CATEGORY = 'Category';
 export const TIMELINE_TABLE_HEADER_NOTE = 'Note';
 
-export const URL_BOOTSTRAP_CSS =
-  'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css';
 export const URL_FACEBOOK_GRAPH_API = 'https://graph.facebook.com/v2.6';
 export const URL_FACEBOOK_GRAPH_API_ME = `${URL_FACEBOOK_GRAPH_API}/me`;
 export const URL_LUMI_PSID = 'https://us-central1-lumi-cares.cloudfunctions.net/webhook/lumi/psid';

@@ -21,11 +21,13 @@
   font-size: large;
 }
 
+/* TODO(kai): needed? */
 .navbar-header-image {
   width: 30px;
   height: 30px;
 }
 
+/* TODO(kai): needed? */
 .navbar-header-text {
   margin-left: 10px;
 }

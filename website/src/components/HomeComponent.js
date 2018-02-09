@@ -5,7 +5,7 @@ import TimelineComponent from './TimelineComponent';
 
 
 const HomeComponent = () => (
-  <div>
+  <div className="navbar-offset">
     <NavBarComponent />
     <TimelineComponent />
   </div>

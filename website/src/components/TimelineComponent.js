@@ -79,6 +79,7 @@ class TimelineComponent extends Component {
       }
       return (
         <tr key={message.mid}>
+          <td>{new Date(message.timestamp).toLocaleString()}</td>
           <td>{utils.categoryCodeToName(message.category)}</td>
           <td>{message.text}</td>
         </tr>
@@ -119,6 +120,7 @@ class TimelineComponent extends Component {
         <Table bordered condensed hover>
           <thead>
             <tr>
+              <th className="timeline-table-header">{constants.TIMELINE_TABLE_HEADER_TIMESTAMP}</th>
               <th className="timeline-table-header">{constants.TIMELINE_TABLE_HEADER_CATEGORY}</th>
               <th className="timeline-table-header">{constants.TIMELINE_TABLE_HEADER_NOTE}</th>
             </tr>

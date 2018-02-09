@@ -156,6 +156,7 @@ const handleMessage = async (webhookEvent) => {
       ...receivedMessage,
       category: constants.MESSAGE_CATEGORY_CODE_OTHER,
       show_in_timeline: false,
+      timestamp: webhookEvent.timestamp,
     });
     console.log('Saved Lumi message to DB!');
     response = getResponse(receivedMessage, constants.RESPONSE_CODE_NEW_MESSAGE, newMessageRef);

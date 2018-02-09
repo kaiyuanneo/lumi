@@ -35,6 +35,7 @@ export const TIMELINE_CATEGORY_NAME_OTHER = 'Other';
 
 export const TIMELINE_TABLE_HEADER_CATEGORY = 'Category';
 export const TIMELINE_TABLE_HEADER_NOTE = 'Note';
+export const TIMELINE_TABLE_HEADER_TIMESTAMP = 'Timestamp';
 
 export const URL_FACEBOOK_GRAPH_API = 'https://graph.facebook.com/v2.6';
 export const URL_FACEBOOK_GRAPH_API_ME = `${URL_FACEBOOK_GRAPH_API}/me`;

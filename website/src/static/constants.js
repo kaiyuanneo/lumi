@@ -16,16 +16,22 @@ export const FIREBASE_DATABASE_URL = 'https://lumi-cares.firebaseio.com';
 export const FIREBASE_STORAGE_BUCKET = 'lumi-cares.appspot.com';
 
 export const TIMELINE_CATEGORY_CODE_ALL = 'all';
-export const TIMELINE_CATEGORY_CODE_GENERAL = 'general';
+export const TIMELINE_CATEGORY_CODE_ACTIVITY = 'activity';
 export const TIMELINE_CATEGORY_CODE_BEHAVIOUR = 'behaviour';
+export const TIMELINE_CATEGORY_CODE_MOOD = 'mood';
 export const TIMELINE_CATEGORY_CODE_MEMORY = 'memory';
 export const TIMELINE_CATEGORY_CODE_MEDICAL = 'medical';
+export const TIMELINE_CATEGORY_CODE_CAREGIVER = 'caregiver';
+export const TIMELINE_CATEGORY_CODE_OTHER = 'other';
 
 export const TIMELINE_CATEGORY_NAME_ALL = 'All';
-export const TIMELINE_CATEGORY_NAME_GENERAL = 'General';
+export const TIMELINE_CATEGORY_NAME_ACTIVITY = 'Activity';
 export const TIMELINE_CATEGORY_NAME_BEHAVIOUR = 'Behaviour';
+export const TIMELINE_CATEGORY_NAME_MOOD = 'Mood';
 export const TIMELINE_CATEGORY_NAME_MEMORY = 'Memory';
 export const TIMELINE_CATEGORY_NAME_MEDICAL = 'Medical';
+export const TIMELINE_CATEGORY_NAME_CAREGIVER = 'Caregiver';
+export const TIMELINE_CATEGORY_NAME_OTHER = 'Other';
 
 export const TIMELINE_TABLE_HEADER_CATEGORY = 'Category';
 export const TIMELINE_TABLE_HEADER_NOTE = 'Note';

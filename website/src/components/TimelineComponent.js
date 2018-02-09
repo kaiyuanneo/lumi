@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { Tab, Table, Tabs } from 'react-bootstrap';
 
 import * as constants from '../static/constants';
+import * as utils from '../utils';
 
 
 class TimelineComponent extends Component {
@@ -22,6 +23,7 @@ class TimelineComponent extends Component {
     if (!authUser) {
       throw new Error('Rendering Timeline component when no user has logged in');
     }
+    // Create listener on auth user PSID to determine when it has been populated
     const authUserPsidRef = db.ref(`${constants.DB_PATH_USERS}/${authUser.uid}/psid`);
     authUserPsidRef.on(constants.DB_EVENT_NAME_VALUE, (authUserPsidSnapshot) => {
       // Wait until auth user PSID is populated before listening on user messages
@@ -29,9 +31,9 @@ class TimelineComponent extends Component {
       if (!authUserPsid) {
         return;
       }
-      // Turn off this listener once auth user PSID is populated
+      // Turn off listener on auth user PSID once auth user PSID is populated
       authUserPsidRef.off(constants.DB_EVENT_NAME_VALUE);
-      // Activate listener on auth user's messages
+      // Activate listener on auth user's messages to update local state with new messages
       const messagesRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES}/${authUserPsid}`);
       messagesRef.on(constants.DB_EVENT_NAME_CHILD_ADDED, (messageSnapshot) => {
         this.setState({
@@ -39,6 +41,7 @@ class TimelineComponent extends Component {
           messages: this.state.messages.concat(messageSnapshot.val()),
         });
       });
+      // Activate listener on auth user's messages to update local state when messages change
       messagesRef.on(constants.DB_EVENT_NAME_CHILD_CHANGED, (messageSnapshot) => {
         const numMessages = this.state.messages.length;
         const messageVal = messageSnapshot.val();
@@ -47,7 +50,7 @@ class TimelineComponent extends Component {
             this.state.messages[i] = {
               ...messageVal,
             };
-            // Trigger re-render with set state
+            // Trigger re-render with set state with a new object
             this.setState({
               ...this.state,
             });
@@ -58,12 +61,6 @@ class TimelineComponent extends Component {
   }
 
   render() {
-    const filterMessages = (category) => {
-      this.setState({
-        ...this.state,
-        messageCategory: category,
-      });
-    };
     const shouldRenderMessage = (message) => {
       if (!message.show_in_timeline) {
         return false;
@@ -74,26 +71,7 @@ class TimelineComponent extends Component {
       if (message.category === this.state.messageCategory) {
         return true;
       }
-      if (message.category === undefined &&
-          this.state.messageCategory === constants.TIMELINE_CATEGORY_CODE_GENERAL) {
-        return true;
-      }
       return false;
-    };
-    const getMessageCategoryNameFromCode = (messageCategoryCode) => {
-      switch (messageCategoryCode) {
-        case undefined:
-        case constants.TIMELINE_CATEGORY_CODE_GENERAL:
-          return constants.TIMELINE_CATEGORY_NAME_GENERAL;
-        case constants.TIMELINE_CATEGORY_CODE_BEHAVIOUR:
-          return constants.TIMELINE_CATEGORY_NAME_BEHAVIOUR;
-        case constants.TIMELINE_CATEGORY_CODE_MEMORY:
-          return constants.TIMELINE_CATEGORY_NAME_MEMORY;
-        case constants.TIMELINE_CATEGORY_CODE_MEDICAL:
-          return constants.TIMELINE_CATEGORY_NAME_MEDICAL;
-        default:
-          return 'NA';
-      }
     };
     const messageToTableRow = (message) => {
       if (!shouldRenderMessage(message)) {
@@ -101,11 +79,23 @@ class TimelineComponent extends Component {
       }
       return (
         <tr key={message.mid}>
-          <td>{getMessageCategoryNameFromCode(message.category)}</td>
+          <td>{utils.categoryCodeToName(message.category)}</td>
           <td>{message.text}</td>
         </tr>
       );
     };
+    const filterMessages = (category) => {
+      this.setState({
+        ...this.state,
+        messageCategory: category,
+      });
+    };
+    const getTabComponent = categoryCode => (
+      <Tab
+        eventKey={categoryCode}
+        title={utils.categoryCodeToName(categoryCode)}
+      />
+    );
     const messages = this.state.messages.map(messageToTableRow);
     return (
       <div>
@@ -116,26 +106,14 @@ class TimelineComponent extends Component {
             id="timeline-tabs"
             onSelect={filterMessages}
           >
-            <Tab
-              eventKey={constants.TIMELINE_CATEGORY_CODE_ALL}
-              title={constants.TIMELINE_CATEGORY_NAME_ALL}
-            />
-            <Tab
-              eventKey={constants.TIMELINE_CATEGORY_CODE_GENERAL}
-              title={constants.TIMELINE_CATEGORY_NAME_GENERAL}
-            />
-            <Tab
-              eventKey={constants.TIMELINE_CATEGORY_CODE_BEHAVIOUR}
-              title={constants.TIMELINE_CATEGORY_NAME_BEHAVIOUR}
-            />
-            <Tab
-              eventKey={constants.TIMELINE_CATEGORY_CODE_MEMORY}
-              title={constants.TIMELINE_CATEGORY_NAME_MEMORY}
-            />
-            <Tab
-              eventKey={constants.TIMELINE_CATEGORY_CODE_MEDICAL}
-              title={constants.TIMELINE_CATEGORY_NAME_MEDICAL}
-            />
+            {getTabComponent(constants.TIMELINE_CATEGORY_CODE_ALL)}
+            {getTabComponent(constants.TIMELINE_CATEGORY_CODE_ACTIVITY)}
+            {getTabComponent(constants.TIMELINE_CATEGORY_CODE_BEHAVIOUR)}
+            {getTabComponent(constants.TIMELINE_CATEGORY_CODE_MOOD)}
+            {getTabComponent(constants.TIMELINE_CATEGORY_CODE_MEMORY)}
+            {getTabComponent(constants.TIMELINE_CATEGORY_CODE_MEDICAL)}
+            {getTabComponent(constants.TIMELINE_CATEGORY_CODE_CAREGIVER)}
+            {getTabComponent(constants.TIMELINE_CATEGORY_CODE_OTHER)}
           </Tabs>
         </Flexbox>
         <Table bordered condensed hover>

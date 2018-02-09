@@ -13,7 +13,7 @@ class TimelineComponent extends Component {
 
     // Initialise local message state
     this.state = {
-      messages: [],
+      messages: new Map(),
       messageCategory: constants.TIMELINE_CATEGORY_CODE_ALL,
     };
 
@@ -33,30 +33,21 @@ class TimelineComponent extends Component {
       }
       // Turn off listener on auth user PSID once auth user PSID is populated
       authUserPsidRef.off(constants.DB_EVENT_NAME_VALUE);
-      // Activate listener on auth user's messages to update local state with new messages
-      const messagesRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES}/${authUserPsid}`);
-      messagesRef.on(constants.DB_EVENT_NAME_CHILD_ADDED, (messageSnapshot) => {
-        this.setState({
-          ...this.state,
-          messages: this.state.messages.concat(messageSnapshot.val()),
-        });
-      });
       // Activate listener on auth user's messages to update local state when messages change
-      messagesRef.on(constants.DB_EVENT_NAME_CHILD_CHANGED, (messageSnapshot) => {
-        const numMessages = this.state.messages.length;
-        const messageVal = messageSnapshot.val();
-        for (let i = 0; i < numMessages; i += 1) {
-          if (this.state.messages[i].mid === messageVal.mid) {
-            this.state.messages[i] = {
-              ...messageVal,
-            };
-            // Trigger re-render with set state with a new object
-            this.setState({
-              ...this.state,
-            });
-          }
-        }
-      });
+      const messagesRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES}/${authUserPsid}`);
+      const setMessageLocally = (messageSnapshot) => {
+        this.state.messages.set(messageSnapshot.key, messageSnapshot.val());
+        // Trigger component re-render
+        this.setState({ ...this.state });
+      };
+      const deleteMessageLocally = (messageSnapshot) => {
+        this.state.messages.delete(messageSnapshot.key);
+        // Trigger component re-render
+        this.setState({ ...this.state });
+      };
+      messagesRef.on(constants.DB_EVENT_NAME_CHILD_ADDED, setMessageLocally);
+      messagesRef.on(constants.DB_EVENT_NAME_CHILD_CHANGED, setMessageLocally);
+      messagesRef.on(constants.DB_EVENT_NAME_CHILD_REMOVED, deleteMessageLocally);
     });
   }
 
@@ -73,15 +64,15 @@ class TimelineComponent extends Component {
       }
       return false;
     };
-    const messageToTableRow = (message) => {
-      if (!shouldRenderMessage(message)) {
+    const messageToTableRow = ([messageKey, messageValue]) => {
+      if (!shouldRenderMessage(messageValue)) {
         return null;
       }
       return (
-        <tr key={message.mid}>
-          <td>{new Date(message.timestamp).toLocaleString()}</td>
-          <td>{utils.categoryCodeToName(message.category)}</td>
-          <td>{message.text}</td>
+        <tr key={messageKey}>
+          <td>{new Date(messageValue.timestamp).toLocaleString()}</td>
+          <td>{utils.categoryCodeToName(messageValue.category)}</td>
+          <td>{messageValue.text}</td>
         </tr>
       );
     };
@@ -97,7 +88,7 @@ class TimelineComponent extends Component {
         title={utils.categoryCodeToName(categoryCode)}
       />
     );
-    const messages = this.state.messages.map(messageToTableRow);
+    const messages = Array.from(this.state.messages, messageToTableRow);
     return (
       <div>
         <Flexbox flexDirection="row">

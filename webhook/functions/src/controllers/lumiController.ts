@@ -6,6 +6,9 @@ import * as constants from '../static/constants';
 import * as utils from '../utils';
 
 
+/**
+ * Boilerplate function for Messenger Platform to verify webhook authenticity
+ */
 export const verify = (req, res) => {
   // Parse the query params
   const mode = req.query['hub.mode'];
@@ -26,8 +29,11 @@ export const verify = (req, res) => {
   }
 };
 
-// This function needs to happen server-side because we cannot expose
-// Lumi's app access token in the client
+/**
+ * Get user PSID from ASID
+ * NB: This function needs to happen server-side because we cannot expose Lumi's app access
+ * token in the client
+ */
 export const getPsidFromAsid = async (req, res) => {
   // Get PSIDs from FB Graph API
   const psidRequestOptions = {
@@ -53,7 +59,9 @@ export const getPsidFromAsid = async (req, res) => {
   res.status(200).set('Access-Control-Allow-Origin', '*').json({ psid });
 };
 
-// Sends response messages via the Send API
+/**
+ * Send response message via the Send API
+ */
 const callSendApi = async (senderPsid, response) => {
   // Construct the message body
   const requestBody = {
@@ -80,6 +88,9 @@ const callSendApi = async (senderPsid, response) => {
   }
 };
 
+/**
+ * Generate quick reply object for specific response
+ */
 const getQuickReply = (messageRef, responseCode) => ({
   title: utils.responseCodeToQuickReplyTitle(responseCode),
   content_type: constants.QUICK_REPLY_CONTENT_TYPE_TEXT,
@@ -90,6 +101,9 @@ const getQuickReply = (messageRef, responseCode) => ({
   }),
 });
 
+/**
+ * Get response for a specific message type from Lumi Chat
+ */
 const getResponse = (receivedMessage, responseCode, messageRef) => {
   let quickReplies = null;
   if (responseCode === constants.RESPONSE_CODE_NEW_MESSAGE) {
@@ -119,13 +133,49 @@ const getResponse = (receivedMessage, responseCode, messageRef) => {
   };
 };
 
-// Handle message events
+
+/**
+ * Update DB to reference new message by the given user's active GID, if any
+ */
+const setMessageGidIfUserGidExists = (psid, newMessageRef) => {
+  const db = admin.database();
+  const psidToUidRef = db.ref(`${constants.DB_PATH_USER_PSID_TO_UID}/${psid}`);
+  psidToUidRef.once(constants.DB_EVENT_NAME_VALUE, (psidToUidSnapshot) => {
+    const uid = psidToUidSnapshot.val();
+    // Return null if there is no entry for the given PSID in the user-psid-to-uid path
+    // This means the user has not signed into lumicares.com yet.
+    if (!uid) {
+      return;
+    }
+    // Assume if there is an entry for given psid in user-psid-to-uid path, then there is
+    // an activeGid entry in the user record
+    const userRef = db.ref(`${constants.DB_PATH_USERS}/${uid}`);
+    userRef.once(constants.DB_EVENT_NAME_VALUE, (userSnapshot) => {
+      // TODO(kai): Allow user to select which group she wishes to save message to, instead
+      // of defaulting to active GID
+      const gid = userSnapshot.val().activeGid;
+      const groupMessagesRef = db.ref(`${constants.DB_PATH_LUMI_GROUP_MESSAGES}/${gid}`);
+      // Store GID in new message
+      newMessageRef.update({
+        gid,
+      });
+      // Store new message key in lumi-group-messages path under the active GID
+      groupMessagesRef.update({
+        [newMessageRef.key]: true,
+      });
+    });
+  });
+};
+
+/**
+ * Handle message events from Messenger Platform
+ */
 const handleMessage = async (webhookEvent) => {
   let response;
   const receivedMessage = webhookEvent.message;
+  const db = admin.database();
+  const messagesRef = db.ref(constants.DB_PATH_LUMI_MESSAGES);
   const senderPsid = webhookEvent.sender.id;
-  const messagesRef = admin.database().ref(`${constants.DB_PATH_LUMI_MESSAGES}/${senderPsid}`);
-
   // Handle quick replies separately from regular text because they are responses to prev message
   // Handle quick replies first because quick reply messages can also contain text
   const quickReply = receivedMessage.quick_reply;
@@ -134,7 +184,6 @@ const handleMessage = async (webhookEvent) => {
     const quickReplyPayload = JSON.parse(quickReply.payload);
     const responseCode = quickReplyPayload.code;
     const messageRef = messagesRef.child(quickReplyPayload.messageKey);
-
     // If quick reply is about showing the message, update message visibility
     if (responseCode.indexOf('show-message') >= 0) {
       if (responseCode === constants.RESPONSE_CODE_SHOW_MESSAGE_YES) {
@@ -151,13 +200,26 @@ const handleMessage = async (webhookEvent) => {
     // Generate response based on received response code
     response = getResponse(receivedMessage, responseCode, messageRef);
   } else if (receivedMessage.text) {
-    // Save message to DB immediately
+    // Save message to DB. Message content is stored in the lumi-messages path,
+    // and the lumi-user-messages and lumi-group-messages determine which messages belong
+    // to which users and groups respectively.
     const newMessageRef = messagesRef.push({
       ...receivedMessage,
+      senderPsid,
       category: constants.MESSAGE_CATEGORY_CODE_OTHER,
       show_in_timeline: false,
       timestamp: webhookEvent.timestamp,
     });
+    // Save new message key in the lumi-user-messages path so that Lumi can easily lookup
+    // messages from each user
+    const userMessagesRef = db.ref(`${constants.DB_PATH_LUMI_USER_MESSAGES}/${senderPsid}`);
+    userMessagesRef.update({
+      [newMessageRef.key]: true,
+    });
+    // If user does not belong to any groups (i.e. hasn't signed into lumicares.com yet),
+    // do not save her messages under any GID. These messages will be saved to the relevant
+    // GID after she logs into lumicares.com and either joins or creates a group.
+    setMessageGidIfUserGidExists(senderPsid, newMessageRef);
     console.log('Saved Lumi message to DB!');
     response = getResponse(receivedMessage, constants.RESPONSE_CODE_NEW_MESSAGE, newMessageRef);
   }
@@ -166,6 +228,9 @@ const handleMessage = async (webhookEvent) => {
   await callSendApi(senderPsid, response);
 };
 
+/**
+ * Triage events from Messenger Platform
+ */
 export const message = (req, res) => {
   // Return 404 if event not from page subscription
   if (req.body.object !== 'page') {

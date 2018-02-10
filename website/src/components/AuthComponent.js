@@ -11,7 +11,7 @@ import lumiLogo from '../static/images/logo.png';
  * and save it in Firebase under the user record
  */
 const setUserInfo = async (currentUser, credential) => {
-  // Get user data from FB Graph API
+  // Get user info from FB Graph API
   const fields = [
     'id',
     'first_name',
@@ -22,7 +22,7 @@ const setUserInfo = async (currentUser, credential) => {
     'email',
     'birthday',
   ];
-  const asidRequestOptions = {
+  const userInfoRequestOptions = {
     uri: constants.URL_FACEBOOK_GRAPH_API_ME,
     qs: {
       access_token: credential.accessToken,
@@ -30,16 +30,16 @@ const setUserInfo = async (currentUser, credential) => {
     },
     json: true,
   };
-  const asidParsedBody = await rp(asidRequestOptions);
+  const userInfoParsedBody = await rp(userInfoRequestOptions);
 
-  // Store user data in user record
+  // Store user info in user record
   const db = firebase.database();
   const userRef = db.ref(`${constants.DB_PATH_USERS}/${currentUser.uid}`);
   await userRef.set({
-    ...asidParsedBody,
-    // Save parsedBody "id" param as "asid", and save Firebase UID as "id"
-    asid: asidParsedBody.id,
-    id: currentUser.uid,
+    ...userInfoParsedBody,
+    // Save parsedBody "id" param as "asid", and save Firebase UID as "uid"
+    asid: userInfoParsedBody.id,
+    uid: currentUser.uid,
     profile_pic: currentUser.photoURL,
   });
 
@@ -48,7 +48,7 @@ const setUserInfo = async (currentUser, credential) => {
   const psidRequestOptions = {
     uri: constants.URL_LUMI_PSID,
     qs: {
-      asid: asidParsedBody.id,
+      asid: userInfoParsedBody.id,
     },
     json: true,
   };
@@ -60,6 +60,11 @@ const setUserInfo = async (currentUser, credential) => {
   // Store PSID in user record
   await userRef.update({
     psid,
+  });
+
+  // Create entry in user-psid-to-uid path so that Lumi can look up user info with PSID
+  await db.ref(constants.DB_PATH_USER_PSID_TO_UID).update({
+    [psid]: currentUser.uid,
   });
 
   // Avoid redirects after sign in

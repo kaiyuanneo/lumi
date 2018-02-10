@@ -142,18 +142,21 @@ const setMessageGidIfUserGidExists = (psid, newMessageRef) => {
   const psidToUidRef = db.ref(`${constants.DB_PATH_USER_PSID_TO_UID}/${psid}`);
   psidToUidRef.once(constants.DB_EVENT_NAME_VALUE, (psidToUidSnapshot) => {
     const uid = psidToUidSnapshot.val();
-    // Return null if there is no entry for the given PSID in the user-psid-to-uid path
+    // Return if there is no entry for the given PSID in the user-psid-to-uid path
     // This means the user has not signed into lumicares.com yet.
     if (!uid) {
       return;
     }
-    // Assume if there is an entry for given psid in user-psid-to-uid path, then there is
-    // an activeGid entry in the user record
     const userRef = db.ref(`${constants.DB_PATH_USERS}/${uid}`);
     userRef.once(constants.DB_EVENT_NAME_VALUE, (userSnapshot) => {
       // TODO(kai): Allow user to select which group she wishes to save message to, instead
       // of defaulting to active GID
       const gid = userSnapshot.val().activeGid;
+      // Return if there is no activeGid assigned to a user. This means a user may have
+      // signed in to lumicares.com but not yet joined or created a group.
+      if (!gid) {
+        return;
+      }
       const groupMessagesRef = db.ref(`${constants.DB_PATH_LUMI_GROUP_MESSAGES}/${gid}`);
       // Store GID in new message
       newMessageRef.update({

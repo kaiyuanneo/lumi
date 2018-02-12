@@ -23,31 +23,39 @@ class TimelineComponent extends Component {
     if (!authUser) {
       throw new Error('Rendering Timeline component when no user has logged in');
     }
-    // Create listener on auth user PSID to determine when it has been populated
-    const authUserPsidRef = db.ref(`${constants.DB_PATH_USERS}/${authUser.uid}/psid`);
-    authUserPsidRef.on(constants.DB_EVENT_NAME_VALUE, (authUserPsidSnapshot) => {
-      // Wait until auth user PSID is populated before listening on user messages
-      const authUserPsid = authUserPsidSnapshot.val();
-      if (!authUserPsid) {
+
+    // Listen on auth user activeGid to determine when it has been populated
+    const authUserActiveGidRef = db.ref(`${constants.DB_PATH_USERS}/${authUser.uid}/activeGid`);
+    authUserActiveGidRef.on(constants.DB_EVENT_NAME_VALUE, (authUserActiveGidSnapshot) => {
+      // Wait until auth user active GID is populated before listening on group messages
+      const authUserActiveGid = authUserActiveGidSnapshot.val();
+      if (!authUserActiveGid) {
         return;
       }
-      // Turn off listener on auth user PSID once auth user PSID is populated
-      authUserPsidRef.off(constants.DB_EVENT_NAME_VALUE);
-      // Activate listener on auth user's messages to update local state when messages change
-      const messagesRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES}/${authUserPsid}`);
-      const setMessageLocally = (messageSnapshot) => {
-        this.state.messages.set(messageSnapshot.key, messageSnapshot.val());
+      // Turn off listener on auth user activeGid once auth user activeGid is populated
+      authUserActiveGidRef.off();
+
+      // Sync a message's value locally and sync any time its value changes
+      const syncMessageLocally = (groupMessageSnapshot) => {
+        const messageRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES}/${groupMessageSnapshot.key}`);
+        messageRef.on(constants.DB_EVENT_NAME_VALUE, (messageSnapshot) => {
+          this.state.messages.set(messageSnapshot.key, messageSnapshot.val());
+          // Trigger component re-render
+          this.setState({ ...this.state });
+        });
+      };
+      // Delete a message locally
+      const deleteMessageLocally = (groupMessageSnapshot) => {
+        this.state.messages.delete(groupMessageSnapshot.key);
         // Trigger component re-render
         this.setState({ ...this.state });
       };
-      const deleteMessageLocally = (messageSnapshot) => {
-        this.state.messages.delete(messageSnapshot.key);
-        // Trigger component re-render
-        this.setState({ ...this.state });
-      };
-      messagesRef.on(constants.DB_EVENT_NAME_CHILD_ADDED, setMessageLocally);
-      messagesRef.on(constants.DB_EVENT_NAME_CHILD_CHANGED, setMessageLocally);
-      messagesRef.on(constants.DB_EVENT_NAME_CHILD_REMOVED, deleteMessageLocally);
+
+      // Listen on auth user's active group's messages to update local state when messages change
+      const groupMessagesRef =
+        db.ref(`${constants.DB_PATH_LUMI_MESSAGES_GROUP}/${authUserActiveGid}`);
+      groupMessagesRef.on(constants.DB_EVENT_NAME_CHILD_ADDED, syncMessageLocally);
+      groupMessagesRef.on(constants.DB_EVENT_NAME_CHILD_REMOVED, deleteMessageLocally);
     });
   }
 

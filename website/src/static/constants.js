@@ -8,7 +8,10 @@ export const DB_EVENT_NAME_CHILD_CHANGED = 'child_changed';
 export const DB_EVENT_NAME_CHILD_REMOVED = 'child_removed';
 export const DB_EVENT_NAME_VALUE = 'value';
 
+export const DB_PATH_LUMI_GROUPS = 'lumi-groups';
 export const DB_PATH_LUMI_MESSAGES = 'lumi-messages';
+export const DB_PATH_LUMI_MESSAGES_GROUP = 'lumi-messages-group';
+export const DB_PATH_LUMI_MESSAGES_USER = 'lumi-messages-user';
 export const DB_PATH_USER_PSID_TO_UID = 'user-psid-to-uid';
 export const DB_PATH_USERS = 'users';
 

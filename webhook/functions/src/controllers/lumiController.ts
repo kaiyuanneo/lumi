@@ -33,6 +33,7 @@ export const verify = (req, res) => {
  * Get user PSID from ASID
  * NB: This function needs to happen server-side because we cannot expose Lumi's app access
  * token in the client
+ * // TODO(kai): Handle case where user has no PSID yet - logs into lumicares before Lumi Chat
  */
 export const getPsidFromAsid = async (req, res) => {
   // Get PSIDs from FB Graph API
@@ -157,12 +158,12 @@ const setMessageGidIfUserGidExists = (psid, newMessageRef) => {
       if (!gid) {
         return;
       }
-      const groupMessagesRef = db.ref(`${constants.DB_PATH_LUMI_GROUP_MESSAGES}/${gid}`);
+      const groupMessagesRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES_GROUP}/${gid}`);
       // Store GID in new message
       newMessageRef.update({
         gid,
       });
-      // Store new message key in lumi-group-messages path under the active GID
+      // Store new message key in lumi-messages-group path under the active GID
       groupMessagesRef.update({
         [newMessageRef.key]: true,
       });
@@ -204,7 +205,7 @@ const handleMessage = async (webhookEvent) => {
     response = getResponse(receivedMessage, responseCode, messageRef);
   } else if (receivedMessage.text) {
     // Save message to DB. Message content is stored in the lumi-messages path,
-    // and the lumi-user-messages and lumi-group-messages determine which messages belong
+    // and the lumi-messages-user and lumi-messages-group determine which messages belong
     // to which users and groups respectively.
     const newMessageRef = messagesRef.push({
       ...receivedMessage,
@@ -213,9 +214,9 @@ const handleMessage = async (webhookEvent) => {
       show_in_timeline: false,
       timestamp: webhookEvent.timestamp,
     });
-    // Save new message key in the lumi-user-messages path so that Lumi can easily lookup
+    // Save new message key in the lumi-messages-user path so that Lumi can easily lookup
     // messages from each user
-    const userMessagesRef = db.ref(`${constants.DB_PATH_LUMI_USER_MESSAGES}/${senderPsid}`);
+    const userMessagesRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES_USER}/${senderPsid}`);
     userMessagesRef.update({
       [newMessageRef.key]: true,
     });

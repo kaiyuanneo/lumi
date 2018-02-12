@@ -11,22 +11,26 @@ class App extends Component {
     super(props);
 
     this.state = {
-      signedIn: firebase.auth().currentUser != null,
+      signedIn: null,
     };
 
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.setState({ signedIn: true });
-      } else {
-        this.setState({ signedIn: false });
-      }
+      this.setState({
+        ...this.state,
+        signedIn: user !== null,
+      });
     });
   }
 
   render() {
+    // Do not render anything before we know if user is signed in
+    const { signedIn } = this.state;
+    if (signedIn === null) {
+      return null;
+    }
     return (
       <div className="App">
-        {this.state.signedIn ? <HomeComponent /> : <AuthComponent />}
+        {signedIn ? <HomeComponent /> : <AuthComponent />}
         <BootstrapStyleComponent />
       </div>
     );

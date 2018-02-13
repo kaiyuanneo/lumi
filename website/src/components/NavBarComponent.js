@@ -39,36 +39,39 @@ class NavBarComponent extends Component {
   }
 
   render() {
-    let groupInfo;
-    if (this.state.groupId !== '') {
-      groupInfo = (
+    // If user has not joined a group yet, do not display groupName and groupId in navbar
+    let groupNameLabel;
+    if (this.state.groupName) {
+      groupNameLabel = ` ${this.state.groupName}`;
+    }
+    let groupIdLabel;
+    if (this.state.groupId) {
+      groupIdLabel = (
         <Navbar.Text pullRight>
-          Group ID: {this.state.groupId}
-          Group Name: {this.state.groupName}
+          {constants.NAVBAR_ITEM_GROUP_ID}{this.state.groupId}
         </Navbar.Text>
       );
     }
-
     return (
       <Navbar collapseOnSelect fixedTop>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="/">Lumi</a>
+            <a href="/"><b>{constants.NAVBAR_HEADER_TITLE}</b>{groupNameLabel}</a>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav>
             <NavItem eventKey={1} href="/">
-              Timeline
+              {constants.NAVBAR_ITEM_TIMELINE}
             </NavItem>
           </Nav>
-          {groupInfo}
           <Nav pullRight>
             <NavItem eventKey={1} onClick={() => firebase.auth().signOut()}>
-              Sign Out
+              {constants.NAVBAR_ITEM_SIGN_OUT}
             </NavItem>
           </Nav>
+          {groupIdLabel}
         </Navbar.Collapse>
       </Navbar>
     );

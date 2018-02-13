@@ -20,6 +20,11 @@ export const FIREBASE_AUTH_DOMAIN = 'lumi-cares.firebaseapp.com';
 export const FIREBASE_DATABASE_URL = 'https://lumi-cares.firebaseio.com';
 export const FIREBASE_STORAGE_BUCKET = 'lumi-cares.appspot.com';
 
+export const NAVBAR_HEADER_TITLE = 'Lumi';
+export const NAVBAR_ITEM_TIMELINE = 'Timeline';
+export const NAVBAR_ITEM_SIGN_OUT = 'Sign Out';
+export const NAVBAR_ITEM_GROUP_ID = 'Group ID: ';
+
 export const TIMELINE_CATEGORY_CODE_ALL = 'all';
 export const TIMELINE_CATEGORY_CODE_ACTIVITY = 'activity';
 export const TIMELINE_CATEGORY_CODE_BEHAVIOUR = 'behaviour';
@@ -47,4 +52,4 @@ export const URL_FACEBOOK_GRAPH_API = 'https://graph.facebook.com/v2.6';
 export const URL_FACEBOOK_GRAPH_API_ME = `${URL_FACEBOOK_GRAPH_API}/me`;
 export const URL_LUMI_PSID = 'https://us-central1-lumi-cares.cloudfunctions.net/webhook/lumi/psid';
 
-export const WEBSITE_TITLE = 'Lumi Cares';
+export const WEBSITE_TITLE = 'Lumi';

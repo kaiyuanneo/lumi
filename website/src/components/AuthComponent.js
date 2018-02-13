@@ -53,8 +53,10 @@ const setUserInfo = async (currentUser, credential) => {
     json: true,
   };
   const { psid } = await rp(psidRequestOptions);
+  // If the user does not have a PSID yet (i.e. hasn't chatted with Lumi Chat), return here
+  // and the next time the user logs in with a PSID, it will get populated by the below code.
   if (!psid) {
-    throw new Error('Logged in user has no PSID for Lumi Facebook Page');
+    return false;
   }
 
   // Store PSID in user record

@@ -47,13 +47,24 @@ export const addUserToGroup = async (gid) => {
     return;
   }
 
-  // Access user messages
+  // If the user has no PSID, they have not used Lumi Chat, thus have no messages yet
   const psidSnapshot = await userRef.child('psid').once(constants.DB_EVENT_NAME_VALUE);
-  const userMessagesRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES_USER}/${psidSnapshot.val()}`);
+  const psid = psidSnapshot.val();
+  if (!psid) {
+    return;
+  }
+
+  // Access user messages
+  const userMessagesRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES_USER}/${psid}`);
   const userMessagesSnapshot = await userMessagesRef.once(constants.DB_EVENT_NAME_VALUE);
+  const userMessages = userMessagesSnapshot.val();
+
+  // Return if the user has no messages yet
+  if (!userMessages) {
+    return;
+  }
 
   // Copy all user message references to the group
-  const userMessages = userMessagesSnapshot.val();
   await db.ref(`${constants.DB_PATH_LUMI_MESSAGES_GROUP}/${gid}`).update({ ...userMessages });
 
   // Update each of the user's messages to reference the new GID

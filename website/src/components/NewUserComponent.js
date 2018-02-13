@@ -9,11 +9,12 @@ import * as constants from '../static/constants';
 class NewUserComponent extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       firstName: '',
     };
+  }
 
+  componentDidMount() {
     const { uid } = firebase.auth().currentUser;
     const firstNameRef = firebase.database().ref(`${constants.DB_PATH_USERS}/${uid}/first_name`);
     firstNameRef.once(constants.DB_EVENT_NAME_VALUE, (firstNameSnapshot) => {

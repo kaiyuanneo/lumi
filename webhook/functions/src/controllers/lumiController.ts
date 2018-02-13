@@ -33,7 +33,6 @@ export const verify = (req, res) => {
  * Get user PSID from ASID
  * NB: This function needs to happen server-side because we cannot expose Lumi's app access
  * token in the client
- * // TODO(kai): Handle case where user has no PSID yet - logs into lumicares before Lumi Chat
  */
 export const getPsidFromAsid = async (req, res) => {
   // Get PSIDs from FB Graph API
@@ -48,12 +47,16 @@ export const getPsidFromAsid = async (req, res) => {
   const psidParsedBody = await rp(psidRequestOptions);
 
   // Get relevant PSID from psidParsedBody
-  let psid = null;
-  psidParsedBody.ids_for_pages.data.forEach((pageInfo) => {
-    if (pageInfo.page.id === constants.PAGE_ID_LUMI) {
-      psid = pageInfo.id;
-    }
-  });
+  // If there is no relevant PSID, return psid: '' to client
+  let psid = '';
+  // If user has not used Lumi Chat, there may not be an ids_for_pages prop in psidParsedBody
+  if (psidParsedBody.ids_for_pages) {
+    psidParsedBody.ids_for_pages.data.forEach((pageInfo) => {
+      if (pageInfo.page.id === constants.PAGE_ID_LUMI) {
+        psid = pageInfo.id;
+      }
+    });
+  }
 
   // Send PSID back to client
   // Set Access-Control-Allow-Origin header so Cloud Functions can respond to lumicares.com

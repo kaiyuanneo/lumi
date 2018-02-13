@@ -35,13 +35,28 @@ class TimelineComponent extends Component {
       // Turn off listener on auth user activeGid once auth user activeGid is populated
       authUserActiveGidRef.off();
 
-      // Sync a message's value locally and sync any time its value changes
+      // Sync a message's value and sender name locally and sync any time its value changes
       const syncMessageLocally = (groupMessageSnapshot) => {
         const messageRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES}/${groupMessageSnapshot.key}`);
         messageRef.on(constants.DB_EVENT_NAME_VALUE, (messageSnapshot) => {
-          this.state.messages.set(messageSnapshot.key, messageSnapshot.val());
-          // Trigger component re-render
-          this.setState({ ...this.state });
+          // Store message locally and add message sender's name to local state
+          const message = messageSnapshot.val();
+          // There should always be a relevant entry in user-psid-to-uid because in order to have
+          // their message referenced by a group, a user must have signed into lumicares.
+          const uidRef = db.ref(`${constants.DB_PATH_USER_PSID_TO_UID}/${message.senderPsid}`);
+          uidRef.once(constants.DB_EVENT_NAME_VALUE, (uidSnapshot) => {
+            const userRef = db.ref(`${constants.DB_PATH_USERS}/${uidSnapshot.val()}`);
+            userRef.once(constants.DB_EVENT_NAME_VALUE, (userSnapshot) => {
+              const user = userSnapshot.val();
+              this.state.messages.set(messageSnapshot.key, {
+                ...message,
+                senderFirstName: user.first_name,
+                senderLastName: user.last_name,
+              });
+              // Trigger component re-render
+              this.setState({ ...this.state });
+            });
+          });
         });
       };
       // Delete a message locally
@@ -79,6 +94,7 @@ class TimelineComponent extends Component {
       return (
         <tr key={messageKey}>
           <td>{new Date(messageValue.timestamp).toLocaleString()}</td>
+          <td>{messageValue.senderFirstName} {messageValue.senderLastName}</td>
           <td>{utils.categoryCodeToName(messageValue.category)}</td>
           <td>{messageValue.text}</td>
         </tr>
@@ -120,6 +136,7 @@ class TimelineComponent extends Component {
           <thead>
             <tr>
               <th className="timeline-table-header">{constants.TIMELINE_TABLE_HEADER_TIMESTAMP}</th>
+              <th className="timeline-table-header">{constants.TIMELINE_TABLE_HEADER_USER}</th>
               <th className="timeline-table-header">{constants.TIMELINE_TABLE_HEADER_CATEGORY}</th>
               <th className="timeline-table-header">{constants.TIMELINE_TABLE_HEADER_NOTE}</th>
             </tr>

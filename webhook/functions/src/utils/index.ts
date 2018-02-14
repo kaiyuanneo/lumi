@@ -59,9 +59,15 @@ export const responseCodeToResponseMessage = (responseCode, receivedMessage = nu
   }
   switch (responseCode) {
     case constants.RESPONSE_CODE_NEW_MESSAGE:
+      if (!receivedMessage) {
+        console.error('Generating response for new message without receivedMessage');
+      }
+      const messageText = `${constants.RESPONSE_MESSAGE_NEW_MESSAGE_TEXT}"${receivedMessage.text}"`;
+      const messageImage = constants.RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE;
+      const messageSummary = 'text' in receivedMessage ? messageText : messageImage;
       return (
         constants.RESPONSE_MESSAGE_NEW_MESSAGE_1 +
-        receivedMessage.text +
+        messageSummary +
         constants.RESPONSE_MESSAGE_NEW_MESSAGE_2
       );
     case constants.RESPONSE_CODE_SHOW_MESSAGE_YES:

@@ -134,38 +134,38 @@ const getResponse = (receivedMessage, responseCode, messageRef) => {
 
 
 /**
- * Update DB to reference new message by the given user's active GID, if any
+ * Update DB to reference new message by the given user's active GID, if any.
+ * Specifically, 1) update message to reference gid, and 2) update relevant path in
+ * lumi-group-messages to reference this message key
  */
-const setMessageGidIfUserGidExists = (psid, newMessageRef) => {
+const setMessageGidIfUserGidExists = async (psid, newMessageRef) => {
   const db = admin.database();
   const psidToUidRef = db.ref(`${constants.DB_PATH_USER_PSID_TO_UID}/${psid}`);
-  psidToUidRef.once(constants.DB_EVENT_NAME_VALUE, (psidToUidSnapshot) => {
-    const uid = psidToUidSnapshot.val();
-    // Return if there is no entry for the given PSID in the user-psid-to-uid path
-    // This means the user has not signed into lumicares.com yet.
-    if (!uid) {
-      return;
-    }
-    const userRef = db.ref(`${constants.DB_PATH_USERS}/${uid}`);
-    userRef.once(constants.DB_EVENT_NAME_VALUE, (userSnapshot) => {
-      // TODO(kai): Allow user to select which group she wishes to save message to, instead
-      // of defaulting to active GID
-      const gid = userSnapshot.val().activeGid;
-      // Return if there is no activeGid assigned to a user. This means a user may have
-      // signed in to lumicares.com but not yet joined or created a group.
-      if (!gid) {
-        return;
-      }
-      const groupMessagesRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES_GROUP}/${gid}`);
-      // Store GID in new message
-      newMessageRef.update({
-        gid,
-      });
-      // Store new message key in lumi-messages-group path under the active GID
-      groupMessagesRef.update({
-        [newMessageRef.key]: true,
-      });
-    });
+  const psidToUidSnapshot = await psidToUidRef.once(constants.DB_EVENT_NAME_VALUE);
+  const uid = psidToUidSnapshot.val();
+  // Return if there is no entry for the given PSID in the user-psid-to-uid path
+  // This means the user has not signed into lumicares.com yet.
+  if (!uid) {
+    return;
+  }
+  const userRef = db.ref(`${constants.DB_PATH_USERS}/${uid}`);
+  const userSnapshot = await userRef.once(constants.DB_EVENT_NAME_VALUE);
+  // TODO(kai): Allow user to select which group she wishes to save message to, instead
+  // of defaulting to active GID
+  const gid = userSnapshot.val().activeGid;
+  // Return if there is no activeGid assigned to a user. This means a user may have
+  // signed in to lumicares.com but not yet joined or created a group.
+  if (!gid) {
+    return;
+  }
+  // Store GID in new message
+  newMessageRef.update({
+    gid,
+  });
+  // Store new message key in lumi-messages-group path under the active GID
+  const groupMessagesRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES_GROUP}/${gid}`);
+  groupMessagesRef.update({
+    [newMessageRef.key]: true,
   });
 };
 
@@ -200,7 +200,7 @@ const handleMessage = async (webhookEvent) => {
     }
     // Generate response based on received response code
     response = getResponse(receivedMessage, responseCode, messageRef);
-  } else if (receivedMessage.text) {
+  } else if (receivedMessage.text || receivedMessage.attachments) {
     // Save message to DB. Message content is stored in the lumi-messages path,
     // and the lumi-messages-user and lumi-messages-group determine which messages belong
     // to which users and groups respectively.
@@ -220,7 +220,7 @@ const handleMessage = async (webhookEvent) => {
     // If user does not belong to any groups (i.e. hasn't signed into lumicares.com yet),
     // do not save her messages under any GID. These messages will be saved to the relevant
     // GID after she logs into lumicares.com and either joins or creates a group.
-    setMessageGidIfUserGidExists(senderPsid, newMessageRef);
+    await setMessageGidIfUserGidExists(senderPsid, newMessageRef);
     console.log('Saved Lumi message to DB!');
     response = getResponse(receivedMessage, constants.RESPONSE_CODE_NEW_MESSAGE, newMessageRef);
   }

@@ -44,10 +44,12 @@ export const RESPONSE_CODE_CATEGORY_MEDICAL = 'category-medical';
 export const RESPONSE_CODE_CATEGORY_CAREGIVER = 'category-caregiver';
 export const RESPONSE_CODE_CATEGORY_OTHER = 'category-other';
 
-export const RESPONSE_MESSAGE_NEW_MESSAGE_1 = 'You sent the message "';
+export const RESPONSE_MESSAGE_NEW_MESSAGE_1 = 'You sent ';
 export const RESPONSE_MESSAGE_NEW_MESSAGE_2 =
-  '". Would you like to save it to your Lumi Timeline? ' +
+  '. Would you like to save it to your Lumi Timeline? ' +
   'You can view all saved messages at lumicares.com!';
+export const RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE = 'an image';
+export const RESPONSE_MESSAGE_NEW_MESSAGE_TEXT = 'the message ';
 export const RESPONSE_MESSAGE_SHOW_MESSAGE_YES = 'Ok! Which category?';
 export const RESPONSE_MESSAGE_SHOW_MESSAGE_NO = 'Ok! Great to hear from you :)';
 export const RESPONSE_MESSAGE_CATEGORY_1 = 'Great! Saved under category ';

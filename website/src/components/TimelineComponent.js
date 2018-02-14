@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 import Flexbox from 'flexbox-react';
 import React, { Component } from 'react';
-import { Tab, Table, Tabs } from 'react-bootstrap';
+import { Image, Tab, Table, Tabs } from 'react-bootstrap';
 
 import * as constants from '../static/constants';
 import * as utils from '../utils';
@@ -13,7 +13,7 @@ class TimelineComponent extends Component {
 
     // Initialise local message state
     this.state = {
-      messages: new Map(),
+      messages: {},
       messageCategory: constants.TIMELINE_CATEGORY_CODE_ALL,
     };
 
@@ -38,24 +38,28 @@ class TimelineComponent extends Component {
       // Sync a message's value and sender name locally and sync any time its value changes
       const syncMessageLocally = (groupMessageSnapshot) => {
         const messageRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES}/${groupMessageSnapshot.key}`);
-        messageRef.on(constants.DB_EVENT_NAME_VALUE, (messageSnapshot) => {
+        messageRef.on(constants.DB_EVENT_NAME_VALUE, async (messageSnapshot) => {
           // Store message locally and add message sender's name to local state
           const message = messageSnapshot.val();
           // There should always be a relevant entry in user-psid-to-uid because in order to have
           // their message referenced by a group, a user must have signed into lumicares.
           const uidRef = db.ref(`${constants.DB_PATH_USER_PSID_TO_UID}/${message.senderPsid}`);
-          uidRef.once(constants.DB_EVENT_NAME_VALUE, (uidSnapshot) => {
-            const userRef = db.ref(`${constants.DB_PATH_USERS}/${uidSnapshot.val()}`);
-            userRef.once(constants.DB_EVENT_NAME_VALUE, (userSnapshot) => {
-              const user = userSnapshot.val();
-              this.state.messages.set(messageSnapshot.key, {
-                ...message,
-                senderFirstName: user.first_name,
-                senderLastName: user.last_name,
-              });
-              // Trigger component re-render
-              this.setState({ ...this.state });
-            });
+          const uidSnapshot = await uidRef.once(constants.DB_EVENT_NAME_VALUE);
+          const userRef = db.ref(`${constants.DB_PATH_USERS}/${uidSnapshot.val()}`);
+          const userSnapshot = await userRef.once(constants.DB_EVENT_NAME_VALUE);
+          const user = userSnapshot.val();
+          const updatedMessages = {
+            ...this.state.messages,
+            [messageSnapshot.key]: {
+              ...message,
+              senderFirstName: user.first_name,
+              senderLastName: user.last_name,
+            },
+          };
+          // Trigger component re-render
+          this.setState({
+            ...this.state,
+            messages: updatedMessages,
           });
         });
       };
@@ -75,6 +79,16 @@ class TimelineComponent extends Component {
   }
 
   render() {
+    // We cannot depend on messages to come in order from realtime database because it takes
+    // varying amounts of time to look up user information for the sender of each message.
+    const sortMessagesByKey = () => {
+      const sortedMessageKeys = Object.keys(this.state.messages).sort().reverse();
+      const sortedMessageMap = new Map();
+      for (let i = 0; i < sortedMessageKeys.length; i += 1) {
+        sortedMessageMap.set(sortedMessageKeys[i], this.state.messages[sortedMessageKeys[i]]);
+      }
+      return sortedMessageMap;
+    };
     const shouldRenderMessage = (message) => {
       if (!message.show_in_timeline) {
         return false;
@@ -91,12 +105,24 @@ class TimelineComponent extends Component {
       if (!shouldRenderMessage(messageValue)) {
         return null;
       }
+      let messageContent;
+      if ('attachments' in messageValue) {
+        messageContent = (
+          <Image
+            className="timeline-image"
+            src={messageValue.attachments[0].payload.url}
+            responsive
+          />
+        );
+      } else {
+        messageContent = messageValue.text;
+      }
       return (
         <tr key={messageKey}>
           <td>{new Date(messageValue.timestamp).toLocaleString()}</td>
           <td>{messageValue.senderFirstName} {messageValue.senderLastName}</td>
           <td>{utils.categoryCodeToName(messageValue.category)}</td>
-          <td>{messageValue.text}</td>
+          <td>{messageContent}</td>
         </tr>
       );
     };
@@ -112,10 +138,12 @@ class TimelineComponent extends Component {
         title={utils.categoryCodeToName(categoryCode)}
       />
     );
-    const messages = Array.from(this.state.messages, messageToTableRow);
+    // Order messages in descending order with newest messages first
+    const messagesMap = sortMessagesByKey();
+    const messages = Array.from(messagesMap, messageToTableRow);
     return (
       <div>
-        <Flexbox flexDirection="row">
+        <Flexbox>
           <Tabs
             defaultActiveKey={constants.TIMELINE_CATEGORY_CODE_ALL}
             className="timeline-tabs"

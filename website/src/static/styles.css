@@ -26,6 +26,10 @@
   padding-top: 70px;
 }
 
+.timeline-image {
+  margin: auto;
+}
+
 .timeline-tabs {
   margin: 0 auto;
 }

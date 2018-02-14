@@ -35,7 +35,7 @@ const setUserInfo = async (currentUser, credential) => {
   // Store user info in user record
   const db = firebase.database();
   const userRef = db.ref(`${constants.DB_PATH_USERS}/${currentUser.uid}`);
-  await userRef.set({
+  await userRef.update({
     ...userInfoParsedBody,
     // Save parsedBody "id" param as "asid", and save Firebase UID as "uid"
     asid: userInfoParsedBody.id,

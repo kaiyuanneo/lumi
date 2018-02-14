@@ -125,11 +125,6 @@ const getResponse = (receivedMessage, responseCode, messageRef) => {
       getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_CAREGIVER),
       getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_OTHER),
     ];
-  } else if (responseCode.indexOf('category') >= 0) {
-    quickReplies = [
-      getQuickReply(messageRef, constants.RESPONSE_CODE_ATTACH_PHOTO_YES),
-      getQuickReply(messageRef, constants.RESPONSE_CODE_ATTACH_PHOTO_NO),
-    ];
   }
   return {
     text: utils.responseCodeToResponseMessage(responseCode, receivedMessage),
@@ -199,9 +194,8 @@ const handleMessage = async (webhookEvent) => {
     // Else if quick reply is about setting a message category, update message category
     } else if (responseCode.indexOf('category') >= 0) {
       messageRef.update({ category: utils.responseCodeToMessageCategoryCode(responseCode) });
-    // Else if quick reply is not about attaching a photo, throw an error
-    // TODO(kai): Implement attach photo functionality
-    } else if (responseCode.indexOf('attach-photo') < 0) {
+    // Else log error for uncategorised message
+    } else {
       console.error('Hit default in handle message menu');
     }
     // Generate response based on received response code

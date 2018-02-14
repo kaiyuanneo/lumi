@@ -43,20 +43,15 @@ export const RESPONSE_CODE_CATEGORY_MEMORY = 'category-memory';
 export const RESPONSE_CODE_CATEGORY_MEDICAL = 'category-medical';
 export const RESPONSE_CODE_CATEGORY_CAREGIVER = 'category-caregiver';
 export const RESPONSE_CODE_CATEGORY_OTHER = 'category-other';
-export const RESPONSE_CODE_ATTACH_PHOTO_YES = 'attach-photo-yes';
-export const RESPONSE_CODE_ATTACH_PHOTO_NO = 'attach-photo-no';
 
 export const RESPONSE_MESSAGE_NEW_MESSAGE_1 = 'You sent the message "';
 export const RESPONSE_MESSAGE_NEW_MESSAGE_2 =
   '". Would you like to save it to your Lumi Timeline? ' +
-  'You can view all your saved messages at lumicares.com!';
+  'You can view all saved messages at lumicares.com!';
 export const RESPONSE_MESSAGE_SHOW_MESSAGE_YES = 'Ok! Which category?';
 export const RESPONSE_MESSAGE_SHOW_MESSAGE_NO = 'Ok! Great to hear from you :)';
 export const RESPONSE_MESSAGE_CATEGORY_1 = 'Great! Saved under category ';
-export const RESPONSE_MESSAGE_CATEGORY_2 = '. Would you like to attach a photo?';
-export const RESPONSE_MESSAGE_SAVE_MESSAGE =
-  'Ok! I\'ve saved this message to your Lumi Timeline! ' +
-  'You can access your Timeline any time at lumicares.com.';
+export const RESPONSE_MESSAGE_CATEGORY_2 = '. You can access your Timeline at lumicares.com.';
 
 export const ROUTE_LUMI = '/lumi';
 export const ROUTE_LUMI_ROOT = '/';

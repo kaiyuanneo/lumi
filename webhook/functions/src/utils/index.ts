@@ -43,10 +43,6 @@ export const responseCodeToQuickReplyTitle = (responseCode) => {
       return constants.QUICK_REPLY_TITLE_CATEGORY_CAREGIVER;
     case constants.RESPONSE_CODE_CATEGORY_OTHER:
       return constants.QUICK_REPLY_TITLE_CATEGORY_OTHER;
-    case constants.RESPONSE_CODE_ATTACH_PHOTO_YES:
-      return constants.QUICK_REPLY_TITLE_YES;
-    case constants.RESPONSE_CODE_ATTACH_PHOTO_NO:
-      return constants.QUICK_REPLY_TITLE_NO;
     default:
       console.error('Client passed unrecognised response code');
       return 'NA';
@@ -72,10 +68,6 @@ export const responseCodeToResponseMessage = (responseCode, receivedMessage = nu
       return constants.RESPONSE_MESSAGE_SHOW_MESSAGE_YES;
     case constants.RESPONSE_CODE_SHOW_MESSAGE_NO:
       return constants.RESPONSE_MESSAGE_SHOW_MESSAGE_NO;
-    // TODO(kai): Activate camera when user selects yes to attach photo
-    case constants.RESPONSE_CODE_ATTACH_PHOTO_YES:
-    case constants.RESPONSE_CODE_ATTACH_PHOTO_NO:
-      return constants.RESPONSE_MESSAGE_SAVE_MESSAGE;
     default:
       console.error('Response code does not map to any response message');
       return 'Oops! Something went wrong. We will fix this as soon as possible!';

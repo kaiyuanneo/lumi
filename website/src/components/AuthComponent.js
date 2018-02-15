@@ -45,6 +45,9 @@ const setUserInfo = async (currentUser, credential) => {
     // Use camelCase instead of snake_case to be consistent in the DB
     firstName: userInfoParsedBody.first_name,
     lastName: userInfoParsedBody.last_name,
+    first_name: null,
+    last_name: null,
+    // Store profile picture from FB auth
     profilePic: currentUser.photoURL,
   });
 

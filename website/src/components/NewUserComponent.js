@@ -16,7 +16,7 @@ class NewUserComponent extends Component {
 
   componentDidMount() {
     const { uid } = firebase.auth().currentUser;
-    const firstNameRef = firebase.database().ref(`${constants.DB_PATH_USERS}/${uid}/first_name`);
+    const firstNameRef = firebase.database().ref(`${constants.DB_PATH_USERS}/${uid}/firstName`);
     firstNameRef.once(constants.DB_EVENT_NAME_VALUE, (firstNameSnapshot) => {
       this.setState({ firstName: firstNameSnapshot.val() });
     });

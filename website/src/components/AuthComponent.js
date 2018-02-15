@@ -42,7 +42,10 @@ const setUserInfo = async (currentUser, credential) => {
     // Save parsedBody "id" param as "asid", and save Firebase UID as "uid"
     asid: userInfoParsedBody.id,
     uid: currentUser.uid,
-    profile_pic: currentUser.photoURL,
+    // Use camelCase instead of snake_case to be consistent in the DB
+    firstName: userInfoParsedBody.first_name,
+    lastName: userInfoParsedBody.last_name,
+    profilePic: currentUser.photoURL,
   });
 
   // Get PSID from FB Graph API via Lumi webserver. Need to go through webserver

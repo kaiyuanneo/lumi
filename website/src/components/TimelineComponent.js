@@ -52,8 +52,8 @@ class TimelineComponent extends Component {
             ...this.state.messages,
             [messageSnapshot.key]: {
               ...message,
-              senderFirstName: user.first_name,
-              senderLastName: user.last_name,
+              senderFirstName: user.firstName,
+              senderLastName: user.lastName,
             },
           };
           // Trigger component re-render

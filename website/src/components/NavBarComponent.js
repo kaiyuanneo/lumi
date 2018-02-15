@@ -16,23 +16,22 @@ class NavBarComponent extends Component {
     // Populate Group ID and Group Name in navbar with auth user's group information
     const db = firebase.database();
     const authUid = firebase.auth().currentUser.uid;
-    const activeGidRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/activeGid`);
-    activeGidRef.on(constants.DB_EVENT_NAME_VALUE, (activeGidSnapshot) => {
-      const activeGid = activeGidSnapshot.val();
-      // If active GID not set, auth user does not belong to a group yet
-      if (!activeGid) {
+    const activeGroupRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/activeGroup`);
+    activeGroupRef.on(constants.DB_EVENT_NAME_VALUE, (activeGroupSnapshot) => {
+      const activeGroup = activeGroupSnapshot.val();
+      // If active group not set, auth user does not belong to a group yet
+      if (!activeGroup) {
         return;
       }
-      activeGidRef.off();
+      activeGroupRef.off();
 
       // Get group information from DB
-      const groupRef = firebase.database().ref(`${constants.DB_PATH_LUMI_GROUPS}/${activeGid}`);
+      const groupRef = firebase.database().ref(`${constants.DB_PATH_LUMI_GROUPS}/${activeGroup}`);
       groupRef.once(constants.DB_EVENT_NAME_VALUE, (groupSnapshot) => {
-        const groupName = groupSnapshot.val().name;
         this.setState({
           ...this.state,
-          groupId: activeGid,
-          groupName,
+          groupId: activeGroup,
+          groupName: groupSnapshot.val().name,
         });
       });
     });

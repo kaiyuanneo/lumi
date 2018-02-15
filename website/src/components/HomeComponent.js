@@ -17,22 +17,18 @@ class HomeComponent extends Component {
 
     const db = firebase.database();
     const authUid = firebase.auth().currentUser.uid;
-    const activeGidRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/activeGid`);
-    activeGidRef.on(constants.DB_EVENT_NAME_VALUE, (activeGidSnapshot) => {
-      const activeGid = activeGidSnapshot.val();
-      // If active GID not set, auth user does not belong to a group.
-      if (!activeGid) {
-        this.setState({
-          ...this.state,
-          isAuthUserInGroup: false,
-        });
-        return;
+    const activeGroupRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/activeGroup`);
+    activeGroupRef.on(constants.DB_EVENT_NAME_VALUE, (activeGroupSnapshot) => {
+      // If active group not set, auth user does not belong to a group.
+      let isAuthUserInGroup = false;
+      if (activeGroupSnapshot.val()) {
+        // Remove listener once user has activeGroup because there is no way to leave all groups
+        activeGroupRef.off();
+        isAuthUserInGroup = true;
       }
-      // Remove listener once user has activeGid because there is no way to leave all groups
-      activeGidRef.off();
       this.setState({
         ...this.state,
-        isAuthUserInGroup: true,
+        isAuthUserInGroup,
       });
     });
   }

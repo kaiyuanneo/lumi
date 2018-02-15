@@ -24,16 +24,16 @@ class TimelineComponent extends Component {
       throw new Error('Rendering Timeline component when no user has logged in');
     }
 
-    // Listen on auth user activeGid to determine when it has been populated
-    const authUserActiveGidRef = db.ref(`${constants.DB_PATH_USERS}/${authUser.uid}/activeGid`);
-    authUserActiveGidRef.on(constants.DB_EVENT_NAME_VALUE, (authUserActiveGidSnapshot) => {
-      // Wait until auth user active GID is populated before listening on group messages
-      const authUserActiveGid = authUserActiveGidSnapshot.val();
-      if (!authUserActiveGid) {
+    // Listen on auth user activeGroup to determine when it has been populated
+    const authUserActiveGroupRef = db.ref(`${constants.DB_PATH_USERS}/${authUser.uid}/activeGroup`);
+    authUserActiveGroupRef.on(constants.DB_EVENT_NAME_VALUE, (authUserActiveGroupSnapshot) => {
+      // Wait until auth user active group is populated before listening on group messages
+      const authUserActiveGroup = authUserActiveGroupSnapshot.val();
+      if (!authUserActiveGroup) {
         return;
       }
-      // Turn off listener on auth user activeGid once auth user activeGid is populated
-      authUserActiveGidRef.off();
+      // Turn off listener on auth user activeGroup once auth user activeGroup is populated
+      authUserActiveGroupRef.off();
 
       // Sync a message's value and sender name locally and sync any time its value changes
       const syncMessageLocally = (groupMessageSnapshot) => {
@@ -72,7 +72,7 @@ class TimelineComponent extends Component {
 
       // Listen on auth user's active group's messages to update local state when messages change
       const groupMessagesRef =
-        db.ref(`${constants.DB_PATH_LUMI_MESSAGES_GROUP}/${authUserActiveGid}`);
+        db.ref(`${constants.DB_PATH_LUMI_MESSAGES_GROUP}/${authUserActiveGroup}`);
       groupMessagesRef.on(constants.DB_EVENT_NAME_CHILD_ADDED, syncMessageLocally);
       groupMessagesRef.on(constants.DB_EVENT_NAME_CHILD_REMOVED, deleteMessageLocally);
     });

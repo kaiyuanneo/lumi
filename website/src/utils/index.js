@@ -34,10 +34,10 @@ export const addUserToGroup = async (gid) => {
   const db = firebase.database();
   const userRef = db.ref(`${constants.DB_PATH_USERS}/${firebase.auth().currentUser.uid}`);
 
-  // Update activeGid in user record to be current group ID
+  // Update activeGroup in user record to be current group ID
   // Add group ID to groups list in user record (gid: true)
   await userRef.update({
-    activeGid: gid,
+    activeGroup: gid,
     [`groups/${gid}`]: true,
   });
 
@@ -70,7 +70,7 @@ export const addUserToGroup = async (gid) => {
   // Update each of the user's messages to reference the new GID
   const messageUpdates = {};
   Object.keys(userMessages).forEach((messageKey) => {
-    messageUpdates[`${messageKey}/gid`] = gid;
+    messageUpdates[`${messageKey}/group`] = gid;
   });
   await db.ref(constants.DB_PATH_LUMI_MESSAGES).update(messageUpdates);
 };

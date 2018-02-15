@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 import Flexbox from 'flexbox-react';
 import React, { Component } from 'react';
-import { Image, Tab, Table, Tabs } from 'react-bootstrap';
+import { Image, Table, Tabs } from 'react-bootstrap';
 
 import * as constants from '../static/constants';
 import * as utils from '../utils';
@@ -132,12 +132,6 @@ class TimelineComponent extends Component {
         messageCategory: category,
       });
     };
-    const getTabComponent = categoryCode => (
-      <Tab
-        eventKey={categoryCode}
-        title={utils.categoryCodeToName(categoryCode)}
-      />
-    );
     // Order messages in descending order with newest messages first
     const messagesMap = sortMessagesByKey();
     const messages = Array.from(messagesMap, messageToTableRow);
@@ -146,24 +140,24 @@ class TimelineComponent extends Component {
         <Flexbox>
           <Tabs
             defaultActiveKey={constants.TIMELINE_CATEGORY_CODE_ALL}
-            className="timeline-tabs"
+            className="product-tabs"
             id="timeline-tabs"
             onSelect={filterMessages}
           >
-            {getTabComponent(constants.TIMELINE_CATEGORY_CODE_ALL)}
-            {getTabComponent(constants.TIMELINE_CATEGORY_CODE_ACTIVITY)}
-            {getTabComponent(constants.TIMELINE_CATEGORY_CODE_BEHAVIOUR)}
-            {getTabComponent(constants.TIMELINE_CATEGORY_CODE_MOOD)}
-            {getTabComponent(constants.TIMELINE_CATEGORY_CODE_MEMORY)}
-            {getTabComponent(constants.TIMELINE_CATEGORY_CODE_MEDICAL)}
-            {getTabComponent(constants.TIMELINE_CATEGORY_CODE_CAREGIVER)}
-            {getTabComponent(constants.TIMELINE_CATEGORY_CODE_OTHER)}
+            {utils.getTabComponent(constants.TIMELINE_CATEGORY_CODE_ALL)}
+            {utils.getTabComponent(constants.TIMELINE_CATEGORY_CODE_ACTIVITY)}
+            {utils.getTabComponent(constants.TIMELINE_CATEGORY_CODE_BEHAVIOUR)}
+            {utils.getTabComponent(constants.TIMELINE_CATEGORY_CODE_MOOD)}
+            {utils.getTabComponent(constants.TIMELINE_CATEGORY_CODE_MEMORY)}
+            {utils.getTabComponent(constants.TIMELINE_CATEGORY_CODE_MEDICAL)}
+            {utils.getTabComponent(constants.TIMELINE_CATEGORY_CODE_CAREGIVER)}
+            {utils.getTabComponent(constants.TIMELINE_CATEGORY_CODE_OTHER)}
           </Tabs>
         </Flexbox>
         <Table bordered condensed hover>
           <thead>
             <tr>
-              <th className="timeline-table-header">{constants.TIMELINE_TABLE_HEADER_TIMESTAMP}</th>
+              <th className="timeline-table-header">{constants.TIMELINE_TABLE_HEADER_TIME}</th>
               <th className="timeline-table-header">{constants.TIMELINE_TABLE_HEADER_USER}</th>
               <th className="timeline-table-header">{constants.TIMELINE_TABLE_HEADER_CATEGORY}</th>
               <th className="timeline-table-header">{constants.TIMELINE_TABLE_HEADER_NOTE}</th>

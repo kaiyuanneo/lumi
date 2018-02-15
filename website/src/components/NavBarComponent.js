@@ -1,4 +1,5 @@
 import * as firebase from 'firebase';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Nav, Navbar, NavItem } from 'react-bootstrap';
 
@@ -51,8 +52,9 @@ class NavBarComponent extends Component {
         </Navbar.Text>
       );
     }
+
     return (
-      <Navbar collapseOnSelect fixedTop>
+      <Navbar collapseOnSelect fixedTop onSelect={this.props.switchProduct}>
         <Navbar.Header>
           <Navbar.Brand>
             <a href="/"><b>{constants.NAVBAR_HEADER_TITLE}</b>{groupNameLabel}</a>
@@ -61,12 +63,18 @@ class NavBarComponent extends Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav>
-            <NavItem eventKey={1} href="/">
+            <NavItem eventKey={constants.PRODUCT_CODE_TIMELINE}>
               {constants.NAVBAR_ITEM_TIMELINE}
+            </NavItem>
+            <NavItem eventKey={constants.PRODUCT_CODE_CARE_CARD}>
+              {constants.NAVBAR_ITEM_CARE_CARD}
             </NavItem>
           </Nav>
           <Nav pullRight>
-            <NavItem eventKey={1} onClick={() => firebase.auth().signOut()}>
+            <NavItem
+              eventKey={constants.PRODUCT_CODE_SIGN_OUT}
+              onClick={() => firebase.auth().signOut()}
+            >
               {constants.NAVBAR_ITEM_SIGN_OUT}
             </NavItem>
           </Nav>
@@ -76,5 +84,9 @@ class NavBarComponent extends Component {
     );
   }
 }
+
+NavBarComponent.propTypes = {
+  switchProduct: PropTypes.func.isRequired,
+};
 
 export default NavBarComponent;

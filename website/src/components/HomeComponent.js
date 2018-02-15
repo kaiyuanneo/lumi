@@ -1,6 +1,7 @@
 import * as firebase from 'firebase';
 import React, { Component } from 'react';
 
+import CareCardComponent from './CareCardComponent';
 import NavBarComponent from './NavBarComponent';
 import NewUserComponent from './NewUserComponent';
 import TimelineComponent from './TimelineComponent';
@@ -13,8 +14,11 @@ class HomeComponent extends Component {
 
     this.state = {
       isAuthUserInGroup: null,
+      currentProductCode: constants.PRODUCT_CODE_TIMELINE,
     };
+  }
 
+  componentDidMount() {
     const db = firebase.database();
     const authUid = firebase.auth().currentUser.uid;
     const activeGroupRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/activeGroup`);
@@ -39,10 +43,35 @@ class HomeComponent extends Component {
     if (isAuthUserInGroup === null) {
       return null;
     }
-    const contentComponent = isAuthUserInGroup ? <TimelineComponent /> : <NewUserComponent />;
+    // Pass this function to NavbarComponent to switch between products from navbar
+    const switchProduct = (eventKey) => {
+      // Clicking sign out will trigger this because it is a child of the navbar
+      if (eventKey === constants.PRODUCT_CODE_SIGN_OUT) {
+        return;
+      }
+      this.setState({
+        ...this.state,
+        // Event keys are product codes
+        currentProductCode: eventKey,
+      });
+    };
+    // Determine which product o
+    const getProductComponent = () => {
+      const timelineComponent = <TimelineComponent />;
+      const careCardComponent = <CareCardComponent />;
+      switch (this.state.currentProductCode) {
+        case constants.PRODUCT_CODE_TIMELINE:
+          return timelineComponent;
+        case constants.PRODUCT_CODE_CARE_CARD:
+          return careCardComponent;
+        default:
+          return timelineComponent;
+      }
+    };
+    const contentComponent = isAuthUserInGroup ? getProductComponent() : <NewUserComponent />;
     return (
       <div className="navbar-offset">
-        <NavBarComponent />
+        <NavBarComponent switchProduct={switchProduct} />
         {contentComponent}
       </div>
     );

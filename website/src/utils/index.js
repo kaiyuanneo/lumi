@@ -1,10 +1,18 @@
 import * as firebase from 'firebase';
+import React from 'react';
+import { Tab } from 'react-bootstrap';
 
 import * as constants from '../static/constants';
 
 
 export const categoryCodeToName = (categoryCode) => {
   switch (categoryCode) {
+    case constants.CARE_CARD_CATEGORY_CODE_BASIC:
+      return constants.CARE_CARD_CATEGORY_NAME_BASIC;
+    case constants.CARE_CARD_CATEGORY_CODE_MEDICAL:
+      return constants.CARE_CARD_CATEGORY_NAME_MEDICAL;
+    case constants.CARE_CARD_CATEGORY_CODE_CARE:
+      return constants.CARE_CARD_CATEGORY_NAME_CARE;
     case constants.TIMELINE_CATEGORY_CODE_ALL:
       return constants.TIMELINE_CATEGORY_NAME_ALL;
     case constants.TIMELINE_CATEGORY_CODE_ACTIVITY:
@@ -74,3 +82,33 @@ export const addUserToGroup = async (gid) => {
   });
   await db.ref(constants.DB_PATH_LUMI_MESSAGES).update(messageUpdates);
 };
+
+/**
+ * Get tab component for timeline and care card products
+ */
+export const getTabComponent = categoryCode => (
+  <Tab
+    eventKey={categoryCode}
+    title={categoryCodeToName(categoryCode)}
+  />
+);
+
+/**
+ * Convert gender code to name
+ * Currently this only uppercases the first letter, but will be more complex with other languages
+ */
+export const genderCodeToName = genderCode =>
+  genderCode.charAt(0).toUpperCase() + genderCode.slice(1);
+
+/**
+ * Convert US date format (MM/DD/YYYY, used by Facebook) to ISO date format
+ */
+export const usToIsoDate = (usDate) => {
+  const dateComponents = usDate.split('/');
+  const year = parseInt(dateComponents[2], 10);
+  // Javascript Date month attribute is 0-indexed
+  const month = parseInt(dateComponents[0], 10) - 1;
+  const day = parseInt(dateComponents[1], 10);
+  return new Date(Date.UTC(year, month, day)).toISOString();
+};
+

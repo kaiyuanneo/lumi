@@ -90,7 +90,7 @@ class TimelineComponent extends Component {
       return sortedMessageMap;
     };
     const shouldRenderMessage = (message) => {
-      if (!message.show_in_timeline) {
+      if (!message.showInTimeline) {
         return false;
       }
       if (this.state.messageCategory === constants.TIMELINE_CATEGORY_CODE_ALL) {

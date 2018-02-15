@@ -189,7 +189,7 @@ const handleMessage = async (webhookEvent) => {
     // If quick reply is about showing the message, update message visibility
     if (responseCode.indexOf('show-message') >= 0) {
       if (responseCode === constants.RESPONSE_CODE_SHOW_MESSAGE_YES) {
-        messageRef.update({ show_in_timeline: true });
+        messageRef.update({ showInTimeline: true });
       }
     // Else if quick reply is about setting a message category, update message category
     } else if (responseCode.indexOf('category') >= 0) {
@@ -208,7 +208,7 @@ const handleMessage = async (webhookEvent) => {
       ...receivedMessage,
       senderPsid,
       category: constants.MESSAGE_CATEGORY_CODE_OTHER,
-      show_in_timeline: false,
+      showInTimeline: false,
       timestamp: webhookEvent.timestamp,
     });
     // Save new message key in the lumi-messages-user path so that Lumi can easily lookup

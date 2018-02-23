@@ -21,6 +21,10 @@
   font-size: large;
 }
 
+.button-icon {
+  margin-right: 5px;
+}
+
 .navbar-offset {
   /* By default, fixed top navbar has height of 50px */
   padding-top: 70px;
@@ -30,12 +34,12 @@
   margin: auto;
 }
 
-.product-tabs {
-  margin: 0 auto;
+.product-table-header {
+  text-align: center;
 }
 
-.timeline-table-header {
-  text-align: center;
+.product-tabs {
+  margin: 0 auto;
 }
 
 body {

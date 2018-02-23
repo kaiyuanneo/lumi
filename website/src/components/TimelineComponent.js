@@ -157,10 +157,10 @@ class TimelineComponent extends Component {
         <Table bordered condensed hover>
           <thead>
             <tr>
-              <th className="timeline-table-header">{constants.TIMELINE_TABLE_HEADER_TIME}</th>
-              <th className="timeline-table-header">{constants.TIMELINE_TABLE_HEADER_USER}</th>
-              <th className="timeline-table-header">{constants.TIMELINE_TABLE_HEADER_CATEGORY}</th>
-              <th className="timeline-table-header">{constants.TIMELINE_TABLE_HEADER_NOTE}</th>
+              <th className="product-table-header">{constants.TIMELINE_TABLE_HEADER_TIME}</th>
+              <th className="product-table-header">{constants.TIMELINE_TABLE_HEADER_USER}</th>
+              <th className="product-table-header">{constants.TIMELINE_TABLE_HEADER_CATEGORY}</th>
+              <th className="product-table-header">{constants.TIMELINE_TABLE_HEADER_NOTE}</th>
             </tr>
           </thead>
           <tbody>

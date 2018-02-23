@@ -96,21 +96,33 @@ class CareCardComponent extends Component {
     };
     return (
       <div>
-        <Flexbox>
-          <Image src={this.state.profilePic} circle responsive />
-          {this.state.firstName} {this.state.lastName}
-          <Tabs
-            defaultActiveKey={constants.CARE_CARD_CATEGORY_CODE_BASIC}
-            className="product-tabs"
-            id="care-card-tabs"
-            onSelect={switchInfo}
-          >
-            {utils.getTabComponent(constants.CARE_CARD_CATEGORY_CODE_BASIC)}
-            {utils.getTabComponent(constants.CARE_CARD_CATEGORY_CODE_MEDICAL)}
-            {utils.getTabComponent(constants.CARE_CARD_CATEGORY_CODE_CARE)}
-          </Tabs>
+        <Flexbox flexDirection="column">
+          <Flexbox flexDirection="column">
+            <Flexbox alignSelf="center">
+              <Image src={this.state.profilePic} circle responsive />
+            </Flexbox>
+            <h4>{this.state.firstName} {this.state.lastName}</h4>
+          </Flexbox>
+          <br />
+          <Flexbox flexDirection="column">
+            <Flexbox>
+              <Tabs
+                defaultActiveKey={constants.CARE_CARD_CATEGORY_CODE_BASIC}
+                className="product-tabs"
+                id="care-card-tabs"
+                onSelect={switchInfo}
+              >
+                {utils.getTabComponent(constants.CARE_CARD_CATEGORY_CODE_BASIC)}
+                {utils.getTabComponent(constants.CARE_CARD_CATEGORY_CODE_MEDICAL)}
+                {utils.getTabComponent(constants.CARE_CARD_CATEGORY_CODE_CARE)}
+              </Tabs>
+            </Flexbox>
+            <br />
+            <Flexbox flexDirection="column" alignContent="center">
+              {getContentComponent()}
+            </Flexbox>
+          </Flexbox>
         </Flexbox>
-        {getContentComponent()}
       </div>
     );
   }

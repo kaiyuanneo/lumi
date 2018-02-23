@@ -79,9 +79,9 @@ class CareCardEditWrapperComponent extends Component {
   }
 
   render() {
+    let fieldValue = this.state.value;
     // If edit mode is on, render the form field
     if (this.state.editable) {
-      let fieldValue = this.state.value;
       let onChangeFunc = this.handleChange;
       // Use isDateField boolean instead of field ID because this is used by multiple fields
       if (this.props.isDateField) {
@@ -91,35 +91,39 @@ class CareCardEditWrapperComponent extends Component {
         onChangeFunc = this.handleChangeDate;
       }
       return (
-        <div>
-          {this.props.formFieldGenerator(fieldValue, onChangeFunc)}
-          <Button
-            bsStyle="primary"
-            onClick={this.handleClickSave}
-          >
-            {constants.CARE_CARD_BUTTON_TEXT_SAVE}
-          </Button>
-        </div>
+        <tr>
+          <td>{this.props.title}</td>
+          <td>{this.props.formFieldGenerator(fieldValue, onChangeFunc)}</td>
+          <td>
+            <Button
+              bsStyle="primary"
+              onClick={this.handleClickSave}
+            >
+              {constants.CARE_CARD_BUTTON_TEXT_SAVE}
+            </Button>
+          </td>
+        </tr>
       );
     }
     // Otherwise, render the field value
-    let content = this.state.value;
-    if (!content) {
-      content = <i>Unspecified</i>;
+    if (!fieldValue) {
+      fieldValue = <i>Unspecified</i>;
     } else if (this.props.fieldId === constants.CARE_CARD_FIELD_ID_GENDER) {
-      content = utils.genderCodeToName(content);
+      fieldValue = utils.genderCodeToName(fieldValue);
     }
     return (
-      <div>
-        <h5>{this.props.title}</h5>
-        {content}
-        <Button
-          onClick={this.handleClickEdit}
-        >
-          <Glyphicon glyph="pencil" />
-          {constants.CARE_CARD_BUTTON_TEXT_EDIT}
-        </Button>
-      </div>
+      <tr>
+        <td>{this.props.title}</td>
+        <td>{fieldValue}</td>
+        <td>
+          <Button
+            onClick={this.handleClickEdit}
+          >
+            <Glyphicon className="button-icon" glyph="pencil" />
+            {constants.CARE_CARD_BUTTON_TEXT_EDIT}
+          </Button>
+        </td>
+      </tr>
     );
   }
 }

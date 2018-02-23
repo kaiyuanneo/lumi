@@ -55,6 +55,10 @@ export const CARE_CARD_GENDER_CODE_FEMALE = 'female';
 export const CARE_CARD_GENDER_NAME_MALE = 'Male';
 export const CARE_CARD_GENDER_NAME_FEMALE = 'Female';
 
+export const CARE_CARD_TABLE_HEADER_FIELD = 'Field';
+export const CARE_CARD_TABLE_HEADER_VALUE = 'Value';
+export const CARE_CARD_TABLE_HEADER_OPTIONS = 'Options';
+
 export const FIREBASE_API_KEY = 'AIzaSyAbxVPlyTTq2AITU-fakTFU7ZiGUQRmG00';
 export const FIREBASE_AUTH_DOMAIN = 'lumi-cares.firebaseapp.com';
 export const FIREBASE_DATABASE_URL = 'https://lumi-cares.firebaseio.com';

@@ -15,7 +15,8 @@ class CareCardComponent extends Component {
 
     // There may be more fields than these stored in local state, but these are the ones we need
     this.state = {
-      infoCategory: constants.CARE_CARD_CATEGORY_CODE_BASIC,
+      // TODO(kai): Change this back to BASIC once done developing MEDICAL and CARE tabs
+      infoCategory: constants.CARE_CARD_CATEGORY_CODE_MEDICAL,
       // Basic info
       uid: null,
       firstName: '',
@@ -87,7 +88,14 @@ class CareCardComponent extends Component {
             />
           );
         case constants.CARE_CARD_CATEGORY_CODE_MEDICAL:
-          return <CareCardMedicalInfoComponent />;
+          return (
+            <CareCardMedicalInfoComponent
+              typeOfDementia={this.state.typeOfDementia}
+              dateOfDiagnosis={this.state.dateOfDiagnosis}
+              medications={this.state.medications}
+              providers={this.state.providers}
+            />
+          );
         case constants.CARE_CARD_CATEGORY_CODE_CARE:
           return <CareCardCareInfoComponent />;
         default:
@@ -107,7 +115,7 @@ class CareCardComponent extends Component {
           <Flexbox flexDirection="column">
             <Flexbox>
               <Tabs
-                defaultActiveKey={constants.CARE_CARD_CATEGORY_CODE_BASIC}
+                defaultActiveKey={this.state.infoCategory}
                 className="product-tabs"
                 id="care-card-tabs"
                 onSelect={switchInfo}

@@ -101,6 +101,35 @@ export const genderCodeToName = genderCode =>
   genderCode.charAt(0).toUpperCase() + genderCode.slice(1);
 
 /**
+ * Convert type of dementia code to name
+ * Currently this only uppercases the first letter, but will be more complex with other languages
+ */
+export const dementiaCodeToName = (dementiaCode) => {
+  switch (dementiaCode) {
+    case constants.CARE_CARD_DEMENTIA_CODE_ALZHEIMERS:
+      return constants.CARE_CARD_DEMENTIA_NAME_ALZHEIMERS;
+    case constants.CARE_CARD_DEMENTIA_CODE_VASCULAR:
+      return constants.CARE_CARD_DEMENTIA_NAME_VASCULAR;
+    case constants.CARE_CARD_DEMENTIA_CODE_LEWY:
+      return constants.CARE_CARD_DEMENTIA_NAME_LEWY;
+    case constants.CARE_CARD_DEMENTIA_CODE_FRONTOTEMPORAL:
+      return constants.CARE_CARD_DEMENTIA_NAME_FRONTOTEMPORAL;
+    case constants.CARE_CARD_DEMENTIA_CODE_CREUTZFELDT_JAKOB:
+      return constants.CARE_CARD_DEMENTIA_NAME_CREUTZFELDT_JAKOB;
+    case constants.CARE_CARD_DEMENTIA_CODE_WERNICKE_KORSAKOFF:
+      return constants.CARE_CARD_DEMENTIA_NAME_WERNICKE_KORSAKOFF;
+    case constants.CARE_CARD_DEMENTIA_CODE_MIXED:
+      return constants.CARE_CARD_DEMENTIA_NAME_MIXED;
+    case constants.CARE_CARD_DEMENTIA_CODE_OTHER:
+      return constants.CARE_CARD_DEMENTIA_NAME_OTHER;
+    case constants.CARE_CARD_DEMENTIA_CODE_UNKNOWN:
+      return constants.CARE_CARD_DEMENTIA_NAME_UNKNOWN;
+    default:
+      return 'Undefined';
+  }
+};
+
+/**
  * Convert US date format (MM/DD/YYYY, used by Facebook) to ISO date format
  */
 export const usToIsoDate = (usDate) => {

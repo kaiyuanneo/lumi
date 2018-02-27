@@ -30,30 +30,68 @@ export const CARE_CARD_CATEGORY_NAME_MEDICAL = 'Medical';
 export const CARE_CARD_CATEGORY_NAME_CARE = 'Care';
 
 // Field IDs correspond to user properties in the DB
+// Basic
 export const CARE_CARD_FIELD_ID_FIRST_NAME = 'firstName';
 export const CARE_CARD_FIELD_ID_LAST_NAME = 'lastName';
 export const CARE_CARD_FIELD_ID_BIRTHDAY = 'birthday';
 export const CARE_CARD_FIELD_ID_GENDER = 'gender';
 export const CARE_CARD_FIELD_ID_EMAIL = 'email';
 export const CARE_CARD_FIELD_ID_ADDRESS = 'address';
+// Medical
+export const CARE_CARD_FIELD_ID_TYPE_OF_DEMENTIA = 'typeOfDementia';
+export const CARE_CARD_FIELD_ID_DATE_OF_DIAGNOSIS = 'dateOfDiagnosis';
+export const CARE_CARD_FIELD_ID_MEDICATIONS = 'medications';
+export const CARE_CARD_FIELD_ID_PROVIDERS = 'providers';
 
+// Basic
 export const CARE_CARD_FIELD_PLACEHOLDER_FIRST_NAME = 'Enter first name';
 export const CARE_CARD_FIELD_PLACEHOLDER_LAST_NAME = 'Enter last name';
 export const CARE_CARD_FIELD_PLACEHOLDER_GENDER = 'Select gender';
 export const CARE_CARD_FIELD_PLACEHOLDER_EMAIL = 'Enter email';
 export const CARE_CARD_FIELD_PLACEHOLDER_ADDRESS = 'Enter address';
+// Medical
+export const CARE_CARD_FIELD_PLACEHOLDER_TYPE_OF_DEMENTIA = 'Select type of dementia';
+export const CARE_CARD_FIELD_PLACEHOLDER_MEDICATIONS = 'Enter medications';
+export const CARE_CARD_FIELD_PLACEHOLDER_PROVIDERS = 'Enter providers';
 
+// Basic
 export const CARE_CARD_FIELD_TITLE_FIRST_NAME = 'First Name';
 export const CARE_CARD_FIELD_TITLE_LAST_NAME = 'Last Name';
 export const CARE_CARD_FIELD_TITLE_BIRTHDAY = 'Birthday';
 export const CARE_CARD_FIELD_TITLE_GENDER = 'Gender';
 export const CARE_CARD_FIELD_TITLE_EMAIL = 'Email';
 export const CARE_CARD_FIELD_TITLE_ADDRESS = 'Address';
+// Medical
+export const CARE_CARD_FIELD_TITLE_TYPE_OF_DEMENTIA = 'Type of Dementia';
+export const CARE_CARD_FIELD_TITLE_DATE_OF_DIAGNOSIS = 'Date of Diagnosis';
+export const CARE_CARD_FIELD_TITLE_MEDICATIONS = 'Medications';
+export const CARE_CARD_FIELD_TITLE_PROVIDERS = 'Providers';
 
 export const CARE_CARD_GENDER_CODE_MALE = 'male';
 export const CARE_CARD_GENDER_CODE_FEMALE = 'female';
 export const CARE_CARD_GENDER_NAME_MALE = 'Male';
 export const CARE_CARD_GENDER_NAME_FEMALE = 'Female';
+
+// Codes
+export const CARE_CARD_DEMENTIA_CODE_ALZHEIMERS = 'alzheimers';
+export const CARE_CARD_DEMENTIA_CODE_VASCULAR = 'vascular';
+export const CARE_CARD_DEMENTIA_CODE_LEWY = 'lewy';
+export const CARE_CARD_DEMENTIA_CODE_FRONTOTEMPORAL = 'frontotemporal';
+export const CARE_CARD_DEMENTIA_CODE_CREUTZFELDT_JAKOB = 'creutzfeldt-jakob';
+export const CARE_CARD_DEMENTIA_CODE_WERNICKE_KORSAKOFF = 'wernicke-korsakoff';
+export const CARE_CARD_DEMENTIA_CODE_MIXED = 'mixed';
+export const CARE_CARD_DEMENTIA_CODE_OTHER = 'other';
+export const CARE_CARD_DEMENTIA_CODE_UNKNOWN = 'unknown';
+// Names
+export const CARE_CARD_DEMENTIA_NAME_ALZHEIMERS = 'Alzheimer\'s disease';
+export const CARE_CARD_DEMENTIA_NAME_VASCULAR = 'Vascular dementia';
+export const CARE_CARD_DEMENTIA_NAME_LEWY = 'Dementia with Lewy bodies';
+export const CARE_CARD_DEMENTIA_NAME_FRONTOTEMPORAL = 'Frontotemporal dementia';
+export const CARE_CARD_DEMENTIA_NAME_CREUTZFELDT_JAKOB = 'Creutzfeldt-Jakob disease';
+export const CARE_CARD_DEMENTIA_NAME_WERNICKE_KORSAKOFF = 'Wernicke-Korsakoff syndrome';
+export const CARE_CARD_DEMENTIA_NAME_MIXED = 'Mixed dementia';
+export const CARE_CARD_DEMENTIA_NAME_OTHER = 'Other';
+export const CARE_CARD_DEMENTIA_NAME_UNKNOWN = 'Unknown';
 
 export const CARE_CARD_TABLE_HEADER_FIELD = 'Field';
 export const CARE_CARD_TABLE_HEADER_VALUE = 'Value';

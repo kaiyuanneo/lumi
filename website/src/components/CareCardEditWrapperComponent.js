@@ -7,6 +7,10 @@ import * as constants from '../static/constants';
 import * as utils from '../utils';
 
 
+/**
+ * NB: Need to pass isDateField prop to all date fields so that CareCardEditWrapperComponent
+ * calls the relevant handleChange function
+ */
 class CareCardEditWrapperComponent extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +39,6 @@ class CareCardEditWrapperComponent extends Component {
       value: e.target.value,
     });
   }
-
   handleChangeDate(value, formattedValue) {
     this.setState({
       ...this.state,
@@ -58,8 +61,19 @@ class CareCardEditWrapperComponent extends Component {
       careRecipientUidRef.once(constants.DB_EVENT_NAME_VALUE, async (careRecipientUidSnapshot) => {
         const careRecipientUid = careRecipientUidSnapshot.val();
         const careRecipientRef = db.ref(`${constants.DB_PATH_USERS}/${careRecipientUid}`);
+        let fieldValue = this.state.value;
+        // If user has not changed the default value in the dropdown menu, Lumi will not have
+        // populated the default value into this.state.value. Thus, save the default value to
+        // DB instead of the empty initial value.
+        if (!fieldValue) {
+          if (this.props.fieldId === constants.CARE_CARD_FIELD_ID_GENDER) {
+            fieldValue = constants.CARE_CARD_GENDER_CODE_MALE;
+          } else if (this.props.fieldId === constants.CARE_CARD_FIELD_ID_TYPE_OF_DEMENTIA) {
+            fieldValue = constants.CARE_CARD_DEMENTIA_CODE_ALZHEIMERS;
+          }
+        }
         await careRecipientRef.update({
-          [this.props.fieldId]: this.state.value,
+          [this.props.fieldId]: fieldValue,
         });
       });
     });
@@ -69,7 +83,6 @@ class CareCardEditWrapperComponent extends Component {
       editable: false,
     });
   }
-
   handleClickEdit() {
     // Enter edit mode
     this.setState({
@@ -110,11 +123,13 @@ class CareCardEditWrapperComponent extends Component {
       fieldValue = <i>Unspecified</i>;
     } else if (this.props.fieldId === constants.CARE_CARD_FIELD_ID_GENDER) {
       fieldValue = utils.genderCodeToName(fieldValue);
+    } else if (this.props.fieldId === constants.CARE_CARD_FIELD_ID_TYPE_OF_DEMENTIA) {
+      fieldValue = utils.dementiaCodeToName(fieldValue);
     }
     return (
       <tr>
         <td>{this.props.title}</td>
-        <td>{fieldValue}</td>
+        <td className="multiline">{fieldValue}</td>
         <td>
           <Button
             onClick={this.handleClickEdit}

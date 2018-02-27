@@ -13,7 +13,7 @@ class CareCardComponent extends Component {
   constructor(props) {
     super(props);
 
-    // There may be more fields than these stored in local state, but these are the ones we need
+    // Lumi may store more fields than these in local state, but these are the ones Care Card needs
     this.state = {
       infoCategory: constants.CARE_CARD_CATEGORY_CODE_BASIC,
       // Basic info
@@ -38,6 +38,7 @@ class CareCardComponent extends Component {
       placesOfInterest: '',
     };
 
+    // Get care recipient info from DB
     const db = firebase.database();
     const authUid = firebase.auth().currentUser.uid;
     const activeGroupRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/activeGroup`);

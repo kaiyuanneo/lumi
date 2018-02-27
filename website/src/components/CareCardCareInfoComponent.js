@@ -1,77 +1,48 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { FormControl, FormGroup, Table } from 'react-bootstrap';
 
 import CareCardEditWrapperComponent from './CareCardEditWrapperComponent';
 import * as constants from '../static/constants';
+import * as utils from '../utils';
 
 
-const getNeedsAndPreferencesFormField = (fieldValue, onChangeFunc) => (
-  <FormGroup controlId={constants.CARE_CARD_FIELD_ID_NEEDS_AND_PREFERENCES}>
-    <FormControl
-      componentClass="textarea"
-      value={fieldValue}
-      placeholder={constants.CARE_CARD_FIELD_PLACEHOLDER_NEEDS_AND_PREFERENCES}
-      onChange={onChangeFunc}
+const CareCardCareInfoComponent = props => utils.wrapWithCareCardTable((
+  <tbody>
+    <CareCardEditWrapperComponent
+      fieldId={constants.CARE_CARD_FIELD_ID_NEEDS_AND_PREFERENCES}
+      title={constants.CARE_CARD_FIELD_TITLE_NEEDS_AND_PREFERENCES}
+      initialValue={props.needsAndPreferences}
+      formFieldGenerator={
+        utils.getTextAreaFieldGenerator(
+          constants.CARE_CARD_FIELD_ID_NEEDS_AND_PREFERENCES,
+          constants.CARE_CARD_FIELD_PLACEHOLDER_NEEDS_AND_PREFERENCES,
+        )
+      }
     />
-  </FormGroup>
-);
-
-const getThingsThatDelightFormField = (fieldValue, onChangeFunc) => (
-  <FormGroup controlId={constants.CARE_CARD_FIELD_ID_THINGS_THAT_DELIGHT}>
-    <FormControl
-      componentClass="textarea"
-      value={fieldValue}
-      placeholder={constants.CARE_CARD_FIELD_PLACEHOLDER_THINGS_THAT_DELIGHT}
-      onChange={onChangeFunc}
+    <CareCardEditWrapperComponent
+      fieldId={constants.CARE_CARD_FIELD_ID_THINGS_THAT_DELIGHT}
+      title={constants.CARE_CARD_FIELD_TITLE_THINGS_THAT_DELIGHT}
+      initialValue={props.thingsThatDelight}
+      formFieldGenerator={
+        utils.getTextAreaFieldGenerator(
+          constants.CARE_CARD_FIELD_ID_THINGS_THAT_DELIGHT,
+          constants.CARE_CARD_FIELD_PLACEHOLDER_THINGS_THAT_DELIGHT,
+        )
+      }
     />
-  </FormGroup>
-);
-
-const getPlacesOfInterestFormField = (fieldValue, onChangeFunc) => (
-  <FormGroup controlId={constants.CARE_CARD_FIELD_ID_PLACES_OF_INTEREST}>
-    <FormControl
-      componentClass="textarea"
-      value={fieldValue}
-      placeholder={constants.CARE_CARD_FIELD_PLACEHOLDER_PLACES_OF_INTEREST}
-      onChange={onChangeFunc}
+    <CareCardEditWrapperComponent
+      fieldId={constants.CARE_CARD_FIELD_ID_PLACES_OF_INTEREST}
+      title={constants.CARE_CARD_FIELD_TITLE_PLACES_OF_INTEREST}
+      initialValue={props.placesOfInterest}
+      formFieldGenerator={
+        utils.getTextAreaFieldGenerator(
+          constants.CARE_CARD_FIELD_ID_PLACES_OF_INTEREST,
+          constants.CARE_CARD_FIELD_PLACEHOLDER_PLACES_OF_INTEREST,
+        )
+      }
     />
-  </FormGroup>
-);
-
-const CareCardCareInfoComponent = props => (
-  <div>
-    <Table bordered hover>
-      <thead>
-        <tr>
-          <th className="product-table-header">{constants.CARE_CARD_TABLE_HEADER_FIELD}</th>
-          <th className="product-table-header">{constants.CARE_CARD_TABLE_HEADER_VALUE}</th>
-          <th className="product-table-header">{constants.CARE_CARD_TABLE_HEADER_OPTIONS}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <CareCardEditWrapperComponent
-          fieldId={constants.CARE_CARD_FIELD_ID_NEEDS_AND_PREFERENCES}
-          title={constants.CARE_CARD_FIELD_TITLE_NEEDS_AND_PREFERENCES}
-          initialValue={props.needsAndPreferences}
-          formFieldGenerator={getNeedsAndPreferencesFormField}
-        />
-        <CareCardEditWrapperComponent
-          fieldId={constants.CARE_CARD_FIELD_ID_THINGS_THAT_DELIGHT}
-          title={constants.CARE_CARD_FIELD_TITLE_THINGS_THAT_DELIGHT}
-          initialValue={props.thingsThatDelight}
-          formFieldGenerator={getThingsThatDelightFormField}
-        />
-        <CareCardEditWrapperComponent
-          fieldId={constants.CARE_CARD_FIELD_ID_PLACES_OF_INTEREST}
-          title={constants.CARE_CARD_FIELD_TITLE_PLACES_OF_INTEREST}
-          initialValue={props.placesOfInterest}
-          formFieldGenerator={getPlacesOfInterestFormField}
-        />
-      </tbody>
-    </Table>
-  </div>
-);
+  </tbody>
+));
 
 CareCardCareInfoComponent.propTypes = {
   needsAndPreferences: PropTypes.string.isRequired,

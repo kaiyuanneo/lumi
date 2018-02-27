@@ -1,6 +1,7 @@
 import * as firebase from 'firebase';
 import React from 'react';
-import { Tab } from 'react-bootstrap';
+import { FormControl, FormGroup, Tab, Table } from 'react-bootstrap';
+import DatePicker from 'react-16-bootstrap-date-picker';
 
 import * as constants from '../static/constants';
 
@@ -141,3 +142,95 @@ export const usToIsoDate = (usDate) => {
   return new Date(Date.UTC(year, month, day)).toISOString();
 };
 
+/**
+ * Wrap passed component with a Table, specifically for Care Card
+ */
+export const wrapWithCareCardTable = component => (
+  <Table bordered hover>
+    <thead>
+      <tr>
+        <th className="product-table-header">{constants.CARE_CARD_TABLE_HEADER_FIELD}</th>
+        <th className="product-table-header">{constants.CARE_CARD_TABLE_HEADER_VALUE}</th>
+        <th className="product-table-header">{constants.CARE_CARD_TABLE_HEADER_OPTIONS}</th>
+      </tr>
+    </thead>
+    {component}
+  </Table>
+);
+
+/**
+ * Wrap passed component with a FormGroup
+ */
+const wrapWithFormGroup = (id, component) => (
+  <FormGroup controlId={id}>
+    {component}
+  </FormGroup>
+);
+
+/**
+ * Get text field generator for CareCardEditWrapperComponent to render field
+ */
+export const getTextFieldGenerator = (id, placeholder) => (fieldValue, onChangeFunc) => {
+  const formControl = (
+    <FormControl
+      type="text"
+      value={fieldValue}
+      placeholder={placeholder}
+      onChange={onChangeFunc}
+    />
+  );
+  return wrapWithFormGroup(id, formControl);
+};
+
+/**
+ * Get textarea field generator for CareCardEditWrapperComponent to render field
+ */
+export const getTextAreaFieldGenerator = (id, placeholder) => (fieldValue, onChangeFunc) => {
+  const formControl = (
+    <FormControl
+      componentClass="textarea"
+      value={fieldValue}
+      placeholder={placeholder}
+      onChange={onChangeFunc}
+    />
+  );
+  return wrapWithFormGroup(id, formControl);
+};
+
+/**
+ * Get date field generator for CareCardEditWrapperComponent to render field
+ */
+export const getDateFieldGenerator = id => (fieldValue, onChangeFunc) => {
+  const datePicker = (
+    <DatePicker
+      id={id}
+      dateFormat={constants.DATE_FORMAT}
+      value={fieldValue}
+      onChange={onChangeFunc}
+    />
+  );
+  return wrapWithFormGroup(id, datePicker);
+};
+
+/**
+ * Get select field generator for CareCardEditWrapperComponent to render field
+ * options is an object with option codes as keys and option names as values
+ */
+export const getSelectFieldGenerator = (id, placeholder, options) => (fieldValue, onChangeFunc) => {
+  const optionElements = Object.keys(options).map(optionCode => (
+    <option key={optionCode} value={optionCode}>
+      {options[optionCode]}
+    </option>
+  ));
+  const formControl = (
+    <FormControl
+      componentClass="select"
+      value={fieldValue}
+      placeholder={placeholder}
+      onChange={onChangeFunc}
+    >
+      {optionElements}
+    </FormControl>
+  );
+  return wrapWithFormGroup(id, formControl);
+};

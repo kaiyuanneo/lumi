@@ -42,6 +42,11 @@ export const CARE_CARD_FIELD_ID_TYPE_OF_DEMENTIA = 'typeOfDementia';
 export const CARE_CARD_FIELD_ID_DATE_OF_DIAGNOSIS = 'dateOfDiagnosis';
 export const CARE_CARD_FIELD_ID_MEDICATIONS = 'medications';
 export const CARE_CARD_FIELD_ID_PROVIDERS = 'providers';
+// Care
+export const CARE_CARD_FIELD_ID_NEEDS_AND_PREFERENCES = 'needsAndPreferences';
+export const CARE_CARD_FIELD_ID_THINGS_THAT_DELIGHT = 'thingsThatDelight';
+export const CARE_CARD_FIELD_ID_PLACES_OF_INTEREST = 'placesOfInterest';
+
 
 // Basic
 export const CARE_CARD_FIELD_PLACEHOLDER_FIRST_NAME = 'Enter first name';
@@ -53,6 +58,11 @@ export const CARE_CARD_FIELD_PLACEHOLDER_ADDRESS = 'Enter address';
 export const CARE_CARD_FIELD_PLACEHOLDER_TYPE_OF_DEMENTIA = 'Select type of dementia';
 export const CARE_CARD_FIELD_PLACEHOLDER_MEDICATIONS = 'Enter medications';
 export const CARE_CARD_FIELD_PLACEHOLDER_PROVIDERS = 'Enter providers';
+// Care
+export const CARE_CARD_FIELD_PLACEHOLDER_NEEDS_AND_PREFERENCES = 'Enter needs and preferences';
+export const CARE_CARD_FIELD_PLACEHOLDER_THINGS_THAT_DELIGHT =
+  'Enter activities or objects that delight';
+export const CARE_CARD_FIELD_PLACEHOLDER_PLACES_OF_INTEREST = 'Enter places of interest';
 
 // Basic
 export const CARE_CARD_FIELD_TITLE_FIRST_NAME = 'First Name';
@@ -66,6 +76,10 @@ export const CARE_CARD_FIELD_TITLE_TYPE_OF_DEMENTIA = 'Type of Dementia';
 export const CARE_CARD_FIELD_TITLE_DATE_OF_DIAGNOSIS = 'Date of Diagnosis';
 export const CARE_CARD_FIELD_TITLE_MEDICATIONS = 'Medications';
 export const CARE_CARD_FIELD_TITLE_PROVIDERS = 'Providers';
+// Care
+export const CARE_CARD_FIELD_TITLE_NEEDS_AND_PREFERENCES = 'Needs and Preferences';
+export const CARE_CARD_FIELD_TITLE_THINGS_THAT_DELIGHT = 'Things that Delight';
+export const CARE_CARD_FIELD_TITLE_PLACES_OF_INTEREST = 'Places of Interest';
 
 export const CARE_CARD_GENDER_CODE_MALE = 'male';
 export const CARE_CARD_GENDER_CODE_FEMALE = 'female';

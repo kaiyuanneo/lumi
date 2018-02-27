@@ -89,6 +89,7 @@ const getAddressFormField = (fieldValue, onChangeFunc) => (
   </FormGroup>
 );
 
+// TODO(kai): Create util functions to generate fields for text, date, and textarea fields
 const CareCardBasicInfoComponent = props => (
   <div>
     <Table bordered hover>

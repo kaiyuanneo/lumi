@@ -15,8 +15,7 @@ class CareCardComponent extends Component {
 
     // There may be more fields than these stored in local state, but these are the ones we need
     this.state = {
-      // TODO(kai): Change this back to BASIC once done developing MEDICAL and CARE tabs
-      infoCategory: constants.CARE_CARD_CATEGORY_CODE_MEDICAL,
+      infoCategory: constants.CARE_CARD_CATEGORY_CODE_BASIC,
       // Basic info
       uid: null,
       firstName: '',
@@ -75,31 +74,40 @@ class CareCardComponent extends Component {
       });
     };
     const getContentComponent = () => {
+      const basicComponent = (
+        <CareCardBasicInfoComponent
+          firstName={this.state.firstName}
+          lastName={this.state.lastName}
+          gender={this.state.gender}
+          birthday={this.state.birthday}
+          email={this.state.email}
+          address={this.state.address}
+        />
+      );
+      const medicalComponent = (
+        <CareCardMedicalInfoComponent
+          typeOfDementia={this.state.typeOfDementia}
+          dateOfDiagnosis={this.state.dateOfDiagnosis}
+          medications={this.state.medications}
+          providers={this.state.providers}
+        />
+      );
+      const careComponent = (
+        <CareCardCareInfoComponent
+          needsAndPreferences={this.state.needsAndPreferences}
+          thingsThatDelight={this.state.thingsThatDelight}
+          placesOfInterest={this.state.placesOfInterest}
+        />
+      );
       switch (this.state.infoCategory) {
         case constants.CARE_CARD_CATEGORY_CODE_BASIC:
-          return (
-            <CareCardBasicInfoComponent
-              firstName={this.state.firstName}
-              lastName={this.state.lastName}
-              gender={this.state.gender}
-              birthday={this.state.birthday}
-              email={this.state.email}
-              address={this.state.address}
-            />
-          );
+          return basicComponent;
         case constants.CARE_CARD_CATEGORY_CODE_MEDICAL:
-          return (
-            <CareCardMedicalInfoComponent
-              typeOfDementia={this.state.typeOfDementia}
-              dateOfDiagnosis={this.state.dateOfDiagnosis}
-              medications={this.state.medications}
-              providers={this.state.providers}
-            />
-          );
+          return medicalComponent;
         case constants.CARE_CARD_CATEGORY_CODE_CARE:
-          return <CareCardCareInfoComponent />;
+          return careComponent;
         default:
-          return <CareCardBasicInfoComponent />;
+          return basicComponent;
       }
     };
     return (

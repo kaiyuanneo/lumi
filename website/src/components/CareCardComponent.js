@@ -6,16 +6,19 @@ import { Image, Tabs } from 'react-bootstrap';
 import CareCardBasicInfoComponent from './CareCardBasicInfoComponent';
 import CareCardMedicalInfoComponent from './CareCardMedicalInfoComponent';
 import CareCardCareInfoComponent from './CareCardCareInfoComponent';
+import CareCardSelectCareRecipientComponent from './CareCardSelectCareRecipientComponent';
 import * as constants from '../static/constants';
 import * as utils from '../utils';
+
 
 class CareCardComponent extends Component {
   constructor(props) {
     super(props);
-
     // Lumi may store more fields than these in local state, but these are the ones Care Card needs
     this.state = {
       infoCategory: constants.CARE_CARD_CATEGORY_CODE_BASIC,
+      // Do not render if Lumi has not finished fetching the active care recipient of this group
+      fetched: false,
       // Basic info
       uid: null,
       firstName: '',
@@ -37,7 +40,9 @@ class CareCardComponent extends Component {
       thingsThatDelight: '',
       placesOfInterest: '',
     };
+  }
 
+  componentDidMount() {
     // Get care recipient info from DB
     const db = firebase.database();
     const authUid = firebase.auth().currentUser.uid;
@@ -48,6 +53,16 @@ class CareCardComponent extends Component {
         db.ref(`${constants.DB_PATH_LUMI_GROUPS}/${activeGroupSnapshot.val()}/activeCareRecipient`);
       careRecipientUidRef.on(constants.DB_EVENT_NAME_VALUE, (careRecipientUidSnapshot) => {
         const careRecipientUid = careRecipientUidSnapshot.val();
+        // Tell the component it is ok to render the new care recipient page if the group has no
+        // care recipient. Otherwise, render the Care Card. Do not render anything if Lumi
+        // has not finished fetching the active care recipient of this group.
+        this.setState({
+          ...this.state,
+          fetched: true,
+          // Update state with UID here so that if there is an active care recipient, render()
+          // knows not to render the select care recipient component.
+          uid: careRecipientUid,
+        });
         if (!careRecipientUid) {
           return;
         }
@@ -66,8 +81,14 @@ class CareCardComponent extends Component {
     });
   }
 
-  // TODO(kai): Render new user flow if there is no care recipient yet (see notebook)
   render() {
+    if (!this.state.fetched) {
+      return null;
+    }
+    // Render care recipient selector if this group has no care recipient yet
+    if (!this.state.uid) {
+      return <CareCardSelectCareRecipientComponent />;
+    }
     const switchInfo = (category) => {
       this.setState({
         ...this.state,
@@ -112,35 +133,33 @@ class CareCardComponent extends Component {
       }
     };
     return (
-      <div>
+      <Flexbox flexDirection="column">
         <Flexbox flexDirection="column">
-          <Flexbox flexDirection="column">
-            <Flexbox alignSelf="center">
-              <Image src={this.state.profilePic} circle responsive />
-            </Flexbox>
-            <h4>{this.state.firstName} {this.state.lastName}</h4>
+          <Flexbox alignSelf="center">
+            <Image src={this.state.profilePic} circle responsive />
+          </Flexbox>
+          <h4>{this.state.firstName} {this.state.lastName}</h4>
+        </Flexbox>
+        <br />
+        <Flexbox flexDirection="column">
+          <Flexbox>
+            <Tabs
+              defaultActiveKey={this.state.infoCategory}
+              className="product-tabs"
+              id="care-card-tabs"
+              onSelect={switchInfo}
+            >
+              {utils.getTabComponent(constants.CARE_CARD_CATEGORY_CODE_BASIC)}
+              {utils.getTabComponent(constants.CARE_CARD_CATEGORY_CODE_MEDICAL)}
+              {utils.getTabComponent(constants.CARE_CARD_CATEGORY_CODE_CARE)}
+            </Tabs>
           </Flexbox>
           <br />
-          <Flexbox flexDirection="column">
-            <Flexbox>
-              <Tabs
-                defaultActiveKey={this.state.infoCategory}
-                className="product-tabs"
-                id="care-card-tabs"
-                onSelect={switchInfo}
-              >
-                {utils.getTabComponent(constants.CARE_CARD_CATEGORY_CODE_BASIC)}
-                {utils.getTabComponent(constants.CARE_CARD_CATEGORY_CODE_MEDICAL)}
-                {utils.getTabComponent(constants.CARE_CARD_CATEGORY_CODE_CARE)}
-              </Tabs>
-            </Flexbox>
-            <br />
-            <Flexbox flexDirection="column" alignContent="center">
-              {getContentComponent()}
-            </Flexbox>
+          <Flexbox flexDirection="column" alignContent="center">
+            {getContentComponent()}
           </Flexbox>
         </Flexbox>
-      </div>
+      </Flexbox>
     );
   }
 }

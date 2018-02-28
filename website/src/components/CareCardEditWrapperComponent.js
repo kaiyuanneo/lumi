@@ -108,10 +108,7 @@ class CareCardEditWrapperComponent extends Component {
           <td>{this.props.title}</td>
           <td>{this.props.formFieldGenerator(fieldValue, onChangeFunc)}</td>
           <td>
-            <Button
-              bsStyle="primary"
-              onClick={this.handleClickSave}
-            >
+            <Button bsStyle="primary" onClick={this.handleClickSave}>
               {constants.CARE_CARD_BUTTON_TEXT_SAVE}
             </Button>
           </td>
@@ -131,9 +128,7 @@ class CareCardEditWrapperComponent extends Component {
         <td>{this.props.title}</td>
         <td className="multiline">{fieldValue}</td>
         <td>
-          <Button
-            onClick={this.handleClickEdit}
-          >
+          <Button onClick={this.handleClickEdit}>
             <Glyphicon className="button-icon" glyph="pencil" />
             {constants.CARE_CARD_BUTTON_TEXT_EDIT}
           </Button>

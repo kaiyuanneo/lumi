@@ -20,6 +20,7 @@ export const DB_PATH_USERS = 'users';
 
 export const CARE_CARD_BUTTON_TEXT_EDIT = 'Edit';
 export const CARE_CARD_BUTTON_TEXT_SAVE = 'Save';
+export const CARE_CARD_BUTTON_TEXT_SELECT = 'Select';
 
 export const CARE_CARD_CATEGORY_CODE_BASIC = 'basic';
 export const CARE_CARD_CATEGORY_CODE_MEDICAL = 'medical';
@@ -30,6 +31,8 @@ export const CARE_CARD_CATEGORY_NAME_MEDICAL = 'Medical';
 export const CARE_CARD_CATEGORY_NAME_CARE = 'Care';
 
 // Field IDs correspond to user properties in the DB
+// New care recipient
+export const CARE_CARD_FIELD_ID_USER_LIST = 'userList';
 // Basic
 export const CARE_CARD_FIELD_ID_FIRST_NAME = 'firstName';
 export const CARE_CARD_FIELD_ID_LAST_NAME = 'lastName';

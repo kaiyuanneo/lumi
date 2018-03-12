@@ -39,15 +39,20 @@ export const categoryCodeToName = (categoryCode) => {
  * 1) Update a user record to reference the new group
  * 2) If this is a user's first group, mark all of their existing messages to belong to the group
  */
-export const addUserToGroup = async (gid) => {
+export const addUserToGroup = async (gid, uid = firebase.auth().currentUser.uid) => {
   const db = firebase.database();
-  const userRef = db.ref(`${constants.DB_PATH_USERS}/${firebase.auth().currentUser.uid}`);
+  const userRef = db.ref(`${constants.DB_PATH_USERS}/${uid}`);
 
   // Update activeGroup in user record to be current group ID
   // Add group ID to groups list in user record (gid: true)
   await userRef.update({
     activeGroup: gid,
     [`groups/${gid}`]: true,
+  });
+
+  // Add user as a member in group record in lumi-groups (uid: true)
+  await db.ref(constants.DB_PATH_LUMI_GROUPS).update({
+    [`${gid}/members/${uid}`]: true,
   });
 
   // Return if this is not the user's first group
@@ -170,7 +175,7 @@ const wrapWithFormGroup = (id, component) => (
 /**
  * Get text field generator for CareCardEditWrapperComponent to render field
  */
-export const getTextFieldGenerator = (id, placeholder) => (fieldValue, onChangeFunc) => {
+const getTextFieldGenerator = (id, placeholder) => (fieldValue, onChangeFunc) => {
   const formControl = (
     <FormControl
       type="text"
@@ -185,7 +190,7 @@ export const getTextFieldGenerator = (id, placeholder) => (fieldValue, onChangeF
 /**
  * Get textarea field generator for CareCardEditWrapperComponent to render field
  */
-export const getTextAreaFieldGenerator = (id, placeholder) => (fieldValue, onChangeFunc) => {
+const getTextAreaFieldGenerator = (id, placeholder) => (fieldValue, onChangeFunc) => {
   const formControl = (
     <FormControl
       componentClass="textarea"
@@ -200,7 +205,7 @@ export const getTextAreaFieldGenerator = (id, placeholder) => (fieldValue, onCha
 /**
  * Get date field generator for CareCardEditWrapperComponent to render field
  */
-export const getDateFieldGenerator = id => (fieldValue, onChangeFunc) => {
+const getDateFieldGenerator = id => (fieldValue, onChangeFunc) => {
   const datePicker = (
     <DatePicker
       id={id}
@@ -216,7 +221,7 @@ export const getDateFieldGenerator = id => (fieldValue, onChangeFunc) => {
  * Get select field generator for CareCardEditWrapperComponent to render field
  * options is an object with option codes as keys and option names as values
  */
-export const getSelectFieldGenerator = (id, placeholder, options) => (fieldValue, onChangeFunc) => {
+const getSelectFieldGenerator = (id, placeholder, options) => (fieldValue, onChangeFunc) => {
   const optionElements = Object.keys(options).map(optionCode => (
     <option key={optionCode} value={optionCode}>
       {options[optionCode]}
@@ -234,3 +239,90 @@ export const getSelectFieldGenerator = (id, placeholder, options) => (fieldValue
   );
   return wrapWithFormGroup(id, formControl);
 };
+
+export const getFirstNameFieldGenerator = () => getTextFieldGenerator(
+  constants.CARE_CARD_FIELD_ID_FIRST_NAME,
+  constants.CARE_CARD_FIELD_PLACEHOLDER_FIRST_NAME,
+);
+
+export const getLastNameFieldGenerator = () => getTextFieldGenerator(
+  constants.CARE_CARD_FIELD_ID_LAST_NAME,
+  constants.CARE_CARD_FIELD_PLACEHOLDER_LAST_NAME,
+);
+
+export const getBirthdayFieldGenerator = () =>
+  getDateFieldGenerator(constants.CARE_CARD_FIELD_ID_BIRTHDAY);
+
+export const getGenderFieldGenerator = () => getSelectFieldGenerator(
+  constants.CARE_CARD_FIELD_ID_GENDER,
+  constants.CARE_CARD_FIELD_PLACEHOLDER_GENDER,
+  {
+    [constants.CARE_CARD_GENDER_CODE_FEMALE]:
+      constants.CARE_CARD_GENDER_NAME_FEMALE,
+    [constants.CARE_CARD_GENDER_CODE_MALE]: constants.CARE_CARD_GENDER_NAME_MALE,
+  },
+);
+
+export const getEmailFieldGenerator = () => getTextFieldGenerator(
+  constants.CARE_CARD_FIELD_ID_EMAIL,
+  constants.CARE_CARD_FIELD_PLACEHOLDER_EMAIL,
+);
+
+
+export const getAddressFieldGenerator = () => getTextAreaFieldGenerator(
+  constants.CARE_CARD_FIELD_ID_ADDRESS,
+  constants.CARE_CARD_FIELD_PLACEHOLDER_ADDRESS,
+);
+
+export const getTypeOfDementiaFieldGenerator = () => getSelectFieldGenerator(
+  constants.CARE_CARD_FIELD_ID_TYPE_OF_DEMENTIA,
+  constants.CARE_CARD_FIELD_PLACEHOLDER_TYPE_OF_DEMENTIA,
+  {
+    [constants.CARE_CARD_DEMENTIA_CODE_ALZHEIMERS]:
+      constants.CARE_CARD_DEMENTIA_NAME_ALZHEIMERS,
+    [constants.CARE_CARD_DEMENTIA_CODE_VASCULAR]:
+      constants.CARE_CARD_DEMENTIA_NAME_VASCULAR,
+    [constants.CARE_CARD_DEMENTIA_CODE_LEWY]:
+      constants.CARE_CARD_DEMENTIA_NAME_LEWY,
+    [constants.CARE_CARD_DEMENTIA_CODE_FRONTOTEMPORAL]:
+      constants.CARE_CARD_DEMENTIA_NAME_FRONTOTEMPORAL,
+    [constants.CARE_CARD_DEMENTIA_CODE_CREUTZFELDT_JAKOB]:
+      constants.CARE_CARD_DEMENTIA_NAME_CREUTZFELDT_JAKOB,
+    [constants.CARE_CARD_DEMENTIA_CODE_WERNICKE_KORSAKOFF]:
+      constants.CARE_CARD_DEMENTIA_NAME_WERNICKE_KORSAKOFF,
+    [constants.CARE_CARD_DEMENTIA_CODE_MIXED]:
+      constants.CARE_CARD_DEMENTIA_NAME_MIXED,
+    [constants.CARE_CARD_DEMENTIA_CODE_OTHER]:
+      constants.CARE_CARD_DEMENTIA_NAME_OTHER,
+    [constants.CARE_CARD_DEMENTIA_CODE_UNKNOWN]:
+      constants.CARE_CARD_DEMENTIA_NAME_UNKNOWN,
+  },
+);
+
+export const getDateOfDiagnosisFieldGenerator = () =>
+  getDateFieldGenerator(constants.CARE_CARD_FIELD_ID_DATE_OF_DIAGNOSIS);
+
+export const getMedicationsFieldGenerator = () => getTextAreaFieldGenerator(
+  constants.CARE_CARD_FIELD_ID_MEDICATIONS,
+  constants.CARE_CARD_FIELD_PLACEHOLDER_MEDICATIONS,
+);
+
+export const getProvidersFieldGenerator = () => getTextAreaFieldGenerator(
+  constants.CARE_CARD_FIELD_ID_PROVIDERS,
+  constants.CARE_CARD_FIELD_PLACEHOLDER_PROVIDERS,
+);
+
+export const getNeedsAndPreferencesFieldGenerator = () => getTextAreaFieldGenerator(
+  constants.CARE_CARD_FIELD_ID_NEEDS_AND_PREFERENCES,
+  constants.CARE_CARD_FIELD_PLACEHOLDER_NEEDS_AND_PREFERENCES,
+);
+
+export const getThingsThatDelightFieldGenerator = () => getTextAreaFieldGenerator(
+  constants.CARE_CARD_FIELD_ID_THINGS_THAT_DELIGHT,
+  constants.CARE_CARD_FIELD_PLACEHOLDER_THINGS_THAT_DELIGHT,
+);
+
+export const getPlacesOfInterestFieldGenerator = () => getTextAreaFieldGenerator(
+  constants.CARE_CARD_FIELD_ID_PLACES_OF_INTEREST,
+  constants.CARE_CARD_FIELD_PLACEHOLDER_PLACES_OF_INTEREST,
+);

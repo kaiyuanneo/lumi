@@ -3,6 +3,9 @@ export const BOOTSTRAP_CSS_URL =
 export const BOOTSTRAP_CSS_HASH =
   'sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u';
 
+export const BUTTON_TEXT_SAVE = 'Save';
+export const BUTTON_TEXT_CANCEL = 'Cancel';
+
 // Use the US date format to be consistent with Facebook
 export const DATE_FORMAT = 'MM/DD/YYYY';
 
@@ -15,6 +18,7 @@ export const DB_PATH_LUMI_GROUPS = 'lumi-groups';
 export const DB_PATH_LUMI_MESSAGES = 'lumi-messages';
 export const DB_PATH_LUMI_MESSAGES_GROUP = 'lumi-messages-group';
 export const DB_PATH_LUMI_MESSAGES_USER = 'lumi-messages-user';
+export const DB_PATH_USER_EMAIL_TO_UID = 'user-email-to-uid';
 export const DB_PATH_USER_PSID_TO_UID = 'user-psid-to-uid';
 export const DB_PATH_USERS = 'users';
 
@@ -50,7 +54,6 @@ export const CARE_CARD_FIELD_ID_NEEDS_AND_PREFERENCES = 'needsAndPreferences';
 export const CARE_CARD_FIELD_ID_THINGS_THAT_DELIGHT = 'thingsThatDelight';
 export const CARE_CARD_FIELD_ID_PLACES_OF_INTEREST = 'placesOfInterest';
 
-
 // Basic
 export const CARE_CARD_FIELD_PLACEHOLDER_FIRST_NAME = 'Enter first name';
 export const CARE_CARD_FIELD_PLACEHOLDER_LAST_NAME = 'Enter last name';
@@ -84,8 +87,10 @@ export const CARE_CARD_FIELD_TITLE_NEEDS_AND_PREFERENCES = 'Needs and Preference
 export const CARE_CARD_FIELD_TITLE_THINGS_THAT_DELIGHT = 'Things that Delight';
 export const CARE_CARD_FIELD_TITLE_PLACES_OF_INTEREST = 'Places of Interest';
 
+// Codes
 export const CARE_CARD_GENDER_CODE_MALE = 'male';
 export const CARE_CARD_GENDER_CODE_FEMALE = 'female';
+// Names
 export const CARE_CARD_GENDER_NAME_MALE = 'Male';
 export const CARE_CARD_GENDER_NAME_FEMALE = 'Female';
 
@@ -110,6 +115,15 @@ export const CARE_CARD_DEMENTIA_NAME_MIXED = 'Mixed dementia';
 export const CARE_CARD_DEMENTIA_NAME_OTHER = 'Other';
 export const CARE_CARD_DEMENTIA_NAME_UNKNOWN = 'Unknown';
 
+// Code
+export const CARE_CARD_CARE_RECIPIENT_CODE_NEW_MEMBER = 'new-member';
+// Name
+export const CARE_CARD_CARE_RECIPIENT_NAME_NEW_MEMBER = 'New Member';
+
+export const CARE_CARD_NEW_CARE_RECIPIENT_PROMPT =
+  'Welcome to Care Card! Please choose a care recipient:';
+export const CARE_CARD_CREATE_NEW_MEMBER_PROMPT = 'Please share details about the new member :)';
+
 export const CARE_CARD_TABLE_HEADER_FIELD = 'Field';
 export const CARE_CARD_TABLE_HEADER_VALUE = 'Value';
 export const CARE_CARD_TABLE_HEADER_OPTIONS = 'Options';
@@ -119,11 +133,22 @@ export const FIREBASE_AUTH_DOMAIN = 'lumi-cares.firebaseapp.com';
 export const FIREBASE_DATABASE_URL = 'https://lumi-cares.firebaseio.com';
 export const FIREBASE_STORAGE_BUCKET = 'lumi-cares.appspot.com';
 
+export const GROUP_CREATE_TITLE = 'Create New Group';
+export const GROUP_CREATE_BUTTON_TEXT = 'Create Group';
+export const GROUP_NAME_FIELD_PLACEHOLDER = 'Enter new group name';
+export const GROUP_NAME_FIELD_PROMPT = 'Choose a group name for your new group';
+export const GROUP_NAME_FIELD_HELP =
+  'Lumi will generate a Group ID to share with family and friends on the next page';
+
 export const NAVBAR_HEADER_TITLE = 'Lumi';
 export const NAVBAR_ITEM_TIMELINE = 'Timeline';
 export const NAVBAR_ITEM_CARE_CARD = 'Care Card';
 export const NAVBAR_ITEM_GROUP_ID = 'Group ID: ';
 export const NAVBAR_ITEM_SIGN_OUT = 'Sign Out';
+
+export const NEW_USER_PAGE_TITLE = 'Welcome to Lumi, ';
+export const NEW_USER_PAGE_SUBTITLE =
+  'Before we begin, you must either create or join a Lumi Group.';
 
 export const PRODUCT_CODE_SIGN_OUT = 'sign-out';
 export const PRODUCT_CODE_TIMELINE = 'timeline';

@@ -2,6 +2,7 @@ import * as firebase from 'firebase';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
+import hash from 'string-hash';
 
 import * as constants from '../static/constants';
 import * as utils from '../utils';
@@ -71,6 +72,14 @@ class CareCardEditWrapperComponent extends Component {
           } else if (this.props.fieldId === constants.CARE_CARD_FIELD_ID_TYPE_OF_DEMENTIA) {
             fieldValue = constants.CARE_CARD_DEMENTIA_CODE_ALZHEIMERS;
           }
+        }
+        // If updating email field, update entry in user-email-to-uid path
+        // TODO(kai): Implement email validation
+        if (this.props.fieldId === constants.CARE_CARD_FIELD_ID_EMAIL) {
+          await db.ref(constants.DB_PATH_USER_EMAIL_TO_UID).update({
+            [hash(this.props.initialValue)]: null,
+            [hash(fieldValue)]: careRecipientUid,
+          });
         }
         await careRecipientRef.update({
           [this.props.fieldId]: fieldValue,

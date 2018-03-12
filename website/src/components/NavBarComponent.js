@@ -13,7 +13,9 @@ class NavBarComponent extends Component {
       groupId: '',
       groupName: '',
     };
+  }
 
+  componentDidMount() {
     // Populate Group ID and Group Name in navbar with auth user's group information
     const db = firebase.database();
     const authUid = firebase.auth().currentUser.uid;

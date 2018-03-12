@@ -17,11 +17,6 @@ class GroupJoinComponent extends Component {
   }
 
   async joinGroup() {
-    // Add user as a member in group record in lumi-groups (uid: true)
-    await firebase.database().ref(constants.DB_PATH_LUMI_GROUPS).update({
-      [`${this.state.groupId}/members/${firebase.auth().currentUser.uid}`]: true,
-    });
-
     await utils.addUserToGroup(this.state.groupId);
   }
 

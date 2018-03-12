@@ -16,14 +16,10 @@ class GroupCreateComponent extends Component {
   }
 
   async createGroup() {
-    // Create group record in lumi-groups and add user as a member (uid: true)
+    // Create group record in lumi-groups and add user to the group
     const newGroupRef = firebase.database().ref(constants.DB_PATH_LUMI_GROUPS).push({
       name: this.state.groupName,
-      members: {
-        [firebase.auth().currentUser.uid]: true,
-      },
     });
-
     await utils.addUserToGroup(newGroupRef.key);
   }
 
@@ -39,23 +35,21 @@ class GroupCreateComponent extends Component {
   render() {
     return (
       <div>
-        <h2>Create New Group</h2>
+        <h2>{constants.GROUP_CREATE_TITLE}</h2>
         <form>
           <FormGroup
             controlId="formGroupNewGroup"
             validationState={this.state.groupCreateValidationState}
           >
-            <ControlLabel>Choose a group name for your new group</ControlLabel>
+            <ControlLabel>{constants.GROUP_NAME_FIELD_PROMPT}</ControlLabel>
             <FormControl
               type="text"
               value={this.state.groupName}
-              placeholder="New group name"
+              placeholder={constants.GROUP_NAME_FIELD_PLACEHOLDER}
               onChange={e => this.handleChange(e)}
             />
             <FormControl.Feedback />
-            <HelpBlock>
-              Lumi will generate a Group ID to share with family and friends on the next page
-            </HelpBlock>
+            <HelpBlock>{constants.GROUP_NAME_FIELD_HELP}</HelpBlock>
           </FormGroup>
           <Button
             block
@@ -64,7 +58,7 @@ class GroupCreateComponent extends Component {
             disabled={this.state.groupCreateValidationState !== 'success'}
             onClick={() => this.createGroup()}
           >
-            Create Group
+            {constants.GROUP_CREATE_BUTTON_TEXT}
           </Button>
         </form>
       </div>

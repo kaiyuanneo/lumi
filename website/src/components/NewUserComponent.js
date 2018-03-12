@@ -25,8 +25,8 @@ class NewUserComponent extends Component {
   render() {
     return (
       <div>
-        <h1>Welcome to Lumi, {this.state.firstName}!</h1>
-        Before we begin, you must either create or join a Lumi Group.
+        <h1>{`${constants.NEW_USER_PAGE_TITLE}${this.state.firstName}!`}</h1>
+        {constants.NEW_USER_PAGE_SUBTITLE}
         <GroupCreateComponent />
         <br />
         Or

@@ -12,34 +12,19 @@ const CareCardCareInfoComponent = props => utils.wrapWithCareCardTable((
       fieldId={constants.CARE_CARD_FIELD_ID_NEEDS_AND_PREFERENCES}
       title={constants.CARE_CARD_FIELD_TITLE_NEEDS_AND_PREFERENCES}
       initialValue={props.needsAndPreferences}
-      formFieldGenerator={
-        utils.getTextAreaFieldGenerator(
-          constants.CARE_CARD_FIELD_ID_NEEDS_AND_PREFERENCES,
-          constants.CARE_CARD_FIELD_PLACEHOLDER_NEEDS_AND_PREFERENCES,
-        )
-      }
+      formFieldGenerator={utils.getNeedsAndPreferencesFieldGenerator()}
     />
     <CareCardEditWrapperComponent
       fieldId={constants.CARE_CARD_FIELD_ID_THINGS_THAT_DELIGHT}
       title={constants.CARE_CARD_FIELD_TITLE_THINGS_THAT_DELIGHT}
       initialValue={props.thingsThatDelight}
-      formFieldGenerator={
-        utils.getTextAreaFieldGenerator(
-          constants.CARE_CARD_FIELD_ID_THINGS_THAT_DELIGHT,
-          constants.CARE_CARD_FIELD_PLACEHOLDER_THINGS_THAT_DELIGHT,
-        )
-      }
+      formFieldGenerator={utils.getThingsThatDelightFieldGenerator()}
     />
     <CareCardEditWrapperComponent
       fieldId={constants.CARE_CARD_FIELD_ID_PLACES_OF_INTEREST}
       title={constants.CARE_CARD_FIELD_TITLE_PLACES_OF_INTEREST}
       initialValue={props.placesOfInterest}
-      formFieldGenerator={
-        utils.getTextAreaFieldGenerator(
-          constants.CARE_CARD_FIELD_ID_PLACES_OF_INTEREST,
-          constants.CARE_CARD_FIELD_PLACEHOLDER_PLACES_OF_INTEREST,
-        )
-      }
+      formFieldGenerator={utils.getPlacesOfInterestFieldGenerator()}
     />
   </tbody>
 ));

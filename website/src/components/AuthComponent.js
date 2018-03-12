@@ -2,6 +2,7 @@ import firebase from 'firebase';
 import React from 'react';
 import { FirebaseAuth } from 'react-firebaseui';
 import * as rp from 'request-promise';
+import hash from 'string-hash';
 
 import * as constants from '../static/constants';
 import lumiLogo from '../static/images/logo.png';
@@ -32,10 +33,56 @@ const setUserInfo = async (currentUser, credential) => {
   };
   const userInfoParsedBody = await rp(userInfoRequestOptions);
 
-  // Store user info in user record
+  // If user already has user record, e.g. if created as New Member by another member
+  // in Care Card, then copy contents of existing user record to new user record with new UID
   const db = firebase.database();
+  // Use numeric-hashed emails in Realtime Database paths because RD does not support '.' in paths.
+  const hashedEmail = hash(userInfoParsedBody.email);
+  const existingUidRef =
+    db.ref(`${constants.DB_PATH_USER_EMAIL_TO_UID}/${hashedEmail}`);
+  const existingUidSnapshot = await existingUidRef.once(constants.DB_EVENT_NAME_VALUE);
+  const existingUid = existingUidSnapshot.val();
+  let existingUser = {};
+  // Only execute the following if user record with auth user's email already exists and the UID
+  // is different from the UID of the current auth user
+  if (existingUid && existingUid !== currentUser.uid) {
+    const existingUserRef = db.ref(`${constants.DB_PATH_USERS}/${existingUid}`);
+    const existingUserSnapshot = await existingUserRef.once(constants.DB_EVENT_NAME_VALUE);
+    // Store old user info in a local variable
+    existingUser = existingUserSnapshot.val();
+    // Delete the old user record
+    existingUserRef.remove();
+    // Update old user's group to reference new UID
+    const groupsArray = Object.keys(existingUser.groups);
+    for (let i = 0; i < groupsArray.length; i += 1) {
+      const gid = groupsArray[i];
+      const groupRef = db.ref(`${constants.DB_PATH_LUMI_GROUPS}/${gid}`);
+      groupRef.once(constants.DB_EVENT_NAME_VALUE, (groupSnapshot) => {
+        groupRef.child('members').update({
+          [existingUid]: null,
+          [currentUser.uid]: true,
+        });
+        if (groupSnapshot.val().activeCareRecipient === existingUid) {
+          groupRef.update({
+            activeCareRecipient: currentUser.uid,
+          });
+        }
+      });
+    }
+  }
+
+  // Create/update entry in user-email-to-uid so that Lumi can look up user info with email
+  // If user was initially a Care-Card-generated user, this will remove the reference to the
+  // old UID.
+  await db.ref(constants.DB_PATH_USER_EMAIL_TO_UID).update({
+    [hash(userInfoParsedBody.email)]: currentUser.uid,
+  });
+
+  // Store user info in user record
   const userRef = db.ref(`${constants.DB_PATH_USERS}/${currentUser.uid}`);
   await userRef.update({
+    // Copy any info from a previously created user in Care Card that has never signed in
+    ...existingUser,
     ...userInfoParsedBody,
     // Do not copy id field from userInfoParsedBody to prevent confusion with uid
     id: null,

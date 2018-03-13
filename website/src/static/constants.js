@@ -3,8 +3,10 @@ export const BOOTSTRAP_CSS_URL =
 export const BOOTSTRAP_CSS_HASH =
   'sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u';
 
-export const BUTTON_TEXT_SAVE = 'Save';
 export const BUTTON_TEXT_CANCEL = 'Cancel';
+export const BUTTON_TEXT_EDIT = 'Edit';
+export const BUTTON_TEXT_SAVE = 'Save';
+export const BUTTON_TEXT_SELECT = 'Select';
 
 // Use the US date format to be consistent with Facebook
 export const DATE_FORMAT = 'MM/DD/YYYY';
@@ -22,19 +24,21 @@ export const DB_PATH_USER_EMAIL_TO_UID = 'user-email-to-uid';
 export const DB_PATH_USER_PSID_TO_UID = 'user-psid-to-uid';
 export const DB_PATH_USERS = 'users';
 
-export const CARE_CARD_BUTTON_TEXT_EDIT = 'Edit';
-export const CARE_CARD_BUTTON_TEXT_SAVE = 'Save';
-export const CARE_CARD_BUTTON_TEXT_SELECT = 'Select';
-
+/*
+ * Care Card categories to toggle between different sections of information
+ */
+// Codes
 export const CARE_CARD_CATEGORY_CODE_BASIC = 'basic';
 export const CARE_CARD_CATEGORY_CODE_MEDICAL = 'medical';
 export const CARE_CARD_CATEGORY_CODE_CARE = 'care';
-
+// Names
 export const CARE_CARD_CATEGORY_NAME_BASIC = 'Basic';
 export const CARE_CARD_CATEGORY_NAME_MEDICAL = 'Medical';
 export const CARE_CARD_CATEGORY_NAME_CARE = 'Care';
 
-// Field IDs correspond to user properties in the DB
+/*
+ * Care Card field IDs: Field IDs correspond to user properties in the DB
+ */
 // New care recipient
 export const CARE_CARD_FIELD_ID_USER_LIST = 'userList';
 // Basic
@@ -54,6 +58,9 @@ export const CARE_CARD_FIELD_ID_NEEDS_AND_PREFERENCES = 'needsAndPreferences';
 export const CARE_CARD_FIELD_ID_THINGS_THAT_DELIGHT = 'thingsThatDelight';
 export const CARE_CARD_FIELD_ID_PLACES_OF_INTEREST = 'placesOfInterest';
 
+/*
+ * Care Card field placeholders: Placeholders for each field
+ */
 // Basic
 export const CARE_CARD_FIELD_PLACEHOLDER_FIRST_NAME = 'Enter first name';
 export const CARE_CARD_FIELD_PLACEHOLDER_LAST_NAME = 'Enter last name';
@@ -70,6 +77,9 @@ export const CARE_CARD_FIELD_PLACEHOLDER_THINGS_THAT_DELIGHT =
   'Enter activities or objects that delight';
 export const CARE_CARD_FIELD_PLACEHOLDER_PLACES_OF_INTEREST = 'Enter places of interest';
 
+/*
+ * Care Card field titles: Title next to each field
+ */
 // Basic
 export const CARE_CARD_FIELD_TITLE_FIRST_NAME = 'First Name';
 export const CARE_CARD_FIELD_TITLE_LAST_NAME = 'Last Name';
@@ -87,6 +97,9 @@ export const CARE_CARD_FIELD_TITLE_NEEDS_AND_PREFERENCES = 'Needs and Preference
 export const CARE_CARD_FIELD_TITLE_THINGS_THAT_DELIGHT = 'Things that Delight';
 export const CARE_CARD_FIELD_TITLE_PLACES_OF_INTEREST = 'Places of Interest';
 
+/*
+ * Care Card gender options
+ */
 // Codes
 export const CARE_CARD_GENDER_CODE_MALE = 'male';
 export const CARE_CARD_GENDER_CODE_FEMALE = 'female';
@@ -94,6 +107,9 @@ export const CARE_CARD_GENDER_CODE_FEMALE = 'female';
 export const CARE_CARD_GENDER_NAME_MALE = 'Male';
 export const CARE_CARD_GENDER_NAME_FEMALE = 'Female';
 
+/*
+ * Care Card type of dementia options
+ */
 // Codes
 export const CARE_CARD_DEMENTIA_CODE_ALZHEIMERS = 'alzheimers';
 export const CARE_CARD_DEMENTIA_CODE_VASCULAR = 'vascular';
@@ -115,6 +131,9 @@ export const CARE_CARD_DEMENTIA_NAME_MIXED = 'Mixed dementia';
 export const CARE_CARD_DEMENTIA_NAME_OTHER = 'Other';
 export const CARE_CARD_DEMENTIA_NAME_UNKNOWN = 'Unknown';
 
+/*
+ * Care Card new care recipient options
+ */
 // Code
 export const CARE_CARD_CARE_RECIPIENT_CODE_NEW_MEMBER = 'new-member';
 // Name

@@ -11,7 +11,6 @@ import * as constants from '../static/constants';
 class HomeComponent extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       isAuthUserInGroup: null,
       currentProductCode: constants.PRODUCT_CODE_TIMELINE,

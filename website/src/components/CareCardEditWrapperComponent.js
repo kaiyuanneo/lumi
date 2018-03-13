@@ -1,7 +1,8 @@
 import * as firebase from 'firebase';
+import Flexbox from 'flexbox-react';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Button, Glyphicon } from 'react-bootstrap';
+import { Button, ButtonToolbar, Glyphicon } from 'react-bootstrap';
 import hash from 'string-hash';
 
 import * as constants from '../static/constants';
@@ -17,6 +18,7 @@ class CareCardEditWrapperComponent extends Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeDate = this.handleChangeDate.bind(this);
+    this.handleClickCancel = this.handleClickCancel.bind(this);
     this.handleClickEdit = this.handleClickEdit.bind(this);
     this.handleClickSave = this.handleClickSave.bind(this);
     this.state = {
@@ -46,7 +48,20 @@ class CareCardEditWrapperComponent extends Component {
       value: formattedValue,
     });
   }
-
+  handleClickCancel() {
+    // Exit edit mode
+    this.setState({
+      ...this.state,
+      editable: false,
+    });
+  }
+  handleClickEdit() {
+    // Enter edit mode
+    this.setState({
+      ...this.state,
+      editable: true,
+    });
+  }
   // NB: All data that overlaps with public data from the care recipient's Facebook profile
   // will be overwritten the next time the care recipient logs in with Facebook
   handleClickSave() {
@@ -91,13 +106,6 @@ class CareCardEditWrapperComponent extends Component {
       editable: false,
     });
   }
-  handleClickEdit() {
-    // Enter edit mode
-    this.setState({
-      ...this.state,
-      editable: true,
-    });
-  }
 
   render() {
     let fieldValue = this.state.value;
@@ -115,15 +123,25 @@ class CareCardEditWrapperComponent extends Component {
         this.props.fieldId === constants.CARE_CARD_FIELD_ID_EMAIL &&
         !utils.isValidEmailEntry(fieldValue)
       );
-      // TODO(kai): Add cancel button next to save button
       return (
         <tr>
           <td>{this.props.title}</td>
           <td>{this.props.formFieldGenerator(fieldValue, onChangeFunc)}</td>
           <td>
-            <Button bsStyle="primary" disabled={saveButtonDisabled} onClick={this.handleClickSave}>
-              {constants.CARE_CARD_BUTTON_TEXT_SAVE}
-            </Button>
+            <Flexbox justifyContent="center">
+              <ButtonToolbar>
+                <Button
+                  bsStyle="primary"
+                  disabled={saveButtonDisabled}
+                  onClick={this.handleClickSave}
+                >
+                  {constants.BUTTON_TEXT_SAVE}
+                </Button>
+                <Button onClick={this.handleClickSave}>
+                  {constants.BUTTON_TEXT_CANCEL}
+                </Button>
+              </ButtonToolbar>
+            </Flexbox>
           </td>
         </tr>
       );
@@ -143,7 +161,7 @@ class CareCardEditWrapperComponent extends Component {
         <td>
           <Button onClick={this.handleClickEdit}>
             <Glyphicon className="button-icon" glyph="pencil" />
-            {constants.CARE_CARD_BUTTON_TEXT_EDIT}
+            {constants.BUTTON_TEXT_EDIT}
           </Button>
         </td>
       </tr>

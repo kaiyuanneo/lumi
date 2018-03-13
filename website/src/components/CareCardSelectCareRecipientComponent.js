@@ -129,7 +129,7 @@ class CareCardSelectCareRecipientComponent extends Component {
         </FormGroup>
 
         <Button bsStyle="primary" onClick={this.handleClickSelect}>
-          {constants.CARE_CARD_BUTTON_TEXT_SELECT}
+          {constants.BUTTON_TEXT_SELECT}
         </Button>
       </Flexbox>
     );

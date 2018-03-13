@@ -6,7 +6,6 @@ import * as constants from '../static/constants';
 import * as utils from '../utils';
 
 
-// TODO(kai): Implement email validation
 const CareCardBasicInfoComponent = props => utils.wrapWithCareCardTable((
   <tbody>
     <CareCardEditWrapperComponent

@@ -58,7 +58,6 @@ class CareCardNewMemberComponent extends Component {
       // Save new member email to user-email-to-uid table so that Lumi can merge this user's
       // profiles by email should this user ever sign in to Lumi.
       await db.ref(constants.DB_PATH_USER_EMAIL_TO_UID).update({
-        // TODO(kai): Validate email
         [hash(this.state.email)]: newMemberRef.key,
       });
       // Add new member to current group and set as active care recipient
@@ -71,7 +70,6 @@ class CareCardNewMemberComponent extends Component {
         activeCareRecipient: newMemberRef.key,
       });
     };
-    // TODO(kai): Implement email validation
     return (
       <Flexbox flexDirection="column" alignItems="center">
         <h2>{constants.CARE_CARD_CREATE_NEW_MEMBER_PROMPT}</h2>
@@ -198,8 +196,16 @@ class CareCardNewMemberComponent extends Component {
         </Table>
         <Flexbox>
           <ButtonToolbar>
-            <Button bsStyle="primary" onClick={saveNewMember}>{constants.BUTTON_TEXT_SAVE}</Button>
-            <Button onClick={this.props.unmountFunc}>{constants.BUTTON_TEXT_CANCEL}</Button>
+            <Button
+              bsStyle="primary"
+              disabled={!utils.isValidEmailEntry(this.state.email)}
+              onClick={saveNewMember}
+            >
+              {constants.BUTTON_TEXT_SAVE}
+            </Button>
+            <Button onClick={this.props.unmountFunc}>
+              {constants.BUTTON_TEXT_CANCEL}
+            </Button>
           </ButtonToolbar>
         </Flexbox>
       </Flexbox>

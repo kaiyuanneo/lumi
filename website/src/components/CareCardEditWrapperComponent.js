@@ -74,7 +74,6 @@ class CareCardEditWrapperComponent extends Component {
           }
         }
         // If updating email field, update entry in user-email-to-uid path
-        // TODO(kai): Implement email validation
         if (this.props.fieldId === constants.CARE_CARD_FIELD_ID_EMAIL) {
           await db.ref(constants.DB_PATH_USER_EMAIL_TO_UID).update({
             [hash(this.props.initialValue)]: null,
@@ -112,12 +111,17 @@ class CareCardEditWrapperComponent extends Component {
         // The onChange callback params for React Bootstrap Date Picker differ from other fields
         onChangeFunc = this.handleChangeDate;
       }
+      const saveButtonDisabled = (
+        this.props.fieldId === constants.CARE_CARD_FIELD_ID_EMAIL &&
+        !utils.isValidEmailEntry(fieldValue)
+      );
+      // TODO(kai): Add cancel button next to save button
       return (
         <tr>
           <td>{this.props.title}</td>
           <td>{this.props.formFieldGenerator(fieldValue, onChangeFunc)}</td>
           <td>
-            <Button bsStyle="primary" onClick={this.handleClickSave}>
+            <Button bsStyle="primary" disabled={saveButtonDisabled} onClick={this.handleClickSave}>
               {constants.CARE_CARD_BUTTON_TEXT_SAVE}
             </Button>
           </td>

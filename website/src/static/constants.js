@@ -133,6 +133,9 @@ export const FIREBASE_AUTH_DOMAIN = 'lumi-cares.firebaseapp.com';
 export const FIREBASE_DATABASE_URL = 'https://lumi-cares.firebaseio.com';
 export const FIREBASE_STORAGE_BUCKET = 'lumi-cares.appspot.com';
 
+export const FORM_VALIDATION_SUCCESS = 'success';
+export const FORM_VALIDATION_ERROR = 'error';
+
 export const GROUP_CREATE_TITLE = 'Create New Group';
 export const GROUP_CREATE_BUTTON_TEXT = 'Create Group';
 export const GROUP_NAME_FIELD_PLACEHOLDER = 'Enter new group name';

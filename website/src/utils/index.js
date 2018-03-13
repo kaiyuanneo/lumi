@@ -2,9 +2,27 @@ import * as firebase from 'firebase';
 import React from 'react';
 import { FormControl, FormGroup, Tab, Table } from 'react-bootstrap';
 import DatePicker from 'react-16-bootstrap-date-picker';
+import validator from 'validator';
 
 import * as constants from '../static/constants';
 
+
+/**
+ * Convert US date format (MM/DD/YYYY, used by Facebook) to ISO date format
+ */
+export const usToIsoDate = (usDate) => {
+  const dateComponents = usDate.split('/');
+  const year = parseInt(dateComponents[2], 10);
+  // Javascript Date month attribute is 0-indexed
+  const month = parseInt(dateComponents[0], 10) - 1;
+  const day = parseInt(dateComponents[1], 10);
+  return new Date(Date.UTC(year, month, day)).toISOString();
+};
+
+/**
+ * Determine if input is valid for email field. Accept empty string.
+ */
+export const isValidEmailEntry = input => input === '' || validator.isEmail(input);
 
 export const categoryCodeToName = (categoryCode) => {
   switch (categoryCode) {
@@ -34,6 +52,42 @@ export const categoryCodeToName = (categoryCode) => {
       return 'NA';
   }
 };
+
+/**
+ * Convert type of dementia code to name
+ * Currently this only uppercases the first letter, but will be more complex with other languages
+ */
+export const dementiaCodeToName = (dementiaCode) => {
+  switch (dementiaCode) {
+    case constants.CARE_CARD_DEMENTIA_CODE_ALZHEIMERS:
+      return constants.CARE_CARD_DEMENTIA_NAME_ALZHEIMERS;
+    case constants.CARE_CARD_DEMENTIA_CODE_VASCULAR:
+      return constants.CARE_CARD_DEMENTIA_NAME_VASCULAR;
+    case constants.CARE_CARD_DEMENTIA_CODE_LEWY:
+      return constants.CARE_CARD_DEMENTIA_NAME_LEWY;
+    case constants.CARE_CARD_DEMENTIA_CODE_FRONTOTEMPORAL:
+      return constants.CARE_CARD_DEMENTIA_NAME_FRONTOTEMPORAL;
+    case constants.CARE_CARD_DEMENTIA_CODE_CREUTZFELDT_JAKOB:
+      return constants.CARE_CARD_DEMENTIA_NAME_CREUTZFELDT_JAKOB;
+    case constants.CARE_CARD_DEMENTIA_CODE_WERNICKE_KORSAKOFF:
+      return constants.CARE_CARD_DEMENTIA_NAME_WERNICKE_KORSAKOFF;
+    case constants.CARE_CARD_DEMENTIA_CODE_MIXED:
+      return constants.CARE_CARD_DEMENTIA_NAME_MIXED;
+    case constants.CARE_CARD_DEMENTIA_CODE_OTHER:
+      return constants.CARE_CARD_DEMENTIA_NAME_OTHER;
+    case constants.CARE_CARD_DEMENTIA_CODE_UNKNOWN:
+      return constants.CARE_CARD_DEMENTIA_NAME_UNKNOWN;
+    default:
+      return 'Undefined';
+  }
+};
+
+/**
+ * Convert gender code to name
+ * Currently this only uppercases the first letter, but will be more complex with other languages
+ */
+export const genderCodeToName = genderCode =>
+  genderCode.charAt(0).toUpperCase() + genderCode.slice(1);
 
 /**
  * 1) Update a user record to reference the new group
@@ -100,54 +154,6 @@ export const getTabComponent = categoryCode => (
 );
 
 /**
- * Convert gender code to name
- * Currently this only uppercases the first letter, but will be more complex with other languages
- */
-export const genderCodeToName = genderCode =>
-  genderCode.charAt(0).toUpperCase() + genderCode.slice(1);
-
-/**
- * Convert type of dementia code to name
- * Currently this only uppercases the first letter, but will be more complex with other languages
- */
-export const dementiaCodeToName = (dementiaCode) => {
-  switch (dementiaCode) {
-    case constants.CARE_CARD_DEMENTIA_CODE_ALZHEIMERS:
-      return constants.CARE_CARD_DEMENTIA_NAME_ALZHEIMERS;
-    case constants.CARE_CARD_DEMENTIA_CODE_VASCULAR:
-      return constants.CARE_CARD_DEMENTIA_NAME_VASCULAR;
-    case constants.CARE_CARD_DEMENTIA_CODE_LEWY:
-      return constants.CARE_CARD_DEMENTIA_NAME_LEWY;
-    case constants.CARE_CARD_DEMENTIA_CODE_FRONTOTEMPORAL:
-      return constants.CARE_CARD_DEMENTIA_NAME_FRONTOTEMPORAL;
-    case constants.CARE_CARD_DEMENTIA_CODE_CREUTZFELDT_JAKOB:
-      return constants.CARE_CARD_DEMENTIA_NAME_CREUTZFELDT_JAKOB;
-    case constants.CARE_CARD_DEMENTIA_CODE_WERNICKE_KORSAKOFF:
-      return constants.CARE_CARD_DEMENTIA_NAME_WERNICKE_KORSAKOFF;
-    case constants.CARE_CARD_DEMENTIA_CODE_MIXED:
-      return constants.CARE_CARD_DEMENTIA_NAME_MIXED;
-    case constants.CARE_CARD_DEMENTIA_CODE_OTHER:
-      return constants.CARE_CARD_DEMENTIA_NAME_OTHER;
-    case constants.CARE_CARD_DEMENTIA_CODE_UNKNOWN:
-      return constants.CARE_CARD_DEMENTIA_NAME_UNKNOWN;
-    default:
-      return 'Undefined';
-  }
-};
-
-/**
- * Convert US date format (MM/DD/YYYY, used by Facebook) to ISO date format
- */
-export const usToIsoDate = (usDate) => {
-  const dateComponents = usDate.split('/');
-  const year = parseInt(dateComponents[2], 10);
-  // Javascript Date month attribute is 0-indexed
-  const month = parseInt(dateComponents[0], 10) - 1;
-  const day = parseInt(dateComponents[1], 10);
-  return new Date(Date.UTC(year, month, day)).toISOString();
-};
-
-/**
  * Wrap passed component with a Table, specifically for Care Card
  */
 export const wrapWithCareCardTable = component => (
@@ -166,8 +172,8 @@ export const wrapWithCareCardTable = component => (
 /**
  * Wrap passed component with a FormGroup
  */
-const wrapWithFormGroup = (id, component) => (
-  <FormGroup controlId={id}>
+const wrapWithFormGroup = (id, component, validationState = null) => (
+  <FormGroup controlId={id} validationState={validationState}>
     {component}
   </FormGroup>
 );
@@ -175,17 +181,27 @@ const wrapWithFormGroup = (id, component) => (
 /**
  * Get text field generator for CareCardEditWrapperComponent to render field
  */
-const getTextFieldGenerator = (id, placeholder) => (fieldValue, onChangeFunc) => {
-  const formControl = (
-    <FormControl
-      type="text"
-      value={fieldValue}
-      placeholder={placeholder}
-      onChange={onChangeFunc}
-    />
-  );
-  return wrapWithFormGroup(id, formControl);
-};
+const getTextFieldGenerator = (id, placeholder, isEmailField = false) =>
+  (fieldValue, onChangeFunc) => {
+    const formControl = (
+      <FormControl
+        type="text"
+        value={fieldValue}
+        placeholder={placeholder}
+        onChange={onChangeFunc}
+      />
+    );
+    if (!isEmailField) {
+      return wrapWithFormGroup(id, formControl);
+    }
+    // Perform email validation if email field. Accept empty field value.
+    let emailValidationState = null;
+    if (fieldValue) {
+      emailValidationState = isValidEmailEntry(fieldValue) ?
+        constants.FORM_VALIDATION_SUCCESS : constants.FORM_VALIDATION_ERROR;
+    }
+    return wrapWithFormGroup(id, formControl, emailValidationState);
+  };
 
 /**
  * Get textarea field generator for CareCardEditWrapperComponent to render field
@@ -266,6 +282,7 @@ export const getGenderFieldGenerator = () => getSelectFieldGenerator(
 export const getEmailFieldGenerator = () => getTextFieldGenerator(
   constants.CARE_CARD_FIELD_ID_EMAIL,
   constants.CARE_CARD_FIELD_PLACEHOLDER_EMAIL,
+  true,
 );
 
 

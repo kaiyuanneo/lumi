@@ -108,14 +108,28 @@ const getQuickReply = (messageRef, responseCode) => ({
 /**
  * Get response for a specific message type from Lumi Chat
  */
-const getResponse = (receivedMessage, responseCode, messageRef) => {
+const getResponse = (receivedMessage, receivedResponseCode, messageRef) => {
   let quickReplies = null;
-  if (responseCode === constants.RESPONSE_CODE_NEW_MESSAGE) {
-    quickReplies = [
-      getQuickReply(messageRef, constants.RESPONSE_CODE_SHOW_MESSAGE_YES),
-      getQuickReply(messageRef, constants.RESPONSE_CODE_SHOW_MESSAGE_NO),
-    ];
-  } else if (responseCode === constants.RESPONSE_CODE_SHOW_MESSAGE_YES) {
+  if (receivedResponseCode === constants.RESPONSE_CODE_NEW_MESSAGE) {
+    // If the received message contains text, provide option to attach image
+    if ('text' in receivedMessage) {
+      quickReplies = [
+        getQuickReply(messageRef, constants.RESPONSE_CODE_ATTACH_IMAGE_YES),
+        getQuickReply(messageRef, constants.RESPONSE_CODE_ATTACH_IMAGE_NO),
+      ];
+    // If the received message contains image, provide option to attach text
+    } else {
+      quickReplies = [
+        getQuickReply(messageRef, constants.RESPONSE_CODE_ATTACH_TEXT_YES),
+        getQuickReply(messageRef, constants.RESPONSE_CODE_ATTACH_TEXT_NO),
+      ];
+    }
+  // Ask user to choose category once no further attachments
+  } else if (
+    receivedResponseCode === constants.RESPONSE_CODE_ATTACH_IMAGE_NO ||
+    receivedResponseCode === constants.RESPONSE_CODE_ATTACH_TEXT_NO ||
+    receivedResponseCode.indexOf('attached') >= 0
+  ) {
     quickReplies = [
       getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_ACTIVITY),
       getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_BEHAVIOUR),
@@ -127,18 +141,17 @@ const getResponse = (receivedMessage, responseCode, messageRef) => {
     ];
   }
   return {
-    text: utils.responseCodeToResponseMessage(responseCode, receivedMessage),
+    text: utils.responseCodeToResponseMessage(receivedResponseCode, receivedMessage),
     quick_replies: quickReplies,
   };
 };
-
 
 /**
  * Update DB to reference new message by the given user's active group, if any.
  * Specifically, 1) update message to reference gid, and 2) update relevant path in
  * lumi-group-messages to reference this message key
  */
-const setMessageGidIfUserGidExists = async (psid, newMessageRef) => {
+const saveMessageToGroup = async (psid, newMessageRef) => {
   const db = admin.database();
   const psidToUidRef = db.ref(`${constants.DB_PATH_USER_PSID_TO_UID}/${psid}`);
   const psidToUidSnapshot = await psidToUidRef.once(constants.DB_EVENT_NAME_VALUE);
@@ -178,6 +191,8 @@ const handleMessage = async (webhookEvent) => {
   const db = admin.database();
   const messagesRef = db.ref(constants.DB_PATH_LUMI_MESSAGES);
   const senderPsid = webhookEvent.sender.id;
+  const userMessagesRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES_USER}/${senderPsid}`);
+
   // Handle quick replies separately from regular text because they are responses to prev message
   // Handle quick replies first because quick reply messages can also contain text
   const quickReply = receivedMessage.quick_reply;
@@ -186,43 +201,107 @@ const handleMessage = async (webhookEvent) => {
     const quickReplyPayload = JSON.parse(quickReply.payload);
     const responseCode = quickReplyPayload.code;
     const messageRef = messagesRef.child(quickReplyPayload.messageKey);
-    // If quick reply is about showing the message, update message visibility
-    if (responseCode.indexOf('show-message') >= 0) {
-      if (responseCode === constants.RESPONSE_CODE_SHOW_MESSAGE_YES) {
-        messageRef.update({ showInTimeline: true });
-      }
-    // Else if quick reply is about setting a message category, update message category
+    // If user chooses to add attachment to prev message, set a flag to indicate this
+    if (responseCode === constants.RESPONSE_CODE_ATTACH_IMAGE_YES) {
+      userMessagesRef.update({ isAwaitingImage: true });
+    } else if (responseCode === constants.RESPONSE_CODE_ATTACH_TEXT_YES) {
+      userMessagesRef.update({ isAwaitingText: true });
+    // If quick reply is about setting a message category, update message category
     } else if (responseCode.indexOf('category') >= 0) {
       messageRef.update({ category: utils.responseCodeToMessageCategoryCode(responseCode) });
-    // Else log error for uncategorised message
-    } else {
-      console.error('Hit default in handle message menu');
     }
     // Generate response based on received response code
     response = getResponse(receivedMessage, responseCode, messageRef);
+
+  // Handle free-form text and image messages
   } else if (receivedMessage.text || receivedMessage.attachments) {
+    let responseCode = constants.RESPONSE_CODE_NEW_MESSAGE;
+    let showInTimeline = true;
+    let messageRef = null;
+
+    // Handle attachments to previous messages
+    const isAwaitingImageRef = userMessagesRef.child(constants.IS_AWAITING_FLAG_IMAGE);
+    const isAwaitingImageSnapshot = await isAwaitingImageRef.once(constants.DB_EVENT_NAME_VALUE);
+    const isAwaitingImage = isAwaitingImageSnapshot.val();
+    const isAwaitingTextRef = userMessagesRef.child(constants.IS_AWAITING_FLAG_TEXT);
+    const isAwaitingTextSnapshot = await isAwaitingTextRef.once(constants.DB_EVENT_NAME_VALUE);
+    const isAwaitingText = isAwaitingTextSnapshot.val();
+    if (isAwaitingImage || isAwaitingText) {
+      // Get prev message. Get last 3 entries to avoid the is-awaiting flags stored in same path
+      const orderedUserMessagesRef = userMessagesRef.orderByKey().limitToLast(3);
+      const lastMessagesSnapshot = await orderedUserMessagesRef.once(constants.DB_EVENT_NAME_VALUE);
+      let prevMessageKey = null;
+      lastMessagesSnapshot.forEach((childSnapshot) => {
+        if (
+          childSnapshot.key === constants.IS_AWAITING_FLAG_IMAGE ||
+          childSnapshot.key === constants.IS_AWAITING_FLAG_TEXT
+        ) {
+          return;
+        }
+        prevMessageKey = childSnapshot.key;
+      });
+      // Throw error if could not find previous message
+      if (!prevMessageKey) {
+        console.error('Could not retrieve previous message to attach current message to');
+      }
+
+      // Attach current message to previous message
+      const prevMessageRef = messagesRef.child(prevMessageKey);
+      if (
+        receivedMessage.attachments &&
+        receivedMessage.attachments['0'].type === 'image' &&
+        isAwaitingImage
+      ) {
+        // Attach image to previous message
+        prevMessageRef.update({
+          attachments: receivedMessage.attachments,
+        });
+        responseCode = constants.RESPONSE_CODE_ATTACHED_IMAGE;
+        showInTimeline = false;
+      } else if (receivedMessage.text && isAwaitingText) {
+        // Attach text to previous message
+        prevMessageRef.update({
+          text: receivedMessage.text,
+        });
+        responseCode = constants.RESPONSE_CODE_ATTACHED_TEXT;
+        showInTimeline = false;
+      }
+
+      // Remove isAwaitingImage and isAwaitingText flags
+      isAwaitingImageRef.remove();
+      isAwaitingTextRef.remove();
+
+      // Let Lumi know that the response should reference the previous message.
+      // This is relevant for message categorisation.
+      messageRef = prevMessageRef;
+    }
+
     // Save message to DB. Message content is stored in the lumi-messages path,
     // and the lumi-messages-user and lumi-messages-group determine which messages belong
     // to which users and groups respectively.
     const newMessageRef = messagesRef.push({
       ...receivedMessage,
       senderPsid,
+      // Show in timeline if current message is not an attachment of previous message
+      showInTimeline,
       category: constants.MESSAGE_CATEGORY_CODE_OTHER,
-      showInTimeline: false,
       timestamp: webhookEvent.timestamp,
     });
     // Save new message key in the lumi-messages-user path so that Lumi can easily lookup
     // messages from each user
-    const userMessagesRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES_USER}/${senderPsid}`);
     userMessagesRef.update({
       [newMessageRef.key]: true,
     });
     // If user does not belong to any groups (i.e. hasn't signed into lumicares.com yet),
     // do not save her messages under any GID. These messages will be saved to the relevant
     // GID after she logs into lumicares.com and either joins or creates a group.
-    await setMessageGidIfUserGidExists(senderPsid, newMessageRef);
+    await saveMessageToGroup(senderPsid, newMessageRef);
     console.log('Saved Lumi message to DB!');
-    response = getResponse(receivedMessage, constants.RESPONSE_CODE_NEW_MESSAGE, newMessageRef);
+    // If response is not already referencing previous message, have it reference the new message.
+    if (!messageRef) {
+      messageRef = newMessageRef;
+    }
+    response = getResponse(receivedMessage, responseCode, messageRef);
   }
 
   // Send the response message

@@ -54,7 +54,7 @@ class HomeComponent extends Component {
         currentProductCode: eventKey,
       });
     };
-    // Determine which product o
+    // Determine which product to render
     const getProductComponent = () => {
       const timelineComponent = <TimelineComponent />;
       const careCardComponent = <CareCardComponent />;

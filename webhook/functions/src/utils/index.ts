@@ -25,9 +25,12 @@ export const responseCodeToMessageCategoryCode = (responseCode) => {
 
 export const responseCodeToQuickReplyTitle = (responseCode) => {
   switch (responseCode) {
-    case constants.RESPONSE_CODE_SHOW_MESSAGE_YES:
+    // All yes and no options share the same quick reply titles
+    case constants.RESPONSE_CODE_ATTACH_IMAGE_YES:
+    case constants.RESPONSE_CODE_ATTACH_TEXT_YES:
       return constants.QUICK_REPLY_TITLE_YES;
-    case constants.RESPONSE_CODE_SHOW_MESSAGE_NO:
+    case constants.RESPONSE_CODE_ATTACH_IMAGE_NO:
+    case constants.RESPONSE_CODE_ATTACH_TEXT_NO:
       return constants.QUICK_REPLY_TITLE_NO;
     case constants.RESPONSE_CODE_CATEGORY_ACTIVITY:
       return constants.QUICK_REPLY_TITLE_CATEGORY_ACTIVITY;
@@ -49,33 +52,40 @@ export const responseCodeToQuickReplyTitle = (responseCode) => {
   }
 };
 
-export const responseCodeToResponseMessage = (responseCode, receivedMessage = null) => {
-  if (responseCode.indexOf('category') >= 0) {
+export const responseCodeToResponseMessage = (receivedResponseCode, receivedMessage = null) => {
+  if (receivedResponseCode.indexOf('category') >= 0) {
     return (
       constants.RESPONSE_MESSAGE_CATEGORY_1 +
-      responseCodeToQuickReplyTitle(responseCode) +
+      responseCodeToQuickReplyTitle(receivedResponseCode) +
       constants.RESPONSE_MESSAGE_CATEGORY_2
     );
   }
-  switch (responseCode) {
+  switch (receivedResponseCode) {
     case constants.RESPONSE_CODE_NEW_MESSAGE:
-      if (!receivedMessage) {
-        console.error('Generating response for new message without receivedMessage');
+      // If new message is text, respond one way
+      if ('text' in receivedMessage) {
+        return (
+          constants.RESPONSE_MESSAGE_NEW_MESSAGE_TEXT_1 +
+          receivedMessage.text +
+          constants.RESPONSE_MESSAGE_NEW_MESSAGE_TEXT_2
+        );
       }
-      const messageText = `${constants.RESPONSE_MESSAGE_NEW_MESSAGE_TEXT}"${receivedMessage.text}"`;
-      const messageImage = constants.RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE;
-      const messageSummary = 'text' in receivedMessage ? messageText : messageImage;
-      return (
-        constants.RESPONSE_MESSAGE_NEW_MESSAGE_1 +
-        messageSummary +
-        constants.RESPONSE_MESSAGE_NEW_MESSAGE_2
-      );
-    case constants.RESPONSE_CODE_SHOW_MESSAGE_YES:
-      return constants.RESPONSE_MESSAGE_SHOW_MESSAGE_YES;
-    case constants.RESPONSE_CODE_SHOW_MESSAGE_NO:
-      return constants.RESPONSE_MESSAGE_SHOW_MESSAGE_NO;
+      // Else if new message is image, respond another way
+      return constants.RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE;
+    case constants.RESPONSE_CODE_ATTACH_IMAGE_YES:
+      return constants.RESPONSE_MESSAGE_ATTACH_IMAGE_YES;
+    case constants.RESPONSE_CODE_ATTACH_TEXT_YES:
+      return constants.RESPONSE_MESSAGE_ATTACH_TEXT_YES;
+    // Both attach-image-no and attach-text-no have the same response
+    case constants.RESPONSE_CODE_ATTACH_IMAGE_NO:
+    case constants.RESPONSE_CODE_ATTACH_TEXT_NO:
+      return constants.RESPONSE_MESSAGE_ATTACH_NO;
+    case constants.RESPONSE_CODE_ATTACHED_IMAGE:
+      return constants.RESPONSE_MESSAGE_ATTACHED_IMAGE;
+    case constants.RESPONSE_CODE_ATTACHED_TEXT:
+      return constants.RESPONSE_MESSAGE_ATTACHED_TEXT;
     default:
       console.error('Response code does not map to any response message');
-      return 'Oops! Something went wrong. We will fix this as soon as possible!';
+      return constants.DEFAULT_ERROR_MESSAGE;
   }
 };

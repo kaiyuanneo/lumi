@@ -10,13 +10,14 @@ import * as utils from '../utils';
 class TimelineComponent extends Component {
   constructor(props) {
     super(props);
-
     // Initialise local message state
     this.state = {
       messages: {},
       messageCategory: constants.TIMELINE_CATEGORY_CODE_ALL,
     };
+  }
 
+  componentDidMount() {
     // Sync local message state with auth user message state in Firebase
     const db = firebase.database();
     const authUser = firebase.auth().currentUser;
@@ -108,11 +109,14 @@ class TimelineComponent extends Component {
       let messageContent;
       if ('attachments' in messageValue) {
         messageContent = (
-          <Image
-            className="timeline-image"
-            src={messageValue.attachments[0].payload.url}
-            responsive
-          />
+          <Flexbox flexDirection="column">
+            <Image
+              className="timeline-image"
+              src={messageValue.attachments[0].payload.url}
+              responsive
+            />
+            {messageValue.text}
+          </Flexbox>
         );
       } else {
         messageContent = messageValue.text;

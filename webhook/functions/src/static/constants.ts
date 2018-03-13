@@ -7,6 +7,12 @@ export const DB_PATH_PWFN_MESSAGES = 'pwfn-messages';
 export const DB_PATH_USER_PSID_TO_UID = 'user-psid-to-uid';
 export const DB_PATH_USERS = 'users';
 
+export const DEFAULT_ERROR_MESSAGE =
+  'Oops! Something went wrong. We will fix this as soon as possible!';
+
+export const IS_AWAITING_FLAG_IMAGE = 'isAwaitingImage';
+export const IS_AWAITING_FLAG_TEXT = 'isAwaitingText';
+
 export const MESSAGE_CATEGORY_CODE_ACTIVITY = 'activity';
 export const MESSAGE_CATEGORY_CODE_BEHAVIOUR = 'behaviour';
 export const MESSAGE_CATEGORY_CODE_MOOD = 'mood';
@@ -34,8 +40,12 @@ export const QUICK_REPLY_TITLE_CATEGORY_CAREGIVER = 'Caregiver';
 export const QUICK_REPLY_TITLE_CATEGORY_OTHER = 'Other';
 
 export const RESPONSE_CODE_NEW_MESSAGE = 'new-message';
-export const RESPONSE_CODE_SHOW_MESSAGE_YES = 'show-message-yes';
-export const RESPONSE_CODE_SHOW_MESSAGE_NO = 'show-message-no';
+export const RESPONSE_CODE_ATTACH_IMAGE_YES = 'attach-image-yes';
+export const RESPONSE_CODE_ATTACH_IMAGE_NO = 'attach-image-no';
+export const RESPONSE_CODE_ATTACH_TEXT_YES = 'attach-text-yes';
+export const RESPONSE_CODE_ATTACH_TEXT_NO = 'attach-text-no';
+export const RESPONSE_CODE_ATTACHED_IMAGE = 'attached-image';
+export const RESPONSE_CODE_ATTACHED_TEXT = 'attached-text';
 export const RESPONSE_CODE_CATEGORY_ACTIVITY = 'category-activity';
 export const RESPONSE_CODE_CATEGORY_BEHAVIOUR = 'category-behaviour';
 export const RESPONSE_CODE_CATEGORY_MOOD = 'category-mood';
@@ -44,16 +54,22 @@ export const RESPONSE_CODE_CATEGORY_MEDICAL = 'category-medical';
 export const RESPONSE_CODE_CATEGORY_CAREGIVER = 'category-caregiver';
 export const RESPONSE_CODE_CATEGORY_OTHER = 'category-other';
 
-export const RESPONSE_MESSAGE_NEW_MESSAGE_1 = 'You sent ';
-export const RESPONSE_MESSAGE_NEW_MESSAGE_2 =
-  '. Would you like to save it to your Lumi Timeline? ' +
-  'You can view all saved messages at lumicares.com!';
-export const RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE = 'an image';
-export const RESPONSE_MESSAGE_NEW_MESSAGE_TEXT = 'the message ';
-export const RESPONSE_MESSAGE_SHOW_MESSAGE_YES = 'Ok! Which category?';
-export const RESPONSE_MESSAGE_SHOW_MESSAGE_NO = 'Ok! Great to hear from you :)';
+export const RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE =
+  'I have saved this image to your Timeline! Would you like to attach a message?';
+export const RESPONSE_MESSAGE_NEW_MESSAGE_TEXT_1 = 'I have saved the message "';
+export const RESPONSE_MESSAGE_NEW_MESSAGE_TEXT_2 =
+  '" to your Timeline. Would you like to attach an image?';
+export const RESPONSE_MESSAGE_ATTACH_IMAGE_YES =
+  'Great! Please send me the image you wish to attach.';
+export const RESPONSE_MESSAGE_ATTACH_TEXT_YES =
+  'Great! Please send me the message you wish to attach.';
+export const RESPONSE_MESSAGE_ATTACH_NO = 'Ok! Which category is most relevant?';
+export const RESPONSE_MESSAGE_ATTACHED_IMAGE =
+  'Perfect! I have attached this image to your previous message. Which category is most relevant?';
+export const RESPONSE_MESSAGE_ATTACHED_TEXT =
+  'Perfect! I have attached this message to your previous image. Which category is most relevant?';
 export const RESPONSE_MESSAGE_CATEGORY_1 = 'Great! Saved under category ';
-export const RESPONSE_MESSAGE_CATEGORY_2 = '. You can access your Timeline at lumicares.com.';
+export const RESPONSE_MESSAGE_CATEGORY_2 = '. You can view your Timeline anytime at lumicares.com!';
 
 export const ROUTE_LUMI = '/lumi';
 export const ROUTE_LUMI_ROOT = '/';

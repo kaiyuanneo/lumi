@@ -10,6 +10,9 @@ export const DB_PATH_USERS = 'users';
 export const DEFAULT_ERROR_MESSAGE =
   'Oops! Something went wrong. We will fix this as soon as possible!';
 
+export const ENV_PROD = 'PROD';
+export const ENV_STAGING = 'STAGING';
+
 export const IS_AWAITING_FLAG_IMAGE = 'isAwaitingImage';
 export const IS_AWAITING_FLAG_TEXT = 'isAwaitingText';
 

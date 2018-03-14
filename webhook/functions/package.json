@@ -7,7 +7,8 @@
     "serve": "npm run build && firebase serve --only functions",
     "shell": "npm run build && firebase experimental:functions:shell",
     "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
+    "deploy": "firebase deploy --only functions:webhook",
+    "deploy_staging": "firebase deploy --only functions:webhookStaging",
     "logs": "firebase functions:log"
   },
   "dependencies": {

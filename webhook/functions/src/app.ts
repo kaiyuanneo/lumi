@@ -21,6 +21,6 @@ app.listen(port, () => console.log(constants.MESSAGE_WEBHOOK_STARTUP));
 // Set up routing
 app.use(routes);
 
-// Use outdated exports syntax to give the URL endpoint a name
-// If we use "export default" the webhook URL ends with "default"
-exports.webhook = functions.https.onRequest(app);
+// Deploy method in package.json controls whether we deploy staging or prod webhook
+export const webhook = functions.https.onRequest(app);
+export const webhookStaging = functions.https.onRequest(app);

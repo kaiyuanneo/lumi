@@ -35,12 +35,17 @@ export const verify = (req, res) => {
  * token in the client
  */
 export const getPsidFromAsid = async (req, res) => {
+  // Get relevant app access token based on environment at deploy time
+  const appAccessToken = functions.config().lumi.env === constants.ENV_PROD ?
+    functions.config().lumi.token_app_access :
+    functions.config().lumi.token_app_access_staging;
+
   // Get PSIDs from FB Graph API
   const psidRequestOptions = {
     uri: `${constants.URL_FB_GRAPH_API}/${req.query.asid}`,
     qs: {
       fields: 'ids_for_pages',
-      access_token: functions.config().lumi.token_app_access,
+      access_token: appAccessToken,
     },
     json: true,
   };
@@ -75,10 +80,15 @@ const callSendApi = async (senderPsid, response) => {
     message: response,
   };
 
+  // Get relevant page access token based on environment at deploy time
+  const pageAccessToken = functions.config().lumi.env === constants.ENV_PROD ?
+    functions.config().lumi.token_page_access :
+    functions.config().lumi.token_page_access_staging;
+
   // Construct request options
   const sendApiRequestOptions = {
     uri: constants.URL_FB_SEND_API,
-    qs: { access_token: functions.config().lumi.token_page_access },
+    qs: { access_token: pageAccessToken },
     method: 'POST',
     json: requestBody,
   };

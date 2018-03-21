@@ -12,7 +12,7 @@ import * as utils from '../lib/utils';
 
 
 mocha.describe('Lumi controller unit tests', () => {
-  // Rewire uses Lumi controller file path to test private methods of Lumi controller
+  // Rewire uses Lumi controller file path to test and stub private methods of Lumi controller
   const lumiControllerFilePath = '../lib/controllers/lumiController.js';
 
   /**

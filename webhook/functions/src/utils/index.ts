@@ -19,7 +19,7 @@ export const responseCodeToMessageCategoryCode = (responseCode) => {
       return constants.MESSAGE_CATEGORY_CODE_OTHER;
     default:
       console.error('Client passed unrecognised response code');
-      return 'na';
+      return 'NA';
   }
 };
 

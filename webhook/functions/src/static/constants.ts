@@ -12,6 +12,7 @@ export const DEFAULT_ERROR_MESSAGE =
 
 export const ENV_PROD = 'PROD';
 export const ENV_STAGING = 'STAGING';
+export const ENV_TEST = 'TEST';
 
 export const IS_AWAITING_FLAG_IMAGE = 'isAwaitingImage';
 export const IS_AWAITING_FLAG_TEXT = 'isAwaitingText';

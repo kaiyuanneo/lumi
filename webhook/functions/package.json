@@ -2,24 +2,46 @@
   "name": "functions",
   "private": true,
   "main": "lib/app.js",
+  "babel": {
+    "presets": [
+      "es2015"
+    ],
+    "plugins": [
+      "transform-object-rest-spread"
+    ]
+  },
   "scripts": {
     "build": "./node_modules/.bin/tslint -p tslint.json && ./node_modules/.bin/tsc",
+    "deploy": "firebase deploy --only functions:webhook",
+    "deploy_staging": "firebase deploy --only functions:webhookStaging",
+    "logs": "firebase functions:log",
     "serve": "npm run build && firebase serve --only functions",
     "shell": "npm run build && firebase experimental:functions:shell",
     "start": "npm run shell",
-    "deploy": "firebase deploy --only functions:webhook",
-    "deploy_staging": "firebase deploy --only functions:webhookStaging",
-    "logs": "firebase functions:log"
+    "test": "mocha --require babel-core/register --require babel-polyfill"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "body-parser": "^1.18.2",
+    "chai": "^4.1.2",
     "express": "^4.16.2",
     "firebase-admin": "^5.8.1",
     "firebase-functions": "^0.8.1",
+    "mocha": "^5.0.4",
+    "nock": "^9.2.3",
     "request": "^2.83.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "rewire": "^3.0.2",
+    "sinon": "^4.4.5"
   },
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "eslint": "^4.18.2",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
     "tslint": "^5.8.0",
     "tslint-config-airbnb": "^5.4.2",
     "typescript": "^2.5.3"

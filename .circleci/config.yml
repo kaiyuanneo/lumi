@@ -1,0 +1,102 @@
+version: 2
+
+references:
+  cache_key_webhook: &cache_key_webhook v1-cache-{{ checksum "~/lumi/webhook/functions/package.json" }}
+  cache_key_website: &cache_key_website v1-cache-{{ checksum "~/lumi/website/package.json" }}
+  working_dir_root: &working_dir_root ~/lumi
+  working_dir_webhook: &working_dir_webhook ~/lumi/webhook/functions
+  working_dir_website: &working_dir_website ~/lumi/website
+
+jobs:
+  # "build" is the default job and we need it to run tests triggered by
+  # Phabricator using CircleCI's API. CircleCI's API v1.1 does not support
+  # workflows triggered via the API.
+  build:
+    docker:
+      # Use Node 6 because that is the LTS version currently running in Google Cloud Functions
+      - image: circleci/node:6-stretch-browsers
+    working_directory: *working_dir_root
+    steps:
+      - checkout
+      - restore_cache:
+          key: *cache_key_webhook
+      - restore_cache:
+          key: *cache_key_website
+      - run:
+          name: install webhook dependencies
+          command: npm install
+          working_directory: *working_dir_webhook
+      - run:
+          name: install website dependencies
+          command: npm install
+          working_directory: *working_dir_website
+      - save_cache:
+          key: *cache_key_webhook
+          paths:
+            - ~/lumi/webhook/functions/node_modules
+      - save_cache:
+          key: *cache_key_website
+          paths:
+            - ~/lumi/website/node_modules
+      - run:
+          name: run webhook tests
+          command: npm test
+          working_directory: *working_dir_webhook
+      # TODO(kai): Include website tests
+
+  webhook:
+    docker:
+      # Use Node 6 because that is the LTS version currently running in Google Cloud Functions
+      - image: circleci/node:6-stretch-browsers
+    working_directory: *working_dir_root
+    steps:
+      - checkout
+      - restore_cache:
+          key: *cache_key_webhook
+      - run:
+          name: install dependencies
+          command: npm install
+          working_directory: *working_dir_webhook
+      - save_cache:
+          key: *cache_key_webhook
+          paths:
+            - ~/lumi/webhook/functions/node_modules
+      - run:
+          name: run tests
+          command: npm test
+          working_directory: *working_dir_webhook
+
+  website:
+    docker:
+      # Use Node 6 because that is the LTS version currently running in Google Cloud Functions
+      - image: circleci/node:6-stretch-browsers
+    working_directory: *working_dir_root
+    steps:
+      - checkout
+      - restore_cache:
+          key: *cache_key_website
+      - run:
+          name: install dependencies
+          command: npm install
+          working_directory: *working_dir_website
+      - save_cache:
+          key: *cache_key_website
+          paths:
+            - ~/lumi/website/node_modules
+      - run:
+          name: run tests
+          command: npm test
+          working_directory: *working_dir_website
+
+workflows:
+  version: 2
+  webhook:
+    jobs:
+      - webhook
+  website:
+    jobs:
+      - website
+
+notify:
+  webhooks:
+    - url: https://projectweforgot.phacility.com/harbormaster/hook/circleci/

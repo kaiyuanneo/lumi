@@ -210,7 +210,7 @@ mocha.describe('Lumi controller unit tests', () => {
               {
                 id: 'TEST_ID_2',
                 page: {
-                  id: 2,
+                  id: 1,
                 },
               },
             ],

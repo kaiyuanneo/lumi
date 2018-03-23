@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 
 // Set server port and log message on success
 const port = process.env.PORT !== undefined ? process.env.PORT : constants.PORT;
-app.listen(port, () => console.log(constants.MESSAGE_WEBHOOK_STARTUP));
+const server = app.listen(port, () => console.log(constants.MESSAGE_WEBHOOK_STARTUP));
 
 // Set up routing
 app.use(routes);
@@ -24,3 +24,10 @@ app.use(routes);
 // Deploy method in package.json controls whether we deploy staging or prod webhook
 export const webhook = functions.https.onRequest(app);
 export const webhookStaging = functions.https.onRequest(app);
+
+// Private function to stop server after tests finish running accessible via Rewire module
+// Disable TSLint's unused variable rule so it does not complain about this "unused" private var
+// tslint:disable:no-unused-variable
+const stop = () => {
+  server.close();
+};

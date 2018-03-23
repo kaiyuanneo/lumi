@@ -25,9 +25,7 @@ mocha.describe('PWFN controller unit tests', () => {
         },
       });
       pushStub = sinon.stub();
-      refStub = sinon.stub().returns({
-        push: pushStub,
-      });
+      refStub = sinon.stub().returns({ push: pushStub });
       dbStub = sinon.stub(admin, 'database').get(() => (() => ({ ref: refStub })));
       res = {
         send: sinon.stub(),

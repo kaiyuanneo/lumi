@@ -20,29 +20,33 @@ jobs:
       - checkout
       - restore_cache:
           key: *cache_key_webhook
-      - restore_cache:
-          key: *cache_key_website
+      # - restore_cache:
+      #     key: *cache_key_website
       - run:
-          name: install webhook dependencies
+          name: Install webhook dependencies
           command: npm install
           working_directory: *working_dir_webhook
-      - run:
-          name: install website dependencies
-          command: npm install
-          working_directory: *working_dir_website
+      # - run:
+      #     name: Install website dependencies
+      #     command: npm install
+      #     working_directory: *working_dir_website
       - save_cache:
           key: *cache_key_webhook
           paths:
             - ~/lumi/webhook/functions/node_modules
-      - save_cache:
-          key: *cache_key_website
-          paths:
-            - ~/lumi/website/node_modules
+      # - save_cache:
+      #     key: *cache_key_website
+      #     paths:
+      #       - ~/lumi/website/node_modules
       - run:
-          name: run webhook tests
+          name: Transpile webhook from Typescript to Javascript
+          command: npm run build
+          working_directory: *working_dir_webhook
+      - run:
+          name: Run webhook tests
           command: npm test
           working_directory: *working_dir_webhook
-      # TODO(kai): Include website tests
+      # TODO(kai): Implement website tests
 
   webhook:
     docker:
@@ -54,7 +58,7 @@ jobs:
       - restore_cache:
           key: *cache_key_webhook
       - run:
-          name: install dependencies
+          name: Install dependencies
           command: npm install
           working_directory: *working_dir_webhook
       - save_cache:
@@ -62,40 +66,46 @@ jobs:
           paths:
             - ~/lumi/webhook/functions/node_modules
       - run:
-          name: run tests
+          name: Transpile webhook from Typescript to Javascript
+          command: npm run build
+          working_directory: *working_dir_webhook
+      - run:
+          name: Run tests
           command: npm test
           working_directory: *working_dir_webhook
 
-  website:
-    docker:
-      # Use Node 6 because that is the LTS version currently running in Google Cloud Functions
-      - image: circleci/node:6-stretch-browsers
-    working_directory: *working_dir_root
-    steps:
-      - checkout
-      - restore_cache:
-          key: *cache_key_website
-      - run:
-          name: install dependencies
-          command: npm install
-          working_directory: *working_dir_website
-      - save_cache:
-          key: *cache_key_website
-          paths:
-            - ~/lumi/website/node_modules
-      - run:
-          name: run tests
-          command: npm test
-          working_directory: *working_dir_website
+  # TODO(kai): Implement website tests
+  # website:
+  #   docker:
+  #     # Use Node 6 because that is the LTS version currently running in Google Cloud Functions
+  #     - image: circleci/node:6-stretch-browsers
+  #   working_directory: *working_dir_root
+  #   steps:
+  #     - checkout
+  #     - restore_cache:
+  #         key: *cache_key_website
+  #     - run:
+  #         name: install dependencies
+  #         command: npm install
+  #         working_directory: *working_dir_website
+  #     - save_cache:
+  #         key: *cache_key_website
+  #         paths:
+  #           - ~/lumi/website/node_modules
+  #     - run:
+  #         name: run tests
+  #         command: npm test
+  #         working_directory: *working_dir_website
 
 workflows:
   version: 2
   webhook:
     jobs:
       - webhook
-  website:
-    jobs:
-      - website
+  # TODO(kai): Implement website tests
+  # website:
+  #   jobs:
+  #     - website
 
 notify:
   webhooks:

@@ -4,14 +4,14 @@
   "main": "lib/app.js",
   "babel": {
     "presets": [
-      "es2015"
+      "env"
     ],
     "plugins": [
       "transform-object-rest-spread"
     ]
   },
   "scripts": {
-    "build": "./node_modules/.bin/tslint -p tslint.json && ./node_modules/.bin/tsc",
+    "build": "./node_modules/.bin/tslint -p tsconfig.json && ./node_modules/.bin/tsc",
     "deploy": "firebase deploy --only functions:webhook",
     "deploy_staging": "firebase deploy --only functions:webhookStaging",
     "logs": "firebase functions:log",
@@ -38,7 +38,7 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
     "eslint": "^4.18.2",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.9.0",

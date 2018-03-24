@@ -1,9 +1,12 @@
 import * as firebase from 'firebase';
 import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
-import AuthComponent from './components/AuthComponent';
+import AuthContainer from './containers/AuthContainer';
 import BootstrapStyleComponent from './components/BootstrapStyleComponent';
 import HomeComponent from './components/HomeComponent';
+import rootReducer from './reducers';
 
 
 class App extends Component {
@@ -29,10 +32,12 @@ class App extends Component {
       return null;
     }
     return (
-      <div className="App">
-        {signedIn ? <HomeComponent /> : <AuthComponent />}
-        <BootstrapStyleComponent />
-      </div>
+      <Provider store={createStore(rootReducer)}>
+        <div className="App">
+          {signedIn ? <HomeComponent /> : <AuthContainer />}
+          <BootstrapStyleComponent />
+        </div>
+      </Provider>
     );
   }
 }

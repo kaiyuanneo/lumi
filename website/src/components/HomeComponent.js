@@ -1,10 +1,10 @@
 import * as firebase from 'firebase';
 import React, { Component } from 'react';
 
-import CareCardComponent from './CareCardComponent';
 import NavBarComponent from './NavBarComponent';
 import NewUserComponent from './NewUserComponent';
 import TimelineComponent from './TimelineComponent';
+import CareCardContainer from '../containers/CareCardContainer';
 import * as constants from '../static/constants';
 
 
@@ -57,12 +57,12 @@ class HomeComponent extends Component {
     // Determine which product to render
     const getProductComponent = () => {
       const timelineComponent = <TimelineComponent />;
-      const careCardComponent = <CareCardComponent />;
+      const careCardContainer = <CareCardContainer />;
       switch (this.state.currentProductCode) {
         case constants.PRODUCT_CODE_TIMELINE:
           return timelineComponent;
         case constants.PRODUCT_CODE_CARE_CARD:
-          return careCardComponent;
+          return careCardContainer;
         default:
           return timelineComponent;
       }

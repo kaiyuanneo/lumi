@@ -1,153 +1,42 @@
-import * as firebase from 'firebase';
 import Flexbox from 'flexbox-react';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Image, Tabs } from 'react-bootstrap';
 
-import CareCardBasicInfoComponent from './CareCardBasicInfoComponent';
-import CareCardMedicalInfoComponent from './CareCardMedicalInfoComponent';
-import CareCardCareInfoComponent from './CareCardCareInfoComponent';
 import CareCardSelectCareRecipientComponent from './CareCardSelectCareRecipientComponent';
 import * as constants from '../static/constants';
 import * as utils from '../utils';
 
 
 class CareCardComponent extends Component {
-  constructor(props) {
-    super(props);
-    // Lumi may store more fields than these in local state, but these are the ones Care Card needs
-    this.state = {
-      infoCategory: constants.CARE_CARD_CATEGORY_CODE_BASIC,
-      // Do not render if Lumi has not finished fetching the active care recipient of this group
-      fetched: false,
-      // Basic info
-      uid: null,
-      firstName: '',
-      lastName: '',
-      // Gender is stored in lowercase in the DB
-      gender: '',
-      // Birthday is stored in MM/DD/YYYY format in the DB
-      birthday: '',
-      profilePic: '',
-      email: '',
-      address: '',
-      // Medical info
-      typeOfDementia: '',
-      dateOfDiagnosis: '',
-      medications: '',
-      providers: '',
-      // Care info
-      needsAndPreferences: '',
-      thingsThatDelight: '',
-      placesOfInterest: '',
-    };
-  }
-
   componentDidMount() {
-    // Get care recipient info from DB
-    const db = firebase.database();
-    const authUid = firebase.auth().currentUser.uid;
-    const activeGroupRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/activeGroup`);
-    activeGroupRef.once(constants.DB_EVENT_NAME_VALUE, (activeGroupSnapshot) => {
-      // activeCareRecipient field in DB stores the UID of the currently active care recipient
-      const careRecipientUidRef =
-        db.ref(`${constants.DB_PATH_LUMI_GROUPS}/${activeGroupSnapshot.val()}/activeCareRecipient`);
-      careRecipientUidRef.on(constants.DB_EVENT_NAME_VALUE, (careRecipientUidSnapshot) => {
-        const careRecipientUid = careRecipientUidSnapshot.val();
-        // Tell the component it is ok to render the new care recipient page if the group has no
-        // care recipient. Otherwise, render the Care Card. Do not render anything if Lumi
-        // has not finished fetching the active care recipient of this group.
-        this.setState({
-          ...this.state,
-          fetched: true,
-          // Update state with UID here so that if there is an active care recipient, render()
-          // knows not to render the select care recipient component.
-          uid: careRecipientUid,
-        });
-        if (!careRecipientUid) {
-          return;
-        }
-        careRecipientUidRef.off();
-        // Listen for changes in the active care recipient record and update state accordingly
-        // TODO(kai): Remember to turn off this listener when we change care recipients
-        const careRecipientRef = db.ref(`${constants.DB_PATH_USERS}/${careRecipientUid}`);
-        careRecipientRef.on(constants.DB_EVENT_NAME_VALUE, (careRecipientSnapshot) => {
-          this.setState({
-            ...this.state,
-            // Copy all fields to local state for brevity, even though we don't need all of them
-            ...careRecipientSnapshot.val(),
-          });
-        });
-      });
-    });
+    this.props.getCareRecipient();
   }
 
   render() {
-    if (!this.state.fetched) {
+    if (!this.props.fetched) {
       return null;
     }
     // Render care recipient selector if this group has no care recipient yet
-    if (!this.state.uid) {
+    if (!this.props.uid) {
       return <CareCardSelectCareRecipientComponent />;
     }
-    const switchInfo = (category) => {
-      this.setState({
-        ...this.state,
-        infoCategory: category,
-      });
-    };
-    const getContentComponent = () => {
-      const basicComponent = (
-        <CareCardBasicInfoComponent
-          firstName={this.state.firstName}
-          lastName={this.state.lastName}
-          gender={this.state.gender}
-          birthday={this.state.birthday}
-          email={this.state.email}
-          address={this.state.address}
-        />
-      );
-      const medicalComponent = (
-        <CareCardMedicalInfoComponent
-          typeOfDementia={this.state.typeOfDementia}
-          dateOfDiagnosis={this.state.dateOfDiagnosis}
-          medications={this.state.medications}
-          providers={this.state.providers}
-        />
-      );
-      const careComponent = (
-        <CareCardCareInfoComponent
-          needsAndPreferences={this.state.needsAndPreferences}
-          thingsThatDelight={this.state.thingsThatDelight}
-          placesOfInterest={this.state.placesOfInterest}
-        />
-      );
-      switch (this.state.infoCategory) {
-        case constants.CARE_CARD_CATEGORY_CODE_BASIC:
-          return basicComponent;
-        case constants.CARE_CARD_CATEGORY_CODE_MEDICAL:
-          return medicalComponent;
-        case constants.CARE_CARD_CATEGORY_CODE_CARE:
-          return careComponent;
-        default:
-          return basicComponent;
-      }
-    };
     return (
       <Flexbox flexDirection="column">
         <Flexbox flexDirection="column">
           <Flexbox alignSelf="center">
-            <Image src={this.state.profilePic} circle responsive />
+            <Image src={this.props.profilePic} circle responsive />
           </Flexbox>
-          <h4>{this.state.firstName} {this.state.lastName}</h4>
+          <h4>{this.props.firstName} {this.props.lastName}</h4>
         </Flexbox>
         <br />
         <Flexbox flexDirection="column">
           <Flexbox>
             <Tabs
-              defaultActiveKey={this.state.infoCategory}
+              defaultActiveKey={this.props.infoCategory}
               className="product-tabs"
               id="care-card-tabs"
-              onSelect={switchInfo}
+              onSelect={this.props.saveCareCardInfoCategory}
             >
               {utils.getTabComponent(constants.CARE_CARD_CATEGORY_CODE_BASIC)}
               {utils.getTabComponent(constants.CARE_CARD_CATEGORY_CODE_MEDICAL)}
@@ -156,12 +45,26 @@ class CareCardComponent extends Component {
           </Flexbox>
           <br />
           <Flexbox flexDirection="column" alignContent="center">
-            {getContentComponent()}
+            {this.props.contentComponent}
           </Flexbox>
         </Flexbox>
       </Flexbox>
     );
   }
 }
+
+CareCardComponent.propTypes = {
+  // Props computed from Redux state
+  infoCategory: PropTypes.string.isRequired,
+  fetched: PropTypes.bool.isRequired,
+  uid: PropTypes.string.isRequired,
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
+  profilePic: PropTypes.string.isRequired,
+  contentComponent: PropTypes.element.isRequired,
+  // Props that call dispatch actions
+  getCareRecipient: PropTypes.func.isRequired,
+  saveCareCardInfoCategory: PropTypes.func.isRequired,
+};
 
 export default CareCardComponent;

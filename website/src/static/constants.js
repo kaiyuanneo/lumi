@@ -1,3 +1,7 @@
+export const ACTION_SAVE_CARE_CARD_INFO_CATEGORY = 'SAVE_CARE_CARD_INFO_CATEGORY';
+export const ACTION_SAVE_CARE_RECIPIENT_UID = 'SAVE_CARE_RECIPIENT_UID';
+export const ACTION_UPDATE_CARE_RECIPIENT = 'UPDATE_CARE_RECIPIENT';
+
 export const BOOTSTRAP_CSS_URL =
   'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css';
 export const BOOTSTRAP_CSS_HASH =

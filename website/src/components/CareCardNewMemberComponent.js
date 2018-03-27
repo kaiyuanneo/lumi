@@ -70,7 +70,7 @@ const CareCardNewMemberComponent = props => (
       <ButtonToolbar>
         <Button
           bsStyle="primary"
-          disabled={props.saveButtonDisabled}
+          disabled={props.isSaveButtonDisabled}
           onClick={props.saveNewMember}
         >
           {constants.BUTTON_TEXT_SAVE}
@@ -100,7 +100,7 @@ CareCardNewMemberComponent.propTypes = {
   placesOfInterestFormField: PropTypes.element.isRequired,
 
   // UI Settings
-  saveButtonDisabled: PropTypes.bool.isRequired,
+  isSaveButtonDisabled: PropTypes.bool.isRequired,
 
   // Save function
   saveNewMember: PropTypes.func.isRequired,

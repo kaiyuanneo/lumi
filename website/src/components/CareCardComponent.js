@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Image, Tabs } from 'react-bootstrap';
 
-import CareCardSelectCareRecipientComponent from './CareCardSelectCareRecipientComponent';
+import CareCardSelectCareRecipientContainer from '../containers/CareCardSelectCareRecipientContainer';
 import * as constants from '../static/constants';
 import * as utils from '../utils';
 
@@ -19,7 +19,7 @@ class CareCardComponent extends Component {
     }
     // Render care recipient selector if this group has no care recipient yet
     if (!this.props.uid) {
-      return <CareCardSelectCareRecipientComponent />;
+      return <CareCardSelectCareRecipientContainer />;
     }
     return (
       <Flexbox flexDirection="column">

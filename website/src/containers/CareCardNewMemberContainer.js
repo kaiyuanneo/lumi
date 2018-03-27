@@ -26,8 +26,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  saveFieldValueLocally:
-    (fieldId, fieldValue) => dispatch(actions.saveCareCardFieldValueLocally(fieldId, fieldValue)),
+  saveFieldValueLocally: (fieldId, fieldValue) =>
+    dispatch(actions.saveCareCardFieldValueLocally(fieldId, fieldValue)),
+  unmountFunc: () => dispatch(actions.unmountCareCardNewMemberForm()),
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
@@ -91,7 +92,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
       stateProps.placesOfInterest,
       getHandleChangeFunc(constants.CARE_CARD_FIELD_ID_PLACES_OF_INTEREST),
     ),
-    saveButtonDisabled: !utils.isValidEmail(stateProps.email),
+    isSaveButtonDisabled: !utils.isValidEmail(stateProps.email),
     saveNewMember: async () => {
       const db = firebase.database();
       // Save new member info in user path as a new user and use an auto-generated key as user ID.

@@ -13,6 +13,11 @@ their changes, the field value will revert to that of the DB.
   // Do not render if Lumi has not finished fetching the active care recipient of this group
   fetched,
 
+  // Fields specifically for CareCardSelectCareRecipientComponent
+  selectCrMembers,
+  selectCrSelectedMember,
+  selectCrUserClickedSelect,
+
   uid,
   firstName,
   firstNameIsInEditMode,
@@ -67,6 +72,10 @@ their changes, the field value will revert to that of the DB.
 const initialState = {
   infoCategory: constants.CARE_CARD_CATEGORY_CODE_BASIC,
   fetched: false,
+
+  selectCrMembers: new Map(),
+  selectCrSelectedMember: '',
+  selectCrUserClickedSelect: false,
 
   // Set initial values to empty string so prop types does not complain
   uid: '',
@@ -162,6 +171,27 @@ const careCardReducer = (state = initialState, action) => {
       return {
         ...state,
         [`${action.fieldId}IsInEditMode`]: action.isInEditMode,
+      };
+    case constants.ACTION_UNMOUNT_CARE_CARD_NEW_MEMBER_FORM:
+      return {
+        ...state,
+        selectCrUserClickedSelect: false,
+        selectCrSelectedMember: '',
+      };
+    case constants.ACTION_UPDATE_SELECT_CR_SELECTED_MEMBER:
+      return {
+        ...state,
+        selectCrSelectedMember: action.selectedMember,
+      };
+    case constants.ACTION_TOGGLE_SELECT_CR_USER_CLICKED_SELECT:
+      return {
+        ...state,
+        selectCrUserClickedSelect: true,
+      };
+    case constants.ACTION_UPDATE_SELECT_CR_GROUP_MEMBERS:
+      return {
+        ...state,
+        selectCrMembers: action.members,
       };
     default:
       return state;

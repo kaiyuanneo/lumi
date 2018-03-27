@@ -85,6 +85,21 @@ const initialState = {
   thingsThatDelight: '',
   placesOfInterest: '',
 
+  firstNameFormFieldValue: '',
+  lastNameFormFieldValue: '',
+  genderFormFieldValue: '',
+  birthdayFormFieldValue: '',
+  profilePicFormFieldValue: '',
+  emailFormFieldValue: '',
+  addressFormFieldValue: '',
+  typeOfDementiaFormFieldValue: '',
+  dateOfDiagnosisFormFieldValue: '',
+  medicationsFormFieldValue: '',
+  providersFormFieldValue: '',
+  needsAndPreferencesFormFieldValue: '',
+  thingsThatDelightFormFieldValue: '',
+  placesOfInterestFormFieldValue: '',
+
   firstNameIsInEditMode: false,
   lastNameIsInEditMode: false,
   genderIsInEditMode: false,
@@ -108,10 +123,14 @@ const careCardReducer = (state = initialState, action) => {
         ...state,
         infoCategory: action.infoCategory,
       };
-    case constants.ACTION_SAVE_CARE_RECIPIENT_UID:
+    case constants.ACTION_TOGGLE_FETCHED_CARE_RECIPIENT:
       return {
         ...state,
         fetched: true,
+      };
+    case constants.ACTION_SAVE_CARE_RECIPIENT_UID:
+      return {
+        ...state,
         uid: action.careRecipientUid,
       };
     case constants.ACTION_UPDATE_CARE_RECIPIENT:

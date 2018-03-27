@@ -82,16 +82,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
         careRecipientUidRef.once(constants.DB_EVENT_NAME_VALUE, (careRecipientUidSnapshot) => {
           const careRecipientUid = careRecipientUidSnapshot.val();
           const careRecipientRef = db.ref(`${constants.DB_PATH_USERS}/${careRecipientUid}`);
-          // If user has not changed the default value in the dropdown menu, Lumi will not have
-          // populated the default value into this.state.value. Thus, save the default value to
-          // DB instead of the empty initial value.
-          if (!formFieldValue) {
-            if (ownProps.fieldId === constants.CARE_CARD_FIELD_ID_GENDER) {
-              formFieldValue = constants.CARE_CARD_GENDER_CODE_MALE;
-            } else if (ownProps.fieldId === constants.CARE_CARD_FIELD_ID_TYPE_OF_DEMENTIA) {
-              formFieldValue = constants.CARE_CARD_DEMENTIA_CODE_ALZHEIMERS;
-            }
-          }
           // If updating email field, update entry in user-email-to-uid path
           if (ownProps.fieldId === constants.CARE_CARD_FIELD_ID_EMAIL) {
             db.ref(constants.DB_PATH_USER_EMAIL_TO_UID).update({

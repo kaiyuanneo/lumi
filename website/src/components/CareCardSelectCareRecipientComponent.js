@@ -3,7 +3,7 @@ import Flexbox from 'flexbox-react';
 import React, { Component } from 'react';
 import { Button, FormControl, FormGroup } from 'react-bootstrap';
 
-import CareCardNewMemberComponent from './CareCardNewMemberComponent';
+import CareCardNewMemberContainer from '../containers/CareCardNewMemberContainer';
 import * as constants from '../static/constants';
 
 
@@ -29,6 +29,7 @@ class CareCardSelectCareRecipientComponent extends Component {
         db.ref(`${constants.DB_PATH_LUMI_GROUPS}/${activeGroupSnapshot.val()}/members`);
       memberIdsRef.once(constants.DB_EVENT_NAME_VALUE, (memberIdsSnapshot) => {
         const members = new Map();
+        // TODO(kai): Change the first value to Unspecified to avoid this default nonsense
         let memberIndex = 0;
         memberIdsSnapshot.forEach((memberIdSnapshot) => {
           const memberId = memberIdSnapshot.key;
@@ -97,7 +98,7 @@ class CareCardSelectCareRecipientComponent extends Component {
         userClickedSelect: false,
         selectedMember: '',
       });
-      return <CareCardNewMemberComponent unmountFunc={unmountFunc} />;
+      return <CareCardNewMemberContainer unmountFunc={unmountFunc} />;
     }
 
     const userList = Array.from(this.state.members.keys()).map(memberId => (

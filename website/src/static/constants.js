@@ -1,4 +1,5 @@
 export const ACTION_SAVE_CARE_CARD_INFO_CATEGORY = 'SAVE_CARE_CARD_INFO_CATEGORY';
+export const ACTION_TOGGLE_FETCHED_CARE_RECIPIENT = 'TOGGLE_FETCHED_CARE_RECIPIENT';
 export const ACTION_SAVE_CARE_RECIPIENT_UID = 'SAVE_CARE_RECIPIENT_UID';
 export const ACTION_UPDATE_CARE_RECIPIENT = 'UPDATE_CARE_RECIPIENT';
 export const ACTION_SAVE_CARE_CARD_FIELD_VALUE_LOCALLY = 'SAVE_CARE_CARD_FIELD_VALUE_LOCALLY';
@@ -102,6 +103,13 @@ export const CARE_CARD_FIELD_TITLE_PROVIDERS = 'Providers';
 export const CARE_CARD_FIELD_TITLE_NEEDS_AND_PREFERENCES = 'Needs and Preferences';
 export const CARE_CARD_FIELD_TITLE_THINGS_THAT_DELIGHT = 'Things that Delight';
 export const CARE_CARD_FIELD_TITLE_PLACES_OF_INTEREST = 'Places of Interest';
+
+
+/*
+ * Care card unspecified options
+ */
+export const CARE_CARD_CODE_UNSPECIFIED = 'unspecified';
+export const CARE_CARD_NAME_UNSPECIFIED = 'Unspecified';
 
 /*
  * Care Card gender options

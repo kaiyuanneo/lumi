@@ -47,16 +47,17 @@ const mapDispatchToProps = dispatch => ({
       const careRecipientUidRef =
         db.ref(`${constants.DB_PATH_LUMI_GROUPS}/${activeGroupSnapshot.val()}/activeCareRecipient`);
       careRecipientUidRef.on(constants.DB_EVENT_NAME_VALUE, (careRecipientUidSnapshot) => {
-        const careRecipientUid = careRecipientUidSnapshot.val();
         // Tell the component it is ok to render the new care recipient page if the group has no
         // care recipient. Otherwise, render the Care Card. Do not render anything if Lumi
         // has not finished fetching the active care recipient of this group.
-        // Update state with UID here so that if there is an active care recipient, render()
-        // knows not to render the select care recipient component.
-        dispatch(actions.saveCareRecipientUid(careRecipientUid));
+        dispatch(actions.toggleFetchedCareRecipient());
+        const careRecipientUid = careRecipientUidSnapshot.val();
         if (!careRecipientUid) {
           return;
         }
+        // Update state with UID here so that if there is an active care recipient, render()
+        // knows not to render the select care recipient component.
+        dispatch(actions.saveCareRecipientUid(careRecipientUid));
         careRecipientUidRef.off();
         // Listen for changes in the active care recipient record and update state accordingly
         // TODO(kai): Remember to turn off this listener when we change care recipients

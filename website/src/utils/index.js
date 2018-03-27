@@ -273,6 +273,7 @@ export const getGenderFieldGenerator = () => getSelectFieldGenerator(
   constants.CARE_CARD_FIELD_ID_GENDER,
   constants.CARE_CARD_FIELD_PLACEHOLDER_GENDER,
   {
+    [constants.CARE_CARD_CODE_UNSPECIFIED]: constants.CARE_CARD_NAME_UNSPECIFIED,
     [constants.CARE_CARD_GENDER_CODE_FEMALE]:
       constants.CARE_CARD_GENDER_NAME_FEMALE,
     [constants.CARE_CARD_GENDER_CODE_MALE]: constants.CARE_CARD_GENDER_NAME_MALE,
@@ -295,6 +296,7 @@ export const getTypeOfDementiaFieldGenerator = () => getSelectFieldGenerator(
   constants.CARE_CARD_FIELD_ID_TYPE_OF_DEMENTIA,
   constants.CARE_CARD_FIELD_PLACEHOLDER_TYPE_OF_DEMENTIA,
   {
+    [constants.CARE_CARD_CODE_UNSPECIFIED]: constants.CARE_CARD_NAME_UNSPECIFIED,
     [constants.CARE_CARD_DEMENTIA_CODE_ALZHEIMERS]:
       constants.CARE_CARD_DEMENTIA_NAME_ALZHEIMERS,
     [constants.CARE_CARD_DEMENTIA_CODE_VASCULAR]:

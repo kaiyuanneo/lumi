@@ -1,14 +1,18 @@
 import * as constants from '../static/constants';
 
 
-export const saveCareRecipientUid = careRecipientUid => ({
-  type: constants.ACTION_SAVE_CARE_RECIPIENT_UID,
-  careRecipientUid,
-});
-
 export const saveCareCardInfoCategory = infoCategory => ({
   type: constants.ACTION_SAVE_CARE_CARD_INFO_CATEGORY,
   infoCategory,
+});
+
+export const toggleFetchedCareRecipient = () => ({
+  type: constants.ACTION_TOGGLE_FETCHED_CARE_RECIPIENT,
+});
+
+export const saveCareRecipientUid = careRecipientUid => ({
+  type: constants.ACTION_SAVE_CARE_RECIPIENT_UID,
+  careRecipientUid,
 });
 
 export const updateCareRecipient = careRecipient => ({

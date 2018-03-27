@@ -22,7 +22,7 @@ export const usToIsoDate = (usDate) => {
 /**
  * Determine if input is valid for email field. Accept empty string.
  */
-export const isValidEmailEntry = input => input === '' || validator.isEmail(input);
+export const isValidEmail = input => !input || validator.isEmail(input);
 
 export const categoryCodeToName = (categoryCode) => {
   switch (categoryCode) {
@@ -197,7 +197,7 @@ const getTextFieldGenerator = (id, placeholder, isEmailField = false) =>
     // Perform email validation if email field. Accept empty field value.
     let emailValidationState = null;
     if (fieldValue) {
-      emailValidationState = isValidEmailEntry(fieldValue) ?
+      emailValidationState = isValidEmail(fieldValue) ?
         constants.FORM_VALIDATION_SUCCESS : constants.FORM_VALIDATION_ERROR;
     }
     return wrapWithFormGroup(id, formControl, emailValidationState);
@@ -225,7 +225,7 @@ const getDateFieldGenerator = id => (fieldValue, onChangeFunc) => {
   const datePicker = (
     <DatePicker
       id={id}
-      dateFormat={constants.DATE_FORMAT}
+      dateFormat={constants.US_DATE_FORMAT}
       value={fieldValue}
       onChange={onChangeFunc}
     />

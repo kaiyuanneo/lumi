@@ -198,7 +198,7 @@ class CareCardNewMemberComponent extends Component {
           <ButtonToolbar>
             <Button
               bsStyle="primary"
-              disabled={!utils.isValidEmailEntry(this.state.email)}
+              disabled={!utils.isValidEmail(this.state.email)}
               onClick={saveNewMember}
             >
               {constants.BUTTON_TEXT_SAVE}

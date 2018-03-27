@@ -1,6 +1,8 @@
 export const ACTION_SAVE_CARE_CARD_INFO_CATEGORY = 'SAVE_CARE_CARD_INFO_CATEGORY';
 export const ACTION_SAVE_CARE_RECIPIENT_UID = 'SAVE_CARE_RECIPIENT_UID';
 export const ACTION_UPDATE_CARE_RECIPIENT = 'UPDATE_CARE_RECIPIENT';
+export const ACTION_SAVE_CARE_CARD_FIELD_VALUE_LOCALLY = 'SAVE_CARE_CARD_FIELD_VALUE_LOCALLY';
+export const ACTION_SAVE_CARE_CARD_FIELD_IS_IN_EDIT_MODE = 'SAVE_CARE_CARD_FIELD_IS_IN_EDIT_MODE';
 
 export const BOOTSTRAP_CSS_URL =
   'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css';
@@ -13,7 +15,7 @@ export const BUTTON_TEXT_SAVE = 'Save';
 export const BUTTON_TEXT_SELECT = 'Select';
 
 // Use the US date format to be consistent with Facebook
-export const DATE_FORMAT = 'MM/DD/YYYY';
+export const US_DATE_FORMAT = 'MM/DD/YYYY';
 
 export const DB_EVENT_NAME_CHILD_ADDED = 'child_added';
 export const DB_EVENT_NAME_CHILD_CHANGED = 'child_changed';

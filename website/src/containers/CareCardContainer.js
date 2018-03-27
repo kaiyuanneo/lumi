@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 
 import * as actions from '../actions';
 import CareCardComponent from '../components/CareCardComponent';
-import CareCardBasicInfoContainer from '../containers/CareCardBasicInfoContainer';
-import CareCardMedicalInfoContainer from '../containers/CareCardMedicalInfoContainer';
-import CareCardCareInfoContainer from '../containers/CareCardCareInfoContainer';
+import CareCardBasicInfoComponent from '../components/CareCardBasicInfoComponent';
+import CareCardMedicalInfoComponent from '../components/CareCardMedicalInfoComponent';
+import CareCardCareInfoComponent from '../components/CareCardCareInfoComponent';
 import * as constants from '../static/constants';
 
 
@@ -14,16 +14,16 @@ const mapStateToProps = (state) => {
   let contentComponent;
   switch (state.careCard.infoCategory) {
     case constants.CARE_CARD_CATEGORY_CODE_BASIC:
-      contentComponent = <CareCardBasicInfoContainer />;
+      contentComponent = <CareCardBasicInfoComponent />;
       break;
     case constants.CARE_CARD_CATEGORY_CODE_MEDICAL:
-      contentComponent = <CareCardMedicalInfoContainer />;
+      contentComponent = <CareCardMedicalInfoComponent />;
       break;
     case constants.CARE_CARD_CATEGORY_CODE_CARE:
-      contentComponent = <CareCardCareInfoContainer />;
+      contentComponent = <CareCardCareInfoComponent />;
       break;
     default:
-      contentComponent = <CareCardBasicInfoContainer />;
+      contentComponent = <CareCardBasicInfoComponent />;
   }
   return {
     infoCategory: state.careCard.infoCategory,

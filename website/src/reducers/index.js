@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 
 import careCardReducer from './careCardReducer';
 import groupReducer from './groupReducer';
+import homeReducer from './homeReducer';
 
 
 // Each reducer's "state" param is the property of the global "state"
@@ -10,6 +11,7 @@ import groupReducer from './groupReducer';
 const rootReducer = combineReducers({
   careCard: careCardReducer,
   group: groupReducer,
+  home: homeReducer,
 });
 
 export default rootReducer;

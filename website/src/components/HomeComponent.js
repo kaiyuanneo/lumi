@@ -1,80 +1,39 @@
-import * as firebase from 'firebase';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import NavBarComponent from './NavBarComponent';
 import NewUserComponent from './NewUserComponent';
-import TimelineComponent from './TimelineComponent';
-import CareCardContainer from '../containers/CareCardContainer';
-import * as constants from '../static/constants';
+import NavBarContainer from '../containers/NavBarContainer';
 
 
 class HomeComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isAuthUserInGroup: null,
-      currentProductCode: constants.PRODUCT_CODE_TIMELINE,
-    };
-  }
-
   componentDidMount() {
-    const db = firebase.database();
-    const authUid = firebase.auth().currentUser.uid;
-    const activeGroupRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/activeGroup`);
-    activeGroupRef.on(constants.DB_EVENT_NAME_VALUE, (activeGroupSnapshot) => {
-      // If active group not set, auth user does not belong to a group.
-      let isAuthUserInGroup = false;
-      if (activeGroupSnapshot.val()) {
-        // Remove listener once user has activeGroup because there is no way to leave all groups
-        activeGroupRef.off();
-        isAuthUserInGroup = true;
-      }
-      this.setState({
-        ...this.state,
-        isAuthUserInGroup,
-      });
-    });
+    this.props.getIsAuthUserInGroup();
   }
-
   render() {
     // Do not render anything before we know if auth user is in a group
-    const { isAuthUserInGroup } = this.state;
-    if (isAuthUserInGroup === null) {
+    if (!this.props.shouldComponentRender) {
       return null;
     }
-    // Pass this function to NavbarComponent to switch between products from navbar
-    const switchProduct = (eventKey) => {
-      // Clicking sign out will trigger this because it is a child of the navbar
-      if (eventKey === constants.PRODUCT_CODE_SIGN_OUT) {
-        return;
-      }
-      this.setState({
-        ...this.state,
-        // Event keys are product codes
-        currentProductCode: eventKey,
-      });
-    };
-    // Determine which product to render
-    const getProductComponent = () => {
-      const timelineComponent = <TimelineComponent />;
-      const careCardContainer = <CareCardContainer />;
-      switch (this.state.currentProductCode) {
-        case constants.PRODUCT_CODE_TIMELINE:
-          return timelineComponent;
-        case constants.PRODUCT_CODE_CARE_CARD:
-          return careCardContainer;
-        default:
-          return timelineComponent;
-      }
-    };
-    const contentComponent = isAuthUserInGroup ? getProductComponent() : <NewUserComponent />;
+    const contentComponent = this.props.isAuthUserInGroup ?
+      this.props.productComponent : <NewUserComponent />;
     return (
       <div className="navbar-offset">
-        <NavBarComponent switchProduct={switchProduct} />
+        <NavBarContainer />
         {contentComponent}
       </div>
     );
   }
 }
+
+HomeComponent.propTypes = {
+  isAuthUserInGroup: PropTypes.bool,
+  shouldComponentRender: PropTypes.bool.isRequired,
+  getIsAuthUserInGroup: PropTypes.func.isRequired,
+  productComponent: PropTypes.element.isRequired,
+};
+
+HomeComponent.defaultProps = {
+  isAuthUserInGroup: null,
+};
 
 export default HomeComponent;

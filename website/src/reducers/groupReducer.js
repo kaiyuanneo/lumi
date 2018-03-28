@@ -1,7 +1,7 @@
 import * as constants from '../static/constants';
 
 /*
-Care Card state structure.
+Group state structure.
 {
   groupIdFieldValue,
   groupNameFieldValue,

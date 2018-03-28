@@ -5,18 +5,16 @@ import { createStore } from 'redux';
 
 import AuthContainer from './containers/AuthContainer';
 import BootstrapStyleComponent from './components/BootstrapStyleComponent';
-import HomeComponent from './components/HomeComponent';
+import HomeContainer from './containers/HomeContainer';
 import rootReducer from './reducers';
 
 
 class App extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       signedIn: null,
     };
-
     firebase.auth().onAuthStateChanged((user) => {
       this.setState({
         ...this.state,
@@ -24,7 +22,6 @@ class App extends Component {
       });
     });
   }
-
   render() {
     // Do not render anything before we know if user is signed in
     const { signedIn } = this.state;
@@ -34,7 +31,7 @@ class App extends Component {
     return (
       <Provider store={createStore(rootReducer)}>
         <div className="App">
-          {signedIn ? <HomeComponent /> : <AuthContainer />}
+          {signedIn ? <HomeContainer /> : <AuthContainer />}
           <BootstrapStyleComponent />
         </div>
       </Provider>

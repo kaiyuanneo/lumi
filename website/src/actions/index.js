@@ -74,3 +74,23 @@ export const saveGroupNameFieldValue = groupNameFieldValue => ({
   groupNameFieldValue,
   groupCreateValidationState: groupNameFieldValue === '' ? 'error' : 'success',
 });
+
+/*
+ * Home and navbar management actions
+ */
+
+export const saveIsAuthUserInGroup = isAuthUserInGroup => ({
+  type: constants.ACTION_SAVE_IS_AUTH_USER_IN_GROUP,
+  isAuthUserInGroup,
+});
+
+export const saveCurrentProductCode = currentProductCode => ({
+  type: constants.ACTION_SAVE_CURRENT_PRODUCT_CODE,
+  currentProductCode,
+});
+
+export const saveAuthUserGroupInfo = (groupId, groupName) => ({
+  type: constants.ACTION_SAVE_AUTH_USER_GROUP_INFO,
+  groupId,
+  groupName,
+});

@@ -1,3 +1,4 @@
+// Care Card actions
 export const ACTION_SAVE_CARE_CARD_INFO_CATEGORY = 'SAVE_CARE_CARD_INFO_CATEGORY';
 export const ACTION_TOGGLE_FETCHED_CARE_RECIPIENT = 'TOGGLE_FETCHED_CARE_RECIPIENT';
 export const ACTION_SAVE_CARE_RECIPIENT_UID = 'SAVE_CARE_RECIPIENT_UID';
@@ -8,6 +9,9 @@ export const ACTION_UNMOUNT_CARE_CARD_NEW_MEMBER_FORM = 'UNMOUNT_CARE_CARD_NEW_M
 export const ACTION_UPDATE_SELECT_CR_SELECTED_MEMBER = 'UPDATE_SELECT_CR_SELECTED_MEMBER';
 export const ACTION_TOGGLE_SELECT_CR_USER_CLICKED_SELECT = 'UPDATE_SELECT_CR_USER_CLICKED_SELECT';
 export const ACTION_UPDATE_SELECT_CR_GROUP_MEMBERS = 'FETCH_UPDATE_CR_GROUP_MEMBERS';
+// Group actions
+export const ACTION_SAVE_GROUP_ID_FIELD_VALUE = 'SAVE_GROUP_ID_FIELD_VALUE';
+export const ACTION_SAVE_GROUP_JOIN_VALIDATION_STATE = 'SAVE_GROUP_JOIN_VALIDATION_STATE';
 export const ACTION_SAVE_GROUP_NAME_FIELD_VALUE = 'SAVE_GROUP_NAME_FIELD_VALUE';
 
 export const BOOTSTRAP_CSS_URL =
@@ -176,6 +180,11 @@ export const FORM_VALIDATION_ERROR = 'error';
 
 export const GROUP_CREATE_TITLE = 'Create New Group';
 export const GROUP_CREATE_BUTTON_TEXT = 'Create Group';
+export const GROUP_JOIN_TITLE = 'Join Existing Group';
+export const GROUP_JOIN_BUTTON_TEXT = 'Join Group';
+export const GROUP_ID_FIELD_PLACEHOLDER = 'Enter Lumi Group ID';
+export const GROUP_ID_FIELD_PROMPT = 'Join an existing Lumi Group';
+export const GROUP_ID_FIELD_HELP = 'This ID must be a valid group ID of an existing Lumi Group';
 export const GROUP_NAME_FIELD_PLACEHOLDER = 'Enter new group name';
 export const GROUP_NAME_FIELD_PROMPT = 'Choose a group name for your new group';
 export const GROUP_NAME_FIELD_HELP =

@@ -1,8 +1,8 @@
 import * as firebase from 'firebase';
 import React, { Component } from 'react';
 
-import GroupJoinComponent from './GroupJoinComponent';
 import GroupCreateContainer from '../containers/GroupCreateContainer';
+import GroupJoinContainer from '../containers/GroupJoinContainer';
 import * as constants from '../static/constants';
 
 
@@ -31,7 +31,7 @@ class NewUserComponent extends Component {
         <br />
         Or
         <br />
-        <GroupJoinComponent />
+        <GroupJoinContainer />
       </div>
     );
   }

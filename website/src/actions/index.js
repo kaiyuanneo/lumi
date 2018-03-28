@@ -59,6 +59,16 @@ export const updateSelectCrGroupMembers = members => ({
  * Group management actions
  */
 
+export const saveGroupIdFieldValue = groupIdFieldValue => ({
+  type: constants.ACTION_SAVE_GROUP_ID_FIELD_VALUE,
+  groupIdFieldValue,
+});
+
+export const saveGroupJoinValidationState = groupJoinValidationState => ({
+  type: constants.ACTION_SAVE_GROUP_JOIN_VALIDATION_STATE,
+  groupJoinValidationState,
+});
+
 export const saveGroupNameFieldValue = groupNameFieldValue => ({
   type: constants.ACTION_SAVE_GROUP_NAME_FIELD_VALUE,
   groupNameFieldValue,

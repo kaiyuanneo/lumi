@@ -37,8 +37,8 @@ const GroupCreateComponent = props => (
 );
 
 GroupCreateComponent.propTypes = {
-  groupCreateValidationState: PropTypes.string,
   groupNameFieldValue: PropTypes.string.isRequired,
+  groupCreateValidationState: PropTypes.string,
   isCreateButtonDisabled: PropTypes.bool.isRequired,
   createGroup: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,

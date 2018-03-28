@@ -1,8 +1,8 @@
 import * as firebase from 'firebase';
 import React, { Component } from 'react';
 
-import GroupCreateComponent from './GroupCreateComponent';
 import GroupJoinComponent from './GroupJoinComponent';
+import GroupCreateContainer from '../containers/GroupCreateContainer';
 import * as constants from '../static/constants';
 
 
@@ -27,7 +27,7 @@ class NewUserComponent extends Component {
       <div>
         <h1>{`${constants.NEW_USER_PAGE_TITLE}${this.state.firstName}!`}</h1>
         {constants.NEW_USER_PAGE_SUBTITLE}
-        <GroupCreateComponent />
+        <GroupCreateContainer />
         <br />
         Or
         <br />

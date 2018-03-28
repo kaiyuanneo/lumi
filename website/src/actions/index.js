@@ -54,3 +54,13 @@ export const updateSelectCrGroupMembers = members => ({
   type: constants.ACTION_UPDATE_SELECT_CR_GROUP_MEMBERS,
   members,
 });
+
+/*
+ * Group management actions
+ */
+
+export const saveGroupNameFieldValue = groupNameFieldValue => ({
+  type: constants.ACTION_SAVE_GROUP_NAME_FIELD_VALUE,
+  groupNameFieldValue,
+  groupCreateValidationState: groupNameFieldValue === '' ? 'error' : 'success',
+});

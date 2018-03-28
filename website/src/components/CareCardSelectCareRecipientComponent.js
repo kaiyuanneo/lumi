@@ -16,7 +16,6 @@ class CareCardSelectCareRecipientComponent extends Component {
     if (this.props.shouldRenderNewMemberForm) {
       return <CareCardNewMemberContainer />;
     }
-
     return (
       <Flexbox flexDirection="column">
         <h2>{constants.CARE_CARD_NEW_CARE_RECIPIENT_PROMPT}</h2>
@@ -30,7 +29,6 @@ class CareCardSelectCareRecipientComponent extends Component {
             {this.props.memberList}
           </FormControl>
         </FormGroup>
-
         <Button
           bsStyle="primary"
           disabled={this.props.isSelectButtonDisabled}

@@ -2,6 +2,55 @@ import * as constants from '../static/constants';
 
 
 /*
+ * Auth actions
+ */
+
+export const saveIsSignedIn = isSignedIn => ({
+  type: constants.ACTION_SAVE_IS_SIGNED_IN,
+  isSignedIn,
+});
+
+/*
+ * Home and navbar management actions
+ */
+
+export const saveIsAuthUserInGroup = isAuthUserInGroup => ({
+  type: constants.ACTION_SAVE_IS_AUTH_USER_IN_GROUP,
+  isAuthUserInGroup,
+});
+
+export const saveCurrentProductCode = currentProductCode => ({
+  type: constants.ACTION_SAVE_CURRENT_PRODUCT_CODE,
+  currentProductCode,
+});
+
+export const saveAuthUserGroupInfo = (groupId, groupName) => ({
+  type: constants.ACTION_SAVE_AUTH_USER_GROUP_INFO,
+  groupId,
+  groupName,
+});
+
+/*
+ * Group management actions
+ */
+
+export const saveGroupIdFieldValue = groupIdFieldValue => ({
+  type: constants.ACTION_SAVE_GROUP_ID_FIELD_VALUE,
+  groupIdFieldValue,
+});
+
+export const saveGroupJoinValidationState = groupJoinValidationState => ({
+  type: constants.ACTION_SAVE_GROUP_JOIN_VALIDATION_STATE,
+  groupJoinValidationState,
+});
+
+export const saveGroupNameFieldValue = groupNameFieldValue => ({
+  type: constants.ACTION_SAVE_GROUP_NAME_FIELD_VALUE,
+  groupNameFieldValue,
+  groupCreateValidationState: groupNameFieldValue === '' ? 'error' : 'success',
+});
+
+/*
  * Care Card Actions
  */
 
@@ -53,44 +102,4 @@ export const toggleSelectCrUserClickedSelect = () => ({
 export const updateSelectCrGroupMembers = members => ({
   type: constants.ACTION_UPDATE_SELECT_CR_GROUP_MEMBERS,
   members,
-});
-
-/*
- * Group management actions
- */
-
-export const saveGroupIdFieldValue = groupIdFieldValue => ({
-  type: constants.ACTION_SAVE_GROUP_ID_FIELD_VALUE,
-  groupIdFieldValue,
-});
-
-export const saveGroupJoinValidationState = groupJoinValidationState => ({
-  type: constants.ACTION_SAVE_GROUP_JOIN_VALIDATION_STATE,
-  groupJoinValidationState,
-});
-
-export const saveGroupNameFieldValue = groupNameFieldValue => ({
-  type: constants.ACTION_SAVE_GROUP_NAME_FIELD_VALUE,
-  groupNameFieldValue,
-  groupCreateValidationState: groupNameFieldValue === '' ? 'error' : 'success',
-});
-
-/*
- * Home and navbar management actions
- */
-
-export const saveIsAuthUserInGroup = isAuthUserInGroup => ({
-  type: constants.ACTION_SAVE_IS_AUTH_USER_IN_GROUP,
-  isAuthUserInGroup,
-});
-
-export const saveCurrentProductCode = currentProductCode => ({
-  type: constants.ACTION_SAVE_CURRENT_PRODUCT_CODE,
-  currentProductCode,
-});
-
-export const saveAuthUserGroupInfo = (groupId, groupName) => ({
-  type: constants.ACTION_SAVE_AUTH_USER_GROUP_INFO,
-  groupId,
-  groupName,
 });

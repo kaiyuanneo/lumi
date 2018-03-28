@@ -17,6 +17,8 @@ export const ACTION_SAVE_GROUP_NAME_FIELD_VALUE = 'SAVE_GROUP_NAME_FIELD_VALUE';
 export const ACTION_SAVE_IS_AUTH_USER_IN_GROUP = 'SAVE_IS_AUTH_USER_IN_GROUP';
 export const ACTION_SAVE_CURRENT_PRODUCT_CODE = 'SAVE_CURRENT_PRODUCT_CODE';
 export const ACTION_SAVE_AUTH_USER_GROUP_INFO = 'SAVE_AUTH_USER_GROUP_INFO';
+// Auth actions
+export const ACTION_SAVE_IS_SIGNED_IN = 'SAVE_IS_SIGNED_IN';
 
 export const BOOTSTRAP_CSS_URL =
   'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css';

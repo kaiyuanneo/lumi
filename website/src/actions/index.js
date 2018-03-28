@@ -10,6 +10,11 @@ export const saveIsSignedIn = isSignedIn => ({
   isSignedIn,
 });
 
+export const saveAuthUserFirstName = firstName => ({
+  type: constants.ACTION_SAVE_AUTH_USER_FIRST_NAME,
+  firstName,
+});
+
 /*
  * Home and navbar management actions
  */

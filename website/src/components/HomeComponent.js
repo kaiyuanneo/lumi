@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import NewUserComponent from './NewUserComponent';
 import NavBarContainer from '../containers/NavBarContainer';
+import NewUserContainer from '../containers/NewUserContainer';
 
 
 class HomeComponent extends Component {
@@ -15,7 +15,7 @@ class HomeComponent extends Component {
       return null;
     }
     const contentComponent = this.props.isAuthUserInGroup ?
-      this.props.productComponent : <NewUserComponent />;
+      this.props.productComponent : <NewUserContainer />;
     return (
       <div className="navbar-offset">
         <NavBarContainer />

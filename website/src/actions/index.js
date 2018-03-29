@@ -108,3 +108,22 @@ export const updateSelectCrGroupMembers = members => ({
   type: constants.ACTION_UPDATE_SELECT_CR_GROUP_MEMBERS,
   members,
 });
+
+/*
+ * Timeline Actions
+ */
+
+export const saveTimelineMessage = message => ({
+  type: constants.ACTION_SAVE_TIMELINE_MESSAGE,
+  message,
+});
+
+export const deleteTimelineMessage = message => ({
+  type: constants.ACTION_DELETE_TIMELINE_MESSAGE,
+  message,
+});
+
+export const saveTimelineMessageFilterCategory = category => ({
+  type: constants.ACTION_SAVE_TIMELINE_MESSAGE_FILTER_CATEGORY,
+  category,
+});

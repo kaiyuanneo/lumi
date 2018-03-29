@@ -20,6 +20,11 @@ export const usToIsoDate = (usDate) => {
 };
 
 /**
+ * Convert timestamp to local date string
+ */
+export const getLocalDateString = timestamp => new Date(timestamp).toLocaleString();
+
+/**
  * Determine if input is valid for email field. Accept empty string.
  */
 export const isValidEmail = input => !input || validator.isEmail(input);

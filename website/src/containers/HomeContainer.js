@@ -3,26 +3,26 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import CareCardContainer from './CareCardContainer';
+import TimelineContainer from './TimelineContainer';
 import * as actions from '../actions';
 import HomeComponent from '../components/HomeComponent';
-import TimelineComponent from '../components/TimelineComponent';
 import * as constants from '../static/constants';
 
 
 const mapStateToProps = (state) => {
   // Determine which product to render
   let productComponent;
-  const timelineComponent = <TimelineComponent />;
+  const timelineContainer = <TimelineContainer />;
   const careCardContainer = <CareCardContainer />;
   switch (state.home.currentProductCode) {
     case constants.PRODUCT_CODE_TIMELINE:
-      productComponent = timelineComponent;
+      productComponent = timelineContainer;
       break;
     case constants.PRODUCT_CODE_CARE_CARD:
       productComponent = careCardContainer;
       break;
     default:
-      productComponent = timelineComponent;
+      productComponent = timelineContainer;
   }
   return {
     productComponent,

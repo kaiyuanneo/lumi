@@ -240,6 +240,7 @@ export const TIMELINE_TABLE_HEADER_NOTE = 'Note';
 
 export const URL_FACEBOOK_GRAPH_API = 'https://graph.facebook.com/v2.6';
 export const URL_FACEBOOK_GRAPH_API_ME = `${URL_FACEBOOK_GRAPH_API}/me`;
-export const URL_LUMI_PSID = 'https://us-central1-lumi-cares.cloudfunctions.net/webhook/lumi/psid';
+export const URL_LUMI_WEBHOOK = 'https://us-central1-lumi-cares.cloudfunctions.net/webhook/lumi';
+export const URL_LUMI_PSID = `${URL_LUMI_WEBHOOK}/psid`;
 
 export const WEBSITE_TITLE = 'Lumi';

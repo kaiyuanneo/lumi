@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import * as rp from 'request-promise';
+import rp from 'request-promise';
 import { connect } from 'react-redux';
 import hash from 'string-hash';
 
@@ -7,10 +7,12 @@ import AuthComponent from '../components/AuthComponent';
 import * as constants from '../static/constants';
 
 
+// NB: Private functions are underscore-prefixed and exported for tests
+
 /*
  * Get relevant user info from Facebook Graph API
  */
-const getUserInfoFromFacebook = async (credential) => {
+export const _getUserInfoFromFacebook = async (credential) => {
   const fields = [
     'id',
     'first_name',
@@ -37,7 +39,7 @@ const getUserInfoFromFacebook = async (credential) => {
  * If user already has user record, e.g. if created as New Member by another member
  * in Care Card, then copy contents of existing user record to new user record with new UID
  */
-const mergeExistingUserRecord = async (currentUser, facebookUserInfo) => {
+export const _mergeExistingUserRecord = async (currentUser, facebookUserInfo) => {
   const db = firebase.database();
   // Use numeric-hashed emails in Realtime Database paths because RD does not support '.' in paths.
   const hashedEmail = hash(facebookUserInfo.email);
@@ -56,21 +58,25 @@ const mergeExistingUserRecord = async (currentUser, facebookUserInfo) => {
     existingUserRef.remove();
     // Update old user's group to reference new UID
     const groupsArray = Object.keys(existingUser.groups);
+    const groupRefs = [];
+    const groupSnapshotPromises = [];
     for (let i = 0; i < groupsArray.length; i += 1) {
-      const gid = groupsArray[i];
-      const groupRef = db.ref(`${constants.DB_PATH_LUMI_GROUPS}/${gid}`);
+      const groupRef = db.ref(`${constants.DB_PATH_LUMI_GROUPS}/${groupsArray[i]}`);
+      groupRefs.push(groupRef);
       // Cannot use await inside a loop
-      groupRef.once(constants.DB_EVENT_NAME_VALUE, (groupSnapshot) => {
-        groupRef.child('members').update({
-          [existingUid]: null,
-          [currentUser.uid]: true,
-        });
-        if (groupSnapshot.val().activeCareRecipient === existingUid) {
-          groupRef.update({
-            activeCareRecipient: currentUser.uid,
-          });
-        }
+      groupSnapshotPromises.push(groupRef.once(constants.DB_EVENT_NAME_VALUE));
+    }
+    const groupSnapshots = await Promise.all(groupSnapshotPromises);
+    for (let i = 0; i < groupSnapshots.length; i += 1) {
+      groupRefs[i].child('members').update({
+        [existingUid]: null,
+        [currentUser.uid]: true,
       });
+      if (groupSnapshots[i].val().activeCareRecipient === existingUid) {
+        groupRefs[i].update({
+          activeCareRecipient: currentUser.uid,
+        });
+      }
     }
   }
   return existingUser;
@@ -81,7 +87,7 @@ const mergeExistingUserRecord = async (currentUser, facebookUserInfo) => {
  * Get PSID from FB Graph API via Lumi webserver. Need to go through webserver
  * because we cannot expose FB app access token in client code.
  */
-const getUserPsid = async (facebookUserInfo) => {
+export const _getUserPsid = async (facebookUserInfo) => {
   const psidRequestOptions = {
     uri: constants.URL_LUMI_PSID,
     qs: {
@@ -97,7 +103,7 @@ const getUserPsid = async (facebookUserInfo) => {
 /*
  * Store retrieved user info to Lumi's Firebase Realtime Database
  */
-const saveUserInfo = async (currentUser, existingFirebaseUserInfo, facebookUserInfo, psid) => {
+export const _saveUserInfo = async (currentUser, existingUserInfo, facebookUserInfo, psid) => {
   // Create/update entry in user-email-to-uid so that Lumi can look up user info with email
   // If user was initially a Care-Card-generated user, this will remove the reference to the
   // old UID.
@@ -115,7 +121,7 @@ const saveUserInfo = async (currentUser, existingFirebaseUserInfo, facebookUserI
   const userRef = db.ref(`${constants.DB_PATH_USERS}/${currentUser.uid}`);
   await userRef.update({
     // Copy any info from a previously created user in Care Card that has never signed in
-    ...existingFirebaseUserInfo,
+    ...existingUserInfo,
     ...facebookUserInfo,
     // Do not copy id field from userInfoParsedBody to prevent confusion with uid
     id: null,
@@ -138,17 +144,17 @@ const saveUserInfo = async (currentUser, existingFirebaseUserInfo, facebookUserI
  * After user signs in with Facebook credentials, collect user information from Facebook
  * and save it in Firebase under the user record
  */
-const setUserInfo = async (currentUser, credential) => {
-  const facebookUserInfo = await getUserInfoFromFacebook(credential);
-  const existingFirebaseUserInfo = await mergeExistingUserRecord(currentUser, facebookUserInfo);
-  const psid = await getUserPsid(facebookUserInfo);
+const _setUserInfo = async (currentUser, credential) => {
+  const facebookUserInfo = await _getUserInfoFromFacebook(credential);
+  const existingUserInfo = await _mergeExistingUserRecord(currentUser, facebookUserInfo);
+  const psid = await _getUserPsid(facebookUserInfo);
   // If the user does not have a PSID yet (i.e. hasn't chatted with Lumi Chat), return here
   // and the next time the user logs in with a PSID, it will get populated by the below code.
   if (!psid) {
     return false;
   }
   // Save info gathered above to Firebase
-  await saveUserInfo(currentUser, existingFirebaseUserInfo, facebookUserInfo, psid);
+  await _saveUserInfo(currentUser, existingUserInfo, facebookUserInfo, psid);
   // Return false to avoid redirects after sign in
   return false;
 };
@@ -161,7 +167,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   firebaseAuth: firebase.auth,
   uiConfig: {
     callbacks: {
-      signInSuccess: setUserInfo,
+      signInSuccess: _setUserInfo,
     },
     signInFlow: 'popup',
     signInOptions: [firebase.auth.FacebookAuthProvider.PROVIDER_ID],

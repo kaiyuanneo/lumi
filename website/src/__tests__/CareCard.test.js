@@ -1,4 +1,3 @@
-// import rewire from 'babel-plugin-rewire';
 import chai from 'chai';
 import * as firebase from 'firebase';
 import sinon from 'sinon';

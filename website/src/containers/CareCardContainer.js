@@ -1,3 +1,4 @@
+// NB: Private functions are underscore-prefixed and exported for tests
 import * as firebase from 'firebase';
 import React from 'react';
 import { connect } from 'react-redux';

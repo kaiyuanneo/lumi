@@ -1,3 +1,4 @@
+// NB: Private functions are underscore-prefixed and exported for tests
 import * as firebase from 'firebase';
 import rp from 'request-promise';
 import { connect } from 'react-redux';
@@ -6,8 +7,6 @@ import hash from 'string-hash';
 import AuthComponent from '../components/AuthComponent';
 import * as constants from '../static/constants';
 
-
-// NB: Private functions are underscore-prefixed and exported for tests
 
 /*
  * Get relevant user info from Facebook Graph API

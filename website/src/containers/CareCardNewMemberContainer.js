@@ -1,3 +1,4 @@
+// NB: Private functions are underscore-prefixed and exported for tests
 import * as firebase from 'firebase';
 import { connect } from 'react-redux';
 import hash from 'string-hash';
@@ -25,11 +26,35 @@ const mapStateToProps = state => ({
   placesOfInterest: state.careCard.placesOfInterestFormFieldValue,
 });
 
+
 const mapDispatchToProps = dispatch => ({
   saveFieldValueLocally: (fieldId, fieldValue) =>
     dispatch(actions.saveCareCardFieldValueLocally(fieldId, fieldValue)),
   unmountFunc: () => dispatch(actions.unmountCareCardNewMemberForm()),
 });
+
+
+export const _saveNewMember = async (stateProps) => {
+  const db = firebase.database();
+  // Save new member info in user path as a new user and use an auto-generated key as user ID.
+  // If this new member ever signs in, AuthComponent will merge this and the new member data.
+  const newMemberRef = await db.ref(constants.DB_PATH_USERS).push({ ...stateProps });
+  // Save new member email to user-email-to-uid table so that Lumi can merge this user's
+  // profiles by email should this user ever sign in to Lumi.
+  await db.ref(constants.DB_PATH_USER_EMAIL_TO_UID).update({
+    [hash(stateProps.email)]: newMemberRef.key,
+  });
+  // Add new member to current group and set as active care recipient
+  const authUid = firebase.auth().currentUser.uid;
+  const activeGroupIdRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/activeGroup`);
+  const activeGroupIdSnapshot = await activeGroupIdRef.once(constants.DB_EVENT_NAME_VALUE);
+  const activeGroupId = activeGroupIdSnapshot.val();
+  await utils.addUserToGroup(activeGroupId, newMemberRef.key);
+  await db.ref(`${constants.DB_PATH_LUMI_GROUPS}/${activeGroupId}`).update({
+    activeCareRecipient: newMemberRef.key,
+  });
+};
+
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const getHandleChangeFunc = fieldId => e =>
@@ -93,28 +118,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
       getHandleChangeFunc(constants.CARE_CARD_FIELD_ID_PLACES_OF_INTEREST),
     ),
     isSaveButtonDisabled: !utils.isValidEmail(stateProps.email),
-    saveNewMember: async () => {
-      const db = firebase.database();
-      // Save new member info in user path as a new user and use an auto-generated key as user ID.
-      // If this new member ever signs in, AuthComponent will merge this and the new member data.
-      const newMemberRef = await db.ref(constants.DB_PATH_USERS).push({
-        ...stateProps,
-      });
-      // Save new member email to user-email-to-uid table so that Lumi can merge this user's
-      // profiles by email should this user ever sign in to Lumi.
-      await db.ref(constants.DB_PATH_USER_EMAIL_TO_UID).update({
-        [hash(stateProps.email)]: newMemberRef.key,
-      });
-      // Add new member to current group and set as active care recipient
-      const authUid = firebase.auth().currentUser.uid;
-      const activeGroupIdRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/activeGroup`);
-      const activeGroupIdSnapshot = await activeGroupIdRef.once(constants.DB_EVENT_NAME_VALUE);
-      const activeGroupId = activeGroupIdSnapshot.val();
-      await utils.addUserToGroup(activeGroupId, newMemberRef.key);
-      await db.ref(`${constants.DB_PATH_LUMI_GROUPS}/${activeGroupId}`).update({
-        activeCareRecipient: newMemberRef.key,
-      });
-    },
+    saveNewMember: () => _saveNewMember(stateProps),
   };
 };
 

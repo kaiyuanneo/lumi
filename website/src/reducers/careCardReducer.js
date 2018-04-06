@@ -14,6 +14,7 @@ their changes, the field value will revert to that of the DB.
   fetched,
 
   // Fields specifically for CareCardSelectCareRecipientComponent
+  // selectCrMembers is a map of memberId to member full names
   selectCrMembers,
   selectCrSelectedMember,
   selectCrUserClickedSelect,

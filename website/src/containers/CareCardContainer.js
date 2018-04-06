@@ -39,18 +39,10 @@ const mapStateToProps = (state) => {
 
 
 /**
- * Get care recipient info from DB
- * Exported for testing
+ * Handle care recipient
+ * Separated from _getCareRecipient for testing
  */
-export const _getCareRecipient = async (dispatch) => {
-  const db = firebase.database();
-  const authUid = firebase.auth().currentUser.uid;
-  const activeGroupRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/activeGroup`);
-  const activeGroupSnapshot = await activeGroupRef.once(constants.DB_EVENT_NAME_VALUE);
-  // activeCareRecipient field in DB stores the UID of the currently active care recipient
-  const careRecipientUidRef =
-    db.ref(`${constants.DB_PATH_LUMI_GROUPS}/${activeGroupSnapshot.val()}/activeCareRecipient`);
-  const careRecipientUidSnapshot = await careRecipientUidRef.on(constants.DB_EVENT_NAME_VALUE);
+export const _handleCareRecipient = (dispatch, careRecipientUidRef, careRecipientUidSnapshot) => {
   // Tell the component it is ok to render the new care recipient page if the group has no
   // care recipient. Otherwise, render the Care Card. Do not render anything if Lumi
   // has not finished fetching the active care recipient of this group.
@@ -65,10 +57,29 @@ export const _getCareRecipient = async (dispatch) => {
   careRecipientUidRef.off();
   // Listen for changes in the active care recipient record and update state accordingly
   // TODO(kai): Remember to turn off this listener when we change care recipients
+  const db = firebase.database();
   const careRecipientRef = db.ref(`${constants.DB_PATH_USERS}/${careRecipientUid}`);
-  const careRecipientSnapshot = await careRecipientRef.on(constants.DB_EVENT_NAME_VALUE);
-  // Copy all fields to local state for brevity, even though we don't need all of them
-  dispatch(actions.updateCareRecipient(careRecipientSnapshot.val()));
+  careRecipientRef.on(constants.DB_EVENT_NAME_VALUE, (careRecipientSnapshot) => {
+    // Copy all fields to local state for brevity, even though we don't need all of them
+    dispatch(actions.updateCareRecipient(careRecipientSnapshot.val()));
+  });
+};
+
+
+/**
+ * Get care recipient info from DB
+ */
+export const _getCareRecipient = async (dispatch) => {
+  const db = firebase.database();
+  const authUid = firebase.auth().currentUser.uid;
+  const activeGroupRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/activeGroup`);
+  const activeGroupSnapshot = await activeGroupRef.once(constants.DB_EVENT_NAME_VALUE);
+  // activeCareRecipient field in DB stores the UID of the currently active care recipient
+  const careRecipientUidRef =
+    db.ref(`${constants.DB_PATH_LUMI_GROUPS}/${activeGroupSnapshot.val()}/activeCareRecipient`);
+  careRecipientUidRef.on(constants.DB_EVENT_NAME_VALUE, (careRecipientUidSnapshot) => {
+    _handleCareRecipient(dispatch, careRecipientUidRef, careRecipientUidSnapshot);
+  });
 };
 
 

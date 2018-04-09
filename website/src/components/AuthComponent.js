@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { FirebaseAuth } from 'react-firebaseui';
 
-
 import * as constants from '../static/constants';
 import lumiLogo from '../static/images/logo.png';
 

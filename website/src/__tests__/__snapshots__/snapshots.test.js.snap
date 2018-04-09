@@ -1,0 +1,866 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AuthComponent 1`] = `
+<div>
+  <header
+    className="App-header"
+  >
+    <img
+      alt="logo"
+      className="App-logo"
+      src="logo.png"
+    />
+    <h1
+      className="App-title"
+    >
+      Lumi
+    </h1>
+  </header>
+  <FirebaseAuth
+    firebaseAuth={undefined}
+    uiConfig={Object {}}
+  />
+</div>
+`;
+
+exports[`BootstrapStyleComponent 1`] = `
+<link
+  crossOrigin="anonymous"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+  rel="stylesheet"
+/>
+`;
+
+exports[`CareCardBasicInfoComponent 1`] = `
+<Table
+  bordered={true}
+  bsClass="table"
+  condensed={false}
+  hover={true}
+  responsive={false}
+  striped={false}
+>
+  <thead>
+    <tr>
+      <th
+        className="product-table-header"
+      >
+        Field
+      </th>
+      <th
+        className="product-table-header"
+      >
+        Value
+      </th>
+      <th
+        className="product-table-header"
+      >
+        Options
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <Connect(CareCardEditWrapperComponent)
+      fieldId="firstName"
+      formFieldGenerator={[Function]}
+      title="First Name"
+    />
+    <Connect(CareCardEditWrapperComponent)
+      fieldId="lastName"
+      formFieldGenerator={[Function]}
+      title="Last Name"
+    />
+    <Connect(CareCardEditWrapperComponent)
+      fieldId="birthday"
+      formFieldGenerator={[Function]}
+      isDateField={true}
+      title="Birthday"
+    />
+    <Connect(CareCardEditWrapperComponent)
+      fieldId="gender"
+      formFieldGenerator={[Function]}
+      title="Gender"
+    />
+    <Connect(CareCardEditWrapperComponent)
+      fieldId="email"
+      formFieldGenerator={[Function]}
+      title="Email"
+    />
+    <Connect(CareCardEditWrapperComponent)
+      fieldId="address"
+      formFieldGenerator={[Function]}
+      title="Address"
+    />
+  </tbody>
+</Table>
+`;
+
+exports[`CareCardCareInfoComponent 1`] = `
+<Table
+  bordered={true}
+  bsClass="table"
+  condensed={false}
+  hover={true}
+  responsive={false}
+  striped={false}
+>
+  <thead>
+    <tr>
+      <th
+        className="product-table-header"
+      >
+        Field
+      </th>
+      <th
+        className="product-table-header"
+      >
+        Value
+      </th>
+      <th
+        className="product-table-header"
+      >
+        Options
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <Connect(CareCardEditWrapperComponent)
+      fieldId="needsAndPreferences"
+      formFieldGenerator={[Function]}
+      title="Needs and Preferences"
+    />
+    <Connect(CareCardEditWrapperComponent)
+      fieldId="thingsThatDelight"
+      formFieldGenerator={[Function]}
+      title="Things that Delight"
+    />
+    <Connect(CareCardEditWrapperComponent)
+      fieldId="placesOfInterest"
+      formFieldGenerator={[Function]}
+      title="Places of Interest"
+    />
+  </tbody>
+</Table>
+`;
+
+exports[`CareCardComponent 1`] = `null`;
+
+exports[`CareCardEditWrapperComponent 1`] = `
+<tr>
+  <td>
+    
+  </td>
+  <td
+    className="multiline"
+  >
+    
+  </td>
+  <td>
+    <button
+      className="btn btn-default"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      <span
+        className="button-icon glyphicon glyphicon-pencil"
+      />
+      Edit
+    </button>
+  </td>
+</tr>
+`;
+
+exports[`CareCardMedicalInfoComponent 1`] = `
+<Table
+  bordered={true}
+  bsClass="table"
+  condensed={false}
+  hover={true}
+  responsive={false}
+  striped={false}
+>
+  <thead>
+    <tr>
+      <th
+        className="product-table-header"
+      >
+        Field
+      </th>
+      <th
+        className="product-table-header"
+      >
+        Value
+      </th>
+      <th
+        className="product-table-header"
+      >
+        Options
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <Connect(CareCardEditWrapperComponent)
+      fieldId="typeOfDementia"
+      formFieldGenerator={[Function]}
+      title="Type of Dementia"
+    />
+    <Connect(CareCardEditWrapperComponent)
+      fieldId="dateOfDiagnosis"
+      formFieldGenerator={[Function]}
+      isDateField={true}
+      title="Date of Diagnosis"
+    />
+    <Connect(CareCardEditWrapperComponent)
+      fieldId="medications"
+      formFieldGenerator={[Function]}
+      title="Medications"
+    />
+    <Connect(CareCardEditWrapperComponent)
+      fieldId="providers"
+      formFieldGenerator={[Function]}
+      title="Providers"
+    />
+  </tbody>
+</Table>
+`;
+
+exports[`CareCardNewMemberComponent 1`] = `
+<div
+  className="sc-bdVaJa djJVkl"
+>
+  <h2>
+    Please share details about the new member :)
+  </h2>
+  <table
+    className="table"
+  >
+    <tbody>
+      <tr>
+        <td>
+          First Name
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Last Name
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Birthday
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Gender
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Email
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Address
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Type of Dementia
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Date of Diagnosis
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Medications
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Providers
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Needs and Preferences
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Things that Delight
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Places of Interest
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div
+    className="sc-bdVaJa cXgeQK"
+  >
+    <div
+      className="btn-toolbar"
+      role="toolbar"
+    >
+      <button
+        className="btn btn-primary"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Save
+      </button>
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CareCardNewMemberFormFieldComponent 1`] = `
+<tr>
+  <td>
+    
+  </td>
+  <td>
+    <div />
+  </td>
+</tr>
+`;
+
+exports[`CareCardSelectCareRecipientComponent 1`] = `
+<div
+  className="sc-bdVaJa hgkmdP"
+>
+  <h2>
+    Welcome to Care Card! Please choose a care recipient:
+  </h2>
+  <div
+    className="form-group"
+  >
+    <select
+      className="form-control"
+      id="userList"
+      onChange={[Function]}
+      placeholder="Select a care recipient"
+      type={undefined}
+      value=""
+    />
+  </div>
+  <button
+    className="btn btn-primary"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    Select
+  </button>
+</div>
+`;
+
+exports[`GroupCreateComponent 1`] = `
+<div>
+  <h2>
+    Create New Group
+  </h2>
+  <form>
+    <div
+      className="form-group has-feedback"
+    >
+      <label
+        className="control-label"
+        htmlFor="formGroupNewGroup"
+      >
+        Choose a group name for your new group
+      </label>
+      <input
+        className="form-control"
+        id="formGroupNewGroup"
+        onChange={[Function]}
+        placeholder="Enter new group name"
+        type="text"
+        value=""
+      />
+      <span
+        className="help-block"
+      >
+        Lumi will generate a Group ID to share with family and friends on the next page
+      </span>
+    </div>
+    <button
+      className="btn btn-lg btn-primary btn-block"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Create Group
+    </button>
+  </form>
+</div>
+`;
+
+exports[`GroupJoinComponent 1`] = `
+<div>
+  <h2>
+    Join Existing Group
+  </h2>
+  <form>
+    <div
+      className="form-group has-feedback"
+    >
+      <label
+        className="control-label"
+        htmlFor="formGroupJoinGroup"
+      >
+        Join an existing Lumi Group
+      </label>
+      <input
+        className="form-control"
+        id="formGroupJoinGroup"
+        onChange={[Function]}
+        placeholder="Enter Lumi Group ID"
+        type="text"
+        value=""
+      />
+      <span
+        className="help-block"
+      >
+        This ID must be a valid group ID of an existing Lumi Group
+      </span>
+    </div>
+    <button
+      className="btn btn-lg btn-default btn-block"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Join Group
+    </button>
+  </form>
+</div>
+`;
+
+exports[`HomeComponent 1`] = `null`;
+
+exports[`NavBarComponent 1`] = `
+<nav
+  className="navbar navbar-default navbar-fixed-top"
+>
+  <div
+    className="container"
+  >
+    <div
+      className="navbar-header"
+    >
+      <a
+        className="navbar-brand"
+        href="/"
+      >
+        <b>
+          Lumi
+        </b>
+      </a>
+      <button
+        className="navbar-toggle collapsed"
+        onClick={[Function]}
+        type="button"
+      >
+        <span
+          className="sr-only"
+        >
+          Toggle navigation
+        </span>
+        <span
+          className="icon-bar"
+        />
+        <span
+          className="icon-bar"
+        />
+        <span
+          className="icon-bar"
+        />
+      </button>
+    </div>
+    <div
+      aria-expanded={null}
+      className="navbar-collapse collapse"
+    >
+      <ul
+        className="nav navbar-nav"
+        role={null}
+      >
+        <li
+          className=""
+          role="presentation"
+          style={undefined}
+        >
+          <a
+            href="#"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+          >
+            Timeline
+          </a>
+        </li>
+        <li
+          className=""
+          role="presentation"
+          style={undefined}
+        >
+          <a
+            href="#"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+          >
+            Care Card
+          </a>
+        </li>
+      </ul>
+      <ul
+        className="nav navbar-nav navbar-right"
+        role={null}
+      >
+        <li
+          className=""
+          role="presentation"
+          style={undefined}
+        >
+          <a
+            href="#"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+          >
+            Sign Out
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+`;
+
+exports[`NewUserComponent 1`] = `
+<div>
+  <h1>
+    Welcome to Lumi, !
+  </h1>
+  Before we begin, you must either create or join a Lumi Group.
+  <Connect(GroupCreateComponent) />
+  <br />
+  Or
+  <br />
+  <Connect(GroupJoinComponent) />
+</div>
+`;
+
+exports[`RootComponent 1`] = `null`;
+
+exports[`TimelineComponent 1`] = `
+<div>
+  <div
+    className="sc-bdVaJa cXgeQK"
+  >
+    <div
+      className="product-tabs"
+      id="timeline-tabs"
+      style={undefined}
+    >
+      <ul
+        className="nav nav-tabs"
+        role="tablist"
+      >
+        <li
+          className="active"
+          role="presentation"
+          style={undefined}
+        >
+          <a
+            aria-controls="timeline-tabs-pane-all"
+            aria-selected={true}
+            href="#"
+            id="timeline-tabs-tab-all"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="tab"
+            tabIndex={undefined}
+          >
+            All
+          </a>
+        </li>
+        <li
+          className=""
+          role="presentation"
+          style={undefined}
+        >
+          <a
+            aria-controls="timeline-tabs-pane-activity"
+            aria-selected={false}
+            href="#"
+            id="timeline-tabs-tab-activity"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="tab"
+            tabIndex={-1}
+          >
+            Activity
+          </a>
+        </li>
+        <li
+          className=""
+          role="presentation"
+          style={undefined}
+        >
+          <a
+            aria-controls="timeline-tabs-pane-behaviour"
+            aria-selected={false}
+            href="#"
+            id="timeline-tabs-tab-behaviour"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="tab"
+            tabIndex={-1}
+          >
+            Behaviour
+          </a>
+        </li>
+        <li
+          className=""
+          role="presentation"
+          style={undefined}
+        >
+          <a
+            aria-controls="timeline-tabs-pane-mood"
+            aria-selected={false}
+            href="#"
+            id="timeline-tabs-tab-mood"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="tab"
+            tabIndex={-1}
+          >
+            Mood
+          </a>
+        </li>
+        <li
+          className=""
+          role="presentation"
+          style={undefined}
+        >
+          <a
+            aria-controls="timeline-tabs-pane-memory"
+            aria-selected={false}
+            href="#"
+            id="timeline-tabs-tab-memory"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="tab"
+            tabIndex={-1}
+          >
+            Memory
+          </a>
+        </li>
+        <li
+          className=""
+          role="presentation"
+          style={undefined}
+        >
+          <a
+            aria-controls="timeline-tabs-pane-medical"
+            aria-selected={false}
+            href="#"
+            id="timeline-tabs-tab-medical"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="tab"
+            tabIndex={-1}
+          >
+            Medical
+          </a>
+        </li>
+        <li
+          className=""
+          role="presentation"
+          style={undefined}
+        >
+          <a
+            aria-controls="timeline-tabs-pane-caregiver"
+            aria-selected={false}
+            href="#"
+            id="timeline-tabs-tab-caregiver"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="tab"
+            tabIndex={-1}
+          >
+            Caregiver
+          </a>
+        </li>
+        <li
+          className=""
+          role="presentation"
+          style={undefined}
+        >
+          <a
+            aria-controls="timeline-tabs-pane-other"
+            aria-selected={false}
+            href="#"
+            id="timeline-tabs-tab-other"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="tab"
+            tabIndex={-1}
+          >
+            Other
+          </a>
+        </li>
+      </ul>
+      <div
+        className="tab-content"
+      >
+        <div
+          aria-hidden={false}
+          aria-labelledby="timeline-tabs-tab-all"
+          className="fade tab-pane active in"
+          id="timeline-tabs-pane-all"
+          role="tabpanel"
+        />
+        <div
+          aria-hidden={true}
+          aria-labelledby="timeline-tabs-tab-activity"
+          className="fade tab-pane"
+          id="timeline-tabs-pane-activity"
+          role="tabpanel"
+        />
+        <div
+          aria-hidden={true}
+          aria-labelledby="timeline-tabs-tab-behaviour"
+          className="fade tab-pane"
+          id="timeline-tabs-pane-behaviour"
+          role="tabpanel"
+        />
+        <div
+          aria-hidden={true}
+          aria-labelledby="timeline-tabs-tab-mood"
+          className="fade tab-pane"
+          id="timeline-tabs-pane-mood"
+          role="tabpanel"
+        />
+        <div
+          aria-hidden={true}
+          aria-labelledby="timeline-tabs-tab-memory"
+          className="fade tab-pane"
+          id="timeline-tabs-pane-memory"
+          role="tabpanel"
+        />
+        <div
+          aria-hidden={true}
+          aria-labelledby="timeline-tabs-tab-medical"
+          className="fade tab-pane"
+          id="timeline-tabs-pane-medical"
+          role="tabpanel"
+        />
+        <div
+          aria-hidden={true}
+          aria-labelledby="timeline-tabs-tab-caregiver"
+          className="fade tab-pane"
+          id="timeline-tabs-pane-caregiver"
+          role="tabpanel"
+        />
+        <div
+          aria-hidden={true}
+          aria-labelledby="timeline-tabs-tab-other"
+          className="fade tab-pane"
+          id="timeline-tabs-pane-other"
+          role="tabpanel"
+        />
+      </div>
+    </div>
+  </div>
+  <table
+    className="table table-bordered table-condensed table-hover"
+  >
+    <thead>
+      <tr>
+        <th
+          className="product-table-header"
+        >
+          Time
+        </th>
+        <th
+          className="product-table-header"
+        >
+          User
+        </th>
+        <th
+          className="product-table-header"
+        >
+          Category
+        </th>
+        <th
+          className="product-table-header"
+        >
+          Note
+        </th>
+      </tr>
+    </thead>
+    <tbody />
+  </table>
+</div>
+`;

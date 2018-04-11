@@ -14,6 +14,7 @@
     "build": "./node_modules/.bin/tslint -p tsconfig.json && ./node_modules/.bin/tsc",
     "deploy": "firebase deploy --only functions:webhook",
     "deploy_staging": "firebase deploy --only functions:webhookStaging",
+    "lint": "./node_modules/.bin/tslint -p tsconfig.json",
     "logs": "firebase functions:log",
     "serve": "npm run build && firebase serve --only functions",
     "shell": "npm run build && firebase experimental:functions:shell",
@@ -33,7 +34,8 @@
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "rewire": "^3.0.2",
-    "sinon": "^4.4.5"
+    "sinon": "^4.4.5",
+    "ts-md5": "^1.2.4"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

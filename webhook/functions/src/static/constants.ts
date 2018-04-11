@@ -1,3 +1,7 @@
+// Date that signed URL links from Google Cloud Storage expire. Ideally they would never expire
+// but GCS requires us to provide an expiry date.
+export const DATE_IMAGE_EXPIRY = '3000-01-01';
+
 export const DB_EVENT_NAME_VALUE = 'value';
 
 export const DB_PATH_LUMI_MESSAGES = 'lumi-messages';

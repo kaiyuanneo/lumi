@@ -7,8 +7,16 @@ import * as constants from './static/constants';
 import routes from './routes';
 
 
-// Initialise DB
-admin.initializeApp(functions.config().firebase);
+// Initialise Firebase Admin API
+admin.initializeApp({
+  ...functions.config().firebase,
+  credential: admin.credential.cert({
+    projectId: 'lumi-cares',
+    clientEmail: 'lumi-cares@appspot.gserviceaccount.com',
+    // Private key is stored with newlines escaped in functions config
+    privateKey: functions.config().lumi.service_account_private_key.replace(/\\n/g, '\n'),
+  }),
+});
 
 // Create Express HTTP server
 const app = express();

@@ -14,10 +14,12 @@ import * as constants from '../lib/static/constants';
 mocha.describe('Webhook integration tests', () => {
   const testToken = 'TEST_TOKEN';
   let adminInitStub;
+  let adminCredentialCertStub;
   let configStub;
   let cloudFunctions;
   mocha.before(() => {
     adminInitStub = sinon.stub(admin, 'initializeApp');
+    adminCredentialCertStub = sinon.stub(admin.credential, 'cert');
     configStub = sinon.stub(functions, 'config').returns({
       // Needed to initialise firebase admin module
       databaseURL: 'DATABASE_URL',
@@ -25,6 +27,7 @@ mocha.describe('Webhook integration tests', () => {
       // Parameters for verify
       lumi: {
         env: constants.ENV_TEST,
+        service_account_private_key: 'TEST_PRIVATE_KEY',
         token_verify: testToken,
         token_app_access: 'TOKEN_APP_ACCESS',
         token_app_access_staging: 'TOKEN_APP_ACCESS_STAGING',
@@ -40,6 +43,7 @@ mocha.describe('Webhook integration tests', () => {
   });
   mocha.after(() => {
     adminInitStub.restore();
+    adminCredentialCertStub.restore();
     configStub.restore();
     // Stop Express server so that test can exit. This is exposed as a private function
     // only accessible in local tests.

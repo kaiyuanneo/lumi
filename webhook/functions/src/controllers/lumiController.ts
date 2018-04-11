@@ -1,6 +1,7 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import * as rp from 'request-promise';
+import { Md5 } from 'ts-md5/dist/md5';
 
 import * as constants from '../static/constants';
 import * as utils from '../utils';
@@ -28,6 +29,7 @@ export const verify = (req, res) => {
     }
   }
 };
+
 
 /**
  * Get user PSID from ASID
@@ -68,6 +70,7 @@ export const getPsidFromAsid = async (req, res) => {
   res.status(200).set('Access-Control-Allow-Origin', '*').json({ psid });
 };
 
+
 /**
  * Send response message via the Send API
  * Export for unit tests
@@ -103,6 +106,7 @@ const callSendApi = async (senderPsid, response) => {
   }
 };
 
+
 /**
  * Generate quick reply object for specific response
  */
@@ -115,6 +119,7 @@ const getQuickReply = (messageRef, responseCode) => ({
     messageKey: messageRef.key,
   }),
 });
+
 
 /**
  * Get response for a specific message type from Lumi Chat
@@ -157,6 +162,7 @@ const getResponse = (receivedMessage, receivedResponseCode, messageRef) => {
   };
 };
 
+
 /**
  * Update DB to reference new message by the given user's active group, if any.
  * Specifically, 1) update message to reference gid, and 2) update relevant path in
@@ -195,6 +201,7 @@ const saveMessageToGroup = async (psid, newMessageRef) => {
   });
 };
 
+
 /**
  * Handle quick reply responses from Lumi user
  */
@@ -215,6 +222,32 @@ const handleQuickReply = (receivedMessage, messagesRef, userMessagesRef) => {
   // Generate response based on received response code
   return getResponse(receivedMessage, responseCode, messageRef);
 };
+
+
+/**
+ * Save image in message to Firebase storage. This is necessary because Messenger CDN image
+ * links expire after an undefined period of time.
+ * Assumes Lumi only receives image attachments.
+ */
+const saveImageToDb = async (receivedMessage) => {
+  // Copy image to Firebase Storage
+  const originalImageUrl = receivedMessage.attachments['0'].payload.url;
+  const uploadOptions = {
+    destination: `${Md5.hashStr(originalImageUrl)}.jpg`,
+  };
+  const uploadResponse = await admin.storage().bucket().upload(originalImageUrl, uploadOptions);
+
+  // Save the persistent image URL to the received message and return the updated message
+  const signedUrlConfig = {
+    action: 'read',
+    // Ideally we would make this never expire, but Google Storage needs an expiry date
+    expires: constants.DATE_IMAGE_EXPIRY,
+  };
+  const signedUrlResponse = await uploadResponse[0].getSignedUrl(signedUrlConfig);
+  receivedMessage.attachments['0'].payload.url = signedUrlResponse[0];
+  return receivedMessage;
+};
+
 
 /**
  * If current message should be attached to previous message, perform backend wiring to do so
@@ -283,6 +316,7 @@ const attachToPrevMessage = async (
   };
 };
 
+
 /**
  * Handle all non-quick-reply messages with text and attachments
  */
@@ -338,12 +372,13 @@ const handleTextAndAttachments = async (webhookEvent, messagesRef, userMessagesR
   return getResponse(receivedMessage, responseCode, messageRef);
 };
 
+
 /**
  * Handle message events from Messenger Platform
  */
 const handleMessage = async (webhookEvent) => {
   let response = null;
-  const receivedMessage = webhookEvent.message;
+  let receivedMessage = webhookEvent.message;
   const db = admin.database();
   const messagesRef = db.ref(constants.DB_PATH_LUMI_MESSAGES);
   const senderPsid = webhookEvent.sender.id;
@@ -356,12 +391,17 @@ const handleMessage = async (webhookEvent) => {
     response = handleQuickReply(receivedMessage, messagesRef, userMessagesRef);
   // Handle free-form text and image messages
   } else if (receivedMessage.text || receivedMessage.attachments) {
+    // If message contains image, store image in Firebase Storage and attach this URL to message
+    if (receivedMessage.attachments) {
+      receivedMessage = await saveImageToDb(receivedMessage);
+    }
     response = await handleTextAndAttachments(webhookEvent, messagesRef, userMessagesRef);
   }
 
   // Send the response message
   await callSendApi(senderPsid, response);
 };
+
 
 /**
  * Triage events from Messenger Platform

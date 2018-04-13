@@ -233,6 +233,7 @@ export const TIMELINE_CATEGORY_NAME_MEDICAL = 'Medical';
 export const TIMELINE_CATEGORY_NAME_CAREGIVER = 'Caregiver';
 export const TIMELINE_CATEGORY_NAME_OTHER = 'Other';
 
+export const TIMELINE_TABLE_HEADER_STAR = 'Star';
 export const TIMELINE_TABLE_HEADER_TIME = 'Time';
 export const TIMELINE_TABLE_HEADER_USER = 'User';
 export const TIMELINE_TABLE_HEADER_CATEGORY = 'Category';

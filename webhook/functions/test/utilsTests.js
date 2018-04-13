@@ -71,6 +71,16 @@ mocha.describe('Response code to quick reply title tests', () => {
     const quickReplyTitle = utils.responseCodeToQuickReplyTitle(responseCode);
     chai.assert.strictEqual(quickReplyTitle, constants.QUICK_REPLY_TITLE_NO);
   });
+  mocha.it('Star yes', () => {
+    const responseCode = constants.RESPONSE_CODE_STAR_YES;
+    const quickReplyTitle = utils.responseCodeToQuickReplyTitle(responseCode);
+    chai.assert.strictEqual(quickReplyTitle, constants.QUICK_REPLY_TITLE_YES);
+  });
+  mocha.it('Star no', () => {
+    const responseCode = constants.RESPONSE_CODE_STAR_NO;
+    const quickReplyTitle = utils.responseCodeToQuickReplyTitle(responseCode);
+    chai.assert.strictEqual(quickReplyTitle, constants.QUICK_REPLY_TITLE_NO);
+  });
   mocha.it('Activity category', () => {
     const responseCode = constants.RESPONSE_CODE_CATEGORY_ACTIVITY;
     const quickReplyTitle = utils.responseCodeToQuickReplyTitle(responseCode);
@@ -211,6 +221,16 @@ mocha.describe('Response code to response message tests', () => {
     const responseCode = constants.RESPONSE_CODE_ATTACHED_TEXT;
     const responseMessage = utils.responseCodeToResponseMessage(responseCode);
     chai.assert.strictEqual(responseMessage, constants.RESPONSE_MESSAGE_ATTACHED_TEXT);
+  });
+  mocha.it('Starred yes', () => {
+    const responseCode = constants.RESPONSE_CODE_STAR_YES;
+    const responseMessage = utils.responseCodeToResponseMessage(responseCode);
+    chai.assert.strictEqual(responseMessage, constants.RESPONSE_MESSAGE_STARRED_YES);
+  });
+  mocha.it('Starred no', () => {
+    const responseCode = constants.RESPONSE_CODE_STAR_NO;
+    const responseMessage = utils.responseCodeToResponseMessage(responseCode);
+    chai.assert.strictEqual(responseMessage, constants.RESPONSE_MESSAGE_STARRED_NO);
   });
   mocha.it('Invalid response code', () => {
     const responseCode = 'INVALID_CODE';

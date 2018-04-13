@@ -15,6 +15,7 @@ import * as utils from '../lib/utils';
 // Rewire uses Lumi controller file path to test and stub private methods of Lumi controller
 const lumiControllerFilePath = '../lib/controllers/lumiController.js';
 
+
 /**
  * Test Lumi's function to verify webhook authenticity with Messenger
  */
@@ -311,7 +312,7 @@ mocha.describe('Get response unit tests', () => {
     utilsStub.restore();
   });
 
-  mocha.it('Get response for new message text', async () => {
+  mocha.it('Get response for new message text', () => {
     const receivedMessage = { text: true };
     const receivedResponseCode = constants.RESPONSE_CODE_NEW_MESSAGE;
     const messageRef = {};
@@ -333,7 +334,7 @@ mocha.describe('Get response unit tests', () => {
     chai.assert.isTrue(utilsStub.calledOnceWithExactly(receivedResponseCode, receivedMessage));
   });
 
-  mocha.it('Get response for new message image', async () => {
+  mocha.it('Get response for new message image', () => {
     const receivedMessage = {};
     const receivedResponseCode = constants.RESPONSE_CODE_NEW_MESSAGE;
     const messageRef = {};
@@ -355,9 +356,28 @@ mocha.describe('Get response unit tests', () => {
     chai.assert.isTrue(utilsStub.calledOnceWithExactly(receivedResponseCode, receivedMessage));
   });
 
-  mocha.it('Get response for message attachment', async () => {
+  mocha.it('Get response for message attachment', () => {
     const receivedMessage = { text: true };
     const receivedResponseCode = constants.RESPONSE_CODE_ATTACH_IMAGE_NO;
+    const messageRef = {};
+    const expectedResponse = {
+      text: stubText,
+      quick_replies: [
+        'QUICK_REPLY',
+        'QUICK_REPLY',
+      ],
+    };
+    const response = rewiredLumiController
+      .__get__('getResponse')(receivedMessage, receivedResponseCode, messageRef);
+    chai.assert.deepEqual(response, expectedResponse);
+    chai.assert.strictEqual(getQuickReplyStub.callCount, 2);
+    chai.assert.isTrue(getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_STAR_YES));
+    chai.assert.isTrue(getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_STAR_NO));
+  });
+
+  mocha.it('Get response for star response', () => {
+    const receivedMessage = { text: true };
+    const receivedResponseCode = constants.RESPONSE_CODE_STAR_NO;
     const messageRef = {};
     const expectedResponse = {
       text: stubText,
@@ -643,6 +663,38 @@ mocha.describe('Handle quick reply unit tests', () => {
     chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
     chai.assert.isTrue(userMessagesRef.update.calledOnceWithExactly({ isAwaitingText: true }));
     chai.assert.isFalse(messageRef.update.called);
+    chai.assert.isFalse(utilsStub.called);
+    chai.assert.isTrue((
+      getResponseStub.calledOnceWithExactly(receivedMessage, responseCode, messageRef)));
+  });
+
+  mocha.it('Handle message quick reply star', () => {
+    const messageKey = 'MESSAGE_KEY';
+    const responseCode = constants.RESPONSE_CODE_STAR_YES;
+    const receivedMessage = {
+      quick_reply: {
+        payload: {
+          code: responseCode,
+          messageKey,
+        },
+      },
+    };
+    const messageRef = {
+      update: sinon.stub(),
+    };
+    const messagesRef = {
+      child: sinon.stub().returns(messageRef),
+    };
+    const userMessagesRef = {
+      update: sinon.stub(),
+    };
+
+    const response = rewiredLumiController
+      .__get__('handleQuickReply')(receivedMessage, messagesRef, userMessagesRef);
+    chai.assert.strictEqual(response, stubResponse);
+    chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
+    chai.assert.isFalse(userMessagesRef.update.called);
+    chai.assert.isTrue(messageRef.update.calledOnceWithExactly({ starred: true }));
     chai.assert.isFalse(utilsStub.called);
     chai.assert.isTrue((
       getResponseStub.calledOnceWithExactly(receivedMessage, responseCode, messageRef)));

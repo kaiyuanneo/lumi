@@ -841,6 +841,11 @@ exports[`TimelineComponent 1`] = `
         <th
           className="product-table-header"
         >
+          Star
+        </th>
+        <th
+          className="product-table-header"
+        >
           Time
         </th>
         <th

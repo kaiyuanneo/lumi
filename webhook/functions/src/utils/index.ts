@@ -23,14 +23,17 @@ export const responseCodeToMessageCategoryCode = (responseCode) => {
   }
 };
 
+
 export const responseCodeToQuickReplyTitle = (responseCode) => {
   switch (responseCode) {
     // All yes and no options share the same quick reply titles
     case constants.RESPONSE_CODE_ATTACH_IMAGE_YES:
     case constants.RESPONSE_CODE_ATTACH_TEXT_YES:
+    case constants.RESPONSE_CODE_STAR_YES:
       return constants.QUICK_REPLY_TITLE_YES;
     case constants.RESPONSE_CODE_ATTACH_IMAGE_NO:
     case constants.RESPONSE_CODE_ATTACH_TEXT_NO:
+    case constants.RESPONSE_CODE_STAR_NO:
       return constants.QUICK_REPLY_TITLE_NO;
     case constants.RESPONSE_CODE_CATEGORY_ACTIVITY:
       return constants.QUICK_REPLY_TITLE_CATEGORY_ACTIVITY;
@@ -51,6 +54,7 @@ export const responseCodeToQuickReplyTitle = (responseCode) => {
       return 'NA';
   }
 };
+
 
 export const responseCodeToResponseMessage = (receivedResponseCode, receivedMessage = null) => {
   if (receivedResponseCode.indexOf('category') >= 0) {
@@ -84,6 +88,10 @@ export const responseCodeToResponseMessage = (receivedResponseCode, receivedMess
       return constants.RESPONSE_MESSAGE_ATTACHED_IMAGE;
     case constants.RESPONSE_CODE_ATTACHED_TEXT:
       return constants.RESPONSE_MESSAGE_ATTACHED_TEXT;
+    case constants.RESPONSE_CODE_STAR_YES:
+      return constants.RESPONSE_MESSAGE_STARRED_YES;
+    case constants.RESPONSE_CODE_STAR_NO:
+      return constants.RESPONSE_MESSAGE_STARRED_NO;
     default:
       console.error('Response code does not map to any response message');
       return constants.DEFAULT_ERROR_MESSAGE;

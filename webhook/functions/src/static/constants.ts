@@ -54,6 +54,8 @@ export const RESPONSE_CODE_ATTACH_TEXT_YES = 'attach-text-yes';
 export const RESPONSE_CODE_ATTACH_TEXT_NO = 'attach-text-no';
 export const RESPONSE_CODE_ATTACHED_IMAGE = 'attached-image';
 export const RESPONSE_CODE_ATTACHED_TEXT = 'attached-text';
+export const RESPONSE_CODE_STAR_YES = 'star-yes';
+export const RESPONSE_CODE_STAR_NO = 'star-no';
 export const RESPONSE_CODE_CATEGORY_ACTIVITY = 'category-activity';
 export const RESPONSE_CODE_CATEGORY_BEHAVIOUR = 'category-behaviour';
 export const RESPONSE_CODE_CATEGORY_MOOD = 'category-mood';
@@ -62,20 +64,35 @@ export const RESPONSE_CODE_CATEGORY_MEDICAL = 'category-medical';
 export const RESPONSE_CODE_CATEGORY_CAREGIVER = 'category-caregiver';
 export const RESPONSE_CODE_CATEGORY_OTHER = 'category-other';
 
+// Handle new messages
 export const RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE =
   'I have saved this image to your Timeline! Would you like to attach a message?';
 export const RESPONSE_MESSAGE_NEW_MESSAGE_TEXT_1 = 'I have saved the message "';
 export const RESPONSE_MESSAGE_NEW_MESSAGE_TEXT_2 =
   '" to your Timeline. Would you like to attach an image?';
+
+// Handle pre-attach responses
 export const RESPONSE_MESSAGE_ATTACH_IMAGE_YES =
   'Great! Please send me the image you wish to attach.';
 export const RESPONSE_MESSAGE_ATTACH_TEXT_YES =
   'Great! Please send me the message you wish to attach.';
-export const RESPONSE_MESSAGE_ATTACH_NO = 'Ok! Which category is most relevant?';
+
+// Handle post-attach responses
+const RESPONSE_MESSAGE_STAR_QUESTION = 'Would you like to star this message?';
+export const RESPONSE_MESSAGE_ATTACH_NO = `Ok! ${RESPONSE_MESSAGE_STAR_QUESTION}`;
 export const RESPONSE_MESSAGE_ATTACHED_IMAGE =
-  'Perfect! I have attached this image to your previous message. Which category is most relevant?';
+  `Perfect! I have attached this image to your previous message. ${RESPONSE_MESSAGE_STAR_QUESTION}`;
 export const RESPONSE_MESSAGE_ATTACHED_TEXT =
-  'Perfect! I have attached this message to your previous image. Which category is most relevant?';
+  `Perfect! I have attached this message to your previous image. ${RESPONSE_MESSAGE_STAR_QUESTION}`;
+
+// Handle star responses
+const RESPONSE_MESSAGE_CATEGORY_QUESTION = 'Which category is most relevant?';
+export const RESPONSE_MESSAGE_STARRED_YES =
+  `Great! I have starred the message. ${RESPONSE_MESSAGE_CATEGORY_QUESTION}`;
+export const RESPONSE_MESSAGE_STARRED_NO =
+  `Sounds good! ${RESPONSE_MESSAGE_CATEGORY_QUESTION}`;
+
+// Handle category responses
 export const RESPONSE_MESSAGE_CATEGORY_1 = 'Great! Saved under category ';
 export const RESPONSE_MESSAGE_CATEGORY_2 = '. You can view your Timeline anytime at lumicares.com!';
 

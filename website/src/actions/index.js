@@ -123,7 +123,7 @@ export const deleteTimelineMessage = message => ({
   message,
 });
 
-export const saveTimelineMessageFilterCategory = category => ({
-  type: constants.ACTION_SAVE_TIMELINE_MESSAGE_FILTER_CATEGORY,
-  category,
+export const saveTimelineMessageFilterCategories = messageFilterCategories => ({
+  type: constants.ACTION_SAVE_TIMELINE_MESSAGE_FILTER_CATEGORIES,
+  messageFilterCategories,
 });

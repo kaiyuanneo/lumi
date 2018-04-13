@@ -40,12 +40,13 @@ describe('Should render message', () => {
   it('showInTimeline is false', () => {
     const stubState = {
       timeline: {
-        messageFilterCategory: '',
+        messageFilterCategories: {},
       },
     };
     const stubMessage = {
       showInTimeline: false,
       category: '',
+      starred: false,
     };
     const shouldRenderMessage = TimelineContainer._shouldRenderMessage(stubState, stubMessage);
     chai.assert.strictEqual(shouldRenderMessage, false);
@@ -54,12 +55,15 @@ describe('Should render message', () => {
   it('Category all', () => {
     const stubState = {
       timeline: {
-        messageFilterCategory: constants.TIMELINE_CATEGORY_CODE_ALL,
+        messageFilterCategories: {
+          [constants.TIMELINE_CATEGORY_CODE_ALL]: true,
+        },
       },
     };
     const stubMessage = {
       showInTimeline: true,
       category: '',
+      starred: false,
     };
     const shouldRenderMessage = TimelineContainer._shouldRenderMessage(stubState, stubMessage);
     chai.assert.strictEqual(shouldRenderMessage, true);
@@ -69,12 +73,32 @@ describe('Should render message', () => {
     const stubCategory = 'TEST_CATEGORY';
     const stubState = {
       timeline: {
-        messageFilterCategory: stubCategory,
+        messageFilterCategories: {
+          [stubCategory]: true,
+        },
       },
     };
     const stubMessage = {
       showInTimeline: true,
       category: stubCategory,
+      starred: false,
+    };
+    const shouldRenderMessage = TimelineContainer._shouldRenderMessage(stubState, stubMessage);
+    chai.assert.strictEqual(shouldRenderMessage, true);
+  });
+
+  it('Star category', () => {
+    const stubState = {
+      timeline: {
+        messageFilterCategories: {
+          [constants.TIMELINE_CATEGORY_CODE_STAR]: true,
+        },
+      },
+    };
+    const stubMessage = {
+      showInTimeline: true,
+      category: '',
+      starred: true,
     };
     const shouldRenderMessage = TimelineContainer._shouldRenderMessage(stubState, stubMessage);
     chai.assert.strictEqual(shouldRenderMessage, true);
@@ -83,12 +107,13 @@ describe('Should render message', () => {
   it('None of the above', () => {
     const stubState = {
       timeline: {
-        messageFilterCategory: 'TEST_CATEGORY_1',
+        messageFilterCategories: {},
       },
     };
     const stubMessage = {
       showInTimeline: true,
       category: 'TEST_CATEGORY_2',
+      starred: false,
     };
     const shouldRenderMessage = TimelineContainer._shouldRenderMessage(stubState, stubMessage);
     chai.assert.strictEqual(shouldRenderMessage, false);

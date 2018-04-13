@@ -23,7 +23,8 @@ export const ACTION_UPDATE_SELECT_CR_GROUP_MEMBERS = 'FETCH_UPDATE_CR_GROUP_MEMB
 // Timeline actions
 export const ACTION_SAVE_TIMELINE_MESSAGE = 'SAVE_TIMELINE_MESSAGE';
 export const ACTION_DELETE_TIMELINE_MESSAGE = 'DELETE_TIMELINE_MESSAGE';
-export const ACTION_SAVE_TIMELINE_MESSAGE_FILTER_CATEGORY = 'SAVE_TIMELINE_MESSAGE_FILTER_CATEGORY';
+export const ACTION_SAVE_TIMELINE_MESSAGE_FILTER_CATEGORIES =
+  'SAVE_TIMELINE_MESSAGE_FILTER_CATEGORIES';
 
 export const BOOTSTRAP_CSS_URL =
   'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css';
@@ -215,6 +216,7 @@ export const PRODUCT_CODE_SIGN_OUT = 'sign-out';
 export const PRODUCT_CODE_TIMELINE = 'timeline';
 export const PRODUCT_CODE_CARE_CARD = 'care-card';
 
+export const TIMELINE_CATEGORY_CODE_STAR = 'star';
 export const TIMELINE_CATEGORY_CODE_ALL = 'all';
 export const TIMELINE_CATEGORY_CODE_ACTIVITY = 'activity';
 export const TIMELINE_CATEGORY_CODE_BEHAVIOUR = 'behaviour';
@@ -224,6 +226,7 @@ export const TIMELINE_CATEGORY_CODE_MEDICAL = 'medical';
 export const TIMELINE_CATEGORY_CODE_CAREGIVER = 'caregiver';
 export const TIMELINE_CATEGORY_CODE_OTHER = 'other';
 
+export const TIMELINE_CATEGORY_NAME_STAR = 'Star';
 export const TIMELINE_CATEGORY_NAME_ALL = 'All';
 export const TIMELINE_CATEGORY_NAME_ACTIVITY = 'Activity';
 export const TIMELINE_CATEGORY_NAME_BEHAVIOUR = 'Behaviour';

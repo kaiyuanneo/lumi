@@ -614,227 +614,14 @@ exports[`RootComponent 1`] = `null`;
 
 exports[`TimelineComponent 1`] = `
 <div>
-  <div
-    className="sc-bdVaJa cXgeQK"
-  >
-    <div
-      className="product-tabs"
-      id="timeline-tabs"
-      style={undefined}
-    >
-      <ul
-        className="nav nav-tabs"
-        role="tablist"
-      >
-        <li
-          className="active"
-          role="presentation"
-          style={undefined}
-        >
-          <a
-            aria-controls="timeline-tabs-pane-all"
-            aria-selected={true}
-            href="#"
-            id="timeline-tabs-tab-all"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="tab"
-            tabIndex={undefined}
-          >
-            All
-          </a>
-        </li>
-        <li
-          className=""
-          role="presentation"
-          style={undefined}
-        >
-          <a
-            aria-controls="timeline-tabs-pane-activity"
-            aria-selected={false}
-            href="#"
-            id="timeline-tabs-tab-activity"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="tab"
-            tabIndex={-1}
-          >
-            Activity
-          </a>
-        </li>
-        <li
-          className=""
-          role="presentation"
-          style={undefined}
-        >
-          <a
-            aria-controls="timeline-tabs-pane-behaviour"
-            aria-selected={false}
-            href="#"
-            id="timeline-tabs-tab-behaviour"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="tab"
-            tabIndex={-1}
-          >
-            Behaviour
-          </a>
-        </li>
-        <li
-          className=""
-          role="presentation"
-          style={undefined}
-        >
-          <a
-            aria-controls="timeline-tabs-pane-mood"
-            aria-selected={false}
-            href="#"
-            id="timeline-tabs-tab-mood"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="tab"
-            tabIndex={-1}
-          >
-            Mood
-          </a>
-        </li>
-        <li
-          className=""
-          role="presentation"
-          style={undefined}
-        >
-          <a
-            aria-controls="timeline-tabs-pane-memory"
-            aria-selected={false}
-            href="#"
-            id="timeline-tabs-tab-memory"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="tab"
-            tabIndex={-1}
-          >
-            Memory
-          </a>
-        </li>
-        <li
-          className=""
-          role="presentation"
-          style={undefined}
-        >
-          <a
-            aria-controls="timeline-tabs-pane-medical"
-            aria-selected={false}
-            href="#"
-            id="timeline-tabs-tab-medical"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="tab"
-            tabIndex={-1}
-          >
-            Medical
-          </a>
-        </li>
-        <li
-          className=""
-          role="presentation"
-          style={undefined}
-        >
-          <a
-            aria-controls="timeline-tabs-pane-caregiver"
-            aria-selected={false}
-            href="#"
-            id="timeline-tabs-tab-caregiver"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="tab"
-            tabIndex={-1}
-          >
-            Caregiver
-          </a>
-        </li>
-        <li
-          className=""
-          role="presentation"
-          style={undefined}
-        >
-          <a
-            aria-controls="timeline-tabs-pane-other"
-            aria-selected={false}
-            href="#"
-            id="timeline-tabs-tab-other"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="tab"
-            tabIndex={-1}
-          >
-            Other
-          </a>
-        </li>
-      </ul>
-      <div
-        className="tab-content"
-      >
-        <div
-          aria-hidden={false}
-          aria-labelledby="timeline-tabs-tab-all"
-          className="fade tab-pane active in"
-          id="timeline-tabs-pane-all"
-          role="tabpanel"
-        />
-        <div
-          aria-hidden={true}
-          aria-labelledby="timeline-tabs-tab-activity"
-          className="fade tab-pane"
-          id="timeline-tabs-pane-activity"
-          role="tabpanel"
-        />
-        <div
-          aria-hidden={true}
-          aria-labelledby="timeline-tabs-tab-behaviour"
-          className="fade tab-pane"
-          id="timeline-tabs-pane-behaviour"
-          role="tabpanel"
-        />
-        <div
-          aria-hidden={true}
-          aria-labelledby="timeline-tabs-tab-mood"
-          className="fade tab-pane"
-          id="timeline-tabs-pane-mood"
-          role="tabpanel"
-        />
-        <div
-          aria-hidden={true}
-          aria-labelledby="timeline-tabs-tab-memory"
-          className="fade tab-pane"
-          id="timeline-tabs-pane-memory"
-          role="tabpanel"
-        />
-        <div
-          aria-hidden={true}
-          aria-labelledby="timeline-tabs-tab-medical"
-          className="fade tab-pane"
-          id="timeline-tabs-pane-medical"
-          role="tabpanel"
-        />
-        <div
-          aria-hidden={true}
-          aria-labelledby="timeline-tabs-tab-caregiver"
-          className="fade tab-pane"
-          id="timeline-tabs-pane-caregiver"
-          role="tabpanel"
-        />
-        <div
-          aria-hidden={true}
-          aria-labelledby="timeline-tabs-tab-other"
-          className="fade tab-pane"
-          id="timeline-tabs-pane-other"
-          role="tabpanel"
-        />
-      </div>
-    </div>
-  </div>
-  <table
-    className="table table-bordered table-condensed table-hover"
+  <Connect(TimelineFiltersComponent) />
+  <Table
+    bordered={true}
+    bsClass="table"
+    condensed={true}
+    hover={true}
+    responsive={false}
+    striped={false}
   >
     <thead>
       <tr>
@@ -865,7 +652,9 @@ exports[`TimelineComponent 1`] = `
         </th>
       </tr>
     </thead>
-    <tbody />
-  </table>
+    <tbody>
+      
+    </tbody>
+  </Table>
 </div>
 `;

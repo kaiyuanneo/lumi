@@ -1,10 +1,10 @@
 import Flexbox from 'flexbox-react';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Glyphicon, Image, Table, Tabs } from 'react-bootstrap';
+import { Glyphicon, Image, Table } from 'react-bootstrap';
 
+import TimelineFiltersContainer from '../containers/TimelineFiltersContainer';
 import * as constants from '../static/constants';
-import * as utils from '../utils';
 
 
 class TimelineComponent extends Component {
@@ -44,23 +44,7 @@ class TimelineComponent extends Component {
     };
     return (
       <div>
-        <Flexbox>
-          <Tabs
-            defaultActiveKey={constants.TIMELINE_CATEGORY_CODE_ALL}
-            className="product-tabs"
-            id="timeline-tabs"
-            onSelect={this.props.filterMessages}
-          >
-            {utils.getTabComponent(constants.TIMELINE_CATEGORY_CODE_ALL)}
-            {utils.getTabComponent(constants.TIMELINE_CATEGORY_CODE_ACTIVITY)}
-            {utils.getTabComponent(constants.TIMELINE_CATEGORY_CODE_BEHAVIOUR)}
-            {utils.getTabComponent(constants.TIMELINE_CATEGORY_CODE_MOOD)}
-            {utils.getTabComponent(constants.TIMELINE_CATEGORY_CODE_MEMORY)}
-            {utils.getTabComponent(constants.TIMELINE_CATEGORY_CODE_MEDICAL)}
-            {utils.getTabComponent(constants.TIMELINE_CATEGORY_CODE_CAREGIVER)}
-            {utils.getTabComponent(constants.TIMELINE_CATEGORY_CODE_OTHER)}
-          </Tabs>
-        </Flexbox>
+        <TimelineFiltersContainer />
         <Table bordered condensed hover>
           <thead>
             <tr>
@@ -83,7 +67,6 @@ class TimelineComponent extends Component {
 TimelineComponent.propTypes = {
   sortedMessages: PropTypes.instanceOf(Map).isRequired,
   syncMessages: PropTypes.func.isRequired,
-  filterMessages: PropTypes.func.isRequired,
   shouldRenderMessage: PropTypes.func.isRequired,
   getLocalDateString: PropTypes.func.isRequired,
   getCategoryName: PropTypes.func.isRequired,

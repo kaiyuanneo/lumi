@@ -4,13 +4,24 @@ import * as constants from '../static/constants';
 Timeline state structure
 {
   messages,
-  messageFilterCategory,
+  // Object where keys are category codes and values are true or false
+  messageFilterCategories,
 }
 */
 
 const initialState = {
   messages: {},
-  messageFilterCategory: constants.TIMELINE_CATEGORY_CODE_ALL,
+  messageFilterCategories: {
+    [constants.TIMELINE_CATEGORY_CODE_STAR]: false,
+    [constants.TIMELINE_CATEGORY_CODE_ALL]: true,
+    [constants.TIMELINE_CATEGORY_CODE_ACTIVITY]: false,
+    [constants.TIMELINE_CATEGORY_CODE_BEHAVIOUR]: false,
+    [constants.TIMELINE_CATEGORY_CODE_MOOD]: false,
+    [constants.TIMELINE_CATEGORY_CODE_MEMORY]: false,
+    [constants.TIMELINE_CATEGORY_CODE_MEDICAL]: false,
+    [constants.TIMELINE_CATEGORY_CODE_CAREGIVER]: false,
+    [constants.TIMELINE_CATEGORY_CODE_OTHER]: false,
+  },
 };
 
 const timelineReducer = (state = initialState, action) => {
@@ -29,10 +40,13 @@ const timelineReducer = (state = initialState, action) => {
       return {
         ...state,
       };
-    case constants.ACTION_SAVE_TIMELINE_MESSAGE_FILTER_CATEGORY:
+    case constants.ACTION_SAVE_TIMELINE_MESSAGE_FILTER_CATEGORIES:
       return {
         ...state,
-        messageFilterCategory: action.category,
+        messageFilterCategories: {
+          ...state.messageFilterCategories,
+          ...action.messageFilterCategories,
+        },
       };
     default:
       return state;

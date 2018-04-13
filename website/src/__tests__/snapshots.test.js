@@ -243,7 +243,8 @@ it('RootComponent', () => {
 
 
 it('TimelineComponent', () => {
-  const component = TestRenderer.create((
+  const renderer = new ShallowRenderer();
+  const component = renderer.render((
     <TimelineComponent
       filterMessages={() => {}}
       getCategoryName={() => {}}
@@ -252,6 +253,6 @@ it('TimelineComponent', () => {
       sortedMessages={new Map()}
       syncMessages={() => {}}
     />
-  )).toJSON();
+  ));
   expect(component).toMatchSnapshot();
 });

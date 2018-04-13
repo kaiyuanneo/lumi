@@ -22,10 +22,14 @@ export const _shouldRenderMessage = (state, message) => {
   if (!message.showInTimeline) {
     return false;
   }
-  if (state.timeline.messageFilterCategory === constants.TIMELINE_CATEGORY_CODE_ALL) {
+  if (state.timeline.messageFilterCategories[constants.TIMELINE_CATEGORY_CODE_ALL]) {
     return true;
   }
-  if (message.category === state.timeline.messageFilterCategory) {
+  if (state.timeline.messageFilterCategories[message.category]) {
+    return true;
+  }
+  if (message.starred &&
+      state.timeline.messageFilterCategories[constants.TIMELINE_CATEGORY_CODE_STAR]) {
     return true;
   }
   return false;
@@ -116,7 +120,6 @@ export const _syncMessages = (dispatch) => {
 const mapDispatchToProps = dispatch => ({
   // Sync local message state with auth user message state in Firebase
   syncMessages: () => _syncMessages(dispatch),
-  filterMessages: category => dispatch(actions.saveTimelineMessageFilterCategory(category)),
 });
 
 

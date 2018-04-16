@@ -61,6 +61,7 @@ export const _saveTimelineMessage = async (dispatch, messageSnapshot) => {
       ...message,
       senderFirstName: user.firstName,
       senderLastName: user.lastName,
+      senderProfilePic: user.profilePic,
     },
   };
   dispatch(actions.saveTimelineMessage(updatedMessage));

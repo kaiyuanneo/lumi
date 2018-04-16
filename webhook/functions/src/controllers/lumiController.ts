@@ -72,6 +72,42 @@ export const getPsidFromAsid = async (req, res) => {
 
 
 /**
+ * Save image in message to Firebase storage. This is necessary because Messenger CDN image
+ * links expire after an undefined period of time.
+ * Assumes Lumi only receives image attachments.
+ */
+const saveImageToDb = async (originalImageUrl) => {
+  // Ignore empty URLs
+  if (!originalImageUrl) {
+    return '';
+  }
+
+  // Copy image to Firebase Storage
+  const uploadOptions = { destination: `${Md5.hashStr(originalImageUrl)}.jpg` };
+  const uploadResponse = await admin.storage().bucket().upload(originalImageUrl, uploadOptions);
+
+  // Save the persistent image URL to the received message and return the updated message
+  const signedUrlConfig = {
+    action: 'read',
+    // Ideally we would make this never expire, but Google Storage needs an expiry date
+    expires: constants.DATE_IMAGE_EXPIRY,
+  };
+  const signedUrlResponse = await uploadResponse[0].getSignedUrl(signedUrlConfig);
+  return signedUrlResponse[0];
+};
+
+
+/**
+ * Wrap saveImageToDb to allow other Lumi modules to get a permanent image link
+ */
+export const getPermanentImageUrl = async (req, res) => {
+  const permUrl = await saveImageToDb(req.body.tempUrl);
+  // Set Access-Control-Allow-Origin header so Cloud Functions can respond to lumicares.com
+  res.status(200).set('Access-Control-Allow-Origin', '*').json({ permUrl });
+};
+
+
+/**
  * Send response message via the Send API
  * Export for unit tests
  */
@@ -190,31 +226,6 @@ const handleQuickReply = (receivedMessage, messagesRef, userMessagesRef) => {
   }
   // Generate response based on received response code
   return getResponse(receivedMessage, responseCode, messageRef);
-};
-
-
-/**
- * Save image in message to Firebase storage. This is necessary because Messenger CDN image
- * links expire after an undefined period of time.
- * Assumes Lumi only receives image attachments.
- */
-const saveImageToDb = async (receivedMessage) => {
-  // Copy image to Firebase Storage
-  const originalImageUrl = receivedMessage.attachments['0'].payload.url;
-  const uploadOptions = {
-    destination: `${Md5.hashStr(originalImageUrl)}.jpg`,
-  };
-  const uploadResponse = await admin.storage().bucket().upload(originalImageUrl, uploadOptions);
-
-  // Save the persistent image URL to the received message and return the updated message
-  const signedUrlConfig = {
-    action: 'read',
-    // Ideally we would make this never expire, but Google Storage needs an expiry date
-    expires: constants.DATE_IMAGE_EXPIRY,
-  };
-  const signedUrlResponse = await uploadResponse[0].getSignedUrl(signedUrlConfig);
-  receivedMessage.attachments['0'].payload.url = signedUrlResponse[0];
-  return receivedMessage;
 };
 
 
@@ -386,7 +397,7 @@ const handleTextAndAttachments = async (webhookEvent, messagesRef, userMessagesR
  */
 const handleMessage = async (webhookEvent) => {
   let response = null;
-  let receivedMessage = webhookEvent.message;
+  const receivedMessage = webhookEvent.message;
   const db = admin.database();
   const messagesRef = db.ref(constants.DB_PATH_LUMI_MESSAGES);
   const senderPsid = webhookEvent.sender.id;
@@ -401,7 +412,8 @@ const handleMessage = async (webhookEvent) => {
   } else if (receivedMessage.text || receivedMessage.attachments) {
     // If message contains image, store image in Firebase Storage and attach this URL to message
     if (receivedMessage.attachments) {
-      receivedMessage = await saveImageToDb(receivedMessage);
+      const originalImageUrl = receivedMessage.attachments['0'].payload.url;
+      receivedMessage.attachments['0'].payload.url = await saveImageToDb(originalImageUrl);
     }
     response = await handleTextAndAttachments(webhookEvent, messagesRef, userMessagesRef);
   }

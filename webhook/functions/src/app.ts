@@ -1,4 +1,5 @@
 import * as bodyParser from 'body-parser';
+import * as cors from 'cors';
 import * as express from 'express';
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
@@ -26,7 +27,9 @@ app.use(bodyParser.json());
 const port = process.env.PORT !== undefined ? process.env.PORT : constants.PORT;
 const server = app.listen(port, () => console.log(constants.MESSAGE_WEBHOOK_STARTUP));
 
-// Set up routing
+// Set up routing and cross-origin resource sharing (CORS)
+// CORS is necessary for sites outside of Firebase to access the Lumi API
+app.use(cors());
 app.use(routes);
 
 // Deploy method in package.json controls whether we deploy staging or prod webhook

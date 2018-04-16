@@ -10,6 +10,10 @@ import sinon from 'sinon';
 
 import * as constants from '../lib/static/constants';
 
+// NB: We cannot stub private functions of controllers in integration tests, because
+// the controller modules are imported by the Express applications directly and not executed
+// in the context of this test file.
+
 
 mocha.describe('Webhook integration tests', () => {
   const testToken = 'TEST_TOKEN';
@@ -198,6 +202,7 @@ mocha.describe('Webhook integration tests', () => {
         res.on('send', () => {
           // If we don't include the try catch, assert failures cause unhandle promise rejections.
           try {
+            chai.assert.strictEqual(res.statusCode, 200);
             chai.assert.strictEqual(res.getHeader('Access-Control-Allow-Origin'), '*');
             chai.assert.isTrue(res._isJSON());
             chai.assert.deepEqual(res._getData(), expectedData);
@@ -247,9 +252,37 @@ mocha.describe('Webhook integration tests', () => {
         res.on('send', () => {
           // If we don't include the try catch, assert failures cause unhandle promise rejections.
           try {
+            chai.assert.strictEqual(res.statusCode, 200);
             chai.assert.strictEqual(res.getHeader('Access-Control-Allow-Origin'), '*');
             chai.assert.isTrue(res._isJSON());
             chai.assert.deepEqual(res._getData(), expectedData);
+            done();
+          } catch (e) {
+            done(new Error(e));
+          }
+        });
+        cloudFunctions.webhook(req, res);
+      });
+    });
+
+    mocha.describe('Get permanent image URL tests', () => {
+      mocha.it('Get permanent URL success', (done) => {
+        const req = httpMocks.createRequest({
+          method: 'POST',
+          url: `${constants.ROUTE_LUMI}${constants.ROUTE_LUMI_SAVE_IMAGE}`,
+          // Do not send URL to avoid invoking Firebase services that need mocking
+          body: { tempUrl: '' },
+        });
+        const res = httpMocks.createResponse({ eventEmitter: EventEmitter });
+        const expectedData = JSON.stringify({ permUrl: '' });
+        // 'json' isn't an event we can listen on. It apparently uses 'send' under the hood.
+        res.on('send', () => {
+          // If we don't include the try catch, assert failures cause unhandle promise rejections.
+          try {
+            chai.assert.strictEqual(res.statusCode, 200);
+            chai.assert.strictEqual(res.getHeader('Access-Control-Allow-Origin'), '*');
+            chai.assert.isTrue(res._isJSON());
+            chai.assert.strictEqual(res._getData(), expectedData);
             done();
           } catch (e) {
             done(new Error(e));

@@ -12,6 +12,7 @@ import * as constants from '../static/constants';
  * Get relevant user info from Facebook Graph API
  */
 export const _getUserInfoFromFacebook = async (credential) => {
+  // Get basic fields
   const fields = [
     'id',
     'first_name',
@@ -30,7 +31,30 @@ export const _getUserInfoFromFacebook = async (credential) => {
     },
     json: true,
   };
-  return rp(userInfoRequestOptions);
+  const facebookUserInfo = await rp(userInfoRequestOptions);
+
+  // Get profile pic. We cannot do this above because access token does not have correct privilege.
+  const profilePicRequestOptions = {
+    uri: `${constants.URL_FACEBOOK_GRAPH_API}/${facebookUserInfo.id}/picture`,
+    qs: {
+      type: 'large',
+      redirect: false,
+    },
+    json: true,
+  };
+  const profilePicData = await rp(profilePicRequestOptions);
+
+  // Store profile pic in a more permanent location in Lumi's Cloud Storage DB
+  const saveImageRequestOptions = {
+    method: 'POST',
+    uri: constants.URL_LUMI_SAVE_IMAGE,
+    body: { tempUrl: profilePicData.data.url },
+    json: true,
+  };
+  const { permUrl } = await rp(saveImageRequestOptions);
+  facebookUserInfo.profilePic = permUrl;
+
+  return facebookUserInfo;
 };
 
 
@@ -89,9 +113,7 @@ export const _mergeExistingUserRecord = async (currentUser, facebookUserInfo) =>
 export const _getUserPsid = async (facebookUserInfo) => {
   const psidRequestOptions = {
     uri: constants.URL_LUMI_PSID,
-    qs: {
-      asid: facebookUserInfo.id,
-    },
+    qs: { asid: facebookUserInfo.id },
     json: true,
   };
   const { psid } = await rp(psidRequestOptions);
@@ -133,7 +155,7 @@ export const _saveUserInfo = async (currentUser, existingUserInfo, facebookUserI
     last_name: null,
     lastName: facebookUserInfo.last_name,
     // Store profile picture from FB auth
-    profilePic: currentUser.photoURL,
+    profilePic: facebookUserInfo.profilePic,
     psid,
   });
 };
@@ -152,6 +174,7 @@ const _setUserInfo = async (currentUser, credential) => {
   if (!psid) {
     return false;
   }
+
   // Save info gathered above to Firebase
   await _saveUserInfo(currentUser, existingUserInfo, facebookUserInfo, psid);
   // Return false to avoid redirects after sign in
@@ -165,9 +188,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
   firebaseAuth: firebase.auth,
   uiConfig: {
-    callbacks: {
-      signInSuccess: _setUserInfo,
-    },
+    callbacks: { signInSuccess: _setUserInfo },
     signInFlow: 'popup',
     signInOptions: [firebase.auth.FacebookAuthProvider.PROVIDER_ID],
   },

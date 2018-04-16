@@ -228,6 +228,70 @@ mocha.describe('Get user PSID from ASID unit tests', () => {
 
 
 /**
+ * Test that Lumi saves images to DB and returns an updated received message
+ */
+mocha.describe('Save image to DB unit tests', () => {
+  mocha.it('Save image success', async () => {
+    const rewiredLumiController = rewire(lumiControllerFilePath);
+    const stubDomain = 'TEST_DOMAIN';
+    const stubPath = '/TEST_PATH';
+    const stubTempUrl = `${stubDomain}${stubPath}`;
+    const stubDestination = `${Md5.hashStr(stubTempUrl)}.jpg`;
+    const stubDownloadUrl = 'TEST_DOWNLOAD_URL';
+    const stubBlob = 'TEST_BLOB';
+
+    nock(stubDomain)
+      .get(stubPath)
+      .query(true)
+      .reply(200, stubBlob);
+
+    const getSignedUrlStub = sinon.stub().resolves([stubDownloadUrl]);
+    const uploadStub = sinon.stub().resolves([{ getSignedUrl: getSignedUrlStub }]);
+    const bucketStub = sinon.stub().returns({ upload: uploadStub });
+    const storageStub = sinon.stub(admin, 'storage').get(() => (() => ({ bucket: bucketStub })));
+
+    const permUrl = await rewiredLumiController.__get__('saveImageToDb')(stubTempUrl);
+
+    chai.assert.isTrue(bucketStub.calledOnce);
+    chai.assert
+      .isTrue(uploadStub.calledOnceWithExactly(stubTempUrl, { destination: stubDestination }));
+    chai.assert.isTrue(getSignedUrlStub.calledOnceWithExactly({
+      action: 'read',
+      expires: constants.DATE_IMAGE_EXPIRY,
+    }));
+    chai.assert.strictEqual(permUrl, stubDownloadUrl);
+
+    storageStub.restore();
+    nock.cleanAll();
+  });
+});
+
+
+mocha.describe('Get permanent image URL unit tests', () => {
+  mocha.it('Get URL success', async () => {
+    const rewiredLumiController = rewire(lumiControllerFilePath);
+    const stubPermUrl = 'TEST_PERM_URL';
+    const saveImageToDbStub = sinon.stub().resolves(stubPermUrl);
+    const revertLumiController = rewiredLumiController.__set__('saveImageToDb', saveImageToDbStub);
+
+    const res = {
+      status: sinon.stub().returnsThis(),
+      set: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    const req = { body: { tempUrl: 'TEST_TEMP_URL' } };
+    await rewiredLumiController.getPermanentImageUrl(req, res);
+    chai.assert.isTrue(saveImageToDbStub.calledOnceWithExactly(req.body.tempUrl));
+    chai.assert.isTrue(res.status.calledOnceWithExactly(200));
+    chai.assert.isTrue(res.set.calledOnceWithExactly('Access-Control-Allow-Origin', '*'));
+    chai.assert.isTrue(res.json.calledOnceWithExactly({ permUrl: stubPermUrl }));
+
+    // Revert changes to affected modules
+    revertLumiController();
+  });
+});
+
+/**
  * Test that Lumi calls Facebook's Send API with the relevant parameters
  */
 mocha.describe('Call Send API unit tests', () => {
@@ -762,46 +826,6 @@ mocha.describe('Handle quick reply unit tests', () => {
     chai.assert.isFalse(utilsStub.called);
     chai.assert.isTrue((
       getResponseStub.calledOnceWithExactly(receivedMessage, responseCode, messageRef)));
-  });
-});
-
-
-/**
- * Test that Lumi saves images to DB and returns an updated received message
- */
-mocha.describe('Save image to DB unit tests', () => {
-  mocha.it('Save image success', async () => {
-    const rewiredLumiController = rewire(lumiControllerFilePath);
-    const stubDomain = 'TEST_DOMAIN';
-    const stubPath = '/TEST_PATH';
-    const stubUrl = `${stubDomain}${stubPath}`;
-    const stubDestination = `${Md5.hashStr(stubUrl)}.jpg`;
-    const stubDownloadUrl = 'TEST_DOWNLOAD_URL';
-    const stubBlob = 'TEST_BLOB';
-
-    nock(stubDomain)
-      .get(stubPath)
-      .query(true)
-      .reply(200, stubBlob);
-
-    const getSignedUrlStub = sinon.stub().resolves([stubDownloadUrl]);
-    const uploadStub = sinon.stub().resolves([{ getSignedUrl: getSignedUrlStub }]);
-    const bucketStub = sinon.stub().returns({ upload: uploadStub });
-    const storageStub = sinon.stub(admin, 'storage').get(() => (() => ({ bucket: bucketStub })));
-
-    const stubMessage = { attachments: { 0: { payload: { url: stubUrl } } } };
-    const updatedMessage = await rewiredLumiController.__get__('saveImageToDb')(stubMessage);
-
-    chai.assert.isTrue(bucketStub.calledOnce);
-    chai.assert.isTrue(uploadStub.calledOnceWithExactly(stubUrl, { destination: stubDestination }));
-    chai.assert.isTrue(getSignedUrlStub.calledOnceWithExactly({
-      action: 'read',
-      expires: constants.DATE_IMAGE_EXPIRY,
-    }));
-    chai.assert.strictEqual(updatedMessage.attachments['0'].payload.url, stubDownloadUrl);
-
-    storageStub.restore();
-    nock.cleanAll();
   });
 });
 

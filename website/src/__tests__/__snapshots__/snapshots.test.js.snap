@@ -623,35 +623,6 @@ exports[`TimelineComponent 1`] = `
     responsive={false}
     striped={false}
   >
-    <thead>
-      <tr>
-        <th
-          className="product-table-header"
-        >
-          Star
-        </th>
-        <th
-          className="product-table-header"
-        >
-          Time
-        </th>
-        <th
-          className="product-table-header"
-        >
-          User
-        </th>
-        <th
-          className="product-table-header"
-        >
-          Category
-        </th>
-        <th
-          className="product-table-header"
-        >
-          Note
-        </th>
-      </tr>
-    </thead>
     <tbody>
       
     </tbody>

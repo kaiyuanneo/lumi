@@ -12,17 +12,31 @@ import * as constants from '../static/constants';
 // private functions yet.
 describe('Get user info from Facebook', () => {
   it('Verify return value', async () => {
-    const stubInfo = { info: 'TEST_INFO' };
+    const stubBasicInfo = { id: 'TEST_ID' };
+    const stubProfilePicData = { data: { url: 'TEST_TEMP_URL' } };
+    const stubPermUrl = { permUrl: 'TEST_PERM_URL' };
+    const stubCredential = { accessToken: 'TEST_ACCESS_TOKEN' };
     // Stub HTTP request to avoid call to Facebook
     nock(constants.URL_FACEBOOK_GRAPH_API)
       .get('/me')
       .query(true)
-      .reply(200, stubInfo);
-    const stubCredential = { accessToken: 'TEST_ACCESS_TOKEN' };
+      .reply(200, stubBasicInfo);
+    nock(constants.URL_FACEBOOK_GRAPH_API)
+      .get(`/${stubBasicInfo.id}/picture`)
+      .query(true)
+      .reply(200, stubProfilePicData);
+    nock(constants.URL_LUMI_WEBHOOK)
+      .post('/save-image')
+      .reply(200, stubPermUrl);
     const facebookUserInfo = await AuthContainer._getUserInfoFromFacebook(stubCredential);
-    chai.assert.deepEqual(facebookUserInfo, stubInfo);
+    const expectedFacebookUserInfo = {
+      ...stubBasicInfo,
+      profilePic: stubPermUrl.permUrl,
+    };
+    chai.assert.deepEqual(facebookUserInfo, expectedFacebookUserInfo);
   });
 });
+
 
 describe('Merge existing user record', () => {
   it('Existing user exists', async () => {
@@ -161,6 +175,7 @@ describe('Merge existing user record', () => {
   });
 });
 
+
 describe('Get user PSID', () => {
   it('Verify return value', async () => {
     const stubPsid = 'TEST_PSID';
@@ -176,18 +191,19 @@ describe('Get user PSID', () => {
   });
 });
 
+
 describe('Save user info', async () => {
   it('Successful save', async () => {
     const stubCurrentUid = 'CURRENT_UID';
     const stubCurrentUser = {
       uid: stubCurrentUid,
-      photoURL: 'TEST_PHOTO_URL',
     };
     const stubFacebookUserInfo = {
       id: 'TEST_ID',
       email: 'TEST_EMAIL',
       first_name: 'TEST_FIRST_NAME',
       last_name: 'TEST_LAST_NAME',
+      profilePic: 'TEST_PROFILE_PIC',
     };
     const stubPsid = 'TEST_PSID';
 
@@ -229,7 +245,7 @@ describe('Save user info', async () => {
       firstName: stubFacebookUserInfo.first_name,
       last_name: null,
       lastName: stubFacebookUserInfo.last_name,
-      profilePic: stubCurrentUser.photoURL,
+      profilePic: stubFacebookUserInfo.profilePic,
       psid: stubPsid,
     }));
 

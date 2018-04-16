@@ -30,16 +30,24 @@
   padding-top: 70px;
 }
 
-.timeline-image {
-  margin: auto;
-}
-
 .product-table-header {
   text-align: center;
 }
 
 .product-tabs {
   margin: 0 auto;
+}
+
+.space-horizontal {
+  width: 5px;
+}
+
+.timeline-card-profile-image {
+  height: 40px;
+}
+
+.timeline-image {
+  margin: auto;
 }
 
 .timeline-star-filter {

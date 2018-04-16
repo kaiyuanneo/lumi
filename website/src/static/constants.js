@@ -216,6 +216,8 @@ export const PRODUCT_CODE_SIGN_OUT = 'sign-out';
 export const PRODUCT_CODE_TIMELINE = 'timeline';
 export const PRODUCT_CODE_CARE_CARD = 'care-card';
 
+export const STORAGE_PATH_LUMI_IMAGES = 'lumi/images';
+
 export const TIMELINE_CATEGORY_CODE_STAR = 'star';
 export const TIMELINE_CATEGORY_CODE_ALL = 'all';
 export const TIMELINE_CATEGORY_CODE_ACTIVITY = 'activity';
@@ -246,5 +248,6 @@ export const URL_FACEBOOK_GRAPH_API = 'https://graph.facebook.com/v2.6';
 export const URL_FACEBOOK_GRAPH_API_ME = `${URL_FACEBOOK_GRAPH_API}/me`;
 export const URL_LUMI_WEBHOOK = 'https://us-central1-lumi-cares.cloudfunctions.net/webhook/lumi';
 export const URL_LUMI_PSID = `${URL_LUMI_WEBHOOK}/psid`;
+export const URL_LUMI_SAVE_IMAGE = `${URL_LUMI_WEBHOOK}/save-image`;
 
 export const WEBSITE_TITLE = 'Lumi';

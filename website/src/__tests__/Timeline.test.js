@@ -125,7 +125,11 @@ describe('Save Timeline message', () => {
   it('Save success', async () => {
     const stubMessage = { senderPsid: 'TEST_SENDER_PSID' };
     const stubUid = 'TEST_UID';
-    const stubUser = { firstName: 'TEST_FIRST_NAME', lastName: 'TEST_LAST_NAME' };
+    const stubUser = {
+      firstName: 'TEST_FIRST_NAME',
+      lastName: 'TEST_LAST_NAME',
+      profilePic: 'TEST_PROFILE_PIC',
+    };
     const stubAction = 'TEST_ACTION';
 
     const uidRefParam = `${constants.DB_PATH_USER_PSID_TO_UID}/${stubMessage.senderPsid}`;
@@ -161,6 +165,7 @@ describe('Save Timeline message', () => {
         ...stubMessage,
         senderFirstName: stubUser.firstName,
         senderLastName: stubUser.lastName,
+        senderProfilePic: stubUser.profilePic,
       },
     }));
 

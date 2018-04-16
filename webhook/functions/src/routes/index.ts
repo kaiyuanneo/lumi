@@ -12,6 +12,7 @@ const lumiRouter = express.Router({ mergeParams: true });
 lumiRouter.get(constants.ROUTE_LUMI_ROOT, lumiController.verify);
 lumiRouter.post(constants.ROUTE_LUMI_ROOT, lumiController.message);
 lumiRouter.get(constants.ROUTE_LUMI_PSID, lumiController.getPsidFromAsid);
+lumiRouter.post(constants.ROUTE_LUMI_SAVE_IMAGE, lumiController.getPermanentImageUrl);
 rootRouter.use(constants.ROUTE_LUMI, lumiRouter);
 
 // All PWFN-related requests go to <webhook_url>/pwfn/<path>

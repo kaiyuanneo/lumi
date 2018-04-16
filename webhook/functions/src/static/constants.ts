@@ -99,6 +99,7 @@ export const RESPONSE_MESSAGE_CATEGORY_2 = '. You can view your Timeline anytime
 export const ROUTE_LUMI = '/lumi';
 export const ROUTE_LUMI_ROOT = '/';
 export const ROUTE_LUMI_PSID = '/psid';
+export const ROUTE_LUMI_SAVE_IMAGE = '/save-image';
 export const ROUTE_PWFN = '/pwfn';
 export const ROUTE_PWFN_ROOT = '/';
 

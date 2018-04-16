@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { Glyphicon, Image, Table } from 'react-bootstrap';
 
 import TimelineFiltersContainer from '../containers/TimelineFiltersContainer';
-import * as constants from '../static/constants';
 
 
 class TimelineComponent extends Component {
@@ -19,26 +18,48 @@ class TimelineComponent extends Component {
       let messageContent;
       if ('attachments' in messageValue) {
         messageContent = (
-          <Flexbox flexDirection="column">
+          <Flexbox flexDirection="column" alignItems="flex-start">
+            {messageValue.text}
             <Image
               className="timeline-image"
               src={messageValue.attachments[0].payload.url}
               responsive
             />
-            {messageValue.text}
           </Flexbox>
         );
       } else {
         messageContent = messageValue.text;
       }
-      const starIcon = messageValue.starred ? <Glyphicon glyph="star" /> : null;
+      const senderFullName = `${messageValue.senderFirstName} ${messageValue.senderLastName}`;
+      const messageTimestamp = this.props.getLocalDateString(messageValue.timestamp);
+      const messageCategory = this.props.getCategoryName(messageValue.category);
+      const starIcon = messageValue.starred ? <div>&nbsp;• <Glyphicon glyph="star" /></div> : null;
       return (
         <tr key={messageKey}>
-          <td>{starIcon}</td>
-          <td>{this.props.getLocalDateString(messageValue.timestamp)}</td>
-          <td>{messageValue.senderFirstName} {messageValue.senderLastName}</td>
-          <td>{this.props.getCategoryName(messageValue.category)}</td>
-          <td>{messageContent}</td>
+          <td>
+            <Flexbox flexDirection="column">
+              <Flexbox alignItems="center">
+                <Image
+                  className="timeline-card-profile-image"
+                  src={messageValue.senderProfilePic}
+                  circle
+                />
+                <span className="space-horizontal" />
+                <Flexbox flexDirection="column" alignItems="flex-start">
+                  <div>{senderFullName} • {messageTimestamp}</div>
+                  <Flexbox>
+                    <div>{messageCategory}</div>
+                    {starIcon}
+                  </Flexbox>
+                </Flexbox>
+              </Flexbox>
+              <br />
+              <Flexbox>
+                {messageContent}
+              </Flexbox>
+            </Flexbox>
+            <br />
+          </td>
         </tr>
       );
     };
@@ -46,15 +67,6 @@ class TimelineComponent extends Component {
       <div>
         <TimelineFiltersContainer />
         <Table bordered condensed hover>
-          <thead>
-            <tr>
-              <th className="product-table-header">{constants.TIMELINE_TABLE_HEADER_STAR}</th>
-              <th className="product-table-header">{constants.TIMELINE_TABLE_HEADER_TIME}</th>
-              <th className="product-table-header">{constants.TIMELINE_TABLE_HEADER_USER}</th>
-              <th className="product-table-header">{constants.TIMELINE_TABLE_HEADER_CATEGORY}</th>
-              <th className="product-table-header">{constants.TIMELINE_TABLE_HEADER_NOTE}</th>
-            </tr>
-          </thead>
           <tbody>
             {Array.from(this.props.sortedMessages, messageToTableRow)}
           </tbody>

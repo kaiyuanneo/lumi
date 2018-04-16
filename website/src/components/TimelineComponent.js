@@ -18,17 +18,17 @@ class TimelineComponent extends Component {
       let messageContent;
       if ('attachments' in messageValue) {
         messageContent = (
+          // Need alignItems to prevent image stretching
           <Flexbox flexDirection="column" alignItems="flex-start">
-            {messageValue.text}
+            <div>{messageValue.text}</div>
             <Image
-              className="timeline-image"
               src={messageValue.attachments[0].payload.url}
               responsive
             />
           </Flexbox>
         );
       } else {
-        messageContent = messageValue.text;
+        messageContent = <div>{messageValue.text}</div>;
       }
       const senderFullName = `${messageValue.senderFirstName} ${messageValue.senderLastName}`;
       const messageTimestamp = this.props.getLocalDateString(messageValue.timestamp);
@@ -37,7 +37,7 @@ class TimelineComponent extends Component {
       return (
         <tr key={messageKey}>
           <td>
-            <Flexbox flexDirection="column">
+            <Flexbox flexDirection="column" alignItems="flex-start">
               <Flexbox alignItems="center">
                 <Image
                   className="timeline-card-profile-image"
@@ -45,18 +45,13 @@ class TimelineComponent extends Component {
                   circle
                 />
                 <span className="space-horizontal" />
-                <Flexbox flexDirection="column" alignItems="flex-start">
+                <Flexbox flexDirection="column">
                   <div>{senderFullName} • {messageTimestamp}</div>
-                  <Flexbox>
-                    <div>{messageCategory}</div>
-                    {starIcon}
-                  </Flexbox>
+                  <Flexbox><div>{messageCategory}</div>{starIcon}</Flexbox>
                 </Flexbox>
               </Flexbox>
               <br />
-              <Flexbox>
-                {messageContent}
-              </Flexbox>
+              {messageContent}
             </Flexbox>
             <br />
           </td>

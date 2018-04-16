@@ -6,6 +6,8 @@ Timeline state structure
   messages,
   // Object where keys are category codes and values are true or false
   messageFilterCategories,
+  // Boolean to determine if frontend displays message filters
+  showFilters
 }
 */
 
@@ -22,6 +24,7 @@ const initialState = {
     [constants.TIMELINE_CATEGORY_CODE_CAREGIVER]: false,
     [constants.TIMELINE_CATEGORY_CODE_OTHER]: false,
   },
+  showFilters: false,
 };
 
 const timelineReducer = (state = initialState, action) => {
@@ -47,6 +50,11 @@ const timelineReducer = (state = initialState, action) => {
           ...state.messageFilterCategories,
           ...action.messageFilterCategories,
         },
+      };
+    case constants.ACTION_TOGGLE_TIMELINE_FILTER_BUTTONS:
+      return {
+        ...state,
+        showFilters: action.showFilters,
       };
     default:
       return state;

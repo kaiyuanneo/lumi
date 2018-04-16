@@ -25,6 +25,7 @@ export const ACTION_SAVE_TIMELINE_MESSAGE = 'SAVE_TIMELINE_MESSAGE';
 export const ACTION_DELETE_TIMELINE_MESSAGE = 'DELETE_TIMELINE_MESSAGE';
 export const ACTION_SAVE_TIMELINE_MESSAGE_FILTER_CATEGORIES =
   'SAVE_TIMELINE_MESSAGE_FILTER_CATEGORIES';
+export const ACTION_TOGGLE_TIMELINE_FILTER_BUTTONS = 'TOGGLE_TIMELINE_FILTER_BUTTONS';
 
 export const BOOTSTRAP_CSS_URL =
   'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css';
@@ -238,11 +239,7 @@ export const TIMELINE_CATEGORY_NAME_MEDICAL = 'Medical';
 export const TIMELINE_CATEGORY_NAME_CAREGIVER = 'Caregiver';
 export const TIMELINE_CATEGORY_NAME_OTHER = 'Other';
 
-export const TIMELINE_TABLE_HEADER_STAR = 'Star';
-export const TIMELINE_TABLE_HEADER_TIME = 'Time';
-export const TIMELINE_TABLE_HEADER_USER = 'User';
-export const TIMELINE_TABLE_HEADER_CATEGORY = 'Category';
-export const TIMELINE_TABLE_HEADER_NOTE = 'Note';
+export const TIMELINE_BUTTON_CODE_FILTER = 'timeline-button-code-filter';
 
 export const URL_FACEBOOK_GRAPH_API = 'https://graph.facebook.com/v2.6';
 export const URL_FACEBOOK_GRAPH_API_ME = `${URL_FACEBOOK_GRAPH_API}/me`;

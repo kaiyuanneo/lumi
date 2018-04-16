@@ -127,3 +127,8 @@ export const saveTimelineMessageFilterCategories = messageFilterCategories => ({
   type: constants.ACTION_SAVE_TIMELINE_MESSAGE_FILTER_CATEGORIES,
   messageFilterCategories,
 });
+
+export const toggleTimelineFilterButtons = showFilters => ({
+  type: constants.ACTION_TOGGLE_TIMELINE_FILTER_BUTTONS,
+  showFilters,
+});

@@ -4,33 +4,33 @@ import { connect } from 'react-redux';
 import hash from 'string-hash';
 
 import * as actions from '../actions';
-import CareCardNewMemberComponent from '../components/CareCardNewMemberComponent';
+import SummaryNewMemberComponent from '../components/SummaryNewMemberComponent';
 import * as constants from '../static/constants';
 import * as utils from '../utils';
 
 
 // TODO(kai): Implement profile pic upload capability
 const mapStateToProps = state => ({
-  firstName: state.careCard.firstNameFormFieldValue,
-  lastName: state.careCard.lastNameFormFieldValue,
-  gender: state.careCard.genderFormFieldValue,
-  birthday: state.careCard.birthdayFormFieldValue,
-  email: state.careCard.emailFormFieldValue,
-  address: state.careCard.addressFormFieldValue,
-  typeOfDementia: state.careCard.typeOfDementiaFormFieldValue,
-  dateOfDiagnosis: state.careCard.dateOfDiagnosisFormFieldValue,
-  medications: state.careCard.medicationsFormFieldValue,
-  providers: state.careCard.providersFormFieldValue,
-  needsAndPreferences: state.careCard.needsAndPreferencesFormFieldValue,
-  thingsThatDelight: state.careCard.thingsThatDelightFormFieldValue,
-  placesOfInterest: state.careCard.placesOfInterestFormFieldValue,
+  firstName: state.summary.firstNameFormFieldValue,
+  lastName: state.summary.lastNameFormFieldValue,
+  gender: state.summary.genderFormFieldValue,
+  birthday: state.summary.birthdayFormFieldValue,
+  email: state.summary.emailFormFieldValue,
+  address: state.summary.addressFormFieldValue,
+  typeOfDementia: state.summary.typeOfDementiaFormFieldValue,
+  dateOfDiagnosis: state.summary.dateOfDiagnosisFormFieldValue,
+  medications: state.summary.medicationsFormFieldValue,
+  providers: state.summary.providersFormFieldValue,
+  needsAndPreferences: state.summary.needsAndPreferencesFormFieldValue,
+  thingsThatDelight: state.summary.thingsThatDelightFormFieldValue,
+  placesOfInterest: state.summary.placesOfInterestFormFieldValue,
 });
 
 
 const mapDispatchToProps = dispatch => ({
   saveFieldValueLocally: (fieldId, fieldValue) =>
-    dispatch(actions.saveCareCardFieldValueLocally(fieldId, fieldValue)),
-  unmountFunc: () => dispatch(actions.unmountCareCardNewMemberForm()),
+    dispatch(actions.saveSummaryFieldValueLocally(fieldId, fieldValue)),
+  unmountFunc: () => dispatch(actions.unmountSummaryNewMemberForm()),
 });
 
 
@@ -67,65 +67,65 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...ownProps,
     firstNameFormField: utils.getFirstNameFieldGenerator()(
       stateProps.firstName,
-      getHandleChangeFunc(constants.CARE_CARD_FIELD_ID_FIRST_NAME),
+      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_FIRST_NAME),
     ),
     lastNameFormField: utils.getLastNameFieldGenerator()(
       stateProps.lastName,
-      getHandleChangeFunc(constants.CARE_CARD_FIELD_ID_LAST_NAME),
+      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_LAST_NAME),
     ),
     birthdayFormField: utils.getBirthdayFieldGenerator()(
       stateProps.birthday ? utils.usToIsoDate(stateProps.birthday) : '',
-      getHandleChangeDateFunc(constants.CARE_CARD_FIELD_ID_BIRTHDAY),
+      getHandleChangeDateFunc(constants.SUMMARY_FIELD_ID_BIRTHDAY),
     ),
     genderFormField: utils.getGenderFieldGenerator()(
       stateProps.gender,
-      getHandleChangeFunc(constants.CARE_CARD_FIELD_ID_GENDER),
+      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_GENDER),
     ),
     emailFormField: utils.getEmailFieldGenerator()(
       stateProps.email,
-      getHandleChangeFunc(constants.CARE_CARD_FIELD_ID_EMAIL),
+      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_EMAIL),
     ),
     addressFormField: utils.getAddressFieldGenerator()(
       stateProps.address,
-      getHandleChangeFunc(constants.CARE_CARD_FIELD_ID_ADDRESS),
+      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_ADDRESS),
     ),
     typeOfDementiaFormField: utils.getTypeOfDementiaFieldGenerator()(
       stateProps.typeOfDementia,
-      getHandleChangeFunc(constants.CARE_CARD_FIELD_ID_TYPE_OF_DEMENTIA),
+      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_TYPE_OF_DEMENTIA),
     ),
     dateOfDiagnosisFormField: utils.getDateOfDiagnosisFieldGenerator()(
       stateProps.dateOfDiagnosis ? utils.usToIsoDate(stateProps.dateOfDiagnosis) : '',
-      getHandleChangeDateFunc(constants.CARE_CARD_FIELD_ID_DATE_OF_DIAGNOSIS),
+      getHandleChangeDateFunc(constants.SUMMARY_FIELD_ID_DATE_OF_DIAGNOSIS),
     ),
     medicationsFormField: utils.getMedicationsFieldGenerator()(
       stateProps.medications,
-      getHandleChangeFunc(constants.CARE_CARD_FIELD_ID_MEDICATIONS),
+      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_MEDICATIONS),
     ),
     providersFormField: utils.getProvidersFieldGenerator()(
       stateProps.providers,
-      getHandleChangeFunc(constants.CARE_CARD_FIELD_ID_PROVIDERS),
+      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_PROVIDERS),
     ),
     needsAndPreferencesFormField: utils.getNeedsAndPreferencesFieldGenerator()(
       stateProps.needsAndPreferences,
-      getHandleChangeFunc(constants.CARE_CARD_FIELD_ID_NEEDS_AND_PREFERENCES),
+      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_NEEDS_AND_PREFERENCES),
     ),
     thingsThatDelightFormField: utils.getThingsThatDelightFieldGenerator()(
       stateProps.thingsThatDelight,
-      getHandleChangeFunc(constants.CARE_CARD_FIELD_ID_THINGS_THAT_DELIGHT),
+      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_THINGS_THAT_DELIGHT),
     ),
     placesOfInterestFormField: utils.getPlacesOfInterestFieldGenerator()(
       stateProps.placesOfInterest,
-      getHandleChangeFunc(constants.CARE_CARD_FIELD_ID_PLACES_OF_INTEREST),
+      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_PLACES_OF_INTEREST),
     ),
     isSaveButtonDisabled: !utils.isValidEmail(stateProps.email),
     saveNewMember: () => _saveNewMember(stateProps),
   };
 };
 
-const CareCardNewMemberContainer = connect(
+const SummaryNewMemberContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps,
-)(CareCardNewMemberComponent);
+)(SummaryNewMemberComponent);
 
-export default CareCardNewMemberContainer;
+export default SummaryNewMemberContainer;

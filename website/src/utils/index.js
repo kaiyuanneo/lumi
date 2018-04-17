@@ -31,12 +31,12 @@ export const isValidEmail = input => !input || validator.isEmail(input);
 
 export const categoryCodeToName = (categoryCode) => {
   switch (categoryCode) {
-    case constants.CARE_CARD_CATEGORY_CODE_BASIC:
-      return constants.CARE_CARD_CATEGORY_NAME_BASIC;
-    case constants.CARE_CARD_CATEGORY_CODE_MEDICAL:
-      return constants.CARE_CARD_CATEGORY_NAME_MEDICAL;
-    case constants.CARE_CARD_CATEGORY_CODE_CARE:
-      return constants.CARE_CARD_CATEGORY_NAME_CARE;
+    case constants.SUMMARY_CATEGORY_CODE_BASIC:
+      return constants.SUMMARY_CATEGORY_NAME_BASIC;
+    case constants.SUMMARY_CATEGORY_CODE_MEDICAL:
+      return constants.SUMMARY_CATEGORY_NAME_MEDICAL;
+    case constants.SUMMARY_CATEGORY_CODE_CARE:
+      return constants.SUMMARY_CATEGORY_NAME_CARE;
     case constants.TIMELINE_CATEGORY_CODE_ALL:
       return constants.TIMELINE_CATEGORY_NAME_ALL;
     case constants.TIMELINE_CATEGORY_CODE_ACTIVITY:
@@ -64,24 +64,24 @@ export const categoryCodeToName = (categoryCode) => {
  */
 export const dementiaCodeToName = (dementiaCode) => {
   switch (dementiaCode) {
-    case constants.CARE_CARD_DEMENTIA_CODE_ALZHEIMERS:
-      return constants.CARE_CARD_DEMENTIA_NAME_ALZHEIMERS;
-    case constants.CARE_CARD_DEMENTIA_CODE_VASCULAR:
-      return constants.CARE_CARD_DEMENTIA_NAME_VASCULAR;
-    case constants.CARE_CARD_DEMENTIA_CODE_LEWY:
-      return constants.CARE_CARD_DEMENTIA_NAME_LEWY;
-    case constants.CARE_CARD_DEMENTIA_CODE_FRONTOTEMPORAL:
-      return constants.CARE_CARD_DEMENTIA_NAME_FRONTOTEMPORAL;
-    case constants.CARE_CARD_DEMENTIA_CODE_CREUTZFELDT_JAKOB:
-      return constants.CARE_CARD_DEMENTIA_NAME_CREUTZFELDT_JAKOB;
-    case constants.CARE_CARD_DEMENTIA_CODE_WERNICKE_KORSAKOFF:
-      return constants.CARE_CARD_DEMENTIA_NAME_WERNICKE_KORSAKOFF;
-    case constants.CARE_CARD_DEMENTIA_CODE_MIXED:
-      return constants.CARE_CARD_DEMENTIA_NAME_MIXED;
-    case constants.CARE_CARD_DEMENTIA_CODE_OTHER:
-      return constants.CARE_CARD_DEMENTIA_NAME_OTHER;
-    case constants.CARE_CARD_DEMENTIA_CODE_UNKNOWN:
-      return constants.CARE_CARD_DEMENTIA_NAME_UNKNOWN;
+    case constants.SUMMARY_DEMENTIA_CODE_ALZHEIMERS:
+      return constants.SUMMARY_DEMENTIA_NAME_ALZHEIMERS;
+    case constants.SUMMARY_DEMENTIA_CODE_VASCULAR:
+      return constants.SUMMARY_DEMENTIA_NAME_VASCULAR;
+    case constants.SUMMARY_DEMENTIA_CODE_LEWY:
+      return constants.SUMMARY_DEMENTIA_NAME_LEWY;
+    case constants.SUMMARY_DEMENTIA_CODE_FRONTOTEMPORAL:
+      return constants.SUMMARY_DEMENTIA_NAME_FRONTOTEMPORAL;
+    case constants.SUMMARY_DEMENTIA_CODE_CREUTZFELDT_JAKOB:
+      return constants.SUMMARY_DEMENTIA_NAME_CREUTZFELDT_JAKOB;
+    case constants.SUMMARY_DEMENTIA_CODE_WERNICKE_KORSAKOFF:
+      return constants.SUMMARY_DEMENTIA_NAME_WERNICKE_KORSAKOFF;
+    case constants.SUMMARY_DEMENTIA_CODE_MIXED:
+      return constants.SUMMARY_DEMENTIA_NAME_MIXED;
+    case constants.SUMMARY_DEMENTIA_CODE_OTHER:
+      return constants.SUMMARY_DEMENTIA_NAME_OTHER;
+    case constants.SUMMARY_DEMENTIA_CODE_UNKNOWN:
+      return constants.SUMMARY_DEMENTIA_NAME_UNKNOWN;
     default:
       return 'Undefined';
   }
@@ -149,7 +149,7 @@ export const addUserToGroup = async (gid, uid = firebase.auth().currentUser.uid)
 };
 
 /**
- * Get tab component for timeline and care card products
+ * Get tab component for Timeline and Summary products
  */
 export const getTabComponent = categoryCode => (
   <Tab
@@ -159,15 +159,15 @@ export const getTabComponent = categoryCode => (
 );
 
 /**
- * Wrap passed component with a Table, specifically for Care Card
+ * Wrap passed component with a Table, specifically for Summary
  */
-export const wrapWithCareCardTable = component => (
+export const wrapWithSummaryTable = component => (
   <Table bordered hover>
     <thead>
       <tr>
-        <th className="product-table-header">{constants.CARE_CARD_TABLE_HEADER_FIELD}</th>
-        <th className="product-table-header">{constants.CARE_CARD_TABLE_HEADER_VALUE}</th>
-        <th className="product-table-header">{constants.CARE_CARD_TABLE_HEADER_OPTIONS}</th>
+        <th className="product-table-header">{constants.SUMMARY_TABLE_HEADER_FIELD}</th>
+        <th className="product-table-header">{constants.SUMMARY_TABLE_HEADER_VALUE}</th>
+        <th className="product-table-header">{constants.SUMMARY_TABLE_HEADER_OPTIONS}</th>
       </tr>
     </thead>
     {component}
@@ -184,7 +184,7 @@ const wrapWithFormGroup = (id, component, validationState = null) => (
 );
 
 /**
- * Get text field generator for CareCardEditWrapperComponent to render field
+ * Get text field generator for SummaryEditWrapperComponent to render field
  */
 const getTextFieldGenerator = (id, placeholder, isEmailField = false) =>
   (fieldValue, onChangeFunc) => {
@@ -209,7 +209,7 @@ const getTextFieldGenerator = (id, placeholder, isEmailField = false) =>
   };
 
 /**
- * Get textarea field generator for CareCardEditWrapperComponent to render field
+ * Get textarea field generator for SummaryEditWrapperComponent to render field
  */
 const getTextAreaFieldGenerator = (id, placeholder) => (fieldValue, onChangeFunc) => {
   const formControl = (
@@ -224,7 +224,7 @@ const getTextAreaFieldGenerator = (id, placeholder) => (fieldValue, onChangeFunc
 };
 
 /**
- * Get date field generator for CareCardEditWrapperComponent to render field
+ * Get date field generator for SummaryEditWrapperComponent to render field
  */
 const getDateFieldGenerator = id => (fieldValue, onChangeFunc) => {
   const datePicker = (
@@ -239,7 +239,7 @@ const getDateFieldGenerator = id => (fieldValue, onChangeFunc) => {
 };
 
 /**
- * Get select field generator for CareCardEditWrapperComponent to render field
+ * Get select field generator for SummaryEditWrapperComponent to render field
  * options is an object with option codes as keys and option names as values
  */
 const getSelectFieldGenerator = (id, placeholder, options) => (fieldValue, onChangeFunc) => {
@@ -262,91 +262,91 @@ const getSelectFieldGenerator = (id, placeholder, options) => (fieldValue, onCha
 };
 
 export const getFirstNameFieldGenerator = () => getTextFieldGenerator(
-  constants.CARE_CARD_FIELD_ID_FIRST_NAME,
-  constants.CARE_CARD_FIELD_PLACEHOLDER_FIRST_NAME,
+  constants.SUMMARY_FIELD_ID_FIRST_NAME,
+  constants.SUMMARY_FIELD_PLACEHOLDER_FIRST_NAME,
 );
 
 export const getLastNameFieldGenerator = () => getTextFieldGenerator(
-  constants.CARE_CARD_FIELD_ID_LAST_NAME,
-  constants.CARE_CARD_FIELD_PLACEHOLDER_LAST_NAME,
+  constants.SUMMARY_FIELD_ID_LAST_NAME,
+  constants.SUMMARY_FIELD_PLACEHOLDER_LAST_NAME,
 );
 
 export const getBirthdayFieldGenerator = () =>
-  getDateFieldGenerator(constants.CARE_CARD_FIELD_ID_BIRTHDAY);
+  getDateFieldGenerator(constants.SUMMARY_FIELD_ID_BIRTHDAY);
 
 export const getGenderFieldGenerator = () => getSelectFieldGenerator(
-  constants.CARE_CARD_FIELD_ID_GENDER,
-  constants.CARE_CARD_FIELD_PLACEHOLDER_GENDER,
+  constants.SUMMARY_FIELD_ID_GENDER,
+  constants.SUMMARY_FIELD_PLACEHOLDER_GENDER,
   {
-    [constants.CARE_CARD_CODE_UNSPECIFIED]: constants.CARE_CARD_NAME_UNSPECIFIED,
-    [constants.CARE_CARD_GENDER_CODE_FEMALE]:
-      constants.CARE_CARD_GENDER_NAME_FEMALE,
-    [constants.CARE_CARD_GENDER_CODE_MALE]: constants.CARE_CARD_GENDER_NAME_MALE,
+    [constants.SUMMARY_CODE_UNSPECIFIED]: constants.SUMMARY_NAME_UNSPECIFIED,
+    [constants.SUMMARY_GENDER_CODE_FEMALE]:
+      constants.SUMMARY_GENDER_NAME_FEMALE,
+    [constants.SUMMARY_GENDER_CODE_MALE]: constants.SUMMARY_GENDER_NAME_MALE,
   },
 );
 
 export const getEmailFieldGenerator = () => getTextFieldGenerator(
-  constants.CARE_CARD_FIELD_ID_EMAIL,
-  constants.CARE_CARD_FIELD_PLACEHOLDER_EMAIL,
+  constants.SUMMARY_FIELD_ID_EMAIL,
+  constants.SUMMARY_FIELD_PLACEHOLDER_EMAIL,
   true,
 );
 
 
 export const getAddressFieldGenerator = () => getTextAreaFieldGenerator(
-  constants.CARE_CARD_FIELD_ID_ADDRESS,
-  constants.CARE_CARD_FIELD_PLACEHOLDER_ADDRESS,
+  constants.SUMMARY_FIELD_ID_ADDRESS,
+  constants.SUMMARY_FIELD_PLACEHOLDER_ADDRESS,
 );
 
 export const getTypeOfDementiaFieldGenerator = () => getSelectFieldGenerator(
-  constants.CARE_CARD_FIELD_ID_TYPE_OF_DEMENTIA,
-  constants.CARE_CARD_FIELD_PLACEHOLDER_TYPE_OF_DEMENTIA,
+  constants.SUMMARY_FIELD_ID_TYPE_OF_DEMENTIA,
+  constants.SUMMARY_FIELD_PLACEHOLDER_TYPE_OF_DEMENTIA,
   {
-    [constants.CARE_CARD_CODE_UNSPECIFIED]: constants.CARE_CARD_NAME_UNSPECIFIED,
-    [constants.CARE_CARD_DEMENTIA_CODE_ALZHEIMERS]:
-      constants.CARE_CARD_DEMENTIA_NAME_ALZHEIMERS,
-    [constants.CARE_CARD_DEMENTIA_CODE_VASCULAR]:
-      constants.CARE_CARD_DEMENTIA_NAME_VASCULAR,
-    [constants.CARE_CARD_DEMENTIA_CODE_LEWY]:
-      constants.CARE_CARD_DEMENTIA_NAME_LEWY,
-    [constants.CARE_CARD_DEMENTIA_CODE_FRONTOTEMPORAL]:
-      constants.CARE_CARD_DEMENTIA_NAME_FRONTOTEMPORAL,
-    [constants.CARE_CARD_DEMENTIA_CODE_CREUTZFELDT_JAKOB]:
-      constants.CARE_CARD_DEMENTIA_NAME_CREUTZFELDT_JAKOB,
-    [constants.CARE_CARD_DEMENTIA_CODE_WERNICKE_KORSAKOFF]:
-      constants.CARE_CARD_DEMENTIA_NAME_WERNICKE_KORSAKOFF,
-    [constants.CARE_CARD_DEMENTIA_CODE_MIXED]:
-      constants.CARE_CARD_DEMENTIA_NAME_MIXED,
-    [constants.CARE_CARD_DEMENTIA_CODE_OTHER]:
-      constants.CARE_CARD_DEMENTIA_NAME_OTHER,
-    [constants.CARE_CARD_DEMENTIA_CODE_UNKNOWN]:
-      constants.CARE_CARD_DEMENTIA_NAME_UNKNOWN,
+    [constants.SUMMARY_CODE_UNSPECIFIED]: constants.SUMMARY_NAME_UNSPECIFIED,
+    [constants.SUMMARY_DEMENTIA_CODE_ALZHEIMERS]:
+      constants.SUMMARY_DEMENTIA_NAME_ALZHEIMERS,
+    [constants.SUMMARY_DEMENTIA_CODE_VASCULAR]:
+      constants.SUMMARY_DEMENTIA_NAME_VASCULAR,
+    [constants.SUMMARY_DEMENTIA_CODE_LEWY]:
+      constants.SUMMARY_DEMENTIA_NAME_LEWY,
+    [constants.SUMMARY_DEMENTIA_CODE_FRONTOTEMPORAL]:
+      constants.SUMMARY_DEMENTIA_NAME_FRONTOTEMPORAL,
+    [constants.SUMMARY_DEMENTIA_CODE_CREUTZFELDT_JAKOB]:
+      constants.SUMMARY_DEMENTIA_NAME_CREUTZFELDT_JAKOB,
+    [constants.SUMMARY_DEMENTIA_CODE_WERNICKE_KORSAKOFF]:
+      constants.SUMMARY_DEMENTIA_NAME_WERNICKE_KORSAKOFF,
+    [constants.SUMMARY_DEMENTIA_CODE_MIXED]:
+      constants.SUMMARY_DEMENTIA_NAME_MIXED,
+    [constants.SUMMARY_DEMENTIA_CODE_OTHER]:
+      constants.SUMMARY_DEMENTIA_NAME_OTHER,
+    [constants.SUMMARY_DEMENTIA_CODE_UNKNOWN]:
+      constants.SUMMARY_DEMENTIA_NAME_UNKNOWN,
   },
 );
 
 export const getDateOfDiagnosisFieldGenerator = () =>
-  getDateFieldGenerator(constants.CARE_CARD_FIELD_ID_DATE_OF_DIAGNOSIS);
+  getDateFieldGenerator(constants.SUMMARY_FIELD_ID_DATE_OF_DIAGNOSIS);
 
 export const getMedicationsFieldGenerator = () => getTextAreaFieldGenerator(
-  constants.CARE_CARD_FIELD_ID_MEDICATIONS,
-  constants.CARE_CARD_FIELD_PLACEHOLDER_MEDICATIONS,
+  constants.SUMMARY_FIELD_ID_MEDICATIONS,
+  constants.SUMMARY_FIELD_PLACEHOLDER_MEDICATIONS,
 );
 
 export const getProvidersFieldGenerator = () => getTextAreaFieldGenerator(
-  constants.CARE_CARD_FIELD_ID_PROVIDERS,
-  constants.CARE_CARD_FIELD_PLACEHOLDER_PROVIDERS,
+  constants.SUMMARY_FIELD_ID_PROVIDERS,
+  constants.SUMMARY_FIELD_PLACEHOLDER_PROVIDERS,
 );
 
 export const getNeedsAndPreferencesFieldGenerator = () => getTextAreaFieldGenerator(
-  constants.CARE_CARD_FIELD_ID_NEEDS_AND_PREFERENCES,
-  constants.CARE_CARD_FIELD_PLACEHOLDER_NEEDS_AND_PREFERENCES,
+  constants.SUMMARY_FIELD_ID_NEEDS_AND_PREFERENCES,
+  constants.SUMMARY_FIELD_PLACEHOLDER_NEEDS_AND_PREFERENCES,
 );
 
 export const getThingsThatDelightFieldGenerator = () => getTextAreaFieldGenerator(
-  constants.CARE_CARD_FIELD_ID_THINGS_THAT_DELIGHT,
-  constants.CARE_CARD_FIELD_PLACEHOLDER_THINGS_THAT_DELIGHT,
+  constants.SUMMARY_FIELD_ID_THINGS_THAT_DELIGHT,
+  constants.SUMMARY_FIELD_PLACEHOLDER_THINGS_THAT_DELIGHT,
 );
 
 export const getPlacesOfInterestFieldGenerator = () => getTextAreaFieldGenerator(
-  constants.CARE_CARD_FIELD_ID_PLACES_OF_INTEREST,
-  constants.CARE_CARD_FIELD_PLACEHOLDER_PLACES_OF_INTEREST,
+  constants.SUMMARY_FIELD_ID_PLACES_OF_INTEREST,
+  constants.SUMMARY_FIELD_PLACEHOLDER_PLACES_OF_INTEREST,
 );

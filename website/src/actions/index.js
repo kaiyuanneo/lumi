@@ -56,11 +56,11 @@ export const saveGroupNameFieldValue = groupNameFieldValue => ({
 });
 
 /*
- * Care Card Actions
+ * Summary Actions
  */
 
-export const saveCareCardInfoCategory = infoCategory => ({
-  type: constants.ACTION_SAVE_CARE_CARD_INFO_CATEGORY,
+export const saveSummaryInfoCategory = infoCategory => ({
+  type: constants.ACTION_SAVE_SUMMARY_INFO_CATEGORY,
   infoCategory,
 });
 
@@ -78,20 +78,20 @@ export const updateCareRecipient = careRecipient => ({
   careRecipient,
 });
 
-export const saveCareCardFieldValueLocally = (fieldId, fieldValue) => ({
-  type: constants.ACTION_SAVE_CARE_CARD_FIELD_VALUE_LOCALLY,
+export const saveSummaryFieldValueLocally = (fieldId, fieldValue) => ({
+  type: constants.ACTION_SAVE_SUMMARY_FIELD_VALUE_LOCALLY,
   fieldId,
   fieldValue,
 });
 
-export const saveCareCardFieldIsInEditMode = (fieldId, isInEditMode) => ({
-  type: constants.ACTION_SAVE_CARE_CARD_FIELD_IS_IN_EDIT_MODE,
+export const saveSummaryFieldIsInEditMode = (fieldId, isInEditMode) => ({
+  type: constants.ACTION_SAVE_SUMMARY_FIELD_IS_IN_EDIT_MODE,
   fieldId,
   isInEditMode,
 });
 
-export const unmountCareCardNewMemberForm = () => ({
-  type: constants.ACTION_UNMOUNT_CARE_CARD_NEW_MEMBER_FORM,
+export const unmountSummaryNewMemberForm = () => ({
+  type: constants.ACTION_UNMOUNT_SUMMARY_NEW_MEMBER_FORM,
 });
 
 // selectedMember is a member ID

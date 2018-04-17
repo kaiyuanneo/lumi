@@ -7,10 +7,10 @@ import * as constants from '../static/constants';
 
 
 /**
- * NB: Need to pass isDateField prop to all date fields so that CareCardEditWrapperComponent
+ * NB: Need to pass isDateField prop to all date fields so that SummaryEditWrapperComponent
  * calls the relevant handleChange function
  */
-const CareCardEditWrapperComponent = (props) => {
+const SummaryEditWrapperComponent = (props) => {
   // If edit mode is on, render the form field
   if (props.isInEditMode) {
     return (
@@ -51,7 +51,7 @@ const CareCardEditWrapperComponent = (props) => {
   );
 };
 
-CareCardEditWrapperComponent.propTypes = {
+SummaryEditWrapperComponent.propTypes = {
   // Flag to display form field or display field value
   isInEditMode: PropTypes.bool.isRequired,
 
@@ -67,4 +67,4 @@ CareCardEditWrapperComponent.propTypes = {
   saveFieldValueToDb: PropTypes.func.isRequired,
 };
 
-export default CareCardEditWrapperComponent;
+export default SummaryEditWrapperComponent;

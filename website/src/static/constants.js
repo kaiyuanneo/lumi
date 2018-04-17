@@ -9,14 +9,14 @@ export const ACTION_SAVE_AUTH_USER_GROUP_INFO = 'SAVE_AUTH_USER_GROUP_INFO';
 export const ACTION_SAVE_GROUP_ID_FIELD_VALUE = 'SAVE_GROUP_ID_FIELD_VALUE';
 export const ACTION_SAVE_GROUP_JOIN_VALIDATION_STATE = 'SAVE_GROUP_JOIN_VALIDATION_STATE';
 export const ACTION_SAVE_GROUP_NAME_FIELD_VALUE = 'SAVE_GROUP_NAME_FIELD_VALUE';
-// Care Card actions
-export const ACTION_SAVE_CARE_CARD_INFO_CATEGORY = 'SAVE_CARE_CARD_INFO_CATEGORY';
+// Summary actions
+export const ACTION_SAVE_SUMMARY_INFO_CATEGORY = 'SAVE_SUMMARY_INFO_CATEGORY';
 export const ACTION_TOGGLE_FETCHED_CARE_RECIPIENT = 'TOGGLE_FETCHED_CARE_RECIPIENT';
 export const ACTION_SAVE_CARE_RECIPIENT_UID = 'SAVE_CARE_RECIPIENT_UID';
 export const ACTION_UPDATE_CARE_RECIPIENT = 'UPDATE_CARE_RECIPIENT';
-export const ACTION_SAVE_CARE_CARD_FIELD_VALUE_LOCALLY = 'SAVE_CARE_CARD_FIELD_VALUE_LOCALLY';
-export const ACTION_SAVE_CARE_CARD_FIELD_IS_IN_EDIT_MODE = 'SAVE_CARE_CARD_FIELD_IS_IN_EDIT_MODE';
-export const ACTION_UNMOUNT_CARE_CARD_NEW_MEMBER_FORM = 'UNMOUNT_CARE_CARD_NEW_MEMBER_FORM';
+export const ACTION_SAVE_SUMMARY_FIELD_VALUE_LOCALLY = 'SAVE_SUMMARY_FIELD_VALUE_LOCALLY';
+export const ACTION_SAVE_SUMMARY_FIELD_IS_IN_EDIT_MODE = 'SAVE_SUMMARY_FIELD_IS_IN_EDIT_MODE';
+export const ACTION_UNMOUNT_SUMMARY_NEW_MEMBER_FORM = 'UNMOUNT_SUMMARY_NEW_MEMBER_FORM';
 export const ACTION_UPDATE_SELECT_CR_SELECTED_MEMBER = 'UPDATE_SELECT_CR_SELECTED_MEMBER';
 export const ACTION_TOGGLE_SELECT_CR_USER_CLICKED_SELECT = 'UPDATE_SELECT_CR_USER_CLICKED_SELECT';
 export const ACTION_UPDATE_SELECT_CR_GROUP_MEMBERS = 'FETCH_UPDATE_CR_GROUP_MEMBERS';
@@ -53,136 +53,6 @@ export const DB_PATH_USER_EMAIL_TO_UID = 'user-email-to-uid';
 export const DB_PATH_USER_PSID_TO_UID = 'user-psid-to-uid';
 export const DB_PATH_USERS = 'users';
 
-/*
- * Care Card categories to toggle between different sections of information
- */
-// Codes
-export const CARE_CARD_CATEGORY_CODE_BASIC = 'basic';
-export const CARE_CARD_CATEGORY_CODE_MEDICAL = 'medical';
-export const CARE_CARD_CATEGORY_CODE_CARE = 'care';
-// Names
-export const CARE_CARD_CATEGORY_NAME_BASIC = 'Basic';
-export const CARE_CARD_CATEGORY_NAME_MEDICAL = 'Medical';
-export const CARE_CARD_CATEGORY_NAME_CARE = 'Care';
-
-/*
- * Care Card field IDs: Field IDs correspond to user properties in the DB
- */
-// New care recipient
-export const CARE_CARD_FIELD_ID_USER_LIST = 'userList';
-// Basic
-export const CARE_CARD_FIELD_ID_FIRST_NAME = 'firstName';
-export const CARE_CARD_FIELD_ID_LAST_NAME = 'lastName';
-export const CARE_CARD_FIELD_ID_BIRTHDAY = 'birthday';
-export const CARE_CARD_FIELD_ID_GENDER = 'gender';
-export const CARE_CARD_FIELD_ID_EMAIL = 'email';
-export const CARE_CARD_FIELD_ID_ADDRESS = 'address';
-// Medical
-export const CARE_CARD_FIELD_ID_TYPE_OF_DEMENTIA = 'typeOfDementia';
-export const CARE_CARD_FIELD_ID_DATE_OF_DIAGNOSIS = 'dateOfDiagnosis';
-export const CARE_CARD_FIELD_ID_MEDICATIONS = 'medications';
-export const CARE_CARD_FIELD_ID_PROVIDERS = 'providers';
-// Care
-export const CARE_CARD_FIELD_ID_NEEDS_AND_PREFERENCES = 'needsAndPreferences';
-export const CARE_CARD_FIELD_ID_THINGS_THAT_DELIGHT = 'thingsThatDelight';
-export const CARE_CARD_FIELD_ID_PLACES_OF_INTEREST = 'placesOfInterest';
-
-/*
- * Care Card field placeholders: Placeholders for each field
- */
-// Basic
-export const CARE_CARD_FIELD_PLACEHOLDER_FIRST_NAME = 'Enter first name';
-export const CARE_CARD_FIELD_PLACEHOLDER_LAST_NAME = 'Enter last name';
-export const CARE_CARD_FIELD_PLACEHOLDER_GENDER = 'Select gender';
-export const CARE_CARD_FIELD_PLACEHOLDER_EMAIL = 'Enter email';
-export const CARE_CARD_FIELD_PLACEHOLDER_ADDRESS = 'Enter address';
-// Medical
-export const CARE_CARD_FIELD_PLACEHOLDER_TYPE_OF_DEMENTIA = 'Select type of dementia';
-export const CARE_CARD_FIELD_PLACEHOLDER_MEDICATIONS = 'Enter medications';
-export const CARE_CARD_FIELD_PLACEHOLDER_PROVIDERS = 'Enter providers';
-// Care
-export const CARE_CARD_FIELD_PLACEHOLDER_NEEDS_AND_PREFERENCES = 'Enter needs and preferences';
-export const CARE_CARD_FIELD_PLACEHOLDER_THINGS_THAT_DELIGHT =
-  'Enter activities or objects that delight';
-export const CARE_CARD_FIELD_PLACEHOLDER_PLACES_OF_INTEREST = 'Enter places of interest';
-
-/*
- * Care Card field titles: Title next to each field
- */
-// Basic
-export const CARE_CARD_FIELD_TITLE_FIRST_NAME = 'First Name';
-export const CARE_CARD_FIELD_TITLE_LAST_NAME = 'Last Name';
-export const CARE_CARD_FIELD_TITLE_BIRTHDAY = 'Birthday';
-export const CARE_CARD_FIELD_TITLE_GENDER = 'Gender';
-export const CARE_CARD_FIELD_TITLE_EMAIL = 'Email';
-export const CARE_CARD_FIELD_TITLE_ADDRESS = 'Address';
-// Medical
-export const CARE_CARD_FIELD_TITLE_TYPE_OF_DEMENTIA = 'Type of Dementia';
-export const CARE_CARD_FIELD_TITLE_DATE_OF_DIAGNOSIS = 'Date of Diagnosis';
-export const CARE_CARD_FIELD_TITLE_MEDICATIONS = 'Medications';
-export const CARE_CARD_FIELD_TITLE_PROVIDERS = 'Providers';
-// Care
-export const CARE_CARD_FIELD_TITLE_NEEDS_AND_PREFERENCES = 'Needs and Preferences';
-export const CARE_CARD_FIELD_TITLE_THINGS_THAT_DELIGHT = 'Things that Delight';
-export const CARE_CARD_FIELD_TITLE_PLACES_OF_INTEREST = 'Places of Interest';
-
-
-/*
- * Care card unspecified options
- */
-export const CARE_CARD_CODE_UNSPECIFIED = 'unspecified';
-export const CARE_CARD_NAME_UNSPECIFIED = 'Unspecified';
-
-/*
- * Care Card gender options
- */
-// Codes
-export const CARE_CARD_GENDER_CODE_MALE = 'male';
-export const CARE_CARD_GENDER_CODE_FEMALE = 'female';
-// Names
-export const CARE_CARD_GENDER_NAME_MALE = 'Male';
-export const CARE_CARD_GENDER_NAME_FEMALE = 'Female';
-
-/*
- * Care Card type of dementia options
- */
-// Codes
-export const CARE_CARD_DEMENTIA_CODE_ALZHEIMERS = 'alzheimers';
-export const CARE_CARD_DEMENTIA_CODE_VASCULAR = 'vascular';
-export const CARE_CARD_DEMENTIA_CODE_LEWY = 'lewy';
-export const CARE_CARD_DEMENTIA_CODE_FRONTOTEMPORAL = 'frontotemporal';
-export const CARE_CARD_DEMENTIA_CODE_CREUTZFELDT_JAKOB = 'creutzfeldt-jakob';
-export const CARE_CARD_DEMENTIA_CODE_WERNICKE_KORSAKOFF = 'wernicke-korsakoff';
-export const CARE_CARD_DEMENTIA_CODE_MIXED = 'mixed';
-export const CARE_CARD_DEMENTIA_CODE_OTHER = 'other';
-export const CARE_CARD_DEMENTIA_CODE_UNKNOWN = 'unknown';
-// Names
-export const CARE_CARD_DEMENTIA_NAME_ALZHEIMERS = 'Alzheimer\'s disease';
-export const CARE_CARD_DEMENTIA_NAME_VASCULAR = 'Vascular dementia';
-export const CARE_CARD_DEMENTIA_NAME_LEWY = 'Dementia with Lewy bodies';
-export const CARE_CARD_DEMENTIA_NAME_FRONTOTEMPORAL = 'Frontotemporal dementia';
-export const CARE_CARD_DEMENTIA_NAME_CREUTZFELDT_JAKOB = 'Creutzfeldt-Jakob disease';
-export const CARE_CARD_DEMENTIA_NAME_WERNICKE_KORSAKOFF = 'Wernicke-Korsakoff syndrome';
-export const CARE_CARD_DEMENTIA_NAME_MIXED = 'Mixed dementia';
-export const CARE_CARD_DEMENTIA_NAME_OTHER = 'Other';
-export const CARE_CARD_DEMENTIA_NAME_UNKNOWN = 'Unknown';
-
-/*
- * Care Card new care recipient options
- */
-// Code
-export const CARE_CARD_CR_CODE_NEW_MEMBER = 'new-member';
-// Name
-export const CARE_CARD_CR_NAME_NEW_MEMBER = 'New Member';
-
-export const CARE_CARD_NEW_CARE_RECIPIENT_PROMPT =
-  'Welcome to Care Card! Please choose a care recipient:';
-export const CARE_CARD_CREATE_NEW_MEMBER_PROMPT = 'Please share details about the new member :)';
-
-export const CARE_CARD_TABLE_HEADER_FIELD = 'Field';
-export const CARE_CARD_TABLE_HEADER_VALUE = 'Value';
-export const CARE_CARD_TABLE_HEADER_OPTIONS = 'Options';
-
 export const FIREBASE_API_KEY = 'AIzaSyAbxVPlyTTq2AITU-fakTFU7ZiGUQRmG00';
 export const FIREBASE_AUTH_DOMAIN = 'lumi-cares.firebaseapp.com';
 export const FIREBASE_DATABASE_URL = 'https://lumi-cares.firebaseio.com';
@@ -206,7 +76,7 @@ export const GROUP_NAME_FIELD_HELP =
 export const NAVBAR_HEADER_TITLE = 'Lumi';
 export const NAVBAR_ITEM_TIMELINE = 'Timeline';
 export const NAVBAR_ITEM_CHAT = 'Chat';
-export const NAVBAR_ITEM_CARE_CARD = 'Care Card';
+export const NAVBAR_ITEM_SUMMARY = 'Summary';
 export const NAVBAR_ITEM_GROUP_ID = 'Group ID: ';
 export const NAVBAR_ITEM_SIGN_OUT = 'Sign Out';
 
@@ -216,10 +86,140 @@ export const NEW_USER_PAGE_SUBTITLE =
 
 export const PRODUCT_CODE_TIMELINE = 'timeline';
 export const PRODUCT_CODE_CHAT = 'chat';
-export const PRODUCT_CODE_CARE_CARD = 'care-card';
+export const PRODUCT_CODE_SUMMARY = 'summary';
 export const PRODUCT_CODE_SIGN_OUT = 'sign-out';
 
 export const STORAGE_PATH_LUMI_IMAGES = 'lumi/images';
+
+/*
+ * Summary categories to toggle between different sections of information
+ */
+// Codes
+export const SUMMARY_CATEGORY_CODE_BASIC = 'basic';
+export const SUMMARY_CATEGORY_CODE_MEDICAL = 'medical';
+export const SUMMARY_CATEGORY_CODE_CARE = 'care';
+// Names
+export const SUMMARY_CATEGORY_NAME_BASIC = 'Basic';
+export const SUMMARY_CATEGORY_NAME_MEDICAL = 'Medical';
+export const SUMMARY_CATEGORY_NAME_CARE = 'Care';
+
+/*
+ * Summary field IDs: Field IDs correspond to user properties in the DB
+ */
+// New care recipient
+export const SUMMARY_FIELD_ID_USER_LIST = 'userList';
+// Basic
+export const SUMMARY_FIELD_ID_FIRST_NAME = 'firstName';
+export const SUMMARY_FIELD_ID_LAST_NAME = 'lastName';
+export const SUMMARY_FIELD_ID_BIRTHDAY = 'birthday';
+export const SUMMARY_FIELD_ID_GENDER = 'gender';
+export const SUMMARY_FIELD_ID_EMAIL = 'email';
+export const SUMMARY_FIELD_ID_ADDRESS = 'address';
+// Medical
+export const SUMMARY_FIELD_ID_TYPE_OF_DEMENTIA = 'typeOfDementia';
+export const SUMMARY_FIELD_ID_DATE_OF_DIAGNOSIS = 'dateOfDiagnosis';
+export const SUMMARY_FIELD_ID_MEDICATIONS = 'medications';
+export const SUMMARY_FIELD_ID_PROVIDERS = 'providers';
+// Care
+export const SUMMARY_FIELD_ID_NEEDS_AND_PREFERENCES = 'needsAndPreferences';
+export const SUMMARY_FIELD_ID_THINGS_THAT_DELIGHT = 'thingsThatDelight';
+export const SUMMARY_FIELD_ID_PLACES_OF_INTEREST = 'placesOfInterest';
+
+/*
+ * Summary field placeholders: Placeholders for each field
+ */
+// Basic
+export const SUMMARY_FIELD_PLACEHOLDER_FIRST_NAME = 'Enter first name';
+export const SUMMARY_FIELD_PLACEHOLDER_LAST_NAME = 'Enter last name';
+export const SUMMARY_FIELD_PLACEHOLDER_GENDER = 'Select gender';
+export const SUMMARY_FIELD_PLACEHOLDER_EMAIL = 'Enter email';
+export const SUMMARY_FIELD_PLACEHOLDER_ADDRESS = 'Enter address';
+// Medical
+export const SUMMARY_FIELD_PLACEHOLDER_TYPE_OF_DEMENTIA = 'Select type of dementia';
+export const SUMMARY_FIELD_PLACEHOLDER_MEDICATIONS = 'Enter medications';
+export const SUMMARY_FIELD_PLACEHOLDER_PROVIDERS = 'Enter providers';
+// Care
+export const SUMMARY_FIELD_PLACEHOLDER_NEEDS_AND_PREFERENCES = 'Enter needs and preferences';
+export const SUMMARY_FIELD_PLACEHOLDER_THINGS_THAT_DELIGHT =
+  'Enter activities or objects that delight';
+export const SUMMARY_FIELD_PLACEHOLDER_PLACES_OF_INTEREST = 'Enter places of interest';
+
+/*
+ * Summary field titles: Title next to each field
+ */
+// Basic
+export const SUMMARY_FIELD_TITLE_FIRST_NAME = 'First Name';
+export const SUMMARY_FIELD_TITLE_LAST_NAME = 'Last Name';
+export const SUMMARY_FIELD_TITLE_BIRTHDAY = 'Birthday';
+export const SUMMARY_FIELD_TITLE_GENDER = 'Gender';
+export const SUMMARY_FIELD_TITLE_EMAIL = 'Email';
+export const SUMMARY_FIELD_TITLE_ADDRESS = 'Address';
+// Medical
+export const SUMMARY_FIELD_TITLE_TYPE_OF_DEMENTIA = 'Type of Dementia';
+export const SUMMARY_FIELD_TITLE_DATE_OF_DIAGNOSIS = 'Date of Diagnosis';
+export const SUMMARY_FIELD_TITLE_MEDICATIONS = 'Medications';
+export const SUMMARY_FIELD_TITLE_PROVIDERS = 'Providers';
+// Care
+export const SUMMARY_FIELD_TITLE_NEEDS_AND_PREFERENCES = 'Needs and Preferences';
+export const SUMMARY_FIELD_TITLE_THINGS_THAT_DELIGHT = 'Things that Delight';
+export const SUMMARY_FIELD_TITLE_PLACES_OF_INTEREST = 'Places of Interest';
+
+
+/*
+ * Summary unspecified options
+ */
+export const SUMMARY_CODE_UNSPECIFIED = 'unspecified';
+export const SUMMARY_NAME_UNSPECIFIED = 'Unspecified';
+
+/*
+ * Summary gender options
+ */
+// Codes
+export const SUMMARY_GENDER_CODE_MALE = 'male';
+export const SUMMARY_GENDER_CODE_FEMALE = 'female';
+// Names
+export const SUMMARY_GENDER_NAME_MALE = 'Male';
+export const SUMMARY_GENDER_NAME_FEMALE = 'Female';
+
+/*
+ * Summary type of dementia options
+ */
+// Codes
+export const SUMMARY_DEMENTIA_CODE_ALZHEIMERS = 'alzheimers';
+export const SUMMARY_DEMENTIA_CODE_VASCULAR = 'vascular';
+export const SUMMARY_DEMENTIA_CODE_LEWY = 'lewy';
+export const SUMMARY_DEMENTIA_CODE_FRONTOTEMPORAL = 'frontotemporal';
+export const SUMMARY_DEMENTIA_CODE_CREUTZFELDT_JAKOB = 'creutzfeldt-jakob';
+export const SUMMARY_DEMENTIA_CODE_WERNICKE_KORSAKOFF = 'wernicke-korsakoff';
+export const SUMMARY_DEMENTIA_CODE_MIXED = 'mixed';
+export const SUMMARY_DEMENTIA_CODE_OTHER = 'other';
+export const SUMMARY_DEMENTIA_CODE_UNKNOWN = 'unknown';
+// Names
+export const SUMMARY_DEMENTIA_NAME_ALZHEIMERS = 'Alzheimer\'s disease';
+export const SUMMARY_DEMENTIA_NAME_VASCULAR = 'Vascular dementia';
+export const SUMMARY_DEMENTIA_NAME_LEWY = 'Dementia with Lewy bodies';
+export const SUMMARY_DEMENTIA_NAME_FRONTOTEMPORAL = 'Frontotemporal dementia';
+export const SUMMARY_DEMENTIA_NAME_CREUTZFELDT_JAKOB = 'Creutzfeldt-Jakob disease';
+export const SUMMARY_DEMENTIA_NAME_WERNICKE_KORSAKOFF = 'Wernicke-Korsakoff syndrome';
+export const SUMMARY_DEMENTIA_NAME_MIXED = 'Mixed dementia';
+export const SUMMARY_DEMENTIA_NAME_OTHER = 'Other';
+export const SUMMARY_DEMENTIA_NAME_UNKNOWN = 'Unknown';
+
+/*
+ * Summary new care recipient options
+ */
+// Code
+export const SUMMARY_CR_CODE_NEW_MEMBER = 'new-member';
+// Name
+export const SUMMARY_CR_NAME_NEW_MEMBER = 'New Member';
+
+export const SUMMARY_NEW_CARE_RECIPIENT_PROMPT =
+  'Welcome to Summary! Please choose a care recipient:';
+export const SUMMARY_CREATE_NEW_MEMBER_PROMPT = 'Please share details about the new member :)';
+
+export const SUMMARY_TABLE_HEADER_FIELD = 'Field';
+export const SUMMARY_TABLE_HEADER_VALUE = 'Value';
+export const SUMMARY_TABLE_HEADER_OPTIONS = 'Options';
 
 export const TIMELINE_CATEGORY_CODE_STAR = 'star';
 export const TIMELINE_CATEGORY_CODE_ALL = 'all';

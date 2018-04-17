@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import CareCardContainer from './CareCardContainer';
+import SummaryContainer from './SummaryContainer';
 import TimelineContainer from './TimelineContainer';
 import * as actions from '../actions';
 import HomeComponent from '../components/HomeComponent';
@@ -14,13 +14,13 @@ const mapStateToProps = (state) => {
   // Determine which product to render
   let productComponent;
   const timelineContainer = <TimelineContainer />;
-  const careCardContainer = <CareCardContainer />;
+  const summaryContainer = <SummaryContainer />;
   switch (state.home.currentProductCode) {
     case constants.PRODUCT_CODE_TIMELINE:
       productComponent = timelineContainer;
       break;
-    case constants.PRODUCT_CODE_CARE_CARD:
-      productComponent = careCardContainer;
+    case constants.PRODUCT_CODE_SUMMARY:
+      productComponent = summaryContainer;
       break;
     default:
       productComponent = timelineContainer;

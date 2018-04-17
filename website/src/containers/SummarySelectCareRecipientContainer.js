@@ -4,7 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import * as actions from '../actions';
-import CareCardSelectCareRecipientComponent from '../components/CareCardSelectCareRecipientComponent';
+import SummarySelectCareRecipientComponent from '../components/SummarySelectCareRecipientComponent';
 import * as constants from '../static/constants';
 
 
@@ -13,24 +13,24 @@ export const _getMemberList = (state) => {
   // First option in select menu is unspecified
   memberList.push((
     <option
-      key={constants.CARE_CARD_CODE_UNSPECIFIED}
-      value={constants.CARE_CARD_CODE_UNSPECIFIED}
+      key={constants.SUMMARY_CODE_UNSPECIFIED}
+      value={constants.SUMMARY_CODE_UNSPECIFIED}
     >
-      {constants.CARE_CARD_NAME_UNSPECIFIED}
+      {constants.SUMMARY_NAME_UNSPECIFIED}
     </option>
   ));
-  memberList.push(...[...state.careCard.selectCrMembers.keys()].map(memberId => (
+  memberList.push(...[...state.summary.selectCrMembers.keys()].map(memberId => (
     <option key={memberId} value={memberId}>
-      {state.careCard.selectCrMembers.get(memberId)}
+      {state.summary.selectCrMembers.get(memberId)}
     </option>
   )));
   // Include New Member option in select menu
   memberList.push((
     <option
-      key={constants.CARE_CARD_CR_CODE_NEW_MEMBER}
-      value={constants.CARE_CARD_CR_CODE_NEW_MEMBER}
+      key={constants.SUMMARY_CR_CODE_NEW_MEMBER}
+      value={constants.SUMMARY_CR_CODE_NEW_MEMBER}
     >
-      {constants.CARE_CARD_CR_NAME_NEW_MEMBER}
+      {constants.SUMMARY_CR_NAME_NEW_MEMBER}
     </option>
   ));
   return memberList;
@@ -39,14 +39,14 @@ export const _getMemberList = (state) => {
 
 const mapStateToProps = state => ({
   memberList: _getMemberList(state),
-  selectedMember: state.careCard.selectCrSelectedMember,
+  selectedMember: state.summary.selectCrSelectedMember,
   isSelectButtonDisabled:
-    state.careCard.selectCrSelectedMember === '' ||
-    state.careCard.selectCrSelectedMember === constants.CARE_CARD_CODE_UNSPECIFIED,
+    state.summary.selectCrSelectedMember === '' ||
+    state.summary.selectCrSelectedMember === constants.SUMMARY_CODE_UNSPECIFIED,
   shouldRenderNewMemberForm:
-    state.careCard.selectCrSelectedMember === constants.CARE_CARD_CR_CODE_NEW_MEMBER &&
+    state.summary.selectCrSelectedMember === constants.SUMMARY_CR_CODE_NEW_MEMBER &&
     // Do not render new member form until user clicks Select
-    state.careCard.selectCrUserClickedSelect,
+    state.summary.selectCrUserClickedSelect,
 });
 
 
@@ -93,7 +93,7 @@ export const _handleClickSelect = async (stateProps, dispatchProps) => {
   // Record that user clicked select so that Lumi can control when React should re-render
   dispatchProps.toggleUserClickedSelect();
   // React will manage next steps if user chooses to create a New Member
-  if (stateProps.selectedMember === constants.CARE_CARD_CR_CODE_NEW_MEMBER) {
+  if (stateProps.selectedMember === constants.SUMMARY_CR_CODE_NEW_MEMBER) {
     return;
   }
   // Set active care recipient of current group to be the selected member
@@ -116,10 +116,10 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 });
 
 
-const CareCardSelectCareRecipientContainer = connect(
+const SummarySelectCareRecipientContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps,
-)(CareCardSelectCareRecipientComponent);
+)(SummarySelectCareRecipientComponent);
 
-export default CareCardSelectCareRecipientContainer;
+export default SummarySelectCareRecipientContainer;

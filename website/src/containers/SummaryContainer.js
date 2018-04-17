@@ -4,35 +4,35 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import * as actions from '../actions';
-import CareCardComponent from '../components/CareCardComponent';
-import CareCardBasicInfoComponent from '../components/CareCardBasicInfoComponent';
-import CareCardMedicalInfoComponent from '../components/CareCardMedicalInfoComponent';
-import CareCardCareInfoComponent from '../components/CareCardCareInfoComponent';
+import SummaryComponent from '../components/SummaryComponent';
+import SummaryBasicInfoComponent from '../components/SummaryBasicInfoComponent';
+import SummaryMedicalInfoComponent from '../components/SummaryMedicalInfoComponent';
+import SummaryCareInfoComponent from '../components/SummaryCareInfoComponent';
 import * as constants from '../static/constants';
 
 
 const mapStateToProps = (state) => {
   let contentComponent;
-  switch (state.careCard.infoCategory) {
-    case constants.CARE_CARD_CATEGORY_CODE_BASIC:
-      contentComponent = <CareCardBasicInfoComponent />;
+  switch (state.summary.infoCategory) {
+    case constants.SUMMARY_CATEGORY_CODE_BASIC:
+      contentComponent = <SummaryBasicInfoComponent />;
       break;
-    case constants.CARE_CARD_CATEGORY_CODE_MEDICAL:
-      contentComponent = <CareCardMedicalInfoComponent />;
+    case constants.SUMMARY_CATEGORY_CODE_MEDICAL:
+      contentComponent = <SummaryMedicalInfoComponent />;
       break;
-    case constants.CARE_CARD_CATEGORY_CODE_CARE:
-      contentComponent = <CareCardCareInfoComponent />;
+    case constants.SUMMARY_CATEGORY_CODE_CARE:
+      contentComponent = <SummaryCareInfoComponent />;
       break;
     default:
-      contentComponent = <CareCardBasicInfoComponent />;
+      contentComponent = <SummaryBasicInfoComponent />;
   }
   return {
-    infoCategory: state.careCard.infoCategory,
-    fetched: state.careCard.fetched,
-    uid: state.careCard.uid,
-    firstName: state.careCard.firstName,
-    lastName: state.careCard.lastName,
-    profilePic: state.careCard.profilePic,
+    infoCategory: state.summary.infoCategory,
+    fetched: state.summary.fetched,
+    uid: state.summary.uid,
+    firstName: state.summary.firstName,
+    lastName: state.summary.lastName,
+    profilePic: state.summary.profilePic,
     contentComponent,
   };
 };
@@ -44,7 +44,7 @@ const mapStateToProps = (state) => {
  */
 export const _handleCareRecipient = (dispatch, careRecipientUidRef, careRecipientUidSnapshot) => {
   // Tell the component it is ok to render the new care recipient page if the group has no
-  // care recipient. Otherwise, render the Care Card. Do not render anything if Lumi
+  // care recipient. Otherwise, render the Summary. Do not render anything if Lumi
   // has not finished fetching the active care recipient of this group.
   dispatch(actions.toggleFetchedCareRecipient());
   const careRecipientUid = careRecipientUidSnapshot.val();
@@ -85,14 +85,14 @@ export const _getCareRecipient = async (dispatch) => {
 
 const mapDispatchToProps = dispatch => ({
   getCareRecipient: () => _getCareRecipient(dispatch),
-  saveCareCardInfoCategory: category => dispatch(actions.saveCareCardInfoCategory(category)),
+  saveSummaryInfoCategory: category => dispatch(actions.saveSummaryInfoCategory(category)),
 });
 
 
-const CareCardContainer = connect(
+const SummaryContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
   null,
-)(CareCardComponent);
+)(SummaryComponent);
 
-export default CareCardContainer;
+export default SummaryContainer;

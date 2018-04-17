@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
 import authReducer from './authReducer';
-import careCardReducer from './careCardReducer';
+import summaryReducer from './summaryReducer';
 import groupReducer from './groupReducer';
 import homeReducer from './homeReducer';
 import timelineReducer from './timelineReducer';
@@ -12,7 +12,7 @@ import timelineReducer from './timelineReducer';
 // reducer's "state" param references "state.auth".
 const rootReducer = combineReducers({
   auth: authReducer,
-  careCard: careCardReducer,
+  summary: summaryReducer,
   group: groupReducer,
   home: homeReducer,
   timeline: timelineReducer,

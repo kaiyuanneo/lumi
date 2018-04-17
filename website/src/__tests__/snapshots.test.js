@@ -7,14 +7,14 @@ import sinon from 'sinon';
 import App from '../App';
 import AuthComponent from '../components/AuthComponent';
 import BootstrapStyleComponent from '../components/BootstrapStyleComponent';
-import CareCardBasicInfoComponent from '../components/CareCardBasicInfoComponent';
-import CareCardCareInfoComponent from '../components/CareCardCareInfoComponent';
-import CareCardComponent from '../components/CareCardComponent';
-import CareCardEditWrapperComponent from '../components/CareCardEditWrapperComponent';
-import CareCardMedicalInfoComponent from '../components/CareCardMedicalInfoComponent';
-import CareCardNewMemberComponent from '../components/CareCardNewMemberComponent';
-import CareCardNewMemberFormFieldComponent from '../components/CareCardNewMemberFormFieldComponent';
-import CareCardSelectCareRecipientComponent from '../components/CareCardSelectCareRecipientComponent';
+import SummaryBasicInfoComponent from '../components/SummaryBasicInfoComponent';
+import SummaryCareInfoComponent from '../components/SummaryCareInfoComponent';
+import SummaryComponent from '../components/SummaryComponent';
+import SummaryEditWrapperComponent from '../components/SummaryEditWrapperComponent';
+import SummaryMedicalInfoComponent from '../components/SummaryMedicalInfoComponent';
+import SummaryNewMemberComponent from '../components/SummaryNewMemberComponent';
+import SummaryNewMemberFormFieldComponent from '../components/SummaryNewMemberFormFieldComponent';
+import SummarySelectCareRecipientComponent from '../components/SummarySelectCareRecipientComponent';
 import GroupCreateComponent from '../components/GroupCreateComponent';
 import GroupJoinComponent from '../components/GroupJoinComponent';
 import HomeComponent from '../components/HomeComponent';
@@ -62,23 +62,23 @@ it('BootstrapStyleComponent', () => {
 });
 
 
-it('CareCardBasicInfoComponent', () => {
+it('SummaryBasicInfoComponent', () => {
   const renderer = new ShallowRenderer();
-  const component = renderer.render(<CareCardBasicInfoComponent />);
+  const component = renderer.render(<SummaryBasicInfoComponent />);
   expect(component).toMatchSnapshot();
 });
 
 
-it('CareCardCareInfoComponent', () => {
+it('SummaryCareInfoComponent', () => {
   const renderer = new ShallowRenderer();
-  const component = renderer.render(<CareCardCareInfoComponent />);
+  const component = renderer.render(<SummaryCareInfoComponent />);
   expect(component).toMatchSnapshot();
 });
 
 
-it('CareCardComponent', () => {
+it('SummaryComponent', () => {
   const component = TestRenderer.create((
-    <CareCardComponent
+    <SummaryComponent
       contentComponent={<div />}
       fetched={false}
       firstName=""
@@ -86,7 +86,7 @@ it('CareCardComponent', () => {
       getCareRecipient={() => {}}
       infoCategory=""
       profilePic=""
-      saveCareCardInfoCategory={() => {}}
+      saveSummaryInfoCategory={() => {}}
       uid=""
     />
   )).toJSON();
@@ -94,9 +94,9 @@ it('CareCardComponent', () => {
 });
 
 
-it('CareCardEditWrapperComponent', () => {
+it('SummaryEditWrapperComponent', () => {
   const component = TestRenderer.create((
-    <CareCardEditWrapperComponent
+    <SummaryEditWrapperComponent
       cancelEdits={() => {}}
       displayFieldValue=""
       enterEditMode={() => {}}
@@ -111,16 +111,16 @@ it('CareCardEditWrapperComponent', () => {
 });
 
 
-it('CareCardMedicalInfoComponent', () => {
+it('SummaryMedicalInfoComponent', () => {
   const renderer = new ShallowRenderer();
-  const component = renderer.render(<CareCardMedicalInfoComponent />);
+  const component = renderer.render(<SummaryMedicalInfoComponent />);
   expect(component).toMatchSnapshot();
 });
 
 
-it('CareCardNewMemberComponent', () => {
+it('SummaryNewMemberComponent', () => {
   const component = TestRenderer.create((
-    <CareCardNewMemberComponent
+    <SummaryNewMemberComponent
       firstNameFormField={<div />}
       lastNameFormField={<div />}
       birthdayFormField={<div />}
@@ -143,9 +143,9 @@ it('CareCardNewMemberComponent', () => {
 });
 
 
-it('CareCardNewMemberFormFieldComponent', () => {
+it('SummaryNewMemberFormFieldComponent', () => {
   const component = TestRenderer.create((
-    <CareCardNewMemberFormFieldComponent
+    <SummaryNewMemberFormFieldComponent
       fieldTitle=""
       formField={<div />}
     />
@@ -154,9 +154,9 @@ it('CareCardNewMemberFormFieldComponent', () => {
 });
 
 
-it('CareCardSelectCareRecipientComponent', () => {
+it('SummarySelectCareRecipientComponent', () => {
   const component = TestRenderer.create((
-    <CareCardSelectCareRecipientComponent
+    <SummarySelectCareRecipientComponent
       fetchGroupMembers={() => {}}
       memberList={[]}
       selectedMember=""

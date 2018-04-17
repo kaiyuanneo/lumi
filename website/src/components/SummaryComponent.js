@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Image, Tabs } from 'react-bootstrap';
 
-import CareCardSelectCareRecipientContainer from '../containers/CareCardSelectCareRecipientContainer';
+import SummarySelectCareRecipientContainer from '../containers/SummarySelectCareRecipientContainer';
 import * as constants from '../static/constants';
 import * as utils from '../utils';
 
 
-class CareCardComponent extends Component {
+class SummaryComponent extends Component {
   componentDidMount() {
     this.props.getCareRecipient();
   }
@@ -19,7 +19,7 @@ class CareCardComponent extends Component {
     }
     // Render care recipient selector if this group has no care recipient yet
     if (!this.props.uid) {
-      return <CareCardSelectCareRecipientContainer />;
+      return <SummarySelectCareRecipientContainer />;
     }
     return (
       <Flexbox flexDirection="column">
@@ -35,12 +35,12 @@ class CareCardComponent extends Component {
             <Tabs
               defaultActiveKey={this.props.infoCategory}
               className="product-tabs"
-              id="care-card-tabs"
-              onSelect={this.props.saveCareCardInfoCategory}
+              id="summary-tabs"
+              onSelect={this.props.saveSummaryInfoCategory}
             >
-              {utils.getTabComponent(constants.CARE_CARD_CATEGORY_CODE_BASIC)}
-              {utils.getTabComponent(constants.CARE_CARD_CATEGORY_CODE_MEDICAL)}
-              {utils.getTabComponent(constants.CARE_CARD_CATEGORY_CODE_CARE)}
+              {utils.getTabComponent(constants.SUMMARY_CATEGORY_CODE_BASIC)}
+              {utils.getTabComponent(constants.SUMMARY_CATEGORY_CODE_MEDICAL)}
+              {utils.getTabComponent(constants.SUMMARY_CATEGORY_CODE_CARE)}
             </Tabs>
           </Flexbox>
           <br />
@@ -53,7 +53,7 @@ class CareCardComponent extends Component {
   }
 }
 
-CareCardComponent.propTypes = {
+SummaryComponent.propTypes = {
   // Props computed from Redux state
   infoCategory: PropTypes.string.isRequired,
   fetched: PropTypes.bool.isRequired,
@@ -64,7 +64,7 @@ CareCardComponent.propTypes = {
   contentComponent: PropTypes.element.isRequired,
   // Props that call dispatch actions
   getCareRecipient: PropTypes.func.isRequired,
-  saveCareCardInfoCategory: PropTypes.func.isRequired,
+  saveSummaryInfoCategory: PropTypes.func.isRequired,
 };
 
-export default CareCardComponent;
+export default SummaryComponent;

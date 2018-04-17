@@ -66,6 +66,10 @@ body {
   font-family: sans-serif;
 }
 
+.nav>li>a {
+  padding: 10px !important;
+}
+
 td.multiline {
   white-space:pre;
 }

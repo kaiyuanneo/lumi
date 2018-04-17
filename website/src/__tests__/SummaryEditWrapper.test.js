@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import sinon from 'sinon';
 import hash from 'string-hash';
 
-import * as CareCardEditWrapperContainer from '../containers/CareCardEditWrapperContainer';
+import * as SummaryEditWrapperContainer from '../containers/SummaryEditWrapperContainer';
 import * as constants from '../static/constants';
 import * as utils from '../utils';
 
@@ -14,7 +14,7 @@ describe('Get display field value', () => {
     const stubStateProps = { formFieldValue: stubFieldValue };
     const stubOwnProps = { fieldId: '' };
     const displayFieldValue =
-      CareCardEditWrapperContainer._getDisplayFieldValue(stubStateProps, stubOwnProps);
+      SummaryEditWrapperContainer._getDisplayFieldValue(stubStateProps, stubOwnProps);
     const expectedDisplayFieldValue = stubFieldValue;
     chai.assert.strictEqual(displayFieldValue, expectedDisplayFieldValue);
   });
@@ -23,7 +23,7 @@ describe('Get display field value', () => {
     const stubStateProps = { formFieldValue: '' };
     const stubOwnProps = { fieldId: '' };
     const displayFieldValue =
-      CareCardEditWrapperContainer._getDisplayFieldValue(stubStateProps, stubOwnProps);
+      SummaryEditWrapperContainer._getDisplayFieldValue(stubStateProps, stubOwnProps);
     const expectedDisplayFieldValue = 'Unspecified';
     chai.assert.strictEqual(displayFieldValue, expectedDisplayFieldValue);
   });
@@ -32,10 +32,10 @@ describe('Get display field value', () => {
     const stubFormFieldValue = 'TEST_FORM_FIELD_VALUE';
     const stubDisplayFieldValue = 'TEST_DISPLAY_FIELD_VALUE';
     const stubStateProps = { formFieldValue: stubFormFieldValue };
-    const stubOwnProps = { fieldId: constants.CARE_CARD_FIELD_ID_GENDER };
+    const stubOwnProps = { fieldId: constants.SUMMARY_FIELD_ID_GENDER };
     const utilsStub = sinon.stub(utils, 'genderCodeToName').returns(stubDisplayFieldValue);
     const displayFieldValue =
-      CareCardEditWrapperContainer._getDisplayFieldValue(stubStateProps, stubOwnProps);
+      SummaryEditWrapperContainer._getDisplayFieldValue(stubStateProps, stubOwnProps);
     const expectedDisplayFieldValue = stubDisplayFieldValue;
     chai.assert.strictEqual(displayFieldValue, expectedDisplayFieldValue);
     utilsStub.restore();
@@ -45,10 +45,10 @@ describe('Get display field value', () => {
     const stubFormFieldValue = 'TEST_FORM_FIELD_VALUE';
     const stubDisplayFieldValue = 'TEST_DISPLAY_FIELD_VALUE';
     const stubStateProps = { formFieldValue: stubFormFieldValue };
-    const stubOwnProps = { fieldId: constants.CARE_CARD_FIELD_ID_TYPE_OF_DEMENTIA };
+    const stubOwnProps = { fieldId: constants.SUMMARY_FIELD_ID_TYPE_OF_DEMENTIA };
     const utilsStub = sinon.stub(utils, 'dementiaCodeToName').returns(stubDisplayFieldValue);
     const displayFieldValue =
-      CareCardEditWrapperContainer._getDisplayFieldValue(stubStateProps, stubOwnProps);
+      SummaryEditWrapperContainer._getDisplayFieldValue(stubStateProps, stubOwnProps);
     const expectedDisplayFieldValue = stubDisplayFieldValue;
     chai.assert.strictEqual(displayFieldValue, expectedDisplayFieldValue);
     utilsStub.restore();
@@ -67,7 +67,7 @@ describe('Get misc props', () => {
     const stubFormFieldValueIso = 'TEST_FORM_FIELD_VALUE_ISO';
     const utilsStub = sinon.stub(utils, 'usToIsoDate').returns(stubFormFieldValueIso);
     const miscProps =
-      CareCardEditWrapperContainer._getMiscProps(stubStateProps, stubDispatchProps, stubOwnProps);
+      SummaryEditWrapperContainer._getMiscProps(stubStateProps, stubDispatchProps, stubOwnProps);
     const expectedMiscProps = {
       formFieldValue: stubFormFieldValueIso,
       saveButtonDisabled: false,
@@ -87,12 +87,12 @@ describe('Get misc props', () => {
     const stubDispatchProps = { saveFieldValueLocally: sinon.stub() };
     const stubOwnProps = {
       isDateField: false,
-      fieldId: constants.CARE_CARD_FIELD_ID_EMAIL,
+      fieldId: constants.SUMMARY_FIELD_ID_EMAIL,
     };
     const stubFormFieldValueIso = 'TEST_FORM_FIELD_VALUE_ISO';
     const utilsStub = sinon.stub(utils, 'usToIsoDate').returns(stubFormFieldValueIso);
     const miscProps =
-      CareCardEditWrapperContainer._getMiscProps(stubStateProps, stubDispatchProps, stubOwnProps);
+      SummaryEditWrapperContainer._getMiscProps(stubStateProps, stubDispatchProps, stubOwnProps);
     const expectedMiscProps = {
       formFieldValue: stubFormFieldValue,
       saveButtonDisabled: true,
@@ -117,7 +117,7 @@ describe('Get misc props', () => {
     const stubFormFieldValueIso = 'TEST_FORM_FIELD_VALUE_ISO';
     const utilsStub = sinon.stub(utils, 'usToIsoDate').returns(stubFormFieldValueIso);
     const miscProps =
-      CareCardEditWrapperContainer._getMiscProps(stubStateProps, stubDispatchProps, stubOwnProps);
+      SummaryEditWrapperContainer._getMiscProps(stubStateProps, stubDispatchProps, stubOwnProps);
     const expectedMiscProps = {
       formFieldValue: stubFormFieldValue,
       saveButtonDisabled: false,
@@ -169,9 +169,9 @@ describe('Save field value to DB', () => {
     };
     const saveFieldIsInEditModeStub = sinon.stub();
     const stubDispatchProps = { saveFieldIsInEditMode: saveFieldIsInEditModeStub };
-    const stubOwnProps = { fieldId: constants.CARE_CARD_FIELD_ID_EMAIL };
+    const stubOwnProps = { fieldId: constants.SUMMARY_FIELD_ID_EMAIL };
 
-    await CareCardEditWrapperContainer
+    await SummaryEditWrapperContainer
       ._saveFieldValueToDb(stubStateProps, stubDispatchProps, stubOwnProps, stubFormFieldValue);
 
     chai.assert.isTrue(dbStub.calledOnce);
@@ -237,7 +237,7 @@ describe('Save field value to DB', () => {
     const stubDispatchProps = { saveFieldIsInEditMode: saveFieldIsInEditModeStub };
     const stubOwnProps = { fieldId: 'TEST_FIELD_ID' };
 
-    await CareCardEditWrapperContainer
+    await SummaryEditWrapperContainer
       ._saveFieldValueToDb(stubStateProps, stubDispatchProps, stubOwnProps, stubFormFieldValue);
 
     chai.assert.isTrue(dbStub.calledOnce);

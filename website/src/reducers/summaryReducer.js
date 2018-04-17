@@ -2,9 +2,8 @@ import * as constants from '../static/constants';
 
 
 /*
-
-Care Card state structure.
-Lumi may store more fields than these in local state, but these are the ones Care Card needs.
+Summary state structure.
+Lumi may store more fields than these in local state, but these are the ones Summary needs.
 For each field, store both a field value that is synced with the DB, and a field value that
 may change based on edits to the local form field. This is so that if a user chooses to cancel
 their changes, the field value will revert to that of the DB.
@@ -13,7 +12,7 @@ their changes, the field value will revert to that of the DB.
   // Do not render if Lumi has not finished fetching the active care recipient of this group
   fetched,
 
-  // Fields specifically for CareCardSelectCareRecipientComponent
+  // Fields specifically for SummarySelectCareRecipientComponent
   // selectCrMembers is a map of memberId to member full names
   selectCrMembers,
   selectCrSelectedMember,
@@ -71,7 +70,7 @@ their changes, the field value will revert to that of the DB.
 */
 
 const initialState = {
-  infoCategory: constants.CARE_CARD_CATEGORY_CODE_BASIC,
+  infoCategory: constants.SUMMARY_CATEGORY_CODE_BASIC,
   fetched: false,
 
   selectCrMembers: new Map(),
@@ -126,9 +125,9 @@ const initialState = {
   placesOfInterestIsInEditMode: false,
 };
 
-const careCardReducer = (state = initialState, action) => {
+const summaryReducer = (state = initialState, action) => {
   switch (action.type) {
-    case constants.ACTION_SAVE_CARE_CARD_INFO_CATEGORY:
+    case constants.ACTION_SAVE_SUMMARY_INFO_CATEGORY:
       return {
         ...state,
         infoCategory: action.infoCategory,
@@ -163,17 +162,17 @@ const careCardReducer = (state = initialState, action) => {
         thingsThatDelightFormFieldValue: action.careRecipient.thingsThatDelight,
         placesOfInterestFormFieldValue: action.careRecipient.placesOfInterest,
       };
-    case constants.ACTION_SAVE_CARE_CARD_FIELD_VALUE_LOCALLY:
+    case constants.ACTION_SAVE_SUMMARY_FIELD_VALUE_LOCALLY:
       return {
         ...state,
         [`${action.fieldId}FormFieldValue`]: action.fieldValue,
       };
-    case constants.ACTION_SAVE_CARE_CARD_FIELD_IS_IN_EDIT_MODE:
+    case constants.ACTION_SAVE_SUMMARY_FIELD_IS_IN_EDIT_MODE:
       return {
         ...state,
         [`${action.fieldId}IsInEditMode`]: action.isInEditMode,
       };
-    case constants.ACTION_UNMOUNT_CARE_CARD_NEW_MEMBER_FORM:
+    case constants.ACTION_UNMOUNT_SUMMARY_NEW_MEMBER_FORM:
       return {
         ...state,
         selectCrUserClickedSelect: false,
@@ -199,4 +198,4 @@ const careCardReducer = (state = initialState, action) => {
   }
 };
 
-export default careCardReducer;
+export default summaryReducer;

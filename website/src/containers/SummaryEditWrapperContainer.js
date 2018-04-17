@@ -4,26 +4,26 @@ import { connect } from 'react-redux';
 import hash from 'string-hash';
 
 import * as actions from '../actions';
-import CareCardEditWrapperComponent from '../components/CareCardEditWrapperComponent';
+import SummaryEditWrapperComponent from '../components/SummaryEditWrapperComponent';
 import * as constants from '../static/constants';
 import * as utils from '../utils';
 
 
 const mapStateToProps = (state, ownProps) => ({
   // DB field value refers to the value of the local field that is in sync with the value in the DB.
-  dbFieldValue: state.careCard[ownProps.fieldId],
+  dbFieldValue: state.summary[ownProps.fieldId],
   // "Form field value" refers to the value of the field in forms. This is in contrast to
-  // "display field value", which is what is rendered in Care Card fields outside of edit mode.
-  formFieldValue: state.careCard[`${ownProps.fieldId}FormFieldValue`],
-  isInEditMode: state.careCard[`${ownProps.fieldId}IsInEditMode`],
+  // "display field value", which is what is rendered in Summary fields outside of edit mode.
+  formFieldValue: state.summary[`${ownProps.fieldId}FormFieldValue`],
+  isInEditMode: state.summary[`${ownProps.fieldId}IsInEditMode`],
 });
 
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   saveFieldValueLocally:
-    fieldValue => dispatch(actions.saveCareCardFieldValueLocally(ownProps.fieldId, fieldValue)),
+    fieldValue => dispatch(actions.saveSummaryFieldValueLocally(ownProps.fieldId, fieldValue)),
   saveFieldIsInEditMode:
-    isInEditMode => dispatch(actions.saveCareCardFieldIsInEditMode(ownProps.fieldId, isInEditMode)),
+    isInEditMode => dispatch(actions.saveSummaryFieldIsInEditMode(ownProps.fieldId, isInEditMode)),
 });
 
 
@@ -31,9 +31,9 @@ export const _getDisplayFieldValue = (stateProps, ownProps) => {
   let displayFieldValue = stateProps.formFieldValue;
   if (!displayFieldValue) {
     displayFieldValue = 'Unspecified';
-  } else if (ownProps.fieldId === constants.CARE_CARD_FIELD_ID_GENDER) {
+  } else if (ownProps.fieldId === constants.SUMMARY_FIELD_ID_GENDER) {
     displayFieldValue = utils.genderCodeToName(displayFieldValue);
-  } else if (ownProps.fieldId === constants.CARE_CARD_FIELD_ID_TYPE_OF_DEMENTIA) {
+  } else if (ownProps.fieldId === constants.SUMMARY_FIELD_ID_TYPE_OF_DEMENTIA) {
     displayFieldValue = utils.dementiaCodeToName(displayFieldValue);
   }
   return displayFieldValue;
@@ -57,7 +57,7 @@ export const _getMiscProps = (stateProps, dispatchProps, ownProps) => {
     onChangeFunc = (value, formattedValue) => dispatchProps.saveFieldValueLocally(formattedValue);
   }
   // Disable save button for invalid email addresses in email field
-  if (ownProps.fieldId === constants.CARE_CARD_FIELD_ID_EMAIL &&
+  if (ownProps.fieldId === constants.SUMMARY_FIELD_ID_EMAIL &&
       !utils.isValidEmail(formFieldValue)) {
     saveButtonDisabled = true;
   }
@@ -82,7 +82,7 @@ export const _saveFieldValueToDb = async (stateProps, dispatchProps, ownProps, f
   const careRecipientUid = careRecipientUidSnapshot.val();
   const careRecipientRef = db.ref(`${constants.DB_PATH_USERS}/${careRecipientUid}`);
   // If updating email field, update entry in user-email-to-uid path
-  if (ownProps.fieldId === constants.CARE_CARD_FIELD_ID_EMAIL) {
+  if (ownProps.fieldId === constants.SUMMARY_FIELD_ID_EMAIL) {
     db.ref(constants.DB_PATH_USER_EMAIL_TO_UID).update({
       [hash(stateProps.dbFieldValue)]: null,
       [hash(formFieldValue)]: careRecipientUid,
@@ -123,10 +123,10 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
 };
 
 
-const CareCardEditWrapperContainer = connect(
+const SummaryEditWrapperContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps,
-)(CareCardEditWrapperComponent);
+)(SummaryEditWrapperComponent);
 
-export default CareCardEditWrapperContainer;
+export default SummaryEditWrapperContainer;

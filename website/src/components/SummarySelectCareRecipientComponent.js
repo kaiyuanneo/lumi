@@ -3,23 +3,23 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Button, FormControl, FormGroup } from 'react-bootstrap';
 
-import CareCardNewMemberContainer from '../containers/CareCardNewMemberContainer';
+import SummaryNewMemberContainer from '../containers/SummaryNewMemberContainer';
 import * as constants from '../static/constants';
 
 
-class CareCardSelectCareRecipientComponent extends Component {
+class SummarySelectCareRecipientComponent extends Component {
   componentDidMount() {
     this.props.fetchGroupMembers();
   }
 
   render() {
     if (this.props.shouldRenderNewMemberForm) {
-      return <CareCardNewMemberContainer />;
+      return <SummaryNewMemberContainer />;
     }
     return (
       <Flexbox flexDirection="column">
-        <h2>{constants.CARE_CARD_NEW_CARE_RECIPIENT_PROMPT}</h2>
-        <FormGroup controlId={constants.CARE_CARD_FIELD_ID_USER_LIST}>
+        <h2>{constants.SUMMARY_NEW_CARE_RECIPIENT_PROMPT}</h2>
+        <FormGroup controlId={constants.SUMMARY_FIELD_ID_USER_LIST}>
           <FormControl
             componentClass="select"
             value={this.props.selectedMember}
@@ -41,7 +41,7 @@ class CareCardSelectCareRecipientComponent extends Component {
   }
 }
 
-CareCardSelectCareRecipientComponent.propTypes = {
+SummarySelectCareRecipientComponent.propTypes = {
   memberList: PropTypes.arrayOf(PropTypes.element).isRequired,
   selectedMember: PropTypes.string.isRequired,
   shouldRenderNewMemberForm: PropTypes.bool.isRequired,
@@ -51,4 +51,4 @@ CareCardSelectCareRecipientComponent.propTypes = {
   handleClickSelect: PropTypes.func.isRequired,
 };
 
-export default CareCardSelectCareRecipientComponent;
+export default SummarySelectCareRecipientComponent;

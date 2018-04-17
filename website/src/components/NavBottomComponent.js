@@ -21,10 +21,10 @@ const NavBottomComponent = props => (
           {constants.NAVBAR_ITEM_CHAT}
         </Flexbox>
       </NavItem>
-      <NavItem eventKey={constants.PRODUCT_CODE_CARE_CARD}>
+      <NavItem eventKey={constants.PRODUCT_CODE_SUMMARY}>
         <Flexbox flexDirection="column" alignItems="center">
           <Glyphicon glyph="info-sign" />
-          {constants.NAVBAR_ITEM_CARE_CARD}
+          {constants.NAVBAR_ITEM_SUMMARY}
         </Flexbox>
       </NavItem>
       <NavItem eventKey={constants.PRODUCT_CODE_SIGN_OUT} onClick={props.signOut}>

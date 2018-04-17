@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import sinon from 'sinon';
 
 import * as actions from '../actions';
-import * as CareCardContainer from '../containers/CareCardContainer';
+import * as SummaryContainer from '../containers/SummaryContainer';
 import * as constants from '../static/constants';
 
 
@@ -30,7 +30,7 @@ describe('Handle care recipient', () => {
     const dbStub = sinon.stub(firebase, 'database').returns({ ref: refStub });
     const dispatch = sinon.stub();
 
-    CareCardContainer._handleCareRecipient(dispatch, careRecipientUidRef, careRecipientUidSnapshot);
+    SummaryContainer._handleCareRecipient(dispatch, careRecipientUidRef, careRecipientUidSnapshot);
     chai.assert.isTrue(dispatch.calledTwice);
     chai.assert.isTrue(dispatch.calledWithExactly(stubActionToggleFetchedCareRecipient));
     chai.assert.isTrue(dispatch.calledWithExactly(stubActionSaveCareRecipientUid));
@@ -70,7 +70,7 @@ describe('Handle care recipient', () => {
     const dbStub = sinon.stub(firebase, 'database').returns({ ref: refStub });
     const dispatch = sinon.stub();
 
-    CareCardContainer._handleCareRecipient(dispatch, careRecipientUidRef, careRecipientUidSnapshot);
+    SummaryContainer._handleCareRecipient(dispatch, careRecipientUidRef, careRecipientUidSnapshot);
     chai.assert.isTrue(dispatch.calledOnce);
     chai.assert.isTrue(dispatch.calledWithExactly(stubActionToggleFetchedCareRecipient));
     chai.assert.isTrue(toggleFetchedCareRecipientStub.calledOnce);
@@ -107,7 +107,7 @@ describe('Get care recipient', () => {
     const authStub = sinon.stub(firebase, 'auth').returns({ currentUser: { uid: stubAuthUid } });
     const dispatch = sinon.stub();
 
-    await CareCardContainer._getCareRecipient(dispatch);
+    await SummaryContainer._getCareRecipient(dispatch);
     chai.assert.isTrue(dbStub.calledOnce);
     chai.assert.isTrue(authStub.calledOnce);
     chai.assert.isTrue(refStub.calledTwice);

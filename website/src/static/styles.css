@@ -30,6 +30,16 @@
   padding-top: 70px;
 }
 
+/*
+ * Make navbar not stack such that bottom navbar can act like native app navbar
+ */
+.navbar-nav>li, .navbar-nav {
+  float: left !important;
+}
+.navbar-right {
+  float: right!important;
+}
+
 .product-table-header {
   text-align: center;
 }

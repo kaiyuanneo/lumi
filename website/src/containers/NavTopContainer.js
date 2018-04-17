@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Navbar } from 'react-bootstrap';
 
 import * as actions from '../actions';
-import NavBarComponent from '../components/NavBarComponent';
+import NavTopComponent from '../components/NavTopComponent';
 import * as constants from '../static/constants';
 
 
@@ -58,29 +58,12 @@ export const _getGroupInfo = (dispatch) => {
 
 const mapDispatchToProps = dispatch => ({
   getGroupInfo: () => _getGroupInfo(dispatch),
-  switchProduct: (eventKey) => {
-    // Clicking sign out will trigger this because it is a child of the navbar
-    if (eventKey === constants.PRODUCT_CODE_SIGN_OUT) {
-      return;
-    }
-    // Event keys are product codes
-    dispatch(actions.saveCurrentProductCode(eventKey));
-  },
 });
 
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => ({
-  ...stateProps,
-  ...dispatchProps,
-  ...ownProps,
-  signOut: () => firebase.auth().signOut(),
-});
-
-
-const NavBarContainer = connect(
+const NavTopContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
-  mergeProps,
-)(NavBarComponent);
+)(NavTopComponent);
 
-export default NavBarContainer;
+export default NavTopContainer;

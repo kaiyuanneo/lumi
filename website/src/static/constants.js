@@ -205,6 +205,7 @@ export const GROUP_NAME_FIELD_HELP =
 
 export const NAVBAR_HEADER_TITLE = 'Lumi';
 export const NAVBAR_ITEM_TIMELINE = 'Timeline';
+export const NAVBAR_ITEM_CHAT = 'Chat';
 export const NAVBAR_ITEM_CARE_CARD = 'Care Card';
 export const NAVBAR_ITEM_GROUP_ID = 'Group ID: ';
 export const NAVBAR_ITEM_SIGN_OUT = 'Sign Out';
@@ -213,9 +214,10 @@ export const NEW_USER_PAGE_TITLE = 'Welcome to Lumi, ';
 export const NEW_USER_PAGE_SUBTITLE =
   'Before we begin, you must either create or join a Lumi Group.';
 
-export const PRODUCT_CODE_SIGN_OUT = 'sign-out';
 export const PRODUCT_CODE_TIMELINE = 'timeline';
+export const PRODUCT_CODE_CHAT = 'chat';
 export const PRODUCT_CODE_CARE_CARD = 'care-card';
+export const PRODUCT_CODE_SIGN_OUT = 'sign-out';
 
 export const STORAGE_PATH_LUMI_IMAGES = 'lumi/images';
 

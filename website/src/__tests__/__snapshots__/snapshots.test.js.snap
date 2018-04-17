@@ -496,7 +496,107 @@ exports[`GroupJoinComponent 1`] = `
 
 exports[`HomeComponent 1`] = `null`;
 
-exports[`NavBarComponent 1`] = `
+exports[`NavBottomComponent 1`] = `
+<nav
+  className="navbar navbar-default navbar-fixed-bottom"
+>
+  <div
+    className="container"
+  >
+    <ul
+      className="nav navbar-nav"
+      role={null}
+    >
+      <li
+        className=""
+        role="presentation"
+        style={undefined}
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="button"
+        >
+          <div
+            className="sc-bdVaJa djJVkl"
+          >
+            <span
+              className="glyphicon glyphicon-home"
+            />
+            Timeline
+          </div>
+        </a>
+      </li>
+      <li
+        className=""
+        role="presentation"
+        style={undefined}
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="button"
+        >
+          <div
+            className="sc-bdVaJa djJVkl"
+          >
+            <span
+              className="glyphicon glyphicon-plus"
+            />
+            Chat
+          </div>
+        </a>
+      </li>
+      <li
+        className=""
+        role="presentation"
+        style={undefined}
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="button"
+        >
+          <div
+            className="sc-bdVaJa djJVkl"
+          >
+            <span
+              className="glyphicon glyphicon-info-sign"
+            />
+            Care Card
+          </div>
+        </a>
+      </li>
+      <li
+        className=""
+        role="presentation"
+        style={undefined}
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="button"
+        >
+          <div
+            className="sc-bdVaJa djJVkl"
+          >
+            <span
+              className="glyphicon glyphicon-log-out"
+            />
+            Sign Out
+          </div>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+`;
+
+exports[`NavTopComponent 1`] = `
 <nav
   className="navbar navbar-default navbar-fixed-top"
 >
@@ -538,60 +638,7 @@ exports[`NavBarComponent 1`] = `
     <div
       aria-expanded={null}
       className="navbar-collapse collapse"
-    >
-      <ul
-        className="nav navbar-nav"
-        role={null}
-      >
-        <li
-          className=""
-          role="presentation"
-          style={undefined}
-        >
-          <a
-            href="#"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-          >
-            Timeline
-          </a>
-        </li>
-        <li
-          className=""
-          role="presentation"
-          style={undefined}
-        >
-          <a
-            href="#"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-          >
-            Care Card
-          </a>
-        </li>
-      </ul>
-      <ul
-        className="nav navbar-nav navbar-right"
-        role={null}
-      >
-        <li
-          className=""
-          role="presentation"
-          style={undefined}
-        >
-          <a
-            href="#"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-          >
-            Sign Out
-          </a>
-        </li>
-      </ul>
-    </div>
+    />
   </div>
 </nav>
 `;
@@ -616,10 +663,10 @@ exports[`TimelineComponent 1`] = `
 <div>
   <Connect(TimelineFiltersComponent) />
   <Table
-    bordered={true}
+    bordered={false}
     bsClass="table"
-    condensed={true}
-    hover={true}
+    condensed={false}
+    hover={false}
     responsive={false}
     striped={false}
   >

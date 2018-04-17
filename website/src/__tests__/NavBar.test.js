@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import sinon from 'sinon';
 
 import * as actions from '../actions';
-import * as NavBarContainer from '../containers/NavBarContainer';
+import * as NavTopContainer from '../containers/NavTopContainer';
 import * as constants from '../static/constants';
 
 
@@ -25,7 +25,7 @@ describe('Save auth user group info', () => {
     const stubActiveGroupRef = { off: sinon.stub() };
     const stubActiveGroupSnapshot = { val: sinon.stub().returns(stubActiveGroup) };
 
-    await NavBarContainer
+    await NavTopContainer
       ._saveAuthUserGroupInfo(stubDispatch, stubActiveGroupRef, stubActiveGroupSnapshot);
 
     chai.assert.isTrue(dbStub.calledOnce);
@@ -57,7 +57,7 @@ describe('Save auth user group info', () => {
     const stubActiveGroupRef = { off: sinon.stub() };
     const stubActiveGroupSnapshot = { val: sinon.stub().returns(stubActiveGroup) };
 
-    await NavBarContainer
+    await NavTopContainer
       ._saveAuthUserGroupInfo(stubDispatch, stubActiveGroupRef, stubActiveGroupSnapshot);
 
     chai.assert.isFalse(dbStub.called);
@@ -87,7 +87,7 @@ describe('Get group info', () => {
     const authStub = sinon.stub(firebase, 'auth').returns({ currentUser: { uid: stubAuthUid } });
     const stubDispatch = sinon.stub();
 
-    NavBarContainer._getGroupInfo(stubDispatch);
+    NavTopContainer._getGroupInfo(stubDispatch);
 
     chai.assert.isTrue(dbStub.calledOnce);
     chai.assert.isTrue(authStub.calledOnce);

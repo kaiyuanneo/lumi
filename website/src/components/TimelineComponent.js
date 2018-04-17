@@ -61,7 +61,7 @@ class TimelineComponent extends Component {
     return (
       <div>
         <TimelineFiltersContainer />
-        <Table bordered condensed hover>
+        <Table>
           <tbody>
             {Array.from(this.props.sortedMessages, messageToTableRow)}
           </tbody>

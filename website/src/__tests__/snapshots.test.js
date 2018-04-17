@@ -18,7 +18,8 @@ import CareCardSelectCareRecipientComponent from '../components/CareCardSelectCa
 import GroupCreateComponent from '../components/GroupCreateComponent';
 import GroupJoinComponent from '../components/GroupJoinComponent';
 import HomeComponent from '../components/HomeComponent';
-import NavBarComponent from '../components/NavBarComponent';
+import NavBottomComponent from '../components/NavBottomComponent';
+import NavTopComponent from '../components/NavTopComponent';
 import NewUserComponent from '../components/NewUserComponent';
 import RootComponent from '../components/RootComponent';
 import TimelineComponent from '../components/TimelineComponent';
@@ -208,12 +209,22 @@ it('HomeComponent', () => {
 });
 
 
-it('NavBarComponent', () => {
+it('NavBottomComponent', () => {
   const component = TestRenderer.create((
-    <NavBarComponent
-      getGroupInfo={() => {}}
+    <NavBottomComponent
+      activeKey=""
       switchProduct={() => {}}
       signOut={() => {}}
+    />
+  )).toJSON();
+  expect(component).toMatchSnapshot();
+});
+
+
+it('NavTopComponent', () => {
+  const component = TestRenderer.create((
+    <NavTopComponent
+      getGroupInfo={() => {}}
     />
   )).toJSON();
   expect(component).toMatchSnapshot();

@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import NavBarContainer from '../containers/NavBarContainer';
+import NavBottomContainer from '../containers/NavBottomContainer';
+import NavTopContainer from '../containers/NavTopContainer';
 import NewUserContainer from '../containers/NewUserContainer';
 
 
@@ -18,8 +19,9 @@ class HomeComponent extends Component {
       this.props.productComponent : <NewUserContainer />;
     return (
       <div className="navbar-offset">
-        <NavBarContainer />
+        <NavTopContainer />
         {contentComponent}
+        <NavBottomContainer />
       </div>
     );
   }

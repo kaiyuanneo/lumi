@@ -118,7 +118,7 @@ exports[`HomeComponent 1`] = `null`;
 
 exports[`NavBottomComponent 1`] = `
 <nav
-  className="navbar navbar-default navbar-fixed-bottom"
+  className="nav-bottom navbar navbar-default navbar-fixed-bottom"
 >
   <div
     className="container"
@@ -190,77 +190,83 @@ exports[`NavBottomComponent 1`] = `
           </div>
         </a>
       </li>
-      <li
-        className=""
-        role="presentation"
-        style={undefined}
-      >
-        <a
-          href="#"
-          onClick={[Function]}
-          onKeyDown={[Function]}
-          role="button"
-        >
-          <div
-            className="sc-bdVaJa djJVkl"
-          >
-            <span
-              className="glyphicon glyphicon-log-out"
-            />
-            Sign Out
-          </div>
-        </a>
-      </li>
     </ul>
   </div>
 </nav>
 `;
 
 exports[`NavTopComponent 1`] = `
-<nav
-  className="navbar navbar-default navbar-fixed-top"
+<div
+  className="nav-top"
 >
-  <div
-    className="container"
+  <nav
+    className="navbar navbar-default navbar-fixed-top"
   >
     <div
-      className="navbar-header"
+      className="container"
     >
-      <a
-        className="navbar-brand"
-        href="/"
+      <div
+        className="navbar-header"
       >
-        <b>
-          Lumi
-        </b>
-      </a>
-      <button
-        className="navbar-toggle collapsed"
-        onClick={[Function]}
-        type="button"
-      >
-        <span
-          className="sr-only"
+        <a
+          className="navbar-brand"
+          href="/"
         >
-          Toggle navigation
-        </span>
-        <span
-          className="icon-bar"
+          <b>
+            Lumi
+          </b>
+        </a>
+        <button
+          className="navbar-toggle collapsed"
+          onClick={[Function]}
+          type="button"
+        >
+          <span
+            className="sr-only"
+          >
+            Toggle navigation
+          </span>
+          <span
+            className="icon-bar"
+          />
+          <span
+            className="icon-bar"
+          />
+          <span
+            className="icon-bar"
+          />
+        </button>
+      </div>
+      <div
+        aria-expanded={null}
+        className="navbar-collapse collapse"
+      >
+        <ul
+          className="nav navbar-nav navbar-right"
+          role={null}
+        >
+          <li
+            className=""
+            role="presentation"
+            style={undefined}
+          >
+            <a
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              Sign Out
+            </a>
+          </li>
+        </ul>
+        <p
+          className="navbar-text navbar-right"
         />
-        <span
-          className="icon-bar"
-        />
-        <span
-          className="icon-bar"
-        />
-      </button>
+      </div>
     </div>
-    <div
-      aria-expanded={null}
-      className="navbar-collapse collapse"
-    />
-  </div>
-</nav>
+  </nav>
+</div>
 `;
 
 exports[`NewUserComponent 1`] = `

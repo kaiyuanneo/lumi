@@ -7,7 +7,7 @@ import * as constants from '../static/constants';
 
 
 const NavBottomComponent = props => (
-  <Navbar fixedBottom onSelect={props.switchProduct}>
+  <Navbar className="nav-bottom" fixedBottom onSelect={props.switchProduct}>
     <Nav activeKey={props.activeKey}>
       <NavItem eventKey={constants.PRODUCT_CODE_TIMELINE}>
         <Flexbox flexDirection="column" alignItems="center">
@@ -27,19 +27,12 @@ const NavBottomComponent = props => (
           {constants.NAVBAR_ITEM_SUMMARY}
         </Flexbox>
       </NavItem>
-      <NavItem eventKey={constants.PRODUCT_CODE_SIGN_OUT} onClick={props.signOut}>
-        <Flexbox flexDirection="column" alignItems="center">
-          <Glyphicon glyph="log-out" />
-          {constants.NAVBAR_ITEM_SIGN_OUT}
-        </Flexbox>
-      </NavItem>
     </Nav>
   </Navbar>
 );
 
 NavBottomComponent.propTypes = {
   activeKey: PropTypes.string.isRequired,
-  signOut: PropTypes.func.isRequired,
   switchProduct: PropTypes.func.isRequired,
 };
 

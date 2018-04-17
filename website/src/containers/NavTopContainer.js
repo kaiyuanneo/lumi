@@ -1,8 +1,6 @@
 // NB: Private functions are underscore-prefixed and exported for tests
 import * as firebase from 'firebase';
-import React from 'react';
 import { connect } from 'react-redux';
-import { Navbar } from 'react-bootstrap';
 
 import * as actions from '../actions';
 import NavTopComponent from '../components/NavTopComponent';
@@ -13,11 +11,7 @@ const mapStateToProps = (state) => {
   let groupIdLabel = null;
   let groupNameLabel = null;
   if (state.home.groupId) {
-    groupIdLabel = (
-      <Navbar.Text pullRight>
-        {constants.NAVBAR_ITEM_GROUP_ID}{state.home.groupId}
-      </Navbar.Text>
-    );
+    groupIdLabel = `${constants.NAVBAR_ITEM_GROUP_ID}${state.home.groupId}`;
   }
   if (state.home.groupName) {
     groupNameLabel = ` ${state.home.groupName}`;
@@ -61,9 +55,18 @@ const mapDispatchToProps = dispatch => ({
 });
 
 
+const mergeProps = (stateProps, dispatchProps, ownProps) => ({
+  ...stateProps,
+  ...dispatchProps,
+  ...ownProps,
+  signOut: () => firebase.auth().signOut(),
+});
+
+
 const NavTopContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
+  mergeProps,
 )(NavTopComponent);
 
 export default NavTopContainer;

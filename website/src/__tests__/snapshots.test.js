@@ -214,7 +214,6 @@ it('NavBottomComponent', () => {
     <NavBottomComponent
       activeKey=""
       switchProduct={() => {}}
-      signOut={() => {}}
     />
   )).toJSON();
   expect(component).toMatchSnapshot();
@@ -225,6 +224,7 @@ it('NavTopComponent', () => {
   const component = TestRenderer.create((
     <NavTopComponent
       getGroupInfo={() => {}}
+      signOut={() => {}}
     />
   )).toJSON();
   expect(component).toMatchSnapshot();

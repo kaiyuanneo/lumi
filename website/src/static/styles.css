@@ -28,16 +28,27 @@
 .navbar-offset {
   /* By default, fixed top navbar has height of 50px */
   padding-top: 70px;
+  /* By default, fixed bottom navbar has height of 50px */
+  padding-bottom: 90px;
+}
+
+.navbar-nav: {
+  margin: 0;
 }
 
 /*
  * Make navbar not stack such that bottom navbar can act like native app navbar
+ * .navbar-fixed-bottom is how we only affect the bottom navbar and not the top
  */
-.navbar-nav>li, .navbar-nav {
+.navbar-fixed-bottom .navbar-nav>li, .navbar-fixed-bottom .navbar-nav {
   float: left !important;
 }
-.navbar-right {
+.navbar-fixed-bottom .navbar-right {
   float: right!important;
+}
+/* Override Bootstrap styling in bottom navbar */
+.navbar-fixed-bottom .nav>li>a {
+  padding: 10px !important;
 }
 
 .product-table-header {
@@ -64,10 +75,6 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-}
-
-.nav>li>a {
-  padding: 10px !important;
 }
 
 td.multiline {

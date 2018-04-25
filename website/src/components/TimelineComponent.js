@@ -1,9 +1,12 @@
 import Flexbox from 'flexbox-react';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Glyphicon, Image, Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 
 import TimelineFiltersContainer from '../containers/TimelineFiltersContainer';
+import TimelineStoryHeaderContainer from '../containers/TimelineStoryHeaderContainer';
+import TimelineStoryContentComponent from '../components/TimelineStoryContentComponent';
+import * as constants from '../static/constants';
 
 
 class TimelineComponent extends Component {
@@ -15,44 +18,26 @@ class TimelineComponent extends Component {
       if (!this.props.shouldRenderMessage(messageValue)) {
         return null;
       }
-      let messageContent;
-      if ('attachments' in messageValue) {
-        messageContent = (
-          // Need alignItems to prevent image stretching
-          <Flexbox flexDirection="column" alignItems="flex-start">
-            <div>{messageValue.text}</div>
-            <Image
-              src={messageValue.attachments[0].payload.url}
-              responsive
-            />
+      let timelineStory = (
+        <Flexbox flexDirection="column" alignItems="flex-start">
+          <TimelineStoryHeaderContainer messageValue={messageValue} />
+          <TimelineStoryContentComponent messageValue={messageValue} />
+        </Flexbox>
+      );
+      // Wrap timeline story with a centering Flexbox if screen width above threshold
+      if (this.props.windowWidth > constants.WINDOW_WIDTH_MAX) {
+        timelineStory = (
+          <Flexbox flexDirection="column" alignItems="center">
+            <div className="timeline-story-centred">
+              {timelineStory}
+            </div>
           </Flexbox>
         );
-      } else {
-        messageContent = <div>{messageValue.text}</div>;
       }
-      const senderFullName = `${messageValue.senderFirstName} ${messageValue.senderLastName}`;
-      const messageTimestamp = this.props.getLocalDateString(messageValue.timestamp);
-      const messageCategory = this.props.getCategoryName(messageValue.category);
-      const starIcon = messageValue.starred ? <div>&nbsp;• <Glyphicon glyph="star" /></div> : null;
       return (
         <tr key={messageKey}>
-          <td>
-            <Flexbox flexDirection="column" alignItems="flex-start">
-              <Flexbox alignItems="center">
-                <Image
-                  className="timeline-card-profile-image"
-                  src={messageValue.senderProfilePic}
-                  circle
-                />
-                <span className="space-horizontal" />
-                <Flexbox flexDirection="column">
-                  <div>{senderFullName} • {messageTimestamp}</div>
-                  <Flexbox><div>{messageCategory}</div>{starIcon}</Flexbox>
-                </Flexbox>
-              </Flexbox>
-              <br />
-              {messageContent}
-            </Flexbox>
+          <td className="timeline-story-table-data">
+            {timelineStory}
             <br />
           </td>
         </tr>
@@ -75,8 +60,7 @@ TimelineComponent.propTypes = {
   sortedMessages: PropTypes.instanceOf(Map).isRequired,
   syncMessages: PropTypes.func.isRequired,
   shouldRenderMessage: PropTypes.func.isRequired,
-  getLocalDateString: PropTypes.func.isRequired,
-  getCategoryName: PropTypes.func.isRequired,
+  windowWidth: PropTypes.number.isRequired,
 };
 
 export default TimelineComponent;

@@ -42,6 +42,7 @@ const mapStateToProps = state => ({
   // varying amounts of time to look up user information for the sender of each message.
   sortedMessages: _getSortedMessageMap(state),
   shouldRenderMessage: message => _shouldRenderMessage(state, message),
+  windowWidth: state.home.windowWidth,
 });
 
 

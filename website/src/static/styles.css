@@ -63,7 +63,29 @@
   width: 5px;
 }
 
-.timeline-card-profile-image {
+.timeline-story-centred {
+  /* Copy Instagram max width */
+  width: 600px;
+}
+
+/* Add padding around non-image feed elements such as story header and story content text */
+.timeline-story-padding {
+  padding: 10px;
+}
+
+/* Remove default padding around table data */
+.timeline-story-table-data {
+  padding: 0 !important;
+}
+
+.timeline-story-content-image {
+  /* Copy Instagram max width */
+  max-width: 600px !important;
+  width: 100vw;
+  height: auto;
+}
+
+.timeline-story-header-profile-image {
   height: 40px;
 }
 

@@ -7,6 +7,7 @@ Home state structure. Stores state for Home and NavBar components
   currentProductCode,
   groupId,
   groupName,
+  windowWidth,
 }
 */
 
@@ -15,6 +16,7 @@ const initialState = {
   currentProductCode: constants.PRODUCT_CODE_TIMELINE,
   groupId: null,
   groupName: null,
+  windowWidth: window.innerWidth,
 };
 
 const homeReducer = (state = initialState, action) => {
@@ -34,6 +36,11 @@ const homeReducer = (state = initialState, action) => {
         ...state,
         groupId: action.groupId,
         groupName: action.groupName,
+      };
+    case constants.ACTION_SAVE_WINDOW_WIDTH:
+      return {
+        ...state,
+        windowWidth: action.windowWidth,
       };
     default:
       return state;

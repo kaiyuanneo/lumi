@@ -35,6 +35,11 @@ export const saveAuthUserGroupInfo = (groupId, groupName) => ({
   groupName,
 });
 
+export const saveWindowWidth = (windowWidth) => ({
+  type: constants.ACTION_SAVE_WINDOW_WIDTH,
+  windowWidth,
+});
+
 /*
  * Group management actions
  */

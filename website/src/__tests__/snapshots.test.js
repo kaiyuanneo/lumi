@@ -23,6 +23,8 @@ import NavTopComponent from '../components/NavTopComponent';
 import NewUserComponent from '../components/NewUserComponent';
 import RootComponent from '../components/RootComponent';
 import TimelineComponent from '../components/TimelineComponent';
+import TimelineStoryHeaderComponent from '../components/TimelineStoryHeaderComponent';
+import TimelineStoryContentComponent from '../components/TimelineStoryContentComponent';
 
 
 describe('App', () => {
@@ -201,6 +203,7 @@ it('HomeComponent', () => {
   const component = TestRenderer.create((
     <HomeComponent
       getIsAuthUserInGroup={() => {}}
+      saveWindowWidth={() => {}}
       shouldComponentRender={false}
       productComponent={<div />}
     />
@@ -258,11 +261,32 @@ it('TimelineComponent', () => {
   const component = renderer.render((
     <TimelineComponent
       filterMessages={() => {}}
-      getCategoryName={() => {}}
-      getLocalDateString={() => {}}
       shouldRenderMessage={() => {}}
       sortedMessages={new Map()}
       syncMessages={() => {}}
+      windowWidth={0}
+    />
+  ));
+  expect(component).toMatchSnapshot();
+});
+
+it('TimelineStoryHeaderComponent', () => {
+  const renderer = new ShallowRenderer();
+  const component = renderer.render((
+    <TimelineStoryHeaderComponent
+      getCategoryName={() => {}}
+      getLocalDateString={() => {}}
+      messageValue={{}}
+    />
+  ));
+  expect(component).toMatchSnapshot();
+});
+
+it('TimelineStoryContentComponent', () => {
+  const renderer = new ShallowRenderer();
+  const component = renderer.render((
+    <TimelineStoryContentComponent
+      messageValue={{ attachments: [{ payload: { url: '' } }] }}
     />
   ));
   expect(component).toMatchSnapshot();

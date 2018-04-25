@@ -734,3 +734,63 @@ exports[`TimelineComponent 1`] = `
   </Table>
 </div>
 `;
+
+exports[`TimelineStoryContentComponent 1`] = `
+<Styled(Component)
+  alignItems="flex-start"
+  display="flex"
+  element="div"
+  flexDirection="column"
+>
+  <div
+    className="timeline-story-padding"
+  />
+  <Image
+    bsClass="img"
+    circle={false}
+    className="timeline-story-content-image"
+    responsive={true}
+    rounded={false}
+    src=""
+    thumbnail={false}
+  />
+</Styled(Component)>
+`;
+
+exports[`TimelineStoryHeaderComponent 1`] = `
+<Styled(Component)
+  alignItems="center"
+  className="timeline-story-padding"
+  display="flex"
+  element="div"
+>
+  <Image
+    bsClass="img"
+    circle={true}
+    className="timeline-story-header-profile-image"
+    responsive={false}
+    rounded={false}
+    src={undefined}
+    thumbnail={false}
+  />
+  <span
+    className="space-horizontal"
+  />
+  <Styled(Component)
+    display="flex"
+    element="div"
+    flexDirection="column"
+  >
+    <div>
+      undefined undefined
+       • 
+    </div>
+    <Styled(Component)
+      display="flex"
+      element="div"
+    >
+      <div />
+    </Styled(Component)>
+  </Styled(Component)>
+</Styled(Component)>
+`;

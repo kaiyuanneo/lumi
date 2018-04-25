@@ -37,7 +37,7 @@ class NavTopComponent extends Component {
 
 NavTopComponent.propTypes = {
   getGroupInfo: PropTypes.func.isRequired,
-  groupIdLabel: PropTypes.element,
+  groupIdLabel: PropTypes.string,
   groupNameLabel: PropTypes.string,
   signOut: PropTypes.func.isRequired,
 };

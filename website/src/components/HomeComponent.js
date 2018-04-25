@@ -9,6 +9,7 @@ import NewUserContainer from '../containers/NewUserContainer';
 class HomeComponent extends Component {
   componentDidMount() {
     this.props.getIsAuthUserInGroup();
+    window.addEventListener('resize', this.props.saveWindowWidth);
   }
   render() {
     // Do not render anything before we know if auth user is in a group
@@ -31,6 +32,7 @@ HomeComponent.propTypes = {
   isAuthUserInGroup: PropTypes.bool,
   shouldComponentRender: PropTypes.bool.isRequired,
   getIsAuthUserInGroup: PropTypes.func.isRequired,
+  saveWindowWidth: PropTypes.func.isRequired,
   productComponent: PropTypes.element.isRequired,
 };
 

@@ -57,6 +57,7 @@ export const _getIsAuthUserInGroup = (dispatch) => {
 
 const mapDispatchToProps = dispatch => ({
   getIsAuthUserInGroup: () => _getIsAuthUserInGroup(dispatch),
+  saveWindowWidth: () => dispatch(actions.saveWindowWidth(window.innerWidth)),
 });
 
 const HomeContainer = connect(

@@ -79,6 +79,7 @@ export const NAVBAR_ITEM_CHAT = 'Chat';
 export const NAVBAR_ITEM_SUMMARY = 'Summary';
 export const NAVBAR_ITEM_GROUP_ID = 'Group ID: ';
 export const NAVBAR_ITEM_SIGN_OUT = 'Sign Out';
+export const NAVBAR_ICON_SIZE = 24;
 
 export const NEW_USER_PAGE_TITLE = 'Welcome to Lumi, ';
 export const NEW_USER_PAGE_SUBTITLE =

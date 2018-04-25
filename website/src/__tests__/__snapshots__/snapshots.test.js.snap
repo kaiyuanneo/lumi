@@ -123,74 +123,78 @@ exports[`NavBottomComponent 1`] = `
   <div
     className="container"
   >
-    <ul
-      className="nav navbar-nav"
-      role={null}
+    <div
+      className="sc-bdVaJa cNkfwA"
     >
-      <li
-        className=""
-        role="presentation"
-        style={undefined}
+      <ul
+        className="nav navbar-nav"
+        role={null}
       >
-        <a
-          href="#"
-          onClick={[Function]}
-          onKeyDown={[Function]}
-          role="button"
+        <li
+          className=""
+          role="presentation"
+          style={undefined}
         >
-          <div
-            className="sc-bdVaJa djJVkl"
+          <a
+            href="#"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
           >
-            <span
-              className="glyphicon glyphicon-home"
-            />
-            Timeline
-          </div>
-        </a>
-      </li>
-      <li
-        className=""
-        role="presentation"
-        style={undefined}
-      >
-        <a
-          href="#"
-          onClick={[Function]}
-          onKeyDown={[Function]}
-          role="button"
+            <div
+              className="sc-bdVaJa djJVkl"
+            >
+              <span
+                className="glyphicon glyphicon-home"
+              />
+              Timeline
+            </div>
+          </a>
+        </li>
+        <li
+          className=""
+          role="presentation"
+          style={undefined}
         >
-          <div
-            className="sc-bdVaJa djJVkl"
+          <a
+            href="#"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
           >
-            <span
-              className="glyphicon glyphicon-plus"
-            />
-            Chat
-          </div>
-        </a>
-      </li>
-      <li
-        className=""
-        role="presentation"
-        style={undefined}
-      >
-        <a
-          href="#"
-          onClick={[Function]}
-          onKeyDown={[Function]}
-          role="button"
+            <div
+              className="sc-bdVaJa djJVkl"
+            >
+              <span
+                className="glyphicon glyphicon-plus"
+              />
+              Chat
+            </div>
+          </a>
+        </li>
+        <li
+          className=""
+          role="presentation"
+          style={undefined}
         >
-          <div
-            className="sc-bdVaJa djJVkl"
+          <a
+            href="#"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
           >
-            <span
-              className="glyphicon glyphicon-info-sign"
-            />
-            Summary
-          </div>
-        </a>
-      </li>
-    </ul>
+            <div
+              className="sc-bdVaJa djJVkl"
+            >
+              <span
+                className="glyphicon glyphicon-info-sign"
+              />
+              Summary
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
 `;

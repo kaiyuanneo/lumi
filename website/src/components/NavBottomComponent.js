@@ -1,9 +1,9 @@
 import Flexbox from 'flexbox-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import InfoIcon from 'react-icons/lib/fa/info-circle';
-import NewsIcon from 'react-icons/lib/fa/newspaper-o';
-import ChatIcon from 'react-icons/lib/md/chat';
+import AddIcon from 'react-icons/lib/md/add';
+import HomeIcon from 'react-icons/lib/md/home';
+import PersonIcon from 'react-icons/lib/md/person';
 import { Nav, Navbar, NavItem } from 'react-bootstrap';
 
 import * as constants from '../static/constants';
@@ -16,7 +16,7 @@ const NavBottomComponent = props => (
       <Nav activeKey={props.activeKey}>
         <NavItem eventKey={constants.PRODUCT_CODE_TIMELINE}>
           <Flexbox flexDirection="column" alignItems="center">
-            <NewsIcon size={constants.NAVBAR_ICON_SIZE} />
+            <HomeIcon size={constants.NAVBAR_ICON_SIZE} />
             <div className="nav-bottom-text">
               {constants.NAVBAR_ITEM_TIMELINE}
             </div>
@@ -24,17 +24,17 @@ const NavBottomComponent = props => (
         </NavItem>
         <NavItem eventKey={constants.PRODUCT_CODE_CHAT}>
           <Flexbox flexDirection="column" alignItems="center">
-            <ChatIcon size={constants.NAVBAR_ICON_SIZE} />
+            <AddIcon size={constants.NAVBAR_ICON_SIZE} />
             <div className="nav-bottom-text">
-              {constants.NAVBAR_ITEM_CHAT}
+              {constants.NAVBAR_ITEM_NEW_MEMORY}
             </div>
           </Flexbox>
         </NavItem>
         <NavItem eventKey={constants.PRODUCT_CODE_SUMMARY}>
           <Flexbox flexDirection="column" alignItems="center">
-            <InfoIcon size={constants.NAVBAR_ICON_SIZE} />
+            <PersonIcon size={constants.NAVBAR_ICON_SIZE} />
             <div className="nav-bottom-text">
-              {constants.NAVBAR_ITEM_SUMMARY}
+              {constants.NAVBAR_ITEM_CARE_PROFILE}
             </div>
           </Flexbox>
         </NavItem>

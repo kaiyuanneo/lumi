@@ -76,8 +76,8 @@ export const GROUP_NAME_FIELD_HELP =
 
 export const NAVBAR_HEADER_TITLE = 'Lumi';
 export const NAVBAR_ITEM_TIMELINE = 'Timeline';
-export const NAVBAR_ITEM_CHAT = 'Chat';
-export const NAVBAR_ITEM_SUMMARY = 'Summary';
+export const NAVBAR_ITEM_NEW_MEMORY = 'Add Memory';
+export const NAVBAR_ITEM_CARE_PROFILE = 'Care Profile';
 export const NAVBAR_ITEM_GROUP_ID = 'Group ID: ';
 export const NAVBAR_ITEM_SIGN_OUT = 'Sign Out';
 export const NAVBAR_ICON_SIZE = 24;

@@ -15,7 +15,11 @@ class NavTopComponent extends Component {
         <Navbar collapseOnSelect fixedTop>
           <Navbar.Header>
             <Navbar.Brand>
-              <a href="/"><b>{constants.NAVBAR_HEADER_TITLE}</b>{this.props.groupNameLabel}</a>
+              <a href="/">
+                <div className="button-text-accent">
+                  <b>{constants.NAVBAR_HEADER_TITLE}</b>{this.props.groupNameLabel}
+                </div>
+              </a>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>

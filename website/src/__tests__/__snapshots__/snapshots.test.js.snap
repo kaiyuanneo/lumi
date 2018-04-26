@@ -163,7 +163,11 @@ exports[`NavBottomComponent 1`] = `
                   />
                 </g>
               </svg>
-              Timeline
+              <div
+                className="nav-bottom-text"
+              >
+                Timeline
+              </div>
             </div>
           </a>
         </li>
@@ -200,7 +204,11 @@ exports[`NavBottomComponent 1`] = `
                   />
                 </g>
               </svg>
-              Chat
+              <div
+                className="nav-bottom-text"
+              >
+                Chat
+              </div>
             </div>
           </a>
         </li>
@@ -237,7 +245,11 @@ exports[`NavBottomComponent 1`] = `
                   />
                 </g>
               </svg>
-              Summary
+              <div
+                className="nav-bottom-text"
+              >
+                Summary
+              </div>
             </div>
           </a>
         </li>
@@ -264,9 +276,13 @@ exports[`NavTopComponent 1`] = `
           className="navbar-brand"
           href="/"
         >
-          <b>
-            Lumi
-          </b>
+          <div
+            className="button-text-accent"
+          >
+            <b>
+              Lumi
+            </b>
+          </div>
         </a>
         <button
           className="navbar-toggle collapsed"

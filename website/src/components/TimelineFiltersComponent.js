@@ -2,15 +2,22 @@ import Flexbox from 'flexbox-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Glyphicon, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
+import FilterIcon from 'react-icons/lib/fa/sliders';
 
 import * as constants from '../static/constants';
 
 
 const TimelineFiltersComponent = (props) => {
   const filterToggleButton = (
-    <ToggleButtonGroup type="checkbox" onChange={props.toggleFilterButtons}>
+    <ToggleButtonGroup type="checkbox" onChange={props.toggleFilterButtons} justified>
       <ToggleButton value={constants.TIMELINE_BUTTON_CODE_FILTER}>
-        {props.showFilters ? 'Hide filters' : 'Show filters'}
+        <Flexbox alignItems="center" justifyContent="center">
+          <FilterIcon color="purple" size={16} />
+          &nbsp;
+          <div className="button-text-accent">
+            {props.showFilters ? 'Hide filters' : 'Show filters'}
+          </div>
+        </Flexbox>
       </ToggleButton>
     </ToggleButtonGroup>
   );
@@ -108,13 +115,13 @@ const TimelineFiltersComponent = (props) => {
           </ToggleButton>
         </ToggleButtonGroup>
       </Flexbox>
+      <br />
     </div>
   );
   return (
     <Flexbox flexDirection="column" alignItems="center">
       {filterToggleButton}
       {props.showFilters ? filterButtons : null}
-      <br />
     </Flexbox>
   );
 };

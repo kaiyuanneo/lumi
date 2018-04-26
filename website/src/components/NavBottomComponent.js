@@ -17,19 +17,25 @@ const NavBottomComponent = props => (
         <NavItem eventKey={constants.PRODUCT_CODE_TIMELINE}>
           <Flexbox flexDirection="column" alignItems="center">
             <NewsIcon size={constants.NAVBAR_ICON_SIZE} />
-            {constants.NAVBAR_ITEM_TIMELINE}
+            <div className="nav-bottom-text">
+              {constants.NAVBAR_ITEM_TIMELINE}
+            </div>
           </Flexbox>
         </NavItem>
         <NavItem eventKey={constants.PRODUCT_CODE_CHAT}>
           <Flexbox flexDirection="column" alignItems="center">
             <ChatIcon size={constants.NAVBAR_ICON_SIZE} />
-            {constants.NAVBAR_ITEM_CHAT}
+            <div className="nav-bottom-text">
+              {constants.NAVBAR_ITEM_CHAT}
+            </div>
           </Flexbox>
         </NavItem>
         <NavItem eventKey={constants.PRODUCT_CODE_SUMMARY}>
           <Flexbox flexDirection="column" alignItems="center">
             <InfoIcon size={constants.NAVBAR_ICON_SIZE} />
-            {constants.NAVBAR_ITEM_SUMMARY}
+            <div className="nav-bottom-text">
+              {constants.NAVBAR_ITEM_SUMMARY}
+            </div>
           </Flexbox>
         </NavItem>
       </Nav>

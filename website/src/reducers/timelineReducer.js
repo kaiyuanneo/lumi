@@ -44,11 +44,25 @@ const timelineReducer = (state = initialState, action) => {
         ...state,
       };
     case constants.ACTION_SAVE_TIMELINE_MESSAGE_FILTER_CATEGORIES:
+      // If user selects "All", deselect all other filters
+      if (
+        constants.TIMELINE_CATEGORY_CODE_ALL in action.messageFilterCategories &&
+        action.messageFilterCategories[constants.TIMELINE_CATEGORY_CODE_ALL] &&
+        // Only clear non-"All" filters if "All" filter was not previously selected
+        !state.messageFilterCategories[constants.TIMELINE_CATEGORY_CODE_ALL]
+      ) {
+        return {
+          ...state,
+          messageFilterCategories: { ...initialState.messageFilterCategories },
+        };
+      }
+      // If user selects any other category, deselect the "All" filter
       return {
         ...state,
         messageFilterCategories: {
           ...state.messageFilterCategories,
           ...action.messageFilterCategories,
+          [constants.TIMELINE_CATEGORY_CODE_ALL]: false,
         },
       };
     case constants.ACTION_TOGGLE_TIMELINE_FILTER_BUTTONS:

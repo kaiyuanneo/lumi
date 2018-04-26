@@ -26,7 +26,7 @@ const TimelineFiltersComponent = (props) => {
       <br />
       <Flexbox alignItems="center" justifyContent="center">
         <ToggleButtonGroup
-          defaultValue={props.filterMessagesStarDefaultValue}
+          value={props.filterMessagesStarDefaultValue}
           type="checkbox"
           onChange={props.filterMessagesStar}
           className="timeline-star-filter"
@@ -40,7 +40,7 @@ const TimelineFiltersComponent = (props) => {
         </ToggleButtonGroup>
         <ToggleButtonGroup
           vertical
-          defaultValue={props.filterMessagesAllMemoryDefaultValue}
+          value={props.filterMessagesAllMemoryDefaultValue}
           type="checkbox"
           onChange={props.filterMessagesAllMemory}
         >
@@ -59,7 +59,7 @@ const TimelineFiltersComponent = (props) => {
         </ToggleButtonGroup>
         <ToggleButtonGroup
           vertical
-          defaultValue={props.filterMessagesActivityMedicalDefaultValue}
+          value={props.filterMessagesActivityMedicalDefaultValue}
           type="checkbox"
           onChange={props.filterMessagesActivityMedical}
         >
@@ -78,7 +78,7 @@ const TimelineFiltersComponent = (props) => {
         </ToggleButtonGroup>
         <ToggleButtonGroup
           vertical
-          defaultValue={props.filterMessagesBehaviourCaregiverDefaultValue}
+          value={props.filterMessagesBehaviourCaregiverDefaultValue}
           type="checkbox"
           onChange={props.filterMessagesBehaviourCaregiver}
         >
@@ -97,7 +97,7 @@ const TimelineFiltersComponent = (props) => {
         </ToggleButtonGroup>
         <ToggleButtonGroup
           vertical
-          defaultValue={props.filterMessagesMoodOtherDefaultValue}
+          value={props.filterMessagesMoodOtherDefaultValue}
           type="checkbox"
           onChange={props.filterMessagesMoodOther}
         >

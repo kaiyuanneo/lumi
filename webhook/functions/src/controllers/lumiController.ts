@@ -11,6 +11,7 @@ import * as utils from '../utils';
  * Boilerplate function for Messenger Platform to verify webhook authenticity
  */
 export const verify = (req, res) => {
+  console.log('Running function verify');
   // Parse the query params
   const mode = req.query['hub.mode'];
   const token = req.query['hub.verify_token'];
@@ -37,6 +38,7 @@ export const verify = (req, res) => {
  * token in the client
  */
 export const getPsidFromAsid = async (req, res) => {
+  console.log('Running function getPsidFromAsid');
   // Get relevant app access token based on environment at deploy time
   const appAccessToken = functions.config().lumi.env === constants.ENV_PROD ?
     functions.config().lumi.token_app_access :
@@ -77,6 +79,7 @@ export const getPsidFromAsid = async (req, res) => {
  * Assumes Lumi only receives image attachments.
  */
 const saveImageToDb = async (originalImageUrl) => {
+  console.log('Running function saveImageToDb');
   // Ignore empty URLs
   if (!originalImageUrl) {
     return '';
@@ -101,6 +104,7 @@ const saveImageToDb = async (originalImageUrl) => {
  * Wrap saveImageToDb to allow other Lumi modules to get a permanent image link
  */
 export const getPermanentImageUrl = async (req, res) => {
+  console.log('Running function getPermanentImageUrl');
   const permUrl = await saveImageToDb(req.body.tempUrl);
   // Set Access-Control-Allow-Origin header so Cloud Functions can respond to lumicares.com
   res.status(200).set('Access-Control-Allow-Origin', '*').json({ permUrl });
@@ -112,6 +116,7 @@ export const getPermanentImageUrl = async (req, res) => {
  * Export for unit tests
  */
 const callSendApi = async (senderPsid, response) => {
+  console.log('Running function callSendApi');
   // Construct the message body
   const requestBody = {
     recipient: {
@@ -161,6 +166,7 @@ const getQuickReply = (messageRef, responseCode) => ({
  * Get response for a specific message type from Lumi Chat
  */
 const getResponse = (receivedMessage, receivedResponseCode, messageRef) => {
+  console.log('Running function getResponse');
   let quickReplies = null;
   if (receivedResponseCode === constants.RESPONSE_CODE_NEW_MESSAGE) {
     // If the received message contains text, provide option to attach image
@@ -208,6 +214,7 @@ const getResponse = (receivedMessage, receivedResponseCode, messageRef) => {
  * Handle quick reply responses from Lumi user
  */
 const handleQuickReply = (receivedMessage, messagesRef, userMessagesRef) => {
+  console.log('Running function handleQuickReply');
   // Save quickReply payload as JSON string because payload only supports string values
   const quickReplyPayload = JSON.parse(receivedMessage.quick_reply.payload);
   const responseCode = quickReplyPayload.code;
@@ -237,6 +244,7 @@ const attachToPrevMessage = async (
   isAwaitingImageRef, isAwaitingTextRef, defaultResponseCode, defaultShowInTimeline,
   defaultMessageRef,
 ) => {
+  console.log('Running function attachToPrevMessage');
   let responseCode = defaultResponseCode;
   let showInTimeline = defaultShowInTimeline;
   let messageRef = defaultMessageRef;
@@ -303,6 +311,7 @@ const attachToPrevMessage = async (
  * lumi-group-messages to reference this message key
  */
 const saveMessageToGroup = async (psid, newMessageRef) => {
+  console.log('Running function saveMessageToGroup');
   const db = admin.database();
   const psidToUidRef = db.ref(`${constants.DB_PATH_USER_PSID_TO_UID}/${psid}`);
   const psidToUidSnapshot = await psidToUidRef.once(constants.DB_EVENT_NAME_VALUE);
@@ -340,6 +349,7 @@ const saveMessageToGroup = async (psid, newMessageRef) => {
  * Handle all non-quick-reply messages with text and attachments
  */
 const handleTextAndAttachments = async (webhookEvent, messagesRef, userMessagesRef) => {
+  console.log('Running function handleTextAndAttachments');
   let responseCode = constants.RESPONSE_CODE_NEW_MESSAGE;
   let showInTimeline = true;
   let messageRef = null;
@@ -396,6 +406,7 @@ const handleTextAndAttachments = async (webhookEvent, messagesRef, userMessagesR
  * Handle message events from Messenger Platform
  */
 const handleMessage = async (webhookEvent) => {
+  console.log('Running function handleMessage');
   let response = null;
   const receivedMessage = webhookEvent.message;
   const db = admin.database();
@@ -427,6 +438,7 @@ const handleMessage = async (webhookEvent) => {
  * Triage events from Messenger Platform
  */
 export const message = async (req, res) => {
+  console.log('Running function message');
   // Return 404 if event not from page subscription
   if (req.body.object !== 'page') {
     res.sendStatus(404);

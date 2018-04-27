@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import sinon from 'sinon';
 import hash from 'string-hash';
 
-import * as SummaryNewMemberContainer from '../containers/SummaryNewMemberContainer';
+import * as CareProfileNewMemberContainer from '../containers/CareProfileNewMemberContainer';
 import * as constants from '../static/constants';
 import * as utils from '../utils';
 
@@ -35,7 +35,7 @@ describe('Save new member', () => {
     const utilsStub = sinon.stub(utils, 'addUserToGroup');
 
     const stubStateProps = { email: 'TEST_EMAIL' };
-    await SummaryNewMemberContainer._saveNewMember(stubStateProps);
+    await CareProfileNewMemberContainer._saveNewMember(stubStateProps);
 
     chai.assert.isTrue(dbStub.calledOnce);
     chai.assert.isTrue(authStub.calledOnce);

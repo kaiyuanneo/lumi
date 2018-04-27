@@ -30,11 +30,11 @@
 }
 
 .nav-bottom-text {
-  font-size: 12px;
+  font-size: 12px !important;
 }
 
 .nav-bottom-item {
-  width: 90px;
+  width: 70px;
 }
 
 .navbar-offset {

@@ -3,23 +3,23 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Button, FormControl, FormGroup } from 'react-bootstrap';
 
-import SummaryNewMemberContainer from '../containers/SummaryNewMemberContainer';
+import CareProfileNewMemberContainer from '../containers/CareProfileNewMemberContainer';
 import * as constants from '../static/constants';
 
 
-class SummarySelectCareRecipientComponent extends Component {
+class CareProfileSelectCareRecipientComponent extends Component {
   componentDidMount() {
     this.props.fetchGroupMembers();
   }
 
   render() {
     if (this.props.shouldRenderNewMemberForm) {
-      return <SummaryNewMemberContainer />;
+      return <CareProfileNewMemberContainer />;
     }
     return (
       <Flexbox flexDirection="column">
-        <h2>{constants.SUMMARY_NEW_CARE_RECIPIENT_PROMPT}</h2>
-        <FormGroup controlId={constants.SUMMARY_FIELD_ID_USER_LIST}>
+        <h2>{constants.CARE_PROFILE_NEW_CARE_RECIPIENT_PROMPT}</h2>
+        <FormGroup controlId={constants.CARE_PROFILE_FIELD_ID_USER_LIST}>
           <FormControl
             componentClass="select"
             value={this.props.selectedMember}
@@ -41,7 +41,7 @@ class SummarySelectCareRecipientComponent extends Component {
   }
 }
 
-SummarySelectCareRecipientComponent.propTypes = {
+CareProfileSelectCareRecipientComponent.propTypes = {
   memberList: PropTypes.arrayOf(PropTypes.element).isRequired,
   selectedMember: PropTypes.string.isRequired,
   shouldRenderNewMemberForm: PropTypes.bool.isRequired,
@@ -51,4 +51,4 @@ SummarySelectCareRecipientComponent.propTypes = {
   handleClickSelect: PropTypes.func.isRequired,
 };
 
-export default SummarySelectCareRecipientComponent;
+export default CareProfileSelectCareRecipientComponent;

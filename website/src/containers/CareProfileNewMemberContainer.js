@@ -4,33 +4,33 @@ import { connect } from 'react-redux';
 import hash from 'string-hash';
 
 import * as actions from '../actions';
-import SummaryNewMemberComponent from '../components/SummaryNewMemberComponent';
+import CareProfileNewMemberComponent from '../components/CareProfileNewMemberComponent';
 import * as constants from '../static/constants';
 import * as utils from '../utils';
 
 
 // TODO(kai): Implement profile pic upload capability
 const mapStateToProps = state => ({
-  firstName: state.summary.firstNameFormFieldValue,
-  lastName: state.summary.lastNameFormFieldValue,
-  gender: state.summary.genderFormFieldValue,
-  birthday: state.summary.birthdayFormFieldValue,
-  email: state.summary.emailFormFieldValue,
-  address: state.summary.addressFormFieldValue,
-  typeOfDementia: state.summary.typeOfDementiaFormFieldValue,
-  dateOfDiagnosis: state.summary.dateOfDiagnosisFormFieldValue,
-  medications: state.summary.medicationsFormFieldValue,
-  providers: state.summary.providersFormFieldValue,
-  needsAndPreferences: state.summary.needsAndPreferencesFormFieldValue,
-  thingsThatDelight: state.summary.thingsThatDelightFormFieldValue,
-  placesOfInterest: state.summary.placesOfInterestFormFieldValue,
+  firstName: state.careProfile.firstNameFormFieldValue,
+  lastName: state.careProfile.lastNameFormFieldValue,
+  gender: state.careProfile.genderFormFieldValue,
+  birthday: state.careProfile.birthdayFormFieldValue,
+  email: state.careProfile.emailFormFieldValue,
+  address: state.careProfile.addressFormFieldValue,
+  typeOfDementia: state.careProfile.typeOfDementiaFormFieldValue,
+  dateOfDiagnosis: state.careProfile.dateOfDiagnosisFormFieldValue,
+  medications: state.careProfile.medicationsFormFieldValue,
+  providers: state.careProfile.providersFormFieldValue,
+  needsAndPreferences: state.careProfile.needsAndPreferencesFormFieldValue,
+  thingsThatDelight: state.careProfile.thingsThatDelightFormFieldValue,
+  placesOfInterest: state.careProfile.placesOfInterestFormFieldValue,
 });
 
 
 const mapDispatchToProps = dispatch => ({
   saveFieldValueLocally: (fieldId, fieldValue) =>
-    dispatch(actions.saveSummaryFieldValueLocally(fieldId, fieldValue)),
-  unmountFunc: () => dispatch(actions.unmountSummaryNewMemberForm()),
+    dispatch(actions.saveCareProfileFieldValueLocally(fieldId, fieldValue)),
+  unmountFunc: () => dispatch(actions.unmountCareProfileNewMemberForm()),
 });
 
 
@@ -67,65 +67,65 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...ownProps,
     firstNameFormField: utils.getFirstNameFieldGenerator()(
       stateProps.firstName,
-      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_FIRST_NAME),
+      getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_FIRST_NAME),
     ),
     lastNameFormField: utils.getLastNameFieldGenerator()(
       stateProps.lastName,
-      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_LAST_NAME),
+      getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_LAST_NAME),
     ),
     birthdayFormField: utils.getBirthdayFieldGenerator()(
       stateProps.birthday ? utils.usToIsoDate(stateProps.birthday) : '',
-      getHandleChangeDateFunc(constants.SUMMARY_FIELD_ID_BIRTHDAY),
+      getHandleChangeDateFunc(constants.CARE_PROFILE_FIELD_ID_BIRTHDAY),
     ),
     genderFormField: utils.getGenderFieldGenerator()(
       stateProps.gender,
-      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_GENDER),
+      getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_GENDER),
     ),
     emailFormField: utils.getEmailFieldGenerator()(
       stateProps.email,
-      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_EMAIL),
+      getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_EMAIL),
     ),
     addressFormField: utils.getAddressFieldGenerator()(
       stateProps.address,
-      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_ADDRESS),
+      getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_ADDRESS),
     ),
     typeOfDementiaFormField: utils.getTypeOfDementiaFieldGenerator()(
       stateProps.typeOfDementia,
-      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_TYPE_OF_DEMENTIA),
+      getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_TYPE_OF_DEMENTIA),
     ),
     dateOfDiagnosisFormField: utils.getDateOfDiagnosisFieldGenerator()(
       stateProps.dateOfDiagnosis ? utils.usToIsoDate(stateProps.dateOfDiagnosis) : '',
-      getHandleChangeDateFunc(constants.SUMMARY_FIELD_ID_DATE_OF_DIAGNOSIS),
+      getHandleChangeDateFunc(constants.CARE_PROFILE_FIELD_ID_DATE_OF_DIAGNOSIS),
     ),
     medicationsFormField: utils.getMedicationsFieldGenerator()(
       stateProps.medications,
-      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_MEDICATIONS),
+      getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_MEDICATIONS),
     ),
     providersFormField: utils.getProvidersFieldGenerator()(
       stateProps.providers,
-      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_PROVIDERS),
+      getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_PROVIDERS),
     ),
     needsAndPreferencesFormField: utils.getNeedsAndPreferencesFieldGenerator()(
       stateProps.needsAndPreferences,
-      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_NEEDS_AND_PREFERENCES),
+      getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_NEEDS_AND_PREFERENCES),
     ),
     thingsThatDelightFormField: utils.getThingsThatDelightFieldGenerator()(
       stateProps.thingsThatDelight,
-      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_THINGS_THAT_DELIGHT),
+      getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_THINGS_THAT_DELIGHT),
     ),
     placesOfInterestFormField: utils.getPlacesOfInterestFieldGenerator()(
       stateProps.placesOfInterest,
-      getHandleChangeFunc(constants.SUMMARY_FIELD_ID_PLACES_OF_INTEREST),
+      getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_PLACES_OF_INTEREST),
     ),
     isSaveButtonDisabled: !utils.isValidEmail(stateProps.email),
     saveNewMember: () => _saveNewMember(stateProps),
   };
 };
 
-const SummaryNewMemberContainer = connect(
+const CareProfileNewMemberContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps,
-)(SummaryNewMemberComponent);
+)(CareProfileNewMemberComponent);
 
-export default SummaryNewMemberContainer;
+export default CareProfileNewMemberContainer;

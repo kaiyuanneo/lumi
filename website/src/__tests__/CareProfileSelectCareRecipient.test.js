@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import React from 'react';
 import sinon from 'sinon';
 
-import * as SummarySelectCareRecipientContainer from '../containers/SummarySelectCareRecipientContainer';
+import * as CareProfileSelectCareRecipientContainer from '../containers/CareProfileSelectCareRecipientContainer';
 import * as constants from '../static/constants';
 
 
@@ -13,14 +13,14 @@ describe('Get member list', () => {
     const stubMemberId = 'TEST_MEMBER_ID';
     const stubMemberName = 'TEST_MEMBER_NAME';
     stubSelectCrMembers.set(stubMemberId, stubMemberName);
-    const stubState = { summary: { selectCrMembers: stubSelectCrMembers } };
+    const stubState = { careProfile: { selectCrMembers: stubSelectCrMembers } };
     const expectedMemberList = [
       (
         <option
-          key={constants.SUMMARY_CODE_UNSPECIFIED}
-          value={constants.SUMMARY_CODE_UNSPECIFIED}
+          key={constants.CARE_PROFILE_CODE_UNSPECIFIED}
+          value={constants.CARE_PROFILE_CODE_UNSPECIFIED}
         >
-          {constants.SUMMARY_NAME_UNSPECIFIED}
+          {constants.CARE_PROFILE_NAME_UNSPECIFIED}
         </option>
       ),
       (
@@ -33,15 +33,15 @@ describe('Get member list', () => {
       ),
       (
         <option
-          key={constants.SUMMARY_CR_CODE_NEW_MEMBER}
-          value={constants.SUMMARY_CR_CODE_NEW_MEMBER}
+          key={constants.CARE_PROFILE_CR_CODE_NEW_MEMBER}
+          value={constants.CARE_PROFILE_CR_CODE_NEW_MEMBER}
         >
-          {constants.SUMMARY_CR_NAME_NEW_MEMBER}
+          {constants.CARE_PROFILE_CR_NAME_NEW_MEMBER}
         </option>
       ),
 
     ];
-    const memberList = SummarySelectCareRecipientContainer._getMemberList(stubState);
+    const memberList = CareProfileSelectCareRecipientContainer._getMemberList(stubState);
     chai.assert.deepEqual(memberList, expectedMemberList);
   });
 });
@@ -75,7 +75,7 @@ describe('Fetch group members', () => {
     const stubDispatchProps = { updateMembers: sinon.stub() };
 
     const members =
-      await SummarySelectCareRecipientContainer._fetchGroupMembers(stubDispatchProps);
+      await CareProfileSelectCareRecipientContainer._fetchGroupMembers(stubDispatchProps);
     chai.assert
       .strictEqual(members.get(stubMemberId), `${stubMember.firstName} ${stubMember.lastName}`);
     chai.assert.isTrue(stubDispatchProps.updateMembers.calledOnce);
@@ -119,7 +119,7 @@ describe('Handle click select', () => {
     const stubStateProps = { selectedMember: stubSelectedMember };
     const stubDispatchProps = { toggleUserClickedSelect: sinon.stub() };
 
-    await SummarySelectCareRecipientContainer
+    await CareProfileSelectCareRecipientContainer
       ._handleClickSelect(stubStateProps, stubDispatchProps);
     chai.assert.isTrue(stubDispatchProps.toggleUserClickedSelect.calledOnce);
     chai.assert.isTrue(dbStub.calledOnce);
@@ -140,7 +140,7 @@ describe('Handle click select', () => {
   it('Selected member is new member', async () => {
     const stubAuthUid = 'AUTH_UID';
     const stubActiveGroup = 'TEST_GROUP';
-    const stubSelectedMember = constants.SUMMARY_CR_CODE_NEW_MEMBER;
+    const stubSelectedMember = constants.CARE_PROFILE_CR_CODE_NEW_MEMBER;
 
     const activeGroupRefParam = `${constants.DB_PATH_USERS}/${stubAuthUid}/activeGroup`;
     const groupRefParam = `${constants.DB_PATH_LUMI_GROUPS}/${stubActiveGroup}`;
@@ -158,7 +158,7 @@ describe('Handle click select', () => {
     const stubStateProps = { selectedMember: stubSelectedMember };
     const stubDispatchProps = { toggleUserClickedSelect: sinon.stub() };
 
-    await SummarySelectCareRecipientContainer
+    await CareProfileSelectCareRecipientContainer
       ._handleClickSelect(stubStateProps, stubDispatchProps);
     chai.assert.isTrue(stubDispatchProps.toggleUserClickedSelect.calledOnce);
     chai.assert.isFalse(dbStub.called);

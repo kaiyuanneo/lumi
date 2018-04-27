@@ -3,65 +3,65 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, ButtonToolbar, Table } from 'react-bootstrap';
 
-import SummaryNewMemberFormFieldComponent from './SummaryNewMemberFormFieldComponent';
+import CareProfileNewMemberFormFieldComponent from './CareProfileNewMemberFormFieldComponent';
 import * as constants from '../static/constants';
 
 
-const SummaryNewMemberComponent = props => (
+const CareProfileNewMemberComponent = props => (
   <Flexbox flexDirection="column" alignItems="center">
-    <h2>{constants.SUMMARY_CREATE_NEW_MEMBER_PROMPT}</h2>
+    <h2>{constants.CARE_PROFILE_CREATE_NEW_MEMBER_PROMPT}</h2>
     <Table>
       <tbody>
-        <SummaryNewMemberFormFieldComponent
-          fieldTitle={constants.SUMMARY_FIELD_TITLE_FIRST_NAME}
+        <CareProfileNewMemberFormFieldComponent
+          fieldTitle={constants.CARE_PROFILE_FIELD_TITLE_FIRST_NAME}
           formField={props.firstNameFormField}
         />
-        <SummaryNewMemberFormFieldComponent
-          fieldTitle={constants.SUMMARY_FIELD_TITLE_LAST_NAME}
+        <CareProfileNewMemberFormFieldComponent
+          fieldTitle={constants.CARE_PROFILE_FIELD_TITLE_LAST_NAME}
           formField={props.lastNameFormField}
         />
-        <SummaryNewMemberFormFieldComponent
-          fieldTitle={constants.SUMMARY_FIELD_TITLE_BIRTHDAY}
+        <CareProfileNewMemberFormFieldComponent
+          fieldTitle={constants.CARE_PROFILE_FIELD_TITLE_BIRTHDAY}
           formField={props.birthdayFormField}
         />
-        <SummaryNewMemberFormFieldComponent
-          fieldTitle={constants.SUMMARY_FIELD_TITLE_GENDER}
+        <CareProfileNewMemberFormFieldComponent
+          fieldTitle={constants.CARE_PROFILE_FIELD_TITLE_GENDER}
           formField={props.genderFormField}
         />
-        <SummaryNewMemberFormFieldComponent
-          fieldTitle={constants.SUMMARY_FIELD_TITLE_EMAIL}
+        <CareProfileNewMemberFormFieldComponent
+          fieldTitle={constants.CARE_PROFILE_FIELD_TITLE_EMAIL}
           formField={props.emailFormField}
         />
-        <SummaryNewMemberFormFieldComponent
-          fieldTitle={constants.SUMMARY_FIELD_TITLE_ADDRESS}
+        <CareProfileNewMemberFormFieldComponent
+          fieldTitle={constants.CARE_PROFILE_FIELD_TITLE_ADDRESS}
           formField={props.addressFormField}
         />
-        <SummaryNewMemberFormFieldComponent
-          fieldTitle={constants.SUMMARY_FIELD_TITLE_TYPE_OF_DEMENTIA}
+        <CareProfileNewMemberFormFieldComponent
+          fieldTitle={constants.CARE_PROFILE_FIELD_TITLE_TYPE_OF_DEMENTIA}
           formField={props.typeOfDementiaFormField}
         />
-        <SummaryNewMemberFormFieldComponent
-          fieldTitle={constants.SUMMARY_FIELD_TITLE_DATE_OF_DIAGNOSIS}
+        <CareProfileNewMemberFormFieldComponent
+          fieldTitle={constants.CARE_PROFILE_FIELD_TITLE_DATE_OF_DIAGNOSIS}
           formField={props.dateOfDiagnosisFormField}
         />
-        <SummaryNewMemberFormFieldComponent
-          fieldTitle={constants.SUMMARY_FIELD_TITLE_MEDICATIONS}
+        <CareProfileNewMemberFormFieldComponent
+          fieldTitle={constants.CARE_PROFILE_FIELD_TITLE_MEDICATIONS}
           formField={props.medicationsFormField}
         />
-        <SummaryNewMemberFormFieldComponent
-          fieldTitle={constants.SUMMARY_FIELD_TITLE_PROVIDERS}
+        <CareProfileNewMemberFormFieldComponent
+          fieldTitle={constants.CARE_PROFILE_FIELD_TITLE_PROVIDERS}
           formField={props.providersFormField}
         />
-        <SummaryNewMemberFormFieldComponent
-          fieldTitle={constants.SUMMARY_FIELD_TITLE_NEEDS_AND_PREFERENCES}
+        <CareProfileNewMemberFormFieldComponent
+          fieldTitle={constants.CARE_PROFILE_FIELD_TITLE_NEEDS_AND_PREFERENCES}
           formField={props.needsAndPreferencesFormField}
         />
-        <SummaryNewMemberFormFieldComponent
-          fieldTitle={constants.SUMMARY_FIELD_TITLE_THINGS_THAT_DELIGHT}
+        <CareProfileNewMemberFormFieldComponent
+          fieldTitle={constants.CARE_PROFILE_FIELD_TITLE_THINGS_THAT_DELIGHT}
           formField={props.thingsThatDelightFormField}
         />
-        <SummaryNewMemberFormFieldComponent
-          fieldTitle={constants.SUMMARY_FIELD_TITLE_PLACES_OF_INTEREST}
+        <CareProfileNewMemberFormFieldComponent
+          fieldTitle={constants.CARE_PROFILE_FIELD_TITLE_PLACES_OF_INTEREST}
           formField={props.placesOfInterestFormField}
         />
       </tbody>
@@ -83,7 +83,7 @@ const SummaryNewMemberComponent = props => (
   </Flexbox>
 );
 
-SummaryNewMemberComponent.propTypes = {
+CareProfileNewMemberComponent.propTypes = {
   // Form fields
   firstNameFormField: PropTypes.element.isRequired,
   lastNameFormField: PropTypes.element.isRequired,
@@ -107,4 +107,4 @@ SummaryNewMemberComponent.propTypes = {
   unmountFunc: PropTypes.func.isRequired,
 };
 
-export default SummaryNewMemberComponent;
+export default CareProfileNewMemberComponent;

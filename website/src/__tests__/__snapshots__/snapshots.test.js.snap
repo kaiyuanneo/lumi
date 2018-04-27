@@ -32,6 +32,386 @@ exports[`BootstrapStyleComponent 1`] = `
 />
 `;
 
+exports[`CareProfileBasicInfoComponent 1`] = `
+<Table
+  bordered={true}
+  bsClass="table"
+  condensed={false}
+  hover={true}
+  responsive={false}
+  striped={false}
+>
+  <thead>
+    <tr>
+      <th
+        className="product-table-header"
+      >
+        Field
+      </th>
+      <th
+        className="product-table-header"
+      >
+        Value
+      </th>
+      <th
+        className="product-table-header"
+      >
+        Options
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <Connect(CareProfileEditWrapperComponent)
+      fieldId="firstName"
+      formFieldGenerator={[Function]}
+      title="First Name"
+    />
+    <Connect(CareProfileEditWrapperComponent)
+      fieldId="lastName"
+      formFieldGenerator={[Function]}
+      title="Last Name"
+    />
+    <Connect(CareProfileEditWrapperComponent)
+      fieldId="birthday"
+      formFieldGenerator={[Function]}
+      isDateField={true}
+      title="Birthday"
+    />
+    <Connect(CareProfileEditWrapperComponent)
+      fieldId="gender"
+      formFieldGenerator={[Function]}
+      title="Gender"
+    />
+    <Connect(CareProfileEditWrapperComponent)
+      fieldId="email"
+      formFieldGenerator={[Function]}
+      title="Email"
+    />
+    <Connect(CareProfileEditWrapperComponent)
+      fieldId="address"
+      formFieldGenerator={[Function]}
+      title="Address"
+    />
+  </tbody>
+</Table>
+`;
+
+exports[`CareProfileCareInfoComponent 1`] = `
+<Table
+  bordered={true}
+  bsClass="table"
+  condensed={false}
+  hover={true}
+  responsive={false}
+  striped={false}
+>
+  <thead>
+    <tr>
+      <th
+        className="product-table-header"
+      >
+        Field
+      </th>
+      <th
+        className="product-table-header"
+      >
+        Value
+      </th>
+      <th
+        className="product-table-header"
+      >
+        Options
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <Connect(CareProfileEditWrapperComponent)
+      fieldId="needsAndPreferences"
+      formFieldGenerator={[Function]}
+      title="Needs and Preferences"
+    />
+    <Connect(CareProfileEditWrapperComponent)
+      fieldId="thingsThatDelight"
+      formFieldGenerator={[Function]}
+      title="Things that Delight"
+    />
+    <Connect(CareProfileEditWrapperComponent)
+      fieldId="placesOfInterest"
+      formFieldGenerator={[Function]}
+      title="Places of Interest"
+    />
+  </tbody>
+</Table>
+`;
+
+exports[`CareProfileComponent 1`] = `null`;
+
+exports[`CareProfileEditWrapperComponent 1`] = `
+<tr>
+  <td>
+    
+  </td>
+  <td
+    className="multiline"
+  >
+    
+  </td>
+  <td>
+    <button
+      className="btn btn-default"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      <span
+        className="button-icon glyphicon glyphicon-pencil"
+      />
+      Edit
+    </button>
+  </td>
+</tr>
+`;
+
+exports[`CareProfileMedicalInfoComponent 1`] = `
+<Table
+  bordered={true}
+  bsClass="table"
+  condensed={false}
+  hover={true}
+  responsive={false}
+  striped={false}
+>
+  <thead>
+    <tr>
+      <th
+        className="product-table-header"
+      >
+        Field
+      </th>
+      <th
+        className="product-table-header"
+      >
+        Value
+      </th>
+      <th
+        className="product-table-header"
+      >
+        Options
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <Connect(CareProfileEditWrapperComponent)
+      fieldId="typeOfDementia"
+      formFieldGenerator={[Function]}
+      title="Type of Dementia"
+    />
+    <Connect(CareProfileEditWrapperComponent)
+      fieldId="dateOfDiagnosis"
+      formFieldGenerator={[Function]}
+      isDateField={true}
+      title="Date of Diagnosis"
+    />
+    <Connect(CareProfileEditWrapperComponent)
+      fieldId="medications"
+      formFieldGenerator={[Function]}
+      title="Medications"
+    />
+    <Connect(CareProfileEditWrapperComponent)
+      fieldId="providers"
+      formFieldGenerator={[Function]}
+      title="Providers"
+    />
+  </tbody>
+</Table>
+`;
+
+exports[`CareProfileNewMemberComponent 1`] = `
+<div
+  className="sc-bdVaJa djJVkl"
+>
+  <h2>
+    Please share details about the new member :)
+  </h2>
+  <table
+    className="table"
+  >
+    <tbody>
+      <tr>
+        <td>
+          First Name
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Last Name
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Birthday
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Gender
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Email
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Address
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Type of Dementia
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Date of Diagnosis
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Medications
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Providers
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Needs and Preferences
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Things that Delight
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Places of Interest
+        </td>
+        <td>
+          <div />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div
+    className="sc-bdVaJa cXgeQK"
+  >
+    <div
+      className="btn-toolbar"
+      role="toolbar"
+    >
+      <button
+        className="btn btn-primary"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Save
+      </button>
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CareProfileNewMemberFormFieldComponent 1`] = `
+<tr>
+  <td>
+    
+  </td>
+  <td>
+    <div />
+  </td>
+</tr>
+`;
+
+exports[`CareProfileSelectCareRecipientComponent 1`] = `
+<div
+  className="sc-bdVaJa hgkmdP"
+>
+  <h2>
+    Welcome to CareProfile! Please choose a care recipient:
+  </h2>
+  <div
+    className="form-group"
+  >
+    <select
+      className="form-control"
+      id="userList"
+      onChange={[Function]}
+      placeholder="Select a care recipient"
+      type={undefined}
+      value=""
+    />
+  </div>
+  <button
+    className="btn btn-primary"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    Select
+  </button>
+</div>
+`;
+
 exports[`GroupCreateComponent 1`] = `
 <div>
   <h2>
@@ -207,7 +587,7 @@ exports[`NavBottomComponent 1`] = `
               <div
                 className="nav-bottom-text"
               >
-                Add Memory
+                Add
               </div>
             </div>
           </a>
@@ -241,14 +621,55 @@ exports[`NavBottomComponent 1`] = `
               >
                 <g>
                   <path
-                    d="m13.5 32.5v-25h5v25h-5z m-7.5 0v-7.5h5v7.5h-5z m15 0v-12.5h5v12.5h-5z m7.5 0v-17.5h5v17.5h-5z"
+                    d="m15 8.4h20v6.6h-20v-6.6z m0 23.2v-6.6h20v6.6h-20z m0-8.2v-6.8h20v6.8h-20z m-8.4-8.4v-6.6h6.8v6.6h-6.8z m0 16.6v-6.6h6.8v6.6h-6.8z m0-8.2v-6.8h6.8v6.8h-6.8z"
                   />
                 </g>
               </svg>
               <div
                 className="nav-bottom-text"
               >
-                Summary
+                Profile
+              </div>
+            </div>
+          </a>
+        </li>
+        <li
+          className="nav-bottom-item"
+          role="presentation"
+          style={undefined}
+        >
+          <a
+            href="#"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+          >
+            <div
+              className="sc-bdVaJa djJVkl"
+            >
+              <svg
+                fill="currentColor"
+                height={24}
+                preserveAspectRatio="xMidYMid meet"
+                style={
+                  Object {
+                    "color": undefined,
+                    "verticalAlign": "middle",
+                  }
+                }
+                viewBox="0 0 40 40"
+                width={24}
+              >
+                <g>
+                  <path
+                    d="m20 23.4c4.5 0 13.4 2.1 13.4 6.6v3.4h-26.8v-3.4c0-4.5 8.9-6.6 13.4-6.6z m0-3.4c-3.7 0-6.6-3-6.6-6.6s2.9-6.8 6.6-6.8 6.6 3.1 6.6 6.8-2.9 6.6-6.6 6.6z"
+                  />
+                </g>
+              </svg>
+              <div
+                className="nav-bottom-text"
+              >
+                Profile
               </div>
             </div>
           </a>
@@ -352,386 +773,6 @@ exports[`NewUserComponent 1`] = `
 `;
 
 exports[`RootComponent 1`] = `null`;
-
-exports[`SummaryBasicInfoComponent 1`] = `
-<Table
-  bordered={true}
-  bsClass="table"
-  condensed={false}
-  hover={true}
-  responsive={false}
-  striped={false}
->
-  <thead>
-    <tr>
-      <th
-        className="product-table-header"
-      >
-        Field
-      </th>
-      <th
-        className="product-table-header"
-      >
-        Value
-      </th>
-      <th
-        className="product-table-header"
-      >
-        Options
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <Connect(SummaryEditWrapperComponent)
-      fieldId="firstName"
-      formFieldGenerator={[Function]}
-      title="First Name"
-    />
-    <Connect(SummaryEditWrapperComponent)
-      fieldId="lastName"
-      formFieldGenerator={[Function]}
-      title="Last Name"
-    />
-    <Connect(SummaryEditWrapperComponent)
-      fieldId="birthday"
-      formFieldGenerator={[Function]}
-      isDateField={true}
-      title="Birthday"
-    />
-    <Connect(SummaryEditWrapperComponent)
-      fieldId="gender"
-      formFieldGenerator={[Function]}
-      title="Gender"
-    />
-    <Connect(SummaryEditWrapperComponent)
-      fieldId="email"
-      formFieldGenerator={[Function]}
-      title="Email"
-    />
-    <Connect(SummaryEditWrapperComponent)
-      fieldId="address"
-      formFieldGenerator={[Function]}
-      title="Address"
-    />
-  </tbody>
-</Table>
-`;
-
-exports[`SummaryCareInfoComponent 1`] = `
-<Table
-  bordered={true}
-  bsClass="table"
-  condensed={false}
-  hover={true}
-  responsive={false}
-  striped={false}
->
-  <thead>
-    <tr>
-      <th
-        className="product-table-header"
-      >
-        Field
-      </th>
-      <th
-        className="product-table-header"
-      >
-        Value
-      </th>
-      <th
-        className="product-table-header"
-      >
-        Options
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <Connect(SummaryEditWrapperComponent)
-      fieldId="needsAndPreferences"
-      formFieldGenerator={[Function]}
-      title="Needs and Preferences"
-    />
-    <Connect(SummaryEditWrapperComponent)
-      fieldId="thingsThatDelight"
-      formFieldGenerator={[Function]}
-      title="Things that Delight"
-    />
-    <Connect(SummaryEditWrapperComponent)
-      fieldId="placesOfInterest"
-      formFieldGenerator={[Function]}
-      title="Places of Interest"
-    />
-  </tbody>
-</Table>
-`;
-
-exports[`SummaryComponent 1`] = `null`;
-
-exports[`SummaryEditWrapperComponent 1`] = `
-<tr>
-  <td>
-    
-  </td>
-  <td
-    className="multiline"
-  >
-    
-  </td>
-  <td>
-    <button
-      className="btn btn-default"
-      disabled={false}
-      onClick={[Function]}
-      type="button"
-    >
-      <span
-        className="button-icon glyphicon glyphicon-pencil"
-      />
-      Edit
-    </button>
-  </td>
-</tr>
-`;
-
-exports[`SummaryMedicalInfoComponent 1`] = `
-<Table
-  bordered={true}
-  bsClass="table"
-  condensed={false}
-  hover={true}
-  responsive={false}
-  striped={false}
->
-  <thead>
-    <tr>
-      <th
-        className="product-table-header"
-      >
-        Field
-      </th>
-      <th
-        className="product-table-header"
-      >
-        Value
-      </th>
-      <th
-        className="product-table-header"
-      >
-        Options
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <Connect(SummaryEditWrapperComponent)
-      fieldId="typeOfDementia"
-      formFieldGenerator={[Function]}
-      title="Type of Dementia"
-    />
-    <Connect(SummaryEditWrapperComponent)
-      fieldId="dateOfDiagnosis"
-      formFieldGenerator={[Function]}
-      isDateField={true}
-      title="Date of Diagnosis"
-    />
-    <Connect(SummaryEditWrapperComponent)
-      fieldId="medications"
-      formFieldGenerator={[Function]}
-      title="Medications"
-    />
-    <Connect(SummaryEditWrapperComponent)
-      fieldId="providers"
-      formFieldGenerator={[Function]}
-      title="Providers"
-    />
-  </tbody>
-</Table>
-`;
-
-exports[`SummaryNewMemberComponent 1`] = `
-<div
-  className="sc-bdVaJa djJVkl"
->
-  <h2>
-    Please share details about the new member :)
-  </h2>
-  <table
-    className="table"
-  >
-    <tbody>
-      <tr>
-        <td>
-          First Name
-        </td>
-        <td>
-          <div />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Last Name
-        </td>
-        <td>
-          <div />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Birthday
-        </td>
-        <td>
-          <div />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Gender
-        </td>
-        <td>
-          <div />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Email
-        </td>
-        <td>
-          <div />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Address
-        </td>
-        <td>
-          <div />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Type of Dementia
-        </td>
-        <td>
-          <div />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Date of Diagnosis
-        </td>
-        <td>
-          <div />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Medications
-        </td>
-        <td>
-          <div />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Providers
-        </td>
-        <td>
-          <div />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Needs and Preferences
-        </td>
-        <td>
-          <div />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Things that Delight
-        </td>
-        <td>
-          <div />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Places of Interest
-        </td>
-        <td>
-          <div />
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div
-    className="sc-bdVaJa cXgeQK"
-  >
-    <div
-      className="btn-toolbar"
-      role="toolbar"
-    >
-      <button
-        className="btn btn-primary"
-        disabled={false}
-        onClick={[Function]}
-        type="button"
-      >
-        Save
-      </button>
-      <button
-        className="btn btn-default"
-        disabled={false}
-        onClick={[Function]}
-        type="button"
-      >
-        Cancel
-      </button>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`SummaryNewMemberFormFieldComponent 1`] = `
-<tr>
-  <td>
-    
-  </td>
-  <td>
-    <div />
-  </td>
-</tr>
-`;
-
-exports[`SummarySelectCareRecipientComponent 1`] = `
-<div
-  className="sc-bdVaJa hgkmdP"
->
-  <h2>
-    Welcome to Summary! Please choose a care recipient:
-  </h2>
-  <div
-    className="form-group"
-  >
-    <select
-      className="form-control"
-      id="userList"
-      onChange={[Function]}
-      placeholder="Select a care recipient"
-      type={undefined}
-      value=""
-    />
-  </div>
-  <button
-    className="btn btn-primary"
-    disabled={false}
-    onClick={[Function]}
-    type="button"
-  >
-    Select
-  </button>
-</div>
-`;
 
 exports[`TimelineComponent 1`] = `
 <div>

@@ -60,7 +60,7 @@ export const _getUserInfoFromFacebook = async (credential) => {
 
 /*
  * If user already has user record, e.g. if created as New Member by another member
- * in Summary, then copy contents of existing user record to new user record with new UID
+ * in CareProfile, then copy contents of existing user record to new user record with new UID
  */
 export const _mergeExistingUserRecord = async (currentUser, facebookUserInfo) => {
   const db = firebase.database();
@@ -126,7 +126,7 @@ export const _getUserPsid = async (facebookUserInfo) => {
  */
 export const _saveUserInfo = async (currentUser, existingUserInfo, facebookUserInfo, psid) => {
   // Create/update entry in user-email-to-uid so that Lumi can look up user info with email
-  // If user was initially a Summary-generated user, this will remove the reference to the
+  // If user was initially a CareProfile-generated user, this will remove the reference to the
   // old UID.
   const db = firebase.database();
   await db.ref(constants.DB_PATH_USER_EMAIL_TO_UID).update({
@@ -141,7 +141,7 @@ export const _saveUserInfo = async (currentUser, existingUserInfo, facebookUserI
   // Store user info in user record
   const userRef = db.ref(`${constants.DB_PATH_USERS}/${currentUser.uid}`);
   await userRef.update({
-    // Copy any info from a previously created user in Summary that has never signed in
+    // Copy any info from a previously created user in CareProfile that has never signed in
     ...existingUserInfo,
     ...facebookUserInfo,
     // Do not copy id field from userInfoParsedBody to prevent confusion with uid

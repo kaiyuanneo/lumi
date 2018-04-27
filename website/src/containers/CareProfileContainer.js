@@ -1,41 +1,20 @@
 // NB: Private functions are underscore-prefixed and exported for tests
 import * as firebase from 'firebase';
-import React from 'react';
 import { connect } from 'react-redux';
 
 import * as actions from '../actions';
 import CareProfileComponent from '../components/CareProfileComponent';
-import CareProfileBasicInfoComponent from '../components/CareProfileBasicInfoComponent';
-import CareProfileMedicalInfoComponent from '../components/CareProfileMedicalInfoComponent';
-import CareProfileCareInfoComponent from '../components/CareProfileCareInfoComponent';
 import * as constants from '../static/constants';
 
 
-const mapStateToProps = (state) => {
-  let contentComponent;
-  switch (state.careProfile.infoCategory) {
-    case constants.CARE_PROFILE_CATEGORY_CODE_BASIC:
-      contentComponent = <CareProfileBasicInfoComponent />;
-      break;
-    case constants.CARE_PROFILE_CATEGORY_CODE_MEDICAL:
-      contentComponent = <CareProfileMedicalInfoComponent />;
-      break;
-    case constants.CARE_PROFILE_CATEGORY_CODE_CARE:
-      contentComponent = <CareProfileCareInfoComponent />;
-      break;
-    default:
-      contentComponent = <CareProfileBasicInfoComponent />;
-  }
-  return {
-    infoCategory: state.careProfile.infoCategory,
-    fetched: state.careProfile.fetched,
-    uid: state.careProfile.uid,
-    firstName: state.careProfile.firstName,
-    lastName: state.careProfile.lastName,
-    profilePic: state.careProfile.profilePic,
-    contentComponent,
-  };
-};
+const mapStateToProps = state => ({
+  infoCategory: state.careProfile.infoCategory,
+  fetched: state.careProfile.fetched,
+  uid: state.careProfile.uid,
+  firstName: state.careProfile.firstName,
+  lastName: state.careProfile.lastName,
+  profilePic: state.careProfile.profilePic,
+});
 
 
 /**
@@ -85,7 +64,6 @@ export const _getCareRecipient = async (dispatch) => {
 
 const mapDispatchToProps = dispatch => ({
   getCareRecipient: () => _getCareRecipient(dispatch),
-  saveCareProfileInfoCategory: category => dispatch(actions.saveCareProfileInfoCategory(category)),
 });
 
 

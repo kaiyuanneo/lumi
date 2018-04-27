@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 import React from 'react';
-import { FormControl, FormGroup, Tab, Table } from 'react-bootstrap';
+import { FormControl, FormGroup } from 'react-bootstrap';
 import DatePicker from 'react-16-bootstrap-date-picker';
 import validator from 'validator';
 
@@ -19,24 +19,21 @@ export const usToIsoDate = (usDate) => {
   return new Date(Date.UTC(year, month, day)).toISOString();
 };
 
+
 /**
  * Convert timestamp to local date string
  */
 export const getLocalDateString = timestamp => new Date(timestamp).toLocaleString();
+
 
 /**
  * Determine if input is valid for email field. Accept empty string.
  */
 export const isValidEmail = input => !input || validator.isEmail(input);
 
+
 export const categoryCodeToName = (categoryCode) => {
   switch (categoryCode) {
-    case constants.CARE_PROFILE_CATEGORY_CODE_BASIC:
-      return constants.CARE_PROFILE_CATEGORY_NAME_BASIC;
-    case constants.CARE_PROFILE_CATEGORY_CODE_MEDICAL:
-      return constants.CARE_PROFILE_CATEGORY_NAME_MEDICAL;
-    case constants.CARE_PROFILE_CATEGORY_CODE_CARE:
-      return constants.CARE_PROFILE_CATEGORY_NAME_CARE;
     case constants.TIMELINE_CATEGORY_CODE_ALL:
       return constants.TIMELINE_CATEGORY_NAME_ALL;
     case constants.TIMELINE_CATEGORY_CODE_ACTIVITY:
@@ -57,6 +54,7 @@ export const categoryCodeToName = (categoryCode) => {
       return 'NA';
   }
 };
+
 
 /**
  * Convert type of dementia code to name
@@ -87,12 +85,14 @@ export const dementiaCodeToName = (dementiaCode) => {
   }
 };
 
+
 /**
  * Convert gender code to name
  * Currently this only uppercases the first letter, but will be more complex with other languages
  */
 export const genderCodeToName = genderCode =>
   genderCode.charAt(0).toUpperCase() + genderCode.slice(1);
+
 
 /**
  * 1) Update a user record to reference the new group
@@ -148,31 +148,6 @@ export const addUserToGroup = async (gid, uid = firebase.auth().currentUser.uid)
   await db.ref(constants.DB_PATH_LUMI_MESSAGES).update(messageUpdates);
 };
 
-/**
- * Get tab component for Timeline and CareProfile products
- */
-export const getTabComponent = categoryCode => (
-  <Tab
-    eventKey={categoryCode}
-    title={categoryCodeToName(categoryCode)}
-  />
-);
-
-/**
- * Wrap passed component with a Table, specifically for CareProfile
- */
-export const wrapWithCareProfileTable = component => (
-  <Table bordered hover>
-    <thead>
-      <tr>
-        <th className="product-table-header">{constants.CARE_PROFILE_TABLE_HEADER_FIELD}</th>
-        <th className="product-table-header">{constants.CARE_PROFILE_TABLE_HEADER_VALUE}</th>
-        <th className="product-table-header">{constants.CARE_PROFILE_TABLE_HEADER_OPTIONS}</th>
-      </tr>
-    </thead>
-    {component}
-  </Table>
-);
 
 /**
  * Wrap passed component with a FormGroup
@@ -182,6 +157,7 @@ const wrapWithFormGroup = (id, component, validationState = null) => (
     {component}
   </FormGroup>
 );
+
 
 /**
  * Get text field generator for CareProfileEditWrapperComponent to render field
@@ -208,6 +184,7 @@ const getTextFieldGenerator = (id, placeholder, isEmailField = false) =>
     return wrapWithFormGroup(id, formControl, emailValidationState);
   };
 
+
 /**
  * Get textarea field generator for CareProfileEditWrapperComponent to render field
  */
@@ -223,6 +200,7 @@ const getTextAreaFieldGenerator = (id, placeholder) => (fieldValue, onChangeFunc
   return wrapWithFormGroup(id, formControl);
 };
 
+
 /**
  * Get date field generator for CareProfileEditWrapperComponent to render field
  */
@@ -237,6 +215,7 @@ const getDateFieldGenerator = id => (fieldValue, onChangeFunc) => {
   );
   return wrapWithFormGroup(id, datePicker);
 };
+
 
 /**
  * Get select field generator for CareProfileEditWrapperComponent to render field
@@ -261,18 +240,22 @@ const getSelectFieldGenerator = (id, placeholder, options) => (fieldValue, onCha
   return wrapWithFormGroup(id, formControl);
 };
 
+
 export const getFirstNameFieldGenerator = () => getTextFieldGenerator(
   constants.CARE_PROFILE_FIELD_ID_FIRST_NAME,
   constants.CARE_PROFILE_FIELD_PLACEHOLDER_FIRST_NAME,
 );
+
 
 export const getLastNameFieldGenerator = () => getTextFieldGenerator(
   constants.CARE_PROFILE_FIELD_ID_LAST_NAME,
   constants.CARE_PROFILE_FIELD_PLACEHOLDER_LAST_NAME,
 );
 
+
 export const getBirthdayFieldGenerator = () =>
   getDateFieldGenerator(constants.CARE_PROFILE_FIELD_ID_BIRTHDAY);
+
 
 export const getGenderFieldGenerator = () => getSelectFieldGenerator(
   constants.CARE_PROFILE_FIELD_ID_GENDER,
@@ -285,6 +268,7 @@ export const getGenderFieldGenerator = () => getSelectFieldGenerator(
   },
 );
 
+
 export const getEmailFieldGenerator = () => getTextFieldGenerator(
   constants.CARE_PROFILE_FIELD_ID_EMAIL,
   constants.CARE_PROFILE_FIELD_PLACEHOLDER_EMAIL,
@@ -296,6 +280,7 @@ export const getAddressFieldGenerator = () => getTextAreaFieldGenerator(
   constants.CARE_PROFILE_FIELD_ID_ADDRESS,
   constants.CARE_PROFILE_FIELD_PLACEHOLDER_ADDRESS,
 );
+
 
 export const getTypeOfDementiaFieldGenerator = () => getSelectFieldGenerator(
   constants.CARE_PROFILE_FIELD_ID_TYPE_OF_DEMENTIA,
@@ -323,28 +308,34 @@ export const getTypeOfDementiaFieldGenerator = () => getSelectFieldGenerator(
   },
 );
 
+
 export const getDateOfDiagnosisFieldGenerator = () =>
   getDateFieldGenerator(constants.CARE_PROFILE_FIELD_ID_DATE_OF_DIAGNOSIS);
+
 
 export const getMedicationsFieldGenerator = () => getTextAreaFieldGenerator(
   constants.CARE_PROFILE_FIELD_ID_MEDICATIONS,
   constants.CARE_PROFILE_FIELD_PLACEHOLDER_MEDICATIONS,
 );
 
+
 export const getProvidersFieldGenerator = () => getTextAreaFieldGenerator(
   constants.CARE_PROFILE_FIELD_ID_PROVIDERS,
   constants.CARE_PROFILE_FIELD_PLACEHOLDER_PROVIDERS,
 );
+
 
 export const getNeedsAndPreferencesFieldGenerator = () => getTextAreaFieldGenerator(
   constants.CARE_PROFILE_FIELD_ID_NEEDS_AND_PREFERENCES,
   constants.CARE_PROFILE_FIELD_PLACEHOLDER_NEEDS_AND_PREFERENCES,
 );
 
+
 export const getThingsThatDelightFieldGenerator = () => getTextAreaFieldGenerator(
   constants.CARE_PROFILE_FIELD_ID_THINGS_THAT_DELIGHT,
   constants.CARE_PROFILE_FIELD_PLACEHOLDER_THINGS_THAT_DELIGHT,
 );
+
 
 export const getPlacesOfInterestFieldGenerator = () => getTextAreaFieldGenerator(
   constants.CARE_PROFILE_FIELD_ID_PLACES_OF_INTEREST,

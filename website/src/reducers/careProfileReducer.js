@@ -8,7 +8,6 @@ For each field, store both a field value that is synced with the DB, and a field
 may change based on edits to the local form field. This is so that if a user chooses to cancel
 their changes, the field value will revert to that of the DB.
 {
-  infoCategory,
   // Do not render if Lumi has not finished fetching the active care recipient of this group
   fetched,
 
@@ -70,7 +69,6 @@ their changes, the field value will revert to that of the DB.
 */
 
 const initialState = {
-  infoCategory: constants.CARE_PROFILE_CATEGORY_CODE_BASIC,
   fetched: false,
 
   selectCrMembers: new Map(),
@@ -127,11 +125,6 @@ const initialState = {
 
 const careProfileReducer = (state = initialState, action) => {
   switch (action.type) {
-    case constants.ACTION_SAVE_CARE_PROFILE_INFO_CATEGORY:
-      return {
-        ...state,
-        infoCategory: action.infoCategory,
-      };
     case constants.ACTION_TOGGLE_FETCHED_CARE_RECIPIENT:
       return {
         ...state,

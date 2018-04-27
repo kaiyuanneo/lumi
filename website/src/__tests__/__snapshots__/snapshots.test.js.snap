@@ -33,115 +33,59 @@ exports[`BootstrapStyleComponent 1`] = `
 `;
 
 exports[`CareProfileBasicInfoComponent 1`] = `
-<Table
-  bordered={true}
-  bsClass="table"
-  condensed={false}
-  hover={true}
-  responsive={false}
-  striped={false}
->
-  <thead>
-    <tr>
-      <th
-        className="product-table-header"
-      >
-        Field
-      </th>
-      <th
-        className="product-table-header"
-      >
-        Value
-      </th>
-      <th
-        className="product-table-header"
-      >
-        Options
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="firstName"
-      formFieldGenerator={[Function]}
-      title="First Name"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="lastName"
-      formFieldGenerator={[Function]}
-      title="Last Name"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="birthday"
-      formFieldGenerator={[Function]}
-      isDateField={true}
-      title="Birthday"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="gender"
-      formFieldGenerator={[Function]}
-      title="Gender"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="email"
-      formFieldGenerator={[Function]}
-      title="Email"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="address"
-      formFieldGenerator={[Function]}
-      title="Address"
-    />
-  </tbody>
-</Table>
+<tbody>
+  <Connect(CareProfileEditWrapperComponent)
+    fieldId="firstName"
+    formFieldGenerator={[Function]}
+    title="First Name"
+  />
+  <Connect(CareProfileEditWrapperComponent)
+    fieldId="lastName"
+    formFieldGenerator={[Function]}
+    title="Last Name"
+  />
+  <Connect(CareProfileEditWrapperComponent)
+    fieldId="birthday"
+    formFieldGenerator={[Function]}
+    isDateField={true}
+    title="Birthday"
+  />
+  <Connect(CareProfileEditWrapperComponent)
+    fieldId="gender"
+    formFieldGenerator={[Function]}
+    title="Gender"
+  />
+  <Connect(CareProfileEditWrapperComponent)
+    fieldId="email"
+    formFieldGenerator={[Function]}
+    title="Email"
+  />
+  <Connect(CareProfileEditWrapperComponent)
+    fieldId="address"
+    formFieldGenerator={[Function]}
+    title="Address"
+  />
+</tbody>
 `;
 
 exports[`CareProfileCareInfoComponent 1`] = `
-<Table
-  bordered={true}
-  bsClass="table"
-  condensed={false}
-  hover={true}
-  responsive={false}
-  striped={false}
->
-  <thead>
-    <tr>
-      <th
-        className="product-table-header"
-      >
-        Field
-      </th>
-      <th
-        className="product-table-header"
-      >
-        Value
-      </th>
-      <th
-        className="product-table-header"
-      >
-        Options
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="needsAndPreferences"
-      formFieldGenerator={[Function]}
-      title="Needs and Preferences"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="thingsThatDelight"
-      formFieldGenerator={[Function]}
-      title="Things that Delight"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="placesOfInterest"
-      formFieldGenerator={[Function]}
-      title="Places of Interest"
-    />
-  </tbody>
-</Table>
+<tbody>
+  <Connect(CareProfileEditWrapperComponent)
+    fieldId="needsAndPreferences"
+    formFieldGenerator={[Function]}
+    title="Needs and Preferences"
+  />
+  <Connect(CareProfileEditWrapperComponent)
+    fieldId="thingsThatDelight"
+    formFieldGenerator={[Function]}
+    title="Things that Delight"
+  />
+  <Connect(CareProfileEditWrapperComponent)
+    fieldId="placesOfInterest"
+    formFieldGenerator={[Function]}
+    title="Places of Interest"
+  />
+</tbody>
 `;
 
 exports[`CareProfileComponent 1`] = `null`;
@@ -173,57 +117,29 @@ exports[`CareProfileEditWrapperComponent 1`] = `
 `;
 
 exports[`CareProfileMedicalInfoComponent 1`] = `
-<Table
-  bordered={true}
-  bsClass="table"
-  condensed={false}
-  hover={true}
-  responsive={false}
-  striped={false}
->
-  <thead>
-    <tr>
-      <th
-        className="product-table-header"
-      >
-        Field
-      </th>
-      <th
-        className="product-table-header"
-      >
-        Value
-      </th>
-      <th
-        className="product-table-header"
-      >
-        Options
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="typeOfDementia"
-      formFieldGenerator={[Function]}
-      title="Type of Dementia"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="dateOfDiagnosis"
-      formFieldGenerator={[Function]}
-      isDateField={true}
-      title="Date of Diagnosis"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="medications"
-      formFieldGenerator={[Function]}
-      title="Medications"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="providers"
-      formFieldGenerator={[Function]}
-      title="Providers"
-    />
-  </tbody>
-</Table>
+<tbody>
+  <Connect(CareProfileEditWrapperComponent)
+    fieldId="typeOfDementia"
+    formFieldGenerator={[Function]}
+    title="Type of Dementia"
+  />
+  <Connect(CareProfileEditWrapperComponent)
+    fieldId="dateOfDiagnosis"
+    formFieldGenerator={[Function]}
+    isDateField={true}
+    title="Date of Diagnosis"
+  />
+  <Connect(CareProfileEditWrapperComponent)
+    fieldId="medications"
+    formFieldGenerator={[Function]}
+    title="Medications"
+  />
+  <Connect(CareProfileEditWrapperComponent)
+    fieldId="providers"
+    formFieldGenerator={[Function]}
+    title="Providers"
+  />
+</tbody>
 `;
 
 exports[`CareProfileNewMemberComponent 1`] = `

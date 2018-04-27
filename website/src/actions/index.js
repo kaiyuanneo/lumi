@@ -63,12 +63,6 @@ export const saveGroupNameFieldValue = groupNameFieldValue => ({
 /*
  * CareProfile Actions
  */
-
-export const saveCareProfileInfoCategory = infoCategory => ({
-  type: constants.ACTION_SAVE_CARE_PROFILE_INFO_CATEGORY,
-  infoCategory,
-});
-
 export const toggleFetchedCareRecipient = () => ({
   type: constants.ACTION_TOGGLE_FETCHED_CARE_RECIPIENT,
 });

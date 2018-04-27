@@ -11,7 +11,6 @@ export const ACTION_SAVE_GROUP_ID_FIELD_VALUE = 'SAVE_GROUP_ID_FIELD_VALUE';
 export const ACTION_SAVE_GROUP_JOIN_VALIDATION_STATE = 'SAVE_GROUP_JOIN_VALIDATION_STATE';
 export const ACTION_SAVE_GROUP_NAME_FIELD_VALUE = 'SAVE_GROUP_NAME_FIELD_VALUE';
 // CareProfile actions
-export const ACTION_SAVE_CARE_PROFILE_INFO_CATEGORY = 'SAVE_CARE_PROFILE_INFO_CATEGORY';
 export const ACTION_TOGGLE_FETCHED_CARE_RECIPIENT = 'TOGGLE_FETCHED_CARE_RECIPIENT';
 export const ACTION_SAVE_CARE_RECIPIENT_UID = 'SAVE_CARE_RECIPIENT_UID';
 export const ACTION_UPDATE_CARE_RECIPIENT = 'UPDATE_CARE_RECIPIENT';
@@ -94,18 +93,6 @@ export const PRODUCT_CODE_CARE_PROFILE = 'care-profile';
 export const PRODUCT_CODE_SIGN_OUT = 'sign-out';
 
 export const STORAGE_PATH_LUMI_IMAGES = 'lumi/images';
-
-/*
- * CareProfile categories to toggle between different sections of information
- */
-// Codes
-export const CARE_PROFILE_CATEGORY_CODE_BASIC = 'basic';
-export const CARE_PROFILE_CATEGORY_CODE_MEDICAL = 'medical';
-export const CARE_PROFILE_CATEGORY_CODE_CARE = 'care';
-// Names
-export const CARE_PROFILE_CATEGORY_NAME_BASIC = 'Basic';
-export const CARE_PROFILE_CATEGORY_NAME_MEDICAL = 'Medical';
-export const CARE_PROFILE_CATEGORY_NAME_CARE = 'Care';
 
 /*
  * CareProfile field IDs: Field IDs correspond to user properties in the DB

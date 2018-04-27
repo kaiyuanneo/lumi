@@ -29,6 +29,14 @@
   color: purple;
 }
 
+.nav-bottom-text {
+  font-size: 12px;
+}
+
+.nav-bottom-item {
+  width: 90px;
+}
+
 .navbar-offset {
   /* By default, fixed top navbar has height of 50px */
   padding-top: 50px;
@@ -63,7 +71,7 @@
 }
 /* Override Bootstrap styling in bottom navbar */
 .navbar-fixed-bottom .nav>li>a {
-  padding: 10px !important;
+  padding: 2px 10px !important;
 }
 
 /* Remove margin below top navbar to maximise space on small screens */

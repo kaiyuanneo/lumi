@@ -628,7 +628,7 @@ exports[`NavBottomComponent 1`] = `
               <div
                 className="nav-bottom-text"
               >
-                Profile
+                Summary
               </div>
             </div>
           </a>

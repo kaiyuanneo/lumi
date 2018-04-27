@@ -31,11 +31,11 @@ const NavBottomComponent = props => (
             </div>
           </Flexbox>
         </NavItem>
-        <NavItem eventKey={constants.PRODUCT_CODE_CARE_PROFILE} className="nav-bottom-item">
+        <NavItem eventKey={constants.PRODUCT_CODE_SUMMARY} className="nav-bottom-item">
           <Flexbox flexDirection="column" alignItems="center">
             <ListIcon size={constants.NAVBAR_ICON_SIZE} />
             <div className="nav-bottom-text">
-              {constants.NAVBAR_ITEM_CARE_PROFILE}
+              {constants.NAVBAR_ITEM_SUMMARY}
             </div>
           </Flexbox>
         </NavItem>

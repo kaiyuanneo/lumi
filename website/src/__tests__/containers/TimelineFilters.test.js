@@ -1,6 +1,6 @@
 import chai from 'chai';
 
-import * as TimelineFiltersContainer from '../containers/TimelineFiltersContainer';
+import * as TimelineFiltersContainer from '../../containers/TimelineFiltersContainer';
 
 
 describe('Get filter default value', () => {

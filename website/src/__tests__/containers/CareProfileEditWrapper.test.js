@@ -3,9 +3,9 @@ import * as firebase from 'firebase';
 import sinon from 'sinon';
 import hash from 'string-hash';
 
-import * as CareProfileEditWrapperContainer from '../containers/CareProfileEditWrapperContainer';
-import * as constants from '../static/constants';
-import * as utils from '../utils';
+import * as CareProfileEditWrapperContainer from '../../containers/CareProfileEditWrapperContainer';
+import * as constants from '../../static/constants';
+import * as baseUtils from '../../utils/baseUtils';
 
 
 describe('Get display field value', () => {
@@ -33,12 +33,12 @@ describe('Get display field value', () => {
     const stubDisplayFieldValue = 'TEST_DISPLAY_FIELD_VALUE';
     const stubStateProps = { formFieldValue: stubFormFieldValue };
     const stubOwnProps = { fieldId: constants.CARE_PROFILE_FIELD_ID_GENDER };
-    const utilsStub = sinon.stub(utils, 'genderCodeToName').returns(stubDisplayFieldValue);
+    const baseUtilsStub = sinon.stub(baseUtils, 'genderCodeToName').returns(stubDisplayFieldValue);
     const displayFieldValue =
       CareProfileEditWrapperContainer._getDisplayFieldValue(stubStateProps, stubOwnProps);
     const expectedDisplayFieldValue = stubDisplayFieldValue;
     chai.assert.strictEqual(displayFieldValue, expectedDisplayFieldValue);
-    utilsStub.restore();
+    baseUtilsStub.restore();
   });
 
   it('Type of dementia field', () => {
@@ -46,12 +46,12 @@ describe('Get display field value', () => {
     const stubDisplayFieldValue = 'TEST_DISPLAY_FIELD_VALUE';
     const stubStateProps = { formFieldValue: stubFormFieldValue };
     const stubOwnProps = { fieldId: constants.CARE_PROFILE_FIELD_ID_TYPE_OF_DEMENTIA };
-    const utilsStub = sinon.stub(utils, 'dementiaCodeToName').returns(stubDisplayFieldValue);
+    const baseUtilsStub = sinon.stub(baseUtils, 'dementiaCodeToName').returns(stubDisplayFieldValue);
     const displayFieldValue =
       CareProfileEditWrapperContainer._getDisplayFieldValue(stubStateProps, stubOwnProps);
     const expectedDisplayFieldValue = stubDisplayFieldValue;
     chai.assert.strictEqual(displayFieldValue, expectedDisplayFieldValue);
-    utilsStub.restore();
+    baseUtilsStub.restore();
   });
 });
 
@@ -65,9 +65,9 @@ describe('Get misc props', () => {
       fieldId: 'TEST_FIELD_ID',
     };
     const stubFormFieldValueIso = 'TEST_FORM_FIELD_VALUE_ISO';
-    const utilsStub = sinon.stub(utils, 'usToIsoDate').returns(stubFormFieldValueIso);
-    const miscProps =
-      CareProfileEditWrapperContainer._getMiscProps(stubStateProps, stubDispatchProps, stubOwnProps);
+    const baseUtilsStub = sinon.stub(baseUtils, 'usToIsoDate').returns(stubFormFieldValueIso);
+    const miscProps = CareProfileEditWrapperContainer
+      ._getMiscProps(stubStateProps, stubDispatchProps, stubOwnProps);
     const expectedMiscProps = {
       formFieldValue: stubFormFieldValueIso,
       saveButtonDisabled: false,
@@ -77,8 +77,8 @@ describe('Get misc props', () => {
     chai.assert.isTrue(miscProps.onChangeFunc.toString().includes('(value, formattedValue)'));
     chai.assert.isFalse(miscProps.onChangeFunc.toString().includes('e.target.value'));
     chai.assert.strictEqual(miscProps.saveButtonDisabled, expectedMiscProps.saveButtonDisabled);
-    chai.assert.isTrue(utilsStub.calledOnceWithExactly(stubFormFieldValue));
-    utilsStub.restore();
+    chai.assert.isTrue(baseUtilsStub.calledOnceWithExactly(stubFormFieldValue));
+    baseUtilsStub.restore();
   });
 
   it('Email field invalid email', () => {
@@ -90,9 +90,9 @@ describe('Get misc props', () => {
       fieldId: constants.CARE_PROFILE_FIELD_ID_EMAIL,
     };
     const stubFormFieldValueIso = 'TEST_FORM_FIELD_VALUE_ISO';
-    const utilsStub = sinon.stub(utils, 'usToIsoDate').returns(stubFormFieldValueIso);
-    const miscProps =
-      CareProfileEditWrapperContainer._getMiscProps(stubStateProps, stubDispatchProps, stubOwnProps);
+    const baseUtilsStub = sinon.stub(baseUtils, 'usToIsoDate').returns(stubFormFieldValueIso);
+    const miscProps = CareProfileEditWrapperContainer
+      ._getMiscProps(stubStateProps, stubDispatchProps, stubOwnProps);
     const expectedMiscProps = {
       formFieldValue: stubFormFieldValue,
       saveButtonDisabled: true,
@@ -102,8 +102,8 @@ describe('Get misc props', () => {
     chai.assert.isFalse(miscProps.onChangeFunc.toString().includes('(value, formattedValue)'));
     chai.assert.isTrue(miscProps.onChangeFunc.toString().includes('e.target.value'));
     chai.assert.strictEqual(miscProps.saveButtonDisabled, expectedMiscProps.saveButtonDisabled);
-    chai.assert.isFalse(utilsStub.called);
-    utilsStub.restore();
+    chai.assert.isFalse(baseUtilsStub.called);
+    baseUtilsStub.restore();
   });
 
   it('Neither date nor email field', () => {
@@ -115,9 +115,9 @@ describe('Get misc props', () => {
       fieldId: 'TEST_FIELD_ID',
     };
     const stubFormFieldValueIso = 'TEST_FORM_FIELD_VALUE_ISO';
-    const utilsStub = sinon.stub(utils, 'usToIsoDate').returns(stubFormFieldValueIso);
-    const miscProps =
-      CareProfileEditWrapperContainer._getMiscProps(stubStateProps, stubDispatchProps, stubOwnProps);
+    const baseUtilsStub = sinon.stub(baseUtils, 'usToIsoDate').returns(stubFormFieldValueIso);
+    const miscProps = CareProfileEditWrapperContainer
+      ._getMiscProps(stubStateProps, stubDispatchProps, stubOwnProps);
     const expectedMiscProps = {
       formFieldValue: stubFormFieldValue,
       saveButtonDisabled: false,
@@ -127,8 +127,8 @@ describe('Get misc props', () => {
     chai.assert.isFalse(miscProps.onChangeFunc.toString().includes('(value, formattedValue)'));
     chai.assert.isTrue(miscProps.onChangeFunc.toString().includes('e.target.value'));
     chai.assert.strictEqual(miscProps.saveButtonDisabled, expectedMiscProps.saveButtonDisabled);
-    chai.assert.isFalse(utilsStub.called);
-    utilsStub.restore();
+    chai.assert.isFalse(baseUtilsStub.called);
+    baseUtilsStub.restore();
   });
 });
 

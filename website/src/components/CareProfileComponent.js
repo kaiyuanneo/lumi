@@ -28,7 +28,7 @@ class CareProfileComponent extends Component {
           <Flexbox alignSelf="center">
             <Image src={this.props.profilePic} circle responsive />
           </Flexbox>
-          <h4>{this.props.firstName} {this.props.lastName}</h4>
+          <h4>{this.props.fullName}&#39;s Care Profile</h4>
         </Flexbox>
         <br />
         <Flexbox flexDirection="column" alignContent="center">
@@ -74,8 +74,7 @@ CareProfileComponent.propTypes = {
   // Props computed from Redux state
   fetched: PropTypes.bool.isRequired,
   uid: PropTypes.string.isRequired,
-  firstName: PropTypes.string.isRequired,
-  lastName: PropTypes.string.isRequired,
+  fullName: PropTypes.string.isRequired,
   profilePic: PropTypes.string.isRequired,
   // Props that call dispatch actions
   getCareRecipient: PropTypes.func.isRequired,

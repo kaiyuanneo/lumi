@@ -2,9 +2,9 @@ import chai from 'chai';
 import * as firebase from 'firebase';
 import sinon from 'sinon';
 
-import * as GroupCreateContainer from '../containers/GroupCreateContainer';
-import * as constants from '../static/constants';
-import * as utils from '../utils';
+import * as GroupCreateContainer from '../../containers/GroupCreateContainer';
+import * as constants from '../../static/constants';
+import * as baseUtils from '../../utils/baseUtils';
 
 
 describe('Create group', () => {
@@ -16,16 +16,16 @@ describe('Create group', () => {
     const pushStub = sinon.stub().returns(stubNewGroupRef);
     const refStub = sinon.stub().returns({ push: pushStub });
     const dbStub = sinon.stub(firebase, 'database').returns({ ref: refStub });
-    const utilsStub = sinon.stub(utils, 'addUserToGroup');
+    const baseUtilsStub = sinon.stub(baseUtils, 'addUserToGroup');
 
     const stubState = { group: { groupNameFieldValue: stubGroupNameFieldValue } };
     GroupCreateContainer._createGroup(stubState);
     chai.assert.isTrue(dbStub.calledOnce);
     chai.assert.isTrue(refStub.calledOnceWithExactly(constants.DB_PATH_LUMI_GROUPS));
     chai.assert.isTrue(pushStub.calledOnceWithExactly({ name: stubGroupNameFieldValue }));
-    chai.assert.isTrue(utilsStub.calledOnceWithExactly(stubNewGroupId));
+    chai.assert.isTrue(baseUtilsStub.calledOnceWithExactly(stubNewGroupId));
 
     dbStub.restore();
-    utilsStub.restore();
+    baseUtilsStub.restore();
   });
 });

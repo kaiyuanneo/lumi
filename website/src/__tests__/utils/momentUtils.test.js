@@ -2,123 +2,9 @@ import chai from 'chai';
 import * as firebase from 'firebase';
 import sinon from 'sinon';
 
-import * as actions from '../actions';
-import * as TimelineContainer from '../containers/TimelineContainer';
-import * as constants from '../static/constants';
-
-
-describe('Get sorted message map', () => {
-  it('Get success', async () => {
-    const stubState = {
-      timeline: {
-        messages: {
-          B: 'B',
-          C: 'C',
-          A: 'A',
-        },
-      },
-    };
-
-    const sortedMessageMap = TimelineContainer._getSortedMessageMap(stubState);
-
-    const expectedSortedMessageMap = new Map();
-    expectedSortedMessageMap.set('C', 'C');
-    expectedSortedMessageMap.set('B', 'B');
-    expectedSortedMessageMap.set('A', 'A');
-    const expectedSortedMessageMapIterator = expectedSortedMessageMap.entries();
-
-    sortedMessageMap.forEach((val, key) => {
-      const [expectedKey, expectedVal] = expectedSortedMessageMapIterator.next().value;
-      chai.assert.strictEqual(key, expectedKey);
-      chai.assert.strictEqual(val, expectedVal);
-    });
-  });
-});
-
-
-describe('Should render message', () => {
-  it('showInTimeline is false', () => {
-    const stubState = {
-      timeline: {
-        messageFilterCategories: {},
-      },
-    };
-    const stubMessage = {
-      showInTimeline: false,
-      category: '',
-      starred: false,
-    };
-    const shouldRenderMessage = TimelineContainer._shouldRenderMessage(stubState, stubMessage);
-    chai.assert.strictEqual(shouldRenderMessage, false);
-  });
-
-  it('Category all', () => {
-    const stubState = {
-      timeline: {
-        messageFilterCategories: {
-          [constants.TIMELINE_CATEGORY_CODE_ALL]: true,
-        },
-      },
-    };
-    const stubMessage = {
-      showInTimeline: true,
-      category: '',
-      starred: false,
-    };
-    const shouldRenderMessage = TimelineContainer._shouldRenderMessage(stubState, stubMessage);
-    chai.assert.strictEqual(shouldRenderMessage, true);
-  });
-
-  it('Category match', () => {
-    const stubCategory = 'TEST_CATEGORY';
-    const stubState = {
-      timeline: {
-        messageFilterCategories: {
-          [stubCategory]: true,
-        },
-      },
-    };
-    const stubMessage = {
-      showInTimeline: true,
-      category: stubCategory,
-      starred: false,
-    };
-    const shouldRenderMessage = TimelineContainer._shouldRenderMessage(stubState, stubMessage);
-    chai.assert.strictEqual(shouldRenderMessage, true);
-  });
-
-  it('Star category', () => {
-    const stubState = {
-      timeline: {
-        messageFilterCategories: {
-          [constants.TIMELINE_CATEGORY_CODE_STAR]: true,
-        },
-      },
-    };
-    const stubMessage = {
-      showInTimeline: true,
-      category: '',
-      starred: true,
-    };
-    const shouldRenderMessage = TimelineContainer._shouldRenderMessage(stubState, stubMessage);
-    chai.assert.strictEqual(shouldRenderMessage, true);
-  });
-
-  it('None of the above', () => {
-    const stubState = {
-      timeline: {
-        messageFilterCategories: {},
-      },
-    };
-    const stubMessage = {
-      showInTimeline: true,
-      category: 'TEST_CATEGORY_2',
-      starred: false,
-    };
-    const shouldRenderMessage = TimelineContainer._shouldRenderMessage(stubState, stubMessage);
-    chai.assert.strictEqual(shouldRenderMessage, false);
-  });
-});
+import * as actions from '../../actions';
+import * as momentUtils from '../../utils/momentUtils';
+import * as constants from '../../static/constants';
 
 
 describe('Save Timeline message', () => {
@@ -148,7 +34,7 @@ describe('Save Timeline message', () => {
     const dbStub = sinon.stub(firebase, 'database').returns({ ref: refStub });
     const saveTimelineMessageStub = sinon.stub(actions, 'saveTimelineMessage').returns(stubAction);
 
-    await TimelineContainer._saveTimelineMessage(stubDispatch, stubMessageSnapshot);
+    await momentUtils._saveTimelineMessage(stubDispatch, stubMessageSnapshot);
 
     chai.assert.isTrue(dbStub.calledOnce);
     chai.assert.isTrue(refStub.calledTwice);
@@ -186,7 +72,7 @@ describe('Save message locally', () => {
   const refStub = sinon.stub().returns({ on: onStub });
   const dbStub = sinon.stub(firebase, 'database').returns({ ref: refStub });
 
-  TimelineContainer._saveMessageLocally(stubDispatch, stubGroupMessageSnapshot);
+  momentUtils._saveMessageLocally(stubDispatch, stubGroupMessageSnapshot);
 
   chai.assert.isTrue(dbStub.calledOnce);
   chai.assert.isTrue(refStub.calledOnceWithExactly(messageRefParam));
@@ -212,7 +98,7 @@ describe('Save group messages locally', () => {
     const stubActiveGroupRef = { off: offStub };
     const stubActiveGroupSnapshot = { val: valStub };
 
-    TimelineContainer
+    momentUtils
       ._saveGroupMessagesLocally(stubDispatch, stubActiveGroupRef, stubActiveGroupSnapshot);
 
     chai.assert.isTrue(valStub.calledOnce);
@@ -237,7 +123,7 @@ describe('Save group messages locally', () => {
     const stubActiveGroupRef = { off: offStub };
     const stubActiveGroupSnapshot = { val: valStub };
 
-    TimelineContainer
+    momentUtils
       ._saveGroupMessagesLocally(stubDispatch, stubActiveGroupRef, stubActiveGroupSnapshot);
 
     chai.assert.isTrue(valStub.calledOnce);
@@ -263,7 +149,7 @@ describe('Sync messages', () => {
     const authStub = sinon.stub(firebase, 'auth').returns({ currentUser: { uid: stubAuthUid } });
     const stubDispatch = sinon.stub();
 
-    TimelineContainer._syncMessages(stubDispatch);
+    momentUtils.syncMessages(stubDispatch);
 
     chai.assert.isTrue(dbStub.calledOnce);
     chai.assert.isTrue(authStub.calledOnce);

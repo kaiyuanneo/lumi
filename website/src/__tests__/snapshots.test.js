@@ -83,8 +83,7 @@ it('CareProfileComponent', () => {
     <CareProfileComponent
       contentComponent={<div />}
       fetched={false}
-      firstName=""
-      lastName=""
+      fullName=""
       getCareRecipient={() => {}}
       infoCategory=""
       profilePic=""

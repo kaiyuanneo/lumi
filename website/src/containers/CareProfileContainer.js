@@ -11,8 +11,7 @@ const mapStateToProps = state => ({
   infoCategory: state.careProfile.infoCategory,
   fetched: state.careProfile.fetched,
   uid: state.careProfile.uid,
-  firstName: state.careProfile.firstName,
-  lastName: state.careProfile.lastName,
+  fullName: `${state.careProfile.firstName} ${state.careProfile.lastName}`,
   profilePic: state.careProfile.profilePic,
 });
 

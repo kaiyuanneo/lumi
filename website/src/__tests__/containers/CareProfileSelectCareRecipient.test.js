@@ -3,8 +3,8 @@ import * as firebase from 'firebase';
 import React from 'react';
 import sinon from 'sinon';
 
-import * as CareProfileSelectCareRecipientContainer from '../containers/CareProfileSelectCareRecipientContainer';
-import * as constants from '../static/constants';
+import * as CareProfileSelectCareRecipientContainer from '../../containers/CareProfileSelectCareRecipientContainer';
+import * as constants from '../../static/constants';
 
 
 describe('Get member list', () => {

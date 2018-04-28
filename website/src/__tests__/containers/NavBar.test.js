@@ -2,9 +2,9 @@ import chai from 'chai';
 import * as firebase from 'firebase';
 import sinon from 'sinon';
 
-import * as actions from '../actions';
-import * as NavTopContainer from '../containers/NavTopContainer';
-import * as constants from '../static/constants';
+import * as actions from '../../actions';
+import * as NavTopContainer from '../../containers/NavTopContainer';
+import * as constants from '../../static/constants';
 
 
 describe('Save auth user group info', () => {

@@ -2,15 +2,15 @@
 import { connect } from 'react-redux';
 
 import TimelineStoryHeaderComponent from '../components/TimelineStoryHeaderComponent';
-import * as utils from '../utils';
+import * as baseUtils from '../utils/baseUtils';
 
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...stateProps,
   ...dispatchProps,
   ...ownProps,
-  getCategoryName: categoryCode => utils.categoryCodeToName(categoryCode),
-  getLocalDateString: timestamp => utils.getLocalDateString(timestamp),
+  getCategoryName: categoryCode => baseUtils.categoryCodeToName(categoryCode),
+  getLocalDateString: timestamp => baseUtils.getLocalDateString(timestamp),
 });
 
 

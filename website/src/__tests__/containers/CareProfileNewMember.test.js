@@ -3,9 +3,9 @@ import * as firebase from 'firebase';
 import sinon from 'sinon';
 import hash from 'string-hash';
 
-import * as CareProfileNewMemberContainer from '../containers/CareProfileNewMemberContainer';
-import * as constants from '../static/constants';
-import * as utils from '../utils';
+import * as CareProfileNewMemberContainer from '../../containers/CareProfileNewMemberContainer';
+import * as constants from '../../static/constants';
+import * as baseUtils from '../../utils/baseUtils';
 
 
 describe('Save new member', () => {
@@ -32,7 +32,7 @@ describe('Save new member', () => {
     refStub.withArgs(groupRefParam).returns({ update: groupUpdateStub });
     const dbStub = sinon.stub(firebase, 'database').returns({ ref: refStub });
     const authStub = sinon.stub(firebase, 'auth').returns({ currentUser: { uid: stubAuthUid } });
-    const utilsStub = sinon.stub(utils, 'addUserToGroup');
+    const baseUtilsStub = sinon.stub(baseUtils, 'addUserToGroup');
 
     const stubStateProps = { email: 'TEST_EMAIL' };
     await CareProfileNewMemberContainer._saveNewMember(stubStateProps);
@@ -51,13 +51,13 @@ describe('Save new member', () => {
     chai.assert
       .isTrue(activeGroupIdOnceStub.calledOnceWithExactly(constants.DB_EVENT_NAME_VALUE));
     chai.assert.isTrue(activeGroupIdValStub.calledOnce);
-    chai.assert.isTrue(utilsStub.calledOnceWithExactly(stubActiveGroupId, stubNewMemberKey));
+    chai.assert.isTrue(baseUtilsStub.calledOnceWithExactly(stubActiveGroupId, stubNewMemberKey));
     chai.assert.isTrue(groupUpdateStub.calledOnceWithExactly({
       activeCareRecipient: stubNewMemberKey,
     }));
 
     dbStub.restore();
     authStub.restore();
-    utilsStub.restore();
+    baseUtilsStub.restore();
   });
 });

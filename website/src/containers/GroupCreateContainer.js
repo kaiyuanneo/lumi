@@ -5,7 +5,7 @@ import * as firebase from 'firebase';
 import * as actions from '../actions';
 import GroupCreateComponent from '../components/GroupCreateComponent';
 import * as constants from '../static/constants';
-import * as utils from '../utils';
+import * as baseUtils from '../utils/baseUtils';
 
 
 export const _createGroup = (state) => {
@@ -13,7 +13,7 @@ export const _createGroup = (state) => {
   const newGroupRef = firebase.database().ref(constants.DB_PATH_LUMI_GROUPS).push({
     name: state.group.groupNameFieldValue,
   });
-  utils.addUserToGroup(newGroupRef.key);
+  baseUtils.addUserToGroup(newGroupRef.key);
 };
 
 

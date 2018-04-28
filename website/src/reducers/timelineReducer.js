@@ -3,6 +3,7 @@ import * as constants from '../static/constants';
 /*
 Timeline state structure
 {
+  // Object where keys are message IDs and values are message content
   messages,
   // Object where keys are category codes and values are true or false
   messageFilterCategories,

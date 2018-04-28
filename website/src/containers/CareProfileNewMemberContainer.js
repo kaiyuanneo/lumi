@@ -6,7 +6,7 @@ import hash from 'string-hash';
 import * as actions from '../actions';
 import CareProfileNewMemberComponent from '../components/CareProfileNewMemberComponent';
 import * as constants from '../static/constants';
-import * as utils from '../utils';
+import * as baseUtils from '../utils/baseUtils';
 
 
 // TODO(kai): Implement profile pic upload capability
@@ -49,7 +49,7 @@ export const _saveNewMember = async (stateProps) => {
   const activeGroupIdRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/activeGroup`);
   const activeGroupIdSnapshot = await activeGroupIdRef.once(constants.DB_EVENT_NAME_VALUE);
   const activeGroupId = activeGroupIdSnapshot.val();
-  await utils.addUserToGroup(activeGroupId, newMemberRef.key);
+  await baseUtils.addUserToGroup(activeGroupId, newMemberRef.key);
   await db.ref(`${constants.DB_PATH_LUMI_GROUPS}/${activeGroupId}`).update({
     activeCareRecipient: newMemberRef.key,
   });
@@ -65,59 +65,59 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...stateProps,
     ...dispatchProps,
     ...ownProps,
-    firstNameFormField: utils.getFirstNameFieldGenerator()(
+    firstNameFormField: baseUtils.getFirstNameFieldGenerator()(
       stateProps.firstName,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_FIRST_NAME),
     ),
-    lastNameFormField: utils.getLastNameFieldGenerator()(
+    lastNameFormField: baseUtils.getLastNameFieldGenerator()(
       stateProps.lastName,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_LAST_NAME),
     ),
-    birthdayFormField: utils.getBirthdayFieldGenerator()(
-      stateProps.birthday ? utils.usToIsoDate(stateProps.birthday) : '',
+    birthdayFormField: baseUtils.getBirthdayFieldGenerator()(
+      stateProps.birthday ? baseUtils.usToIsoDate(stateProps.birthday) : '',
       getHandleChangeDateFunc(constants.CARE_PROFILE_FIELD_ID_BIRTHDAY),
     ),
-    genderFormField: utils.getGenderFieldGenerator()(
+    genderFormField: baseUtils.getGenderFieldGenerator()(
       stateProps.gender,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_GENDER),
     ),
-    emailFormField: utils.getEmailFieldGenerator()(
+    emailFormField: baseUtils.getEmailFieldGenerator()(
       stateProps.email,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_EMAIL),
     ),
-    addressFormField: utils.getAddressFieldGenerator()(
+    addressFormField: baseUtils.getAddressFieldGenerator()(
       stateProps.address,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_ADDRESS),
     ),
-    typeOfDementiaFormField: utils.getTypeOfDementiaFieldGenerator()(
+    typeOfDementiaFormField: baseUtils.getTypeOfDementiaFieldGenerator()(
       stateProps.typeOfDementia,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_TYPE_OF_DEMENTIA),
     ),
-    dateOfDiagnosisFormField: utils.getDateOfDiagnosisFieldGenerator()(
-      stateProps.dateOfDiagnosis ? utils.usToIsoDate(stateProps.dateOfDiagnosis) : '',
+    dateOfDiagnosisFormField: baseUtils.getDateOfDiagnosisFieldGenerator()(
+      stateProps.dateOfDiagnosis ? baseUtils.usToIsoDate(stateProps.dateOfDiagnosis) : '',
       getHandleChangeDateFunc(constants.CARE_PROFILE_FIELD_ID_DATE_OF_DIAGNOSIS),
     ),
-    medicationsFormField: utils.getMedicationsFieldGenerator()(
+    medicationsFormField: baseUtils.getMedicationsFieldGenerator()(
       stateProps.medications,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_MEDICATIONS),
     ),
-    providersFormField: utils.getProvidersFieldGenerator()(
+    providersFormField: baseUtils.getProvidersFieldGenerator()(
       stateProps.providers,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_PROVIDERS),
     ),
-    needsAndPreferencesFormField: utils.getNeedsAndPreferencesFieldGenerator()(
+    needsAndPreferencesFormField: baseUtils.getNeedsAndPreferencesFieldGenerator()(
       stateProps.needsAndPreferences,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_NEEDS_AND_PREFERENCES),
     ),
-    thingsThatDelightFormField: utils.getThingsThatDelightFieldGenerator()(
+    thingsThatDelightFormField: baseUtils.getThingsThatDelightFieldGenerator()(
       stateProps.thingsThatDelight,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_THINGS_THAT_DELIGHT),
     ),
-    placesOfInterestFormField: utils.getPlacesOfInterestFieldGenerator()(
+    placesOfInterestFormField: baseUtils.getPlacesOfInterestFieldGenerator()(
       stateProps.placesOfInterest,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_PLACES_OF_INTEREST),
     ),
-    isSaveButtonDisabled: !utils.isValidEmail(stateProps.email),
+    isSaveButtonDisabled: !baseUtils.isValidEmail(stateProps.email),
     saveNewMember: () => _saveNewMember(stateProps),
   };
 };

@@ -6,7 +6,7 @@ import hash from 'string-hash';
 import * as actions from '../actions';
 import CareProfileEditWrapperComponent from '../components/CareProfileEditWrapperComponent';
 import * as constants from '../static/constants';
-import * as utils from '../utils';
+import * as baseUtils from '../utils/baseUtils';
 
 
 const mapStateToProps = (state, ownProps) => ({
@@ -20,10 +20,10 @@ const mapStateToProps = (state, ownProps) => ({
 
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  saveFieldValueLocally:
-    fieldValue => dispatch(actions.saveCareProfileFieldValueLocally(ownProps.fieldId, fieldValue)),
-  saveFieldIsInEditMode:
-    isInEditMode => dispatch(actions.saveCareProfileFieldIsInEditMode(ownProps.fieldId, isInEditMode)),
+  saveFieldValueLocally: fieldValue =>
+    dispatch(actions.saveCareProfileFieldValueLocally(ownProps.fieldId, fieldValue)),
+  saveFieldIsInEditMode: isInEditMode =>
+    dispatch(actions.saveCareProfileFieldIsInEditMode(ownProps.fieldId, isInEditMode)),
 });
 
 
@@ -32,9 +32,9 @@ export const _getDisplayFieldValue = (stateProps, ownProps) => {
   if (!displayFieldValue) {
     displayFieldValue = 'Unspecified';
   } else if (ownProps.fieldId === constants.CARE_PROFILE_FIELD_ID_GENDER) {
-    displayFieldValue = utils.genderCodeToName(displayFieldValue);
+    displayFieldValue = baseUtils.genderCodeToName(displayFieldValue);
   } else if (ownProps.fieldId === constants.CARE_PROFILE_FIELD_ID_TYPE_OF_DEMENTIA) {
-    displayFieldValue = utils.dementiaCodeToName(displayFieldValue);
+    displayFieldValue = baseUtils.dementiaCodeToName(displayFieldValue);
   }
   return displayFieldValue;
 };
@@ -52,13 +52,13 @@ export const _getMiscProps = (stateProps, dispatchProps, ownProps) => {
   // Update display value and onChangeFunc for date fields
   if (ownProps.isDateField) {
     // React Bootstrap Date Picker requires ISO strings, not MM/DD/YYYY strings used by FB
-    formFieldValue = formFieldValue ? utils.usToIsoDate(formFieldValue) : '';
+    formFieldValue = formFieldValue ? baseUtils.usToIsoDate(formFieldValue) : '';
     // The onChange callback params for React Bootstrap Date Picker differ from other fields
     onChangeFunc = (value, formattedValue) => dispatchProps.saveFieldValueLocally(formattedValue);
   }
   // Disable save button for invalid email addresses in email field
   if (ownProps.fieldId === constants.CARE_PROFILE_FIELD_ID_EMAIL &&
-      !utils.isValidEmail(formFieldValue)) {
+      !baseUtils.isValidEmail(formFieldValue)) {
     saveButtonDisabled = true;
   }
   return {

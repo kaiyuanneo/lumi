@@ -5,14 +5,14 @@ import * as firebase from 'firebase';
 import * as actions from '../actions';
 import GroupJoinComponent from '../components/GroupJoinComponent';
 import * as constants from '../static/constants';
-import * as utils from '../utils';
+import * as baseUtils from '../utils/baseUtils';
 
 
 const mapStateToProps = state => ({
   groupIdFieldValue: state.group.groupIdFieldValue,
   groupJoinValidationState: state.group.groupJoinValidationState,
   isJoinButtonDisabled: state.group.groupJoinValidationState !== 'success',
-  joinGroup: () => utils.addUserToGroup(state.group.groupIdFieldValue),
+  joinGroup: () => baseUtils.addUserToGroup(state.group.groupIdFieldValue),
 });
 
 

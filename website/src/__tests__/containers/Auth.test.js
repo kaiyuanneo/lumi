@@ -4,8 +4,8 @@ import nock from 'nock';
 import sinon from 'sinon';
 import hash from 'string-hash';
 
-import * as AuthContainer from '../containers/AuthContainer';
-import * as constants from '../static/constants';
+import * as AuthContainer from '../../containers/AuthContainer';
+import * as constants from '../../static/constants';
 
 
 // NB: _setUserInfo is currently not tested because we haven't found a way to cleanly stub

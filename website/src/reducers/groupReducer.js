@@ -12,8 +12,6 @@ Group state structure.
 
 const initialState = {
   groupIdFieldValue: '',
-  groupNameFieldValue: '',
-  groupCreateValidationState: null,
   groupJoinValidationState: null,
 };
 
@@ -28,12 +26,6 @@ const groupReducer = (state = initialState, action) => {
       return {
         ...state,
         groupJoinValidationState: action.groupJoinValidationState,
-      };
-    case constants.ACTION_SAVE_GROUP_NAME_FIELD_VALUE:
-      return {
-        ...state,
-        groupNameFieldValue: action.groupNameFieldValue,
-        groupCreateValidationState: action.groupCreateValidationState,
       };
     default:
       return state;

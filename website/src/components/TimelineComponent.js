@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
 
+import HelpMomentsComponent from '../components/HelpMomentsComponent';
 import TimelineFiltersContainer from '../containers/TimelineFiltersContainer';
 import TimelineStoryHeaderContainer from '../containers/TimelineStoryHeaderContainer';
 import TimelineStoryContentComponent from '../components/TimelineStoryContentComponent';
@@ -14,6 +15,25 @@ class TimelineComponent extends Component {
     this.props.syncMessages();
   }
   render() {
+    // Do not render anything if messages have not finished being fetched from server
+    if (
+      this.props.numMessagesState === null ||
+      (this.props.numMessagesState > 0 && this.props.numMessages === 0)
+    ) {
+      return null;
+    }
+
+    // If there are no messages, render the help component to prompt users to save moments
+    if (this.props.numMessagesState === 0) {
+      return (
+        <Flexbox flexDirection="column" alignItems="center">
+          <h4>{this.props.groupName} Group Timeline</h4>
+          <HelpMomentsComponent />
+        </Flexbox>
+      );
+    }
+
+    // Define how to render individual moments
     const messageToTableRow = ([messageKey, messageValue]) => {
       if (!this.props.shouldRenderMessage(messageValue)) {
         return null;
@@ -43,6 +63,8 @@ class TimelineComponent extends Component {
         </tr>
       );
     };
+
+    // Render Timeline filters and table of moments
     return (
       <div>
         <TimelineFiltersContainer />
@@ -57,10 +79,21 @@ class TimelineComponent extends Component {
 }
 
 TimelineComponent.propTypes = {
+  groupName: PropTypes.string,
+  // numMessagesState will be null if the number of messages has not been fetched yet
+  // Once the number of messages is fetched, numMessagesState's value is the number of messages
+  numMessagesState: PropTypes.number,
+  // numMessages is the size of the object of messages that have been synced from the server
+  numMessages: PropTypes.number.isRequired,
   sortedMessages: PropTypes.instanceOf(Map).isRequired,
   syncMessages: PropTypes.func.isRequired,
   shouldRenderMessage: PropTypes.func.isRequired,
   windowWidth: PropTypes.number.isRequired,
+};
+
+TimelineComponent.defaultProps = {
+  groupName: null,
+  numMessagesState: null,
 };
 
 export default TimelineComponent;

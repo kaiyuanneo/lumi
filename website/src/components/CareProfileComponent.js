@@ -32,7 +32,7 @@ class CareProfileComponent extends Component {
         </Flexbox>
         <br />
         <Flexbox flexDirection="column" alignContent="center">
-          <PanelGroup accordion>
+          <PanelGroup accordion id="care-profile">
             <Panel eventKey="1">
               <Panel.Heading>
                 <Panel.Title toggle>Basic Info</Panel.Title>

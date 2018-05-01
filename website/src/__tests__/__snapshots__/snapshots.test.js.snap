@@ -339,15 +339,27 @@ exports[`GroupCreateComponent 1`] = `
     >
       <label
         className="control-label"
-        htmlFor="formGroupNewGroup"
+        htmlFor="formGroupNewGroupFirstName"
       >
-        Choose a group name for your new group
+        Lumi will use the full name of your loved one as the group name.
       </label>
       <input
         className="form-control"
-        id="formGroupNewGroup"
+        id="formGroupNewGroupFirstName"
         onChange={[Function]}
-        placeholder="Enter new group name"
+        placeholder="Enter care recipient first name"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      className="form-group has-feedback"
+    >
+      <input
+        className="form-control"
+        id="formGroupNewGroupLastName"
+        onChange={[Function]}
+        placeholder="Enter care recipient last name"
         type="text"
         value=""
       />
@@ -690,23 +702,7 @@ exports[`NewUserComponent 1`] = `
 
 exports[`RootComponent 1`] = `null`;
 
-exports[`TimelineComponent 1`] = `
-<div>
-  <Connect(TimelineFiltersComponent) />
-  <Table
-    bordered={false}
-    bsClass="table"
-    condensed={false}
-    hover={false}
-    responsive={false}
-    striped={false}
-  >
-    <tbody>
-      
-    </tbody>
-  </Table>
-</div>
-`;
+exports[`TimelineComponent 1`] = `null`;
 
 exports[`TimelineStoryContentComponent 1`] = `
 <Styled(Component)

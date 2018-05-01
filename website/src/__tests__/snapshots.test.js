@@ -174,10 +174,12 @@ it('CareProfileSelectCareRecipientComponent', () => {
 it('GroupCreateComponent', () => {
   const component = TestRenderer.create((
     <GroupCreateComponent
-      groupNameFieldValue=""
+      firstNameFieldValue=""
+      lastNameFieldValue=""
       isCreateButtonDisabled={false}
       createGroup={() => {}}
-      handleChange={() => {}}
+      saveCareProfileFirstName={() => {}}
+      saveCareProfileLastName={() => {}}
     />
   )).toJSON();
   expect(component).toMatchSnapshot();
@@ -259,10 +261,10 @@ it('TimelineComponent', () => {
   const renderer = new ShallowRenderer();
   const component = renderer.render((
     <TimelineComponent
-      filterMessages={() => {}}
-      shouldRenderMessage={() => {}}
+      numMessages={0}
       sortedMessages={new Map()}
       syncMessages={() => {}}
+      shouldRenderMessage={() => {}}
       windowWidth={0}
     />
   ));

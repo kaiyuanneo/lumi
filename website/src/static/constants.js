@@ -9,7 +9,6 @@ export const ACTION_SAVE_WINDOW_WIDTH = 'SAVE_WINDOW_WIDTH';
 // Group actions
 export const ACTION_SAVE_GROUP_ID_FIELD_VALUE = 'SAVE_GROUP_ID_FIELD_VALUE';
 export const ACTION_SAVE_GROUP_JOIN_VALIDATION_STATE = 'SAVE_GROUP_JOIN_VALIDATION_STATE';
-export const ACTION_SAVE_GROUP_NAME_FIELD_VALUE = 'SAVE_GROUP_NAME_FIELD_VALUE';
 // CareProfile actions
 export const ACTION_TOGGLE_FETCHED_CARE_RECIPIENT = 'TOGGLE_FETCHED_CARE_RECIPIENT';
 export const ACTION_SAVE_CARE_RECIPIENT_UID = 'SAVE_CARE_RECIPIENT_UID';
@@ -63,13 +62,15 @@ export const FORM_VALIDATION_ERROR = 'error';
 
 export const GROUP_CREATE_TITLE = 'Create New Group';
 export const GROUP_CREATE_BUTTON_TEXT = 'Create Group';
+export const GROUP_CREATE_FIRST_NAME_FIELD_PLACEHOLDER = 'Enter care recipient first name';
+export const GROUP_CREATE_LAST_NAME_FIELD_PLACEHOLDER = 'Enter care recipient last name';
 export const GROUP_JOIN_TITLE = 'Join Existing Group';
 export const GROUP_JOIN_BUTTON_TEXT = 'Join Group';
 export const GROUP_ID_FIELD_PLACEHOLDER = 'Enter Lumi Group ID';
 export const GROUP_ID_FIELD_PROMPT = 'Join an existing Lumi Group';
 export const GROUP_ID_FIELD_HELP = 'This ID must be a valid group ID of an existing Lumi Group';
-export const GROUP_NAME_FIELD_PLACEHOLDER = 'Enter new group name';
-export const GROUP_NAME_FIELD_PROMPT = 'Choose a group name for your new group';
+export const GROUP_NAME_FIELD_PROMPT =
+  'Lumi will use the full name of your loved one as the group name.';
 export const GROUP_NAME_FIELD_HELP =
   'Lumi will generate a Group ID to share with family and friends on the next page';
 

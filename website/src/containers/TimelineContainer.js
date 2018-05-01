@@ -36,6 +36,10 @@ export const _shouldRenderMessage = (state, message) => {
 
 
 const mapStateToProps = state => ({
+  groupName: state.home.groupName,
+  // Initial value in state is null to indicate that messages have not been fetched yet
+  numMessagesState: state.timeline.numMessages,
+  numMessages: Object.keys(state.timeline.messages).length,
   // Order messages in descending order with newest messages first
   // We cannot depend on messages to come in order from realtime database because it takes
   // varying amounts of time to look up user information for the sender of each message.

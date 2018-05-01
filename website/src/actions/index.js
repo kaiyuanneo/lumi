@@ -54,12 +54,6 @@ export const saveGroupJoinValidationState = groupJoinValidationState => ({
   groupJoinValidationState,
 });
 
-export const saveGroupNameFieldValue = groupNameFieldValue => ({
-  type: constants.ACTION_SAVE_GROUP_NAME_FIELD_VALUE,
-  groupNameFieldValue,
-  groupCreateValidationState: groupNameFieldValue === '' ? 'error' : 'success',
-});
-
 /*
  * Care profile Actions
  */

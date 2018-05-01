@@ -10,15 +10,27 @@ const GroupCreateComponent = props => (
     <h2>{constants.GROUP_CREATE_TITLE}</h2>
     <form>
       <FormGroup
-        controlId="formGroupNewGroup"
+        controlId="formGroupNewGroupFirstName"
         validationState={props.groupCreateValidationState}
       >
         <ControlLabel>{constants.GROUP_NAME_FIELD_PROMPT}</ControlLabel>
         <FormControl
           type="text"
-          value={props.groupNameFieldValue}
-          placeholder={constants.GROUP_NAME_FIELD_PLACEHOLDER}
-          onChange={props.handleChange}
+          value={props.firstNameFieldValue}
+          placeholder={constants.GROUP_CREATE_FIRST_NAME_FIELD_PLACEHOLDER}
+          onChange={props.saveCareProfileFirstName}
+        />
+        <FormControl.Feedback />
+      </FormGroup>
+      <FormGroup
+        controlId="formGroupNewGroupLastName"
+        validationState={props.groupCreateValidationState}
+      >
+        <FormControl
+          type="text"
+          value={props.lastNameFieldValue}
+          placeholder={constants.GROUP_CREATE_LAST_NAME_FIELD_PLACEHOLDER}
+          onChange={props.saveCareProfileLastName}
         />
         <FormControl.Feedback />
         <HelpBlock>{constants.GROUP_NAME_FIELD_HELP}</HelpBlock>
@@ -37,11 +49,13 @@ const GroupCreateComponent = props => (
 );
 
 GroupCreateComponent.propTypes = {
-  groupNameFieldValue: PropTypes.string.isRequired,
+  firstNameFieldValue: PropTypes.string.isRequired,
+  lastNameFieldValue: PropTypes.string.isRequired,
   groupCreateValidationState: PropTypes.string,
   isCreateButtonDisabled: PropTypes.bool.isRequired,
   createGroup: PropTypes.func.isRequired,
-  handleChange: PropTypes.func.isRequired,
+  saveCareProfileFirstName: PropTypes.func.isRequired,
+  saveCareProfileLastName: PropTypes.func.isRequired,
 };
 
 GroupCreateComponent.defaultProps = {

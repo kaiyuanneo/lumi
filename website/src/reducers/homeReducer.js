@@ -12,6 +12,7 @@ Home state structure. Stores state for Home and NavBar components
 */
 
 const initialState = {
+  // Null is an initial value to indicate that this information has not been fetched yet
   isAuthUserInGroup: null,
   currentProductCode: constants.PRODUCT_CODE_TIMELINE,
   groupId: null,

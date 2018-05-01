@@ -4,8 +4,9 @@ import * as SummaryContainer from '../../containers/SummaryContainer';
 import * as constants from '../../static/constants';
 
 
-describe('Get filter stats', () => {
+describe('Get message stats', () => {
   it('Get success', async () => {
+    const stubUrl = 'TEST_URL';
     const stubState = {
       timeline: {
         messages: {
@@ -16,6 +17,13 @@ describe('Get filter stats', () => {
           B: {
             starred: true,
             category: constants.TIMELINE_CATEGORY_CODE_MEDICAL,
+            attachments: {
+              0: {
+                payload: {
+                  url: stubUrl,
+                },
+              },
+            },
           },
           C: {
             starred: false,
@@ -24,8 +32,9 @@ describe('Get filter stats', () => {
         },
       },
     };
-    const filterStats = SummaryContainer._getFilterStats(stubState);
-    const expectedFilterStats = {
+    const messageStats = SummaryContainer._getMessageStats(stubState);
+    const expectedMessageStats = {
+      numMessages: 3,
       [constants.TIMELINE_CATEGORY_CODE_STAR]: 2,
       [constants.TIMELINE_CATEGORY_CODE_ACTIVITY]: 2,
       [constants.TIMELINE_CATEGORY_CODE_BEHAVIOUR]: 0,
@@ -34,7 +43,16 @@ describe('Get filter stats', () => {
       [constants.TIMELINE_CATEGORY_CODE_MEDICAL]: 1,
       [constants.TIMELINE_CATEGORY_CODE_CAREGIVER]: 0,
       [constants.TIMELINE_CATEGORY_CODE_OTHER]: 0,
+      allImages: [stubUrl],
+      [`${constants.TIMELINE_CATEGORY_CODE_STAR}Images`]: [stubUrl],
+      [`${constants.TIMELINE_CATEGORY_CODE_ACTIVITY}Images`]: [],
+      [`${constants.TIMELINE_CATEGORY_CODE_BEHAVIOUR}Images`]: [],
+      [`${constants.TIMELINE_CATEGORY_CODE_MOOD}Images`]: [],
+      [`${constants.TIMELINE_CATEGORY_CODE_MEMORY}Images`]: [],
+      [`${constants.TIMELINE_CATEGORY_CODE_MEDICAL}Images`]: [stubUrl],
+      [`${constants.TIMELINE_CATEGORY_CODE_CAREGIVER}Images`]: [],
+      [`${constants.TIMELINE_CATEGORY_CODE_OTHER}Images`]: [],
     };
-    chai.assert.deepEqual(filterStats, expectedFilterStats);
+    chai.assert.deepEqual(messageStats, expectedMessageStats);
   });
 });

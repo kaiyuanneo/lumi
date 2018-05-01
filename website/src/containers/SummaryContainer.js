@@ -6,8 +6,9 @@ import * as constants from '../static/constants';
 import * as momentUtils from '../utils/momentUtils';
 
 
-export const _getFilterStats = (state) => {
-  const filterStats = {
+export const _getMessageStats = (state) => {
+  const messageStats = {
+    numMessages: 0,
     [constants.TIMELINE_CATEGORY_CODE_STAR]: 0,
     [constants.TIMELINE_CATEGORY_CODE_ACTIVITY]: 0,
     [constants.TIMELINE_CATEGORY_CODE_BEHAVIOUR]: 0,
@@ -16,24 +17,50 @@ export const _getFilterStats = (state) => {
     [constants.TIMELINE_CATEGORY_CODE_MEDICAL]: 0,
     [constants.TIMELINE_CATEGORY_CODE_CAREGIVER]: 0,
     [constants.TIMELINE_CATEGORY_CODE_OTHER]: 0,
+    allImages: [],
+    [`${constants.TIMELINE_CATEGORY_CODE_STAR}Images`]: [],
+    [`${constants.TIMELINE_CATEGORY_CODE_ACTIVITY}Images`]: [],
+    [`${constants.TIMELINE_CATEGORY_CODE_BEHAVIOUR}Images`]: [],
+    [`${constants.TIMELINE_CATEGORY_CODE_MOOD}Images`]: [],
+    [`${constants.TIMELINE_CATEGORY_CODE_MEMORY}Images`]: [],
+    [`${constants.TIMELINE_CATEGORY_CODE_MEDICAL}Images`]: [],
+    [`${constants.TIMELINE_CATEGORY_CODE_CAREGIVER}Images`]: [],
+    [`${constants.TIMELINE_CATEGORY_CODE_OTHER}Images`]: [],
   };
-  Object.keys(state.timeline.messages).forEach((messageKey) => {
+  const messageKeys = Object.keys(state.timeline.messages);
+  messageStats.numMessages = messageKeys.length;
+
+  messageKeys.forEach((messageKey) => {
     const message = state.timeline.messages[messageKey];
     if (message.starred) {
-      filterStats[constants.TIMELINE_CATEGORY_CODE_STAR] += 1;
+      messageStats[constants.TIMELINE_CATEGORY_CODE_STAR] += 1;
     }
-    filterStats[message.category] += 1;
+    messageStats[message.category] += 1;
+    if (message.attachments) {
+      const messageImage = message.attachments['0'].payload.url;
+      // TODO(kai): Remove this escape once we have gotten rid of all old FBCDN URLs for images
+      // Only render images that are not FBCDN images
+      if (messageImage.indexOf('fbcdn') < 0) {
+        messageStats.allImages.push(messageImage);
+        if (message.starred) {
+          messageStats[`${constants.TIMELINE_CATEGORY_CODE_STAR}Images`].push(messageImage);
+        }
+        messageStats[`${message.category}Images`].push(messageImage);
+      }
+    }
   });
-  return filterStats;
+  return messageStats;
 };
 
 
 const mapStateToProps = state => ({
   groupName: state.home.groupName,
-  numMessages: Object.keys(state.timeline.messages).length,
-  // filterStats is an object with filter name as key and frequency of filter as value.
-  filterStats: _getFilterStats(state),
+  // messageStats is an object with the following as keys and values:
+  // - filter code as key and frequency of filter as value
+  // - filter code with suffix "Images" as key and array of images from that filter as value
+  messageStats: _getMessageStats(state),
 });
+
 
 const mapDispatchToProps = dispatch => ({
   // Sync local message state with auth user message state in Firebase

@@ -61,8 +61,9 @@ export const saveGroupNameFieldValue = groupNameFieldValue => ({
 });
 
 /*
- * CareProfile Actions
+ * Care profile Actions
  */
+
 export const toggleFetchedCareRecipient = () => ({
   type: constants.ACTION_TOGGLE_FETCHED_CARE_RECIPIENT,
 });
@@ -112,6 +113,11 @@ export const updateSelectCrGroupMembers = members => ({
  * Timeline Actions
  */
 
+export const saveNumMessages = numMessages => ({
+  type: constants.ACTION_SAVE_NUM_MESSAGES,
+  numMessages,
+});
+
 export const saveTimelineMessage = message => ({
   type: constants.ACTION_SAVE_TIMELINE_MESSAGE,
   message,
@@ -122,9 +128,9 @@ export const deleteTimelineMessage = message => ({
   message,
 });
 
-export const saveTimelineMessageFilterCategories = messageFilterCategories => ({
-  type: constants.ACTION_SAVE_TIMELINE_MESSAGE_FILTER_CATEGORIES,
-  messageFilterCategories,
+export const saveTimelineFilterCategories = filterCategories => ({
+  type: constants.ACTION_SAVE_TIMELINE_FILTER_CATEGORIES,
+  filterCategories,
 });
 
 export const toggleTimelineFilterButtons = showFilters => ({

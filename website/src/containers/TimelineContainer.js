@@ -21,14 +21,14 @@ export const _shouldRenderMessage = (state, message) => {
   if (!message.showInTimeline) {
     return false;
   }
-  if (state.timeline.messageFilterCategories[constants.TIMELINE_CATEGORY_CODE_ALL]) {
+  if (state.timeline.filterCategories[constants.TIMELINE_CATEGORY_CODE_ALL]) {
     return true;
   }
-  if (state.timeline.messageFilterCategories[message.category]) {
+  if (state.timeline.filterCategories[message.category]) {
     return true;
   }
   if (message.starred &&
-      state.timeline.messageFilterCategories[constants.TIMELINE_CATEGORY_CODE_STAR]) {
+      state.timeline.filterCategories[constants.TIMELINE_CATEGORY_CODE_STAR]) {
     return true;
   }
   return false;

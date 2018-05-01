@@ -83,13 +83,20 @@ describe('Save message locally', () => {
 
 
 describe('Save group messages locally', () => {
-  it('Save success', () => {
+  it('Save success', async () => {
     const stubActiveGroup = 'TEST_ACTIVE_GROUP';
+    const stubNumChildren = 1;
+    const stubAction = 'TEST_ACTION';
 
     const groupMessagesRefParam = `${constants.DB_PATH_LUMI_MESSAGES_GROUP}/${stubActiveGroup}`;
 
+    const saveNumMessagesStub = sinon.stub(actions, 'saveNumMessages').returns(stubAction);
     const onStub = sinon.stub();
-    const refStub = sinon.stub().returns({ on: onStub });
+    const onceStub = sinon.stub().resolves({ numChildren: () => stubNumChildren });
+    const refStub = sinon.stub().returns({
+      on: onStub,
+      once: onceStub,
+    });
     const dbStub = sinon.stub(firebase, 'database').returns({ ref: refStub });
 
     const stubDispatch = sinon.stub();
@@ -98,7 +105,7 @@ describe('Save group messages locally', () => {
     const stubActiveGroupRef = { off: offStub };
     const stubActiveGroupSnapshot = { val: valStub };
 
-    momentUtils
+    await momentUtils
       ._saveGroupMessagesLocally(stubDispatch, stubActiveGroupRef, stubActiveGroupSnapshot);
 
     chai.assert.isTrue(valStub.calledOnce);
@@ -106,11 +113,13 @@ describe('Save group messages locally', () => {
     chai.assert.isTrue(dbStub.calledOnce);
     chai.assert.isTrue(refStub.calledOnceWithExactly(groupMessagesRefParam));
     chai.assert.isTrue(onStub.calledTwice);
+    chai.assert.isTrue(stubDispatch.calledOnceWithExactly(stubAction));
 
     dbStub.restore();
+    saveNumMessagesStub.restore();
   });
 
-  it('No auth user active group', () => {
+  it('No auth user active group', async () => {
     const stubActiveGroup = '';
 
     const onStub = sinon.stub();
@@ -123,7 +132,7 @@ describe('Save group messages locally', () => {
     const stubActiveGroupRef = { off: offStub };
     const stubActiveGroupSnapshot = { val: valStub };
 
-    momentUtils
+    await momentUtils
       ._saveGroupMessagesLocally(stubDispatch, stubActiveGroupRef, stubActiveGroupSnapshot);
 
     chai.assert.isTrue(valStub.calledOnce);
@@ -131,6 +140,7 @@ describe('Save group messages locally', () => {
     chai.assert.isFalse(dbStub.called);
     chai.assert.isFalse(refStub.called);
     chai.assert.isFalse(onStub.called);
+    chai.assert.isFalse(stubDispatch.called);
 
     dbStub.restore();
   });

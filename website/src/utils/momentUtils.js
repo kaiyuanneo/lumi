@@ -40,21 +40,20 @@ export const _saveMessageLocally = (dispatch, groupMessageSnapshot) => {
 };
 
 
-export const _saveGroupMessagesLocally = (
-  dispatch,
-  authUserActiveGroupRef,
-  authUserActiveGroupSnapshot,
-) => {
+export const _saveGroupMessagesLocally = async (dispatch, activeGroupRef, activeGroupSnapshot) => {
   // Wait until auth user active group is populated before listening on group messages
-  const authUserActiveGroup = authUserActiveGroupSnapshot.val();
+  const authUserActiveGroup = activeGroupSnapshot.val();
   if (!authUserActiveGroup) {
     return;
   }
   // Turn off listener on auth user activeGroup once auth user activeGroup is populated
-  authUserActiveGroupRef.off();
+  activeGroupRef.off();
   // Listen on auth user's active group's messages to update local state when messages change
   const groupMessagesRef =
     firebase.database().ref(`${constants.DB_PATH_LUMI_MESSAGES_GROUP}/${authUserActiveGroup}`);
+  // Save numMessages so that Timeline and Summary know when and what to render
+  const groupMessagesSnapshot = await groupMessagesRef.once(constants.DB_EVENT_NAME_VALUE);
+  dispatch(actions.saveNumMessages(groupMessagesSnapshot.numChildren()));
   groupMessagesRef.on(constants.DB_EVENT_NAME_CHILD_ADDED, (groupMessageSnapshot) => {
     _saveMessageLocally(dispatch, groupMessageSnapshot);
   });

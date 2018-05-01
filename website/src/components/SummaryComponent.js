@@ -2,6 +2,7 @@ import Flexbox from 'flexbox-react';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
+import HelpMomentsComponent from '../components/HelpMomentsComponent';
 import * as constants from '../static/constants';
 
 
@@ -10,6 +11,24 @@ class SummaryComponent extends Component {
     this.props.syncMessages();
   }
   render() {
+    // Do not render anything if messages have not finished being fetched from server
+    if (
+      this.props.numMessagesState === null ||
+      (this.props.numMessagesState > 0 && this.props.messageStats.numMessages === 0)
+    ) {
+      return null;
+    }
+
+    // If there are no messages, render the help component to prompt users to save moments
+    if (this.props.numMessagesState === 0) {
+      return (
+        <Flexbox flexDirection="column" alignItems="center">
+          <h4>{this.props.groupName} Group Summary</h4>
+          <HelpMomentsComponent />
+        </Flexbox>
+      );
+    }
+
     // Use random image as background from images that belong to a given filter
     const wrapWithImageContainer = (images, text) => (
       <div className="summary-card-container">
@@ -68,6 +87,7 @@ class SummaryComponent extends Component {
       this.props.messageStats[`${constants.TIMELINE_CATEGORY_CODE_CAREGIVER}Images`];
     const otherImages = this.props.messageStats[`${constants.TIMELINE_CATEGORY_CODE_OTHER}Images`];
 
+    // Define elements to be rendered
     const numTotalMomentsElement = this.props.messageStats.allImages.length > 0 ?
       wrapWithImageContainer(this.props.messageStats.allImages, numTotalMomentsText) :
       wrapWithDefaultContainer(numTotalMomentsText);
@@ -96,6 +116,7 @@ class SummaryComponent extends Component {
       wrapWithImageContainer(otherImages, numOtherMomentsText) :
       wrapWithDefaultContainer(numOtherMomentsText);
 
+    // Render summary elements
     return (
       <Flexbox flexDirection="column" alignItems="center">
         <h4>{this.props.groupName} Group Summary</h4>
@@ -124,6 +145,7 @@ class SummaryComponent extends Component {
 
 SummaryComponent.propTypes = {
   groupName: PropTypes.string,
+  numMessagesState: PropTypes.number,
   messageStats: PropTypes.shape({
     numMessages: PropTypes.number,
     [constants.TIMELINE_CATEGORY_CODE_STAR]: PropTypes.number,
@@ -149,6 +171,7 @@ SummaryComponent.propTypes = {
 
 SummaryComponent.defaultProps = {
   groupName: null,
+  numMessagesState: null,
 };
 
 export default SummaryComponent;

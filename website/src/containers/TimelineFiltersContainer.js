@@ -7,7 +7,7 @@ import * as constants from '../static/constants';
 
 
 export const _getFilterDefaultValue = (state, categoryCode) => {
-  if (state.timeline.messageFilterCategories[categoryCode]) {
+  if (state.timeline.filterCategories[categoryCode]) {
     return categoryCode;
   }
   return '';
@@ -41,7 +41,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   filterMessagesStar: (filterCategories) => {
     const starFilterValue = filterCategories.indexOf(constants.TIMELINE_CATEGORY_CODE_STAR) !== -1;
-    dispatch(actions.saveTimelineMessageFilterCategories({
+    dispatch(actions.saveTimelineFilterCategories({
       [constants.TIMELINE_CATEGORY_CODE_STAR]: starFilterValue,
     }));
   },
@@ -49,7 +49,7 @@ const mapDispatchToProps = dispatch => ({
     const allFilterValue = filterCategories.indexOf(constants.TIMELINE_CATEGORY_CODE_ALL) !== -1;
     const memoryFilterValue =
       filterCategories.indexOf(constants.TIMELINE_CATEGORY_CODE_MEMORY) !== -1;
-    dispatch(actions.saveTimelineMessageFilterCategories({
+    dispatch(actions.saveTimelineFilterCategories({
       [constants.TIMELINE_CATEGORY_CODE_ALL]: allFilterValue,
       [constants.TIMELINE_CATEGORY_CODE_MEMORY]: memoryFilterValue,
     }));
@@ -59,7 +59,7 @@ const mapDispatchToProps = dispatch => ({
       filterCategories.indexOf(constants.TIMELINE_CATEGORY_CODE_ACTIVITY) !== -1;
     const medicalFilterValue =
       filterCategories.indexOf(constants.TIMELINE_CATEGORY_CODE_MEDICAL) !== -1;
-    dispatch(actions.saveTimelineMessageFilterCategories({
+    dispatch(actions.saveTimelineFilterCategories({
       [constants.TIMELINE_CATEGORY_CODE_ACTIVITY]: activityFilterValue,
       [constants.TIMELINE_CATEGORY_CODE_MEDICAL]: medicalFilterValue,
     }));
@@ -69,7 +69,7 @@ const mapDispatchToProps = dispatch => ({
       filterCategories.indexOf(constants.TIMELINE_CATEGORY_CODE_BEHAVIOUR) !== -1;
     const caregiverFilterValue =
       filterCategories.indexOf(constants.TIMELINE_CATEGORY_CODE_CAREGIVER) !== -1;
-    dispatch(actions.saveTimelineMessageFilterCategories({
+    dispatch(actions.saveTimelineFilterCategories({
       [constants.TIMELINE_CATEGORY_CODE_BEHAVIOUR]: behaviourFilterValue,
       [constants.TIMELINE_CATEGORY_CODE_CAREGIVER]: caregiverFilterValue,
     }));
@@ -78,7 +78,7 @@ const mapDispatchToProps = dispatch => ({
     const moodFilterValue = filterCategories.indexOf(constants.TIMELINE_CATEGORY_CODE_MOOD) !== -1;
     const otherFilterValue =
       filterCategories.indexOf(constants.TIMELINE_CATEGORY_CODE_OTHER) !== -1;
-    dispatch(actions.saveTimelineMessageFilterCategories({
+    dispatch(actions.saveTimelineFilterCategories({
       [constants.TIMELINE_CATEGORY_CODE_MOOD]: moodFilterValue,
       [constants.TIMELINE_CATEGORY_CODE_OTHER]: otherFilterValue,
     }));

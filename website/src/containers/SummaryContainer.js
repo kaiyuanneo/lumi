@@ -55,6 +55,8 @@ export const _getMessageStats = (state) => {
 
 const mapStateToProps = state => ({
   groupName: state.home.groupName,
+  // Initial value in state is null to indicate that messages have not been fetched yet
+  numMessagesState: state.timeline.numMessages,
   // messageStats is an object with the following as keys and values:
   // - filter code as key and frequency of filter as value
   // - filter code with suffix "Images" as key and array of images from that filter as value

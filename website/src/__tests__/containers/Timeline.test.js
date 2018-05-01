@@ -37,7 +37,7 @@ describe('Should render message', () => {
   it('showInTimeline is false', () => {
     const stubState = {
       timeline: {
-        messageFilterCategories: {},
+        filterCategories: {},
       },
     };
     const stubMessage = {
@@ -52,7 +52,7 @@ describe('Should render message', () => {
   it('Category all', () => {
     const stubState = {
       timeline: {
-        messageFilterCategories: {
+        filterCategories: {
           [constants.TIMELINE_CATEGORY_CODE_ALL]: true,
         },
       },
@@ -70,7 +70,7 @@ describe('Should render message', () => {
     const stubCategory = 'TEST_CATEGORY';
     const stubState = {
       timeline: {
-        messageFilterCategories: {
+        filterCategories: {
           [stubCategory]: true,
         },
       },
@@ -87,7 +87,7 @@ describe('Should render message', () => {
   it('Star category', () => {
     const stubState = {
       timeline: {
-        messageFilterCategories: {
+        filterCategories: {
           [constants.TIMELINE_CATEGORY_CODE_STAR]: true,
         },
       },
@@ -104,7 +104,7 @@ describe('Should render message', () => {
   it('None of the above', () => {
     const stubState = {
       timeline: {
-        messageFilterCategories: {},
+        filterCategories: {},
       },
     };
     const stubMessage = {

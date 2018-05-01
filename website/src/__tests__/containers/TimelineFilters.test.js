@@ -7,7 +7,7 @@ describe('Get filter default value', () => {
   it('Get success', async () => {
     const stubState = {
       timeline: {
-        messageFilterCategories: {
+        filterCategories: {
           A: true,
           B: false,
         },

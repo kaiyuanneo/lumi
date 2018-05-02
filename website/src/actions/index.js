@@ -35,6 +35,12 @@ export const saveAuthUserGroupInfo = (groupId, groupName) => ({
   groupName,
 });
 
+export const saveAuthUserActiveGroupInfo = (groupId, groupName) => ({
+  type: constants.ACTION_SAVE_AUTH_USER_ACTIVE_GROUP_INFO,
+  groupId,
+  groupName,
+});
+
 export const saveWindowWidth = windowWidth => ({
   type: constants.ACTION_SAVE_WINDOW_WIDTH,
   windowWidth,

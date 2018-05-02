@@ -17,6 +17,7 @@ const mapStateToProps = (state) => {
     groupNameLabel = ` ${state.home.groupName}`;
   }
   return {
+    groups: state.home.groups,
     // If user has not joined a group yet, do not display groupName and groupId in navbar
     groupIdLabel,
     groupNameLabel,
@@ -24,28 +25,42 @@ const mapStateToProps = (state) => {
 };
 
 
-export const _saveAuthUserGroupInfo = async (dispatch, activeGroupRef, activeGroupSnapshot) => {
-  const activeGroup = activeGroupSnapshot.val();
+export const _getGroupName = async (groupId) => {
+  // Get group information from DB
+  const groupRef = firebase.database().ref(`${constants.DB_PATH_LUMI_GROUPS}/${groupId}`);
+  const groupSnapshot = await groupRef.once(constants.DB_EVENT_NAME_VALUE);
+  return groupSnapshot.val().name;
+};
+
+
+export const _saveAuthUserActiveGroupInfo = async (dispatch, groupRef, groupIdSnapshot) => {
+  const activeGroupId = groupIdSnapshot.val();
   // If active group not set, auth user does not belong to a group yet
-  if (!activeGroup) {
+  if (!activeGroupId) {
     return;
   }
   // Turn off this listener once auth user is in a group
-  activeGroupRef.off();
-  // Get group information from DB
-  const groupRef = firebase.database().ref(`${constants.DB_PATH_LUMI_GROUPS}/${activeGroup}`);
-  const groupSnapshot = await groupRef.once(constants.DB_EVENT_NAME_VALUE);
-  dispatch(actions.saveAuthUserGroupInfo(activeGroup, groupSnapshot.val().name));
+  groupRef.off();
+  // Save active group info locally
+  const activeGroupName = await _getGroupName(activeGroupId);
+  dispatch(actions.saveAuthUserActiveGroupInfo(activeGroupId, activeGroupName));
 };
 
 
 export const _getGroupInfo = (dispatch) => {
-  // Populate Group ID and Group Name in navbar with auth user's group information
   const db = firebase.database();
   const authUid = firebase.auth().currentUser.uid;
+  // Populate switch groups dropdown in navbar with auth user's groups
+  const groupsRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/groups`);
+  groupsRef.on(constants.DB_EVENT_NAME_CHILD_ADDED, async (groupIdSnapshot) => {
+    const groupId = groupIdSnapshot.key;
+    const groupName = await _getGroupName(groupId);
+    dispatch(actions.saveAuthUserGroupInfo(groupId, groupName));
+  });
+  // Populate Group ID and Group Name in navbar with auth user's group information
   const activeGroupRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/activeGroup`);
   activeGroupRef.on(constants.DB_EVENT_NAME_VALUE, (activeGroupSnapshot) => {
-    _saveAuthUserGroupInfo(dispatch, activeGroupRef, activeGroupSnapshot);
+    _saveAuthUserActiveGroupInfo(dispatch, activeGroupRef, activeGroupSnapshot);
   });
 };
 

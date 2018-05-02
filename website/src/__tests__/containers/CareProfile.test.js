@@ -30,7 +30,8 @@ describe('Handle care recipient', () => {
     const dbStub = sinon.stub(firebase, 'database').returns({ ref: refStub });
     const dispatch = sinon.stub();
 
-    CareProfileContainer._handleCareRecipient(dispatch, careRecipientUidRef, careRecipientUidSnapshot);
+    CareProfileContainer
+      ._handleCareRecipient(dispatch, careRecipientUidRef, careRecipientUidSnapshot);
     chai.assert.isTrue(dispatch.calledTwice);
     chai.assert.isTrue(dispatch.calledWithExactly(stubActionToggleFetchedCareRecipient));
     chai.assert.isTrue(dispatch.calledWithExactly(stubActionSaveCareRecipientUid));
@@ -70,7 +71,8 @@ describe('Handle care recipient', () => {
     const dbStub = sinon.stub(firebase, 'database').returns({ ref: refStub });
     const dispatch = sinon.stub();
 
-    CareProfileContainer._handleCareRecipient(dispatch, careRecipientUidRef, careRecipientUidSnapshot);
+    CareProfileContainer
+      ._handleCareRecipient(dispatch, careRecipientUidRef, careRecipientUidSnapshot);
     chai.assert.isTrue(dispatch.calledOnce);
     chai.assert.isTrue(dispatch.calledWithExactly(stubActionToggleFetchedCareRecipient));
     chai.assert.isTrue(toggleFetchedCareRecipientStub.calledOnce);

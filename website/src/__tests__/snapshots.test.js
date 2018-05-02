@@ -227,6 +227,7 @@ it('NavBottomComponent', () => {
 it('NavTopComponent', () => {
   const component = TestRenderer.create((
     <NavTopComponent
+      groups={[]}
       getGroupInfo={() => {}}
       signOut={() => {}}
     />

@@ -5,6 +5,7 @@ export const ACTION_SAVE_AUTH_USER_FIRST_NAME = 'SAVE_AUTH_USER_FIRST_NAME';
 export const ACTION_SAVE_IS_AUTH_USER_IN_GROUP = 'SAVE_IS_AUTH_USER_IN_GROUP';
 export const ACTION_SAVE_CURRENT_PRODUCT_CODE = 'SAVE_CURRENT_PRODUCT_CODE';
 export const ACTION_SAVE_AUTH_USER_GROUP_INFO = 'SAVE_AUTH_USER_GROUP_INFO';
+export const ACTION_SAVE_AUTH_USER_ACTIVE_GROUP_INFO = 'SAVE_AUTH_USER_ACTIVE_GROUP_INFO';
 export const ACTION_SAVE_WINDOW_WIDTH = 'SAVE_WINDOW_WIDTH';
 // Group actions
 export const ACTION_SAVE_GROUP_ID_FIELD_VALUE = 'SAVE_GROUP_ID_FIELD_VALUE';
@@ -81,6 +82,8 @@ export const NAVBAR_ITEM_ADD_MEMORY = 'Add';
 export const NAVBAR_ITEM_SUMMARY = 'Summary';
 export const NAVBAR_ITEM_CARE_PROFILE = 'Profile';
 export const NAVBAR_ITEM_GROUP_ID = 'Group ID: ';
+export const NAVBAR_ITEM_SWITCH_GROUPS = 'Switch Groups';
+export const NAVBAR_ITEM_CREATE_OR_JOIN_GROUP = 'Create or Join Group';
 export const NAVBAR_ITEM_SIGN_OUT = 'Sign Out';
 
 export const NEW_USER_PAGE_TITLE = 'Welcome to Lumi, ';
@@ -91,6 +94,8 @@ export const PRODUCT_CODE_TIMELINE = 'timeline';
 export const PRODUCT_CODE_CHAT = 'chat';
 export const PRODUCT_CODE_SUMMARY = 'summary';
 export const PRODUCT_CODE_CARE_PROFILE = 'care-profile';
+export const PRODUCT_CODE_SWITCH_GROUPS = 'switch-groups';
+export const PRODUCT_CODE_CREATE_OR_JOIN_GROUP = 'create-or-join-group';
 export const PRODUCT_CODE_SIGN_OUT = 'sign-out';
 
 export const STORAGE_PATH_LUMI_IMAGES = 'lumi/images';

@@ -125,7 +125,7 @@ const initialState = {
 
 const careProfileReducer = (state = initialState, action) => {
   switch (action.type) {
-    case constants.ACTION_TOGGLE_FETCHED_CARE_RECIPIENT:
+    case constants.ACTION_SAVE_FETCHED_CARE_RECIPIENT:
       return {
         ...state,
         fetched: true,

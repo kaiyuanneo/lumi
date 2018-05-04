@@ -36,7 +36,7 @@ export const _shouldRenderMessage = (state, message) => {
 
 
 const mapStateToProps = state => ({
-  groupName: state.home.groupName,
+  groupName: state.group.groupName,
   // Initial value in state is null to indicate that messages have not been fetched yet
   numMessagesState: state.timeline.numMessages,
   numMessages: Object.keys(state.timeline.messages).length,
@@ -51,6 +51,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   // Sync local message state with auth user message state in Firebase
+  // Re-sync whenever the auth user's active group changes
   syncMessages: () => momentUtils.syncMessages(dispatch),
 });
 

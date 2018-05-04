@@ -32,18 +32,16 @@ const mapStateToProps = (state) => {
   }
   return {
     productComponent,
-    isAuthUserInGroup: state.home.isAuthUserInGroup,
-    shouldComponentRender: state.home.isAuthUserInGroup !== null,
+    isAuthUserInGroup: state.group.isAuthUserInGroup,
+    shouldComponentRender: state.group.isAuthUserInGroup !== null,
   };
 };
 
 
-export const _saveIsAuthUserInGroup = (dispatch, activeGroupRef, activeGroupSnapshot) => {
+export const _saveIsAuthUserInGroup = (dispatch, activeGroupSnapshot) => {
   // If active group not set, auth user does not belong to a group.
   let isAuthUserInGroup = false;
   if (activeGroupSnapshot.val()) {
-    // Remove listener once user has activeGroup because there is no way to leave all groups
-    activeGroupRef.off();
     isAuthUserInGroup = true;
   }
   dispatch(actions.saveIsAuthUserInGroup(isAuthUserInGroup));
@@ -55,7 +53,7 @@ export const _getIsAuthUserInGroup = (dispatch) => {
   const authUid = firebase.auth().currentUser.uid;
   const activeGroupRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/activeGroup`);
   activeGroupRef.on(constants.DB_EVENT_NAME_VALUE, (activeGroupSnapshot) => {
-    _saveIsAuthUserInGroup(dispatch, activeGroupRef, activeGroupSnapshot);
+    _saveIsAuthUserInGroup(dispatch, activeGroupSnapshot);
   });
 };
 

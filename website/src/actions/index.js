@@ -19,14 +19,23 @@ export const saveAuthUserFirstName = firstName => ({
  * Home and navbar management actions
  */
 
-export const saveIsAuthUserInGroup = isAuthUserInGroup => ({
-  type: constants.ACTION_SAVE_IS_AUTH_USER_IN_GROUP,
-  isAuthUserInGroup,
-});
-
 export const saveCurrentProductCode = currentProductCode => ({
   type: constants.ACTION_SAVE_CURRENT_PRODUCT_CODE,
   currentProductCode,
+});
+
+export const saveWindowWidth = windowWidth => ({
+  type: constants.ACTION_SAVE_WINDOW_WIDTH,
+  windowWidth,
+});
+
+/*
+ * Group management actions
+ */
+
+export const saveIsAuthUserInGroup = isAuthUserInGroup => ({
+  type: constants.ACTION_SAVE_IS_AUTH_USER_IN_GROUP,
+  isAuthUserInGroup,
 });
 
 export const saveAuthUserGroupInfo = (groupId, groupName) => ({
@@ -41,14 +50,10 @@ export const saveAuthUserActiveGroupInfo = (groupId, groupName) => ({
   groupName,
 });
 
-export const saveWindowWidth = windowWidth => ({
-  type: constants.ACTION_SAVE_WINDOW_WIDTH,
-  windowWidth,
+export const switchGroup = groupId => ({
+  type: constants.ACTION_SWITCH_GROUP,
+  groupId,
 });
-
-/*
- * Group management actions
- */
 
 export const saveGroupIdFieldValue = groupIdFieldValue => ({
   type: constants.ACTION_SAVE_GROUP_ID_FIELD_VALUE,
@@ -64,8 +69,8 @@ export const saveGroupJoinValidationState = groupJoinValidationState => ({
  * Care profile Actions
  */
 
-export const toggleFetchedCareRecipient = () => ({
-  type: constants.ACTION_TOGGLE_FETCHED_CARE_RECIPIENT,
+export const saveFetchedCareRecipient = () => ({
+  type: constants.ACTION_SAVE_FETCHED_CARE_RECIPIENT,
 });
 
 export const saveCareRecipientUid = careRecipientUid => ({

@@ -10,17 +10,18 @@ import * as constants from '../static/constants';
 const mapStateToProps = (state) => {
   let groupIdLabel = null;
   let groupNameLabel = null;
-  if (state.home.groupId) {
-    groupIdLabel = `${constants.NAVBAR_ITEM_GROUP_ID}${state.home.groupId}`;
+  if (state.group.groupId) {
+    groupIdLabel = `${constants.NAVBAR_ITEM_GROUP_ID}${state.group.groupId}`;
   }
-  if (state.home.groupName) {
-    groupNameLabel = ` ${state.home.groupName}`;
+  if (state.group.groupName) {
+    groupNameLabel = ` ${state.group.groupName}`;
   }
   return {
-    groups: state.home.groups,
+    groups: state.group.groups,
     // If user has not joined a group yet, do not display groupName and groupId in navbar
     groupIdLabel,
     groupNameLabel,
+    careRecipientUid: state.careProfile.uid,
   };
 };
 
@@ -33,14 +34,12 @@ export const _getGroupName = async (groupId) => {
 };
 
 
-export const _saveAuthUserActiveGroupInfo = async (dispatch, groupRef, groupIdSnapshot) => {
+export const _saveAuthUserActiveGroupInfo = async (dispatch, groupIdSnapshot) => {
   const activeGroupId = groupIdSnapshot.val();
   // If active group not set, auth user does not belong to a group yet
   if (!activeGroupId) {
     return;
   }
-  // Turn off this listener once auth user is in a group
-  groupRef.off();
   // Save active group info locally
   const activeGroupName = await _getGroupName(activeGroupId);
   dispatch(actions.saveAuthUserActiveGroupInfo(activeGroupId, activeGroupName));
@@ -60,21 +59,43 @@ export const _getGroupInfo = (dispatch) => {
   // Populate Group ID and Group Name in navbar with auth user's group information
   const activeGroupRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/activeGroup`);
   activeGroupRef.on(constants.DB_EVENT_NAME_VALUE, (activeGroupSnapshot) => {
-    _saveAuthUserActiveGroupInfo(dispatch, activeGroupRef, activeGroupSnapshot);
+    _saveAuthUserActiveGroupInfo(dispatch, activeGroupSnapshot);
   });
 };
 
 
 const mapDispatchToProps = dispatch => ({
   getGroupInfo: () => _getGroupInfo(dispatch),
+  switchGroup: groupId => dispatch(actions.switchGroup(groupId)),
 });
+
+
+export const _handleNavSelect = async (eventKey, stateProps, dispatchProps) => {
+  if (eventKey.startsWith(constants.PRODUCT_CODE_SELECT_GROUP)) {
+    const db = firebase.database();
+    // Turn off listener on current care recipient
+    db.ref(`${constants.DB_PATH_USERS}/${stateProps.careRecipientUid}`).off();
+    // Get group ID from event key
+    const groupId = eventKey.split(constants.PRODUCT_CODE_SELECT_GROUP)[1];
+    // Switch group locally
+    dispatchProps.switchGroup(groupId);
+    // Switch group in Firebase
+    // Timeline, Summary, and Care Profile automatically update from listeners on activeGroup
+    const authUid = firebase.auth().currentUser.uid;
+    db.ref(`${constants.DB_PATH_USERS}/${authUid}`).update({ activeGroup: groupId });
+  } else if (eventKey === constants.PRODUCT_CODE_CREATE_OR_JOIN_GROUP) {
+    // TODO(kai): Navigate to create or join group page
+  } else if (eventKey === constants.PRODUCT_CODE_SIGN_OUT) {
+    firebase.auth().signOut();
+  }
+};
 
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...stateProps,
   ...dispatchProps,
   ...ownProps,
-  signOut: () => firebase.auth().signOut(),
+  handleNavSelect: eventKey => _handleNavSelect(eventKey, stateProps, dispatchProps),
 });
 
 

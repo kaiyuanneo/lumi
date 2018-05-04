@@ -229,7 +229,7 @@ it('NavTopComponent', () => {
     <NavTopComponent
       groups={[]}
       getGroupInfo={() => {}}
-      signOut={() => {}}
+      handleNavSelect={() => {}}
     />
   )).toJSON();
   expect(component).toMatchSnapshot();

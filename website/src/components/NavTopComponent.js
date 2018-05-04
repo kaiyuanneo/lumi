@@ -11,8 +11,16 @@ class NavTopComponent extends Component {
   }
   render() {
     // groupInfo is an object with id and name as keys
-    const generateSwitchGroupsMenuItem = groupInfo =>
-      <MenuItem key={groupInfo.id}>{groupInfo.name}</MenuItem>;
+    const generateSwitchGroupsMenuItem = groupInfo => (
+      <MenuItem
+        // eventKey is necessary for react-bootstrap to identify the clicked item
+        eventKey={`${constants.PRODUCT_CODE_SELECT_GROUP}${groupInfo.id}`}
+        // key is necessary for React to render lists properly
+        key={`${constants.PRODUCT_CODE_SELECT_GROUP}${groupInfo.id}`}
+      >
+        {groupInfo.name}
+      </MenuItem>
+    );
     const getSwitchGroupsElement = () => {
       if (this.props.groups.length <= 0) {
         return null;
@@ -44,12 +52,12 @@ class NavTopComponent extends Component {
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
-            <Nav pullRight>
+            <Nav pullRight onSelect={this.props.handleNavSelect}>
               <NavItem eventKey={constants.PRODUCT_CODE_COPY_GROUP_ID}>
                 {this.props.groupIdLabel}
               </NavItem>
               {getSwitchGroupsElement()}
-              <NavItem eventKey={constants.PRODUCT_CODE_SIGN_OUT} onClick={this.props.signOut}>
+              <NavItem eventKey={constants.PRODUCT_CODE_SIGN_OUT}>
                 {constants.NAVBAR_ITEM_SIGN_OUT}
               </NavItem>
             </Nav>
@@ -68,7 +76,7 @@ NavTopComponent.propTypes = {
   groupIdLabel: PropTypes.string,
   groupNameLabel: PropTypes.string,
   getGroupInfo: PropTypes.func.isRequired,
-  signOut: PropTypes.func.isRequired,
+  handleNavSelect: PropTypes.func.isRequired,
 };
 
 NavTopComponent.defaultProps = {

@@ -16,6 +16,8 @@ class HomeComponent extends Component {
     if (!this.props.shouldComponentRender) {
       return null;
     }
+    // TODO(kai): Move this logic into HomeContainer so that NewUserContainer can be
+    // toggled as a product when user wishes to join multiple groups
     const contentComponent = this.props.isAuthUserInGroup ?
       this.props.productComponent : <NewUserContainer />;
     return (

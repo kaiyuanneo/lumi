@@ -24,7 +24,7 @@ export const _handleCareRecipient = (dispatch, careRecipientUidRef, careRecipien
   // Tell the component it is ok to render the new care recipient page if the group has no
   // care recipient. Otherwise, render the CareProfile. Do not render anything if Lumi
   // has not finished fetching the active care recipient of this group.
-  dispatch(actions.toggleFetchedCareRecipient());
+  dispatch(actions.saveFetchedCareRecipient());
   const careRecipientUid = careRecipientUidSnapshot.val();
   if (!careRecipientUid) {
     return;
@@ -32,9 +32,9 @@ export const _handleCareRecipient = (dispatch, careRecipientUidRef, careRecipien
   // Update state with UID here so that if there is an active care recipient, render()
   // knows not to render the select care recipient component.
   dispatch(actions.saveCareRecipientUid(careRecipientUid));
+  // Care recipient UID never changes, so we can turn off the reference after we retrieve it
   careRecipientUidRef.off();
   // Listen for changes in the active care recipient record and update state accordingly
-  // TODO(kai): Remember to turn off this listener when we change care recipients
   const db = firebase.database();
   const careRecipientRef = db.ref(`${constants.DB_PATH_USERS}/${careRecipientUid}`);
   careRecipientRef.on(constants.DB_EVENT_NAME_VALUE, (careRecipientSnapshot) => {
@@ -51,12 +51,13 @@ export const _getCareRecipient = async (dispatch) => {
   const db = firebase.database();
   const authUid = firebase.auth().currentUser.uid;
   const activeGroupRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/activeGroup`);
-  const activeGroupSnapshot = await activeGroupRef.once(constants.DB_EVENT_NAME_VALUE);
-  // activeCareRecipient field in DB stores the UID of the currently active care recipient
-  const careRecipientUidRef =
-    db.ref(`${constants.DB_PATH_LUMI_GROUPS}/${activeGroupSnapshot.val()}/activeCareRecipient`);
-  careRecipientUidRef.on(constants.DB_EVENT_NAME_VALUE, (careRecipientUidSnapshot) => {
-    _handleCareRecipient(dispatch, careRecipientUidRef, careRecipientUidSnapshot);
+  activeGroupRef.on(constants.DB_EVENT_NAME_VALUE, (activeGroupSnapshot) => {
+    // activeCareRecipient field in DB stores the UID of the currently active care recipient
+    const careRecipientUidRef =
+      db.ref(`${constants.DB_PATH_LUMI_GROUPS}/${activeGroupSnapshot.val()}/activeCareRecipient`);
+    careRecipientUidRef.on(constants.DB_EVENT_NAME_VALUE, (careRecipientUidSnapshot) => {
+      _handleCareRecipient(dispatch, careRecipientUidRef, careRecipientUidSnapshot);
+    });
   });
 };
 

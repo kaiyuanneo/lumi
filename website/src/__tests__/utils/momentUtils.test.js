@@ -100,16 +100,13 @@ describe('Save group messages locally', () => {
     const dbStub = sinon.stub(firebase, 'database').returns({ ref: refStub });
 
     const stubDispatch = sinon.stub();
-    const offStub = sinon.stub();
     const valStub = sinon.stub().returns(stubActiveGroup);
-    const stubActiveGroupRef = { off: offStub };
     const stubActiveGroupSnapshot = { val: valStub };
 
     await momentUtils
-      ._saveGroupMessagesLocally(stubDispatch, stubActiveGroupRef, stubActiveGroupSnapshot);
+      ._saveGroupMessagesLocally(stubDispatch, stubActiveGroupSnapshot);
 
     chai.assert.isTrue(valStub.calledOnce);
-    chai.assert.isTrue(offStub.calledOnce);
     chai.assert.isTrue(dbStub.calledOnce);
     chai.assert.isTrue(refStub.calledOnceWithExactly(groupMessagesRefParam));
     chai.assert.isTrue(onStub.calledTwice);
@@ -127,16 +124,13 @@ describe('Save group messages locally', () => {
     const dbStub = sinon.stub(firebase, 'database').returns({ ref: refStub });
 
     const stubDispatch = sinon.stub();
-    const offStub = sinon.stub();
     const valStub = sinon.stub().returns(stubActiveGroup);
-    const stubActiveGroupRef = { off: offStub };
     const stubActiveGroupSnapshot = { val: valStub };
 
     await momentUtils
-      ._saveGroupMessagesLocally(stubDispatch, stubActiveGroupRef, stubActiveGroupSnapshot);
+      ._saveGroupMessagesLocally(stubDispatch, stubActiveGroupSnapshot);
 
     chai.assert.isTrue(valStub.calledOnce);
-    chai.assert.isFalse(offStub.called);
     chai.assert.isFalse(dbStub.called);
     chai.assert.isFalse(refStub.called);
     chai.assert.isFalse(onStub.called);

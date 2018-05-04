@@ -51,17 +51,15 @@ describe('Save auth user active group info', () => {
     const saveAuthUserGroupInfoStub =
       sinon.stub(actions, 'saveAuthUserActiveGroupInfo').returns(stubActionSaveAuthUserGroupInfo);
     const stubDispatch = sinon.stub();
-    const stubGroupRef = { off: sinon.stub() };
     const stubGroupIdSnapshot = { val: sinon.stub().returns(stubActiveGroupId) };
 
     await NavTopContainer
-      ._saveAuthUserActiveGroupInfo(stubDispatch, stubGroupRef, stubGroupIdSnapshot);
+      ._saveAuthUserActiveGroupInfo(stubDispatch, stubGroupIdSnapshot);
 
     chai.assert
       .isTrue(saveAuthUserGroupInfoStub.calledOnceWithExactly(stubActiveGroupId, stubGroupName));
     chai.assert.isTrue(stubDispatch.calledOnceWithExactly(stubActionSaveAuthUserGroupInfo));
     chai.assert.isTrue(stubGroupIdSnapshot.val.calledOnce);
-    chai.assert.isTrue(stubGroupRef.off.calledOnce);
 
     dbStub.restore();
     saveAuthUserGroupInfoStub.restore();
@@ -74,16 +72,14 @@ describe('Save auth user active group info', () => {
     const saveAuthUserGroupInfoStub =
       sinon.stub(actions, 'saveAuthUserActiveGroupInfo').returns(stubActionSaveAuthUserGroupInfo);
     const stubDispatch = sinon.stub();
-    const stubGroupRef = { off: sinon.stub() };
     const stubGroupIdSnapshot = { val: sinon.stub().returns(stubActiveGroupId) };
 
     await NavTopContainer
-      ._saveAuthUserActiveGroupInfo(stubDispatch, stubGroupRef, stubGroupIdSnapshot);
+      ._saveAuthUserActiveGroupInfo(stubDispatch, stubGroupIdSnapshot);
 
     chai.assert.isFalse(saveAuthUserGroupInfoStub.called);
     chai.assert.isFalse(stubDispatch.called);
     chai.assert.isTrue(stubGroupIdSnapshot.val.calledOnce);
-    chai.assert.isFalse(stubGroupRef.off.called);
 
     saveAuthUserGroupInfoStub.restore();
   });
@@ -115,6 +111,84 @@ describe('Get group info', () => {
     chai.assert.isTrue(refStub.calledWithExactly(activeGroupRefParam));
     chai.assert.isTrue(groupsRefOnStub.calledOnce);
     chai.assert.isTrue(activeGroupRefOnStub.calledOnce);
+
+    dbStub.restore();
+    authStub.restore();
+  });
+});
+
+
+describe('Handle nav select', () => {
+  it('Product code select group', () => {
+    const stubCareRecipientUid = 'TEST_CARE_RECIPIENT_UID';
+    const stubAuthUid = 'TEST_AUTH_UID';
+    const stubGroupId = 'TEST_GROUP_ID';
+
+    const careRecipientRefParam = `${constants.DB_PATH_USERS}/${stubCareRecipientUid}`;
+    const authUserRefParam = `${constants.DB_PATH_USERS}/${stubAuthUid}`;
+
+    const careRecipientOffStub = sinon.stub();
+    const authUserUpdateStub = sinon.stub();
+    const refStub = sinon.stub();
+    refStub.withArgs(careRecipientRefParam).returns({ off: careRecipientOffStub });
+    refStub.withArgs(authUserRefParam).returns({ update: authUserUpdateStub });
+    const dbStub = sinon.stub(firebase, 'database').returns({ ref: refStub });
+    const signOutStub = sinon.stub();
+    const authStub = sinon.stub(firebase, 'auth').returns({
+      currentUser: { uid: stubAuthUid },
+      signOut: signOutStub,
+    });
+
+    const stubEventKey = `${constants.PRODUCT_CODE_SELECT_GROUP}${stubGroupId}`;
+    const stubStateProps = { careRecipientUid: stubCareRecipientUid };
+    const stubDispatchProps = { switchGroup: sinon.stub() };
+    NavTopContainer._handleNavSelect(stubEventKey, stubStateProps, stubDispatchProps);
+
+    chai.assert.isTrue(dbStub.calledOnce);
+    chai.assert.isTrue(authStub.calledOnce);
+    chai.assert.isTrue(refStub.calledTwice);
+    chai.assert.isTrue(refStub.calledWithExactly(careRecipientRefParam));
+    chai.assert.isTrue(refStub.calledWithExactly(authUserRefParam));
+    chai.assert.isTrue(stubDispatchProps.switchGroup.calledOnceWithExactly(stubGroupId));
+    chai.assert.isTrue(careRecipientOffStub.calledOnce);
+    chai.assert.isTrue(authUserUpdateStub.calledOnceWithExactly({ activeGroup: stubGroupId }));
+    chai.assert.isFalse(signOutStub.called);
+
+    dbStub.restore();
+    authStub.restore();
+  });
+
+  it('Product code sign out', () => {
+    const stubCareRecipientUid = 'TEST_CARE_RECIPIENT_UID';
+    const stubAuthUid = 'TEST_AUTH_UID';
+
+    const careRecipientRefParam = `${constants.DB_PATH_USERS}/${stubCareRecipientUid}`;
+    const authUserRefParam = `${constants.DB_PATH_USERS}/${stubAuthUid}`;
+
+    const careRecipientOffStub = sinon.stub();
+    const authUserUpdateStub = sinon.stub();
+    const refStub = sinon.stub();
+    refStub.withArgs(careRecipientRefParam).returns({ off: careRecipientOffStub });
+    refStub.withArgs(authUserRefParam).returns({ update: authUserUpdateStub });
+    const dbStub = sinon.stub(firebase, 'database').returns({ ref: refStub });
+    const signOutStub = sinon.stub();
+    const authStub = sinon.stub(firebase, 'auth').returns({
+      currentUser: { uid: stubAuthUid },
+      signOut: signOutStub,
+    });
+
+    const stubEventKey = constants.PRODUCT_CODE_SIGN_OUT;
+    const stubStateProps = { careRecipientUid: stubCareRecipientUid };
+    const stubDispatchProps = { switchGroup: sinon.stub() };
+    NavTopContainer._handleNavSelect(stubEventKey, stubStateProps, stubDispatchProps);
+
+    chai.assert.isFalse(dbStub.called);
+    chai.assert.isTrue(authStub.calledOnce);
+    chai.assert.isFalse(refStub.called);
+    chai.assert.isFalse(stubDispatchProps.switchGroup.called);
+    chai.assert.isFalse(careRecipientOffStub.called);
+    chai.assert.isFalse(authUserUpdateStub.called);
+    chai.assert.isTrue(signOutStub.calledOnce);
 
     dbStub.restore();
     authStub.restore();

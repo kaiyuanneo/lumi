@@ -40,14 +40,12 @@ export const _saveMessageLocally = (dispatch, groupMessageSnapshot) => {
 };
 
 
-export const _saveGroupMessagesLocally = async (dispatch, activeGroupRef, activeGroupSnapshot) => {
+export const _saveGroupMessagesLocally = async (dispatch, activeGroupSnapshot) => {
   // Wait until auth user active group is populated before listening on group messages
   const authUserActiveGroup = activeGroupSnapshot.val();
   if (!authUserActiveGroup) {
     return;
   }
-  // Turn off listener on auth user activeGroup once auth user activeGroup is populated
-  activeGroupRef.off();
   // Listen on auth user's active group's messages to update local state when messages change
   const groupMessagesRef =
     firebase.database().ref(`${constants.DB_PATH_LUMI_MESSAGES_GROUP}/${authUserActiveGroup}`);
@@ -72,6 +70,6 @@ export const syncMessages = (dispatch) => {
   // Listen on auth user activeGroup to determine when it has been populated
   const authUserActiveGroupRef = db.ref(`${constants.DB_PATH_USERS}/${authUid}/activeGroup`);
   authUserActiveGroupRef.on(constants.DB_EVENT_NAME_VALUE, (authUserActiveGroupSnapshot) => {
-    _saveGroupMessagesLocally(dispatch, authUserActiveGroupRef, authUserActiveGroupSnapshot);
+    _saveGroupMessagesLocally(dispatch, authUserActiveGroupSnapshot);
   });
 };

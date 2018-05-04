@@ -13,15 +13,13 @@ describe('Save is auth user in group', () => {
     const saveIsAuthUserInGroupStub =
       sinon.stub(actions, 'saveIsAuthUserInGroup').returns(stubActionSaveIsAuthUserInGroup);
     const stubDispatch = sinon.stub();
-    const stubActiveGroupRef = { off: sinon.stub() };
     const stubActiveGroupSnapshot = { val: sinon.stub().returns('TEST_VAL') };
 
-    HomeContainer._saveIsAuthUserInGroup(stubDispatch, stubActiveGroupRef, stubActiveGroupSnapshot);
+    HomeContainer._saveIsAuthUserInGroup(stubDispatch, stubActiveGroupSnapshot);
 
     chai.assert.isTrue(saveIsAuthUserInGroupStub.calledOnceWithExactly(true));
     chai.assert.isTrue(stubDispatch.calledOnceWithExactly(stubActionSaveIsAuthUserInGroup));
     chai.assert.isTrue(stubActiveGroupSnapshot.val.calledOnce);
-    chai.assert.isTrue(stubActiveGroupRef.off.calledOnce);
 
     saveIsAuthUserInGroupStub.restore();
   });
@@ -31,15 +29,13 @@ describe('Save is auth user in group', () => {
     const saveIsAuthUserInGroupStub =
       sinon.stub(actions, 'saveIsAuthUserInGroup').returns(stubActionSaveIsAuthUserInGroup);
     const stubDispatch = sinon.stub();
-    const stubActiveGroupRef = { off: sinon.stub() };
     const stubActiveGroupSnapshot = { val: sinon.stub() };
 
-    HomeContainer._saveIsAuthUserInGroup(stubDispatch, stubActiveGroupRef, stubActiveGroupSnapshot);
+    HomeContainer._saveIsAuthUserInGroup(stubDispatch, stubActiveGroupSnapshot);
 
     chai.assert.isTrue(saveIsAuthUserInGroupStub.calledOnceWithExactly(false));
     chai.assert.isTrue(stubDispatch.calledOnceWithExactly(stubActionSaveIsAuthUserInGroup));
     chai.assert.isTrue(stubActiveGroupSnapshot.val.calledOnce);
-    chai.assert.isFalse(stubActiveGroupRef.off.called);
 
     saveIsAuthUserInGroupStub.restore();
   });

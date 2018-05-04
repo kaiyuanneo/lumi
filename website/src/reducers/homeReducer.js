@@ -4,6 +4,7 @@ import * as constants from '../static/constants';
 Home state structure. Stores state for Home and NavBar components
 {
   currentProductCode,
+  // Window width is used to determine when to fix content width in desktop mode
   windowWidth,
 }
 */

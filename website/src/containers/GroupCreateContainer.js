@@ -24,7 +24,7 @@ export const _createGroup = async (state) => {
   });
   // Add auth user to new group
   await baseUtils.addUserToGroup(newGroupRef.key);
-  // Add new member to current group and set as active care recipient
+  // Add new care recipient to new group and set as active care recipient
   await baseUtils.addUserToGroup(newGroupRef.key, careRecipientRef.key);
 };
 

@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import { connect } from 'react-redux';
 
 import * as actions from '../actions';
-import NewUserComponent from '../components/NewUserComponent';
+import NewUserComponent from '../components/AddGroupComponent';
 import * as constants from '../static/constants';
 
 

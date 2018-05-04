@@ -88,8 +88,7 @@ export const NAVBAR_ITEM_CREATE_OR_JOIN_GROUP = 'Create or Join Group';
 export const NAVBAR_ITEM_SIGN_OUT = 'Sign Out';
 
 export const NEW_USER_PAGE_TITLE = 'Welcome to Lumi, ';
-export const NEW_USER_PAGE_SUBTITLE =
-  'Before we begin, you must either create or join a Lumi Group.';
+export const NEW_USER_PAGE_SUBTITLE = 'Please create or join a Lumi Group.';
 
 export const PRODUCT_CODE_TIMELINE = 'timeline';
 export const PRODUCT_CODE_CHAT = 'chat';
@@ -98,6 +97,7 @@ export const PRODUCT_CODE_CARE_PROFILE = 'care-profile';
 export const PRODUCT_CODE_COPY_GROUP_ID = 'copy-group-id';
 export const PRODUCT_CODE_SWITCH_GROUPS = 'switch-groups';
 export const PRODUCT_CODE_SELECT_GROUP = 'select-group';
+export const PRODUCT_CODE_ADD_GROUP = 'add-group';
 export const PRODUCT_CODE_CREATE_OR_JOIN_GROUP = 'create-or-join-group';
 export const PRODUCT_CODE_SIGN_OUT = 'sign-out';
 

@@ -5,6 +5,7 @@ import ShallowRenderer from 'react-test-renderer/shallow';
 import sinon from 'sinon';
 
 import App from '../App';
+import AddGroupComponent from '../components/AddGroupComponent';
 import AuthComponent from '../components/AuthComponent';
 import BootstrapStyleComponent from '../components/BootstrapStyleComponent';
 import CareProfileBasicInfoComponent from '../components/CareProfileBasicInfoComponent';
@@ -20,7 +21,6 @@ import GroupJoinComponent from '../components/GroupJoinComponent';
 import HomeComponent from '../components/HomeComponent';
 import NavBottomComponent from '../components/NavBottomComponent';
 import NavTopComponent from '../components/NavTopComponent';
-import NewUserComponent from '../components/NewUserComponent';
 import RootComponent from '../components/RootComponent';
 import TimelineComponent from '../components/TimelineComponent';
 import TimelineStoryHeaderComponent from '../components/TimelineStoryHeaderComponent';
@@ -43,6 +43,18 @@ describe('App', () => {
     const component = TestRenderer.create(<App />).toTree();
     expect(component).toBeTruthy();
   });
+});
+
+
+it('AddGroupComponent', () => {
+  const renderer = new ShallowRenderer();
+  const component = renderer.render((
+    <AddGroupComponent
+      firstName=""
+      getUserFirstName={() => {}}
+    />
+  ));
+  expect(component).toMatchSnapshot();
 });
 
 
@@ -232,18 +244,6 @@ it('NavTopComponent', () => {
       handleNavSelect={() => {}}
     />
   )).toJSON();
-  expect(component).toMatchSnapshot();
-});
-
-
-it('NewUserComponent', () => {
-  const renderer = new ShallowRenderer();
-  const component = renderer.render((
-    <NewUserComponent
-      firstName=""
-      getUserFirstName={() => {}}
-    />
-  ));
   expect(component).toMatchSnapshot();
 });
 

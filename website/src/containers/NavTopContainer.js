@@ -67,6 +67,8 @@ export const _getGroupInfo = (dispatch) => {
 const mapDispatchToProps = dispatch => ({
   getGroupInfo: () => _getGroupInfo(dispatch),
   switchGroup: groupId => dispatch(actions.switchGroup(groupId)),
+  createOrJoinGroup: () =>
+    dispatch(actions.saveCurrentProductCode(constants.PRODUCT_CODE_ADD_GROUP)),
 });
 
 
@@ -84,7 +86,7 @@ export const _handleNavSelect = async (eventKey, stateProps, dispatchProps) => {
     const authUid = firebase.auth().currentUser.uid;
     db.ref(`${constants.DB_PATH_USERS}/${authUid}`).update({ activeGroup: groupId });
   } else if (eventKey === constants.PRODUCT_CODE_CREATE_OR_JOIN_GROUP) {
-    // TODO(kai): Navigate to create or join group page
+    dispatchProps.createOrJoinGroup();
   } else if (eventKey === constants.PRODUCT_CODE_SIGN_OUT) {
     firebase.auth().signOut();
   }

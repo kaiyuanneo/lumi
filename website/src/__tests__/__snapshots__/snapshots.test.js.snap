@@ -1,5 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`AddGroupComponent 1`] = `
+<div>
+  <h1>
+    Welcome to Lumi, !
+  </h1>
+  Please create or join a Lumi Group.
+  <Connect(GroupCreateComponent) />
+  <br />
+  Or
+  <br />
+  <Connect(GroupJoinComponent) />
+</div>
+`;
+
 exports[`AuthComponent 1`] = `
 <div>
   <header
@@ -692,20 +706,6 @@ exports[`NavTopComponent 1`] = `
       </div>
     </div>
   </nav>
-</div>
-`;
-
-exports[`NewUserComponent 1`] = `
-<div>
-  <h1>
-    Welcome to Lumi, !
-  </h1>
-  Before we begin, you must either create or join a Lumi Group.
-  <Connect(GroupCreateComponent) />
-  <br />
-  Or
-  <br />
-  <Connect(GroupJoinComponent) />
 </div>
 `;
 

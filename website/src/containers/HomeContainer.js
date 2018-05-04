@@ -3,6 +3,7 @@ import * as firebase from 'firebase';
 import React from 'react';
 import { connect } from 'react-redux';
 
+import AddGroupContainer from './AddGroupContainer';
 import CareProfileContainer from './CareProfileContainer';
 import SummaryContainer from './SummaryContainer';
 import TimelineContainer from './TimelineContainer';
@@ -14,25 +15,28 @@ import * as constants from '../static/constants';
 const mapStateToProps = (state) => {
   // Determine which product to render
   let productComponent;
-  const timelineContainer = <TimelineContainer />;
-  const summaryContainer = <SummaryContainer />;
-  const careProfileContainer = <CareProfileContainer />;
-  switch (state.home.currentProductCode) {
-    case constants.PRODUCT_CODE_TIMELINE:
-      productComponent = timelineContainer;
-      break;
-    case constants.PRODUCT_CODE_SUMMARY:
-      productComponent = summaryContainer;
-      break;
-    case constants.PRODUCT_CODE_CARE_PROFILE:
-      productComponent = careProfileContainer;
-      break;
-    default:
-      productComponent = timelineContainer;
+  if (state.group.isAuthUserInGroup) {
+    switch (state.home.currentProductCode) {
+      case constants.PRODUCT_CODE_TIMELINE:
+        productComponent = <TimelineContainer />;
+        break;
+      case constants.PRODUCT_CODE_SUMMARY:
+        productComponent = <SummaryContainer />;
+        break;
+      case constants.PRODUCT_CODE_CARE_PROFILE:
+        productComponent = <CareProfileContainer />;
+        break;
+      case constants.PRODUCT_CODE_ADD_GROUP:
+        productComponent = <AddGroupContainer />;
+        break;
+      default:
+        productComponent = <TimelineContainer />;
+    }
+  } else {
+    productComponent = <AddGroupContainer />;
   }
   return {
     productComponent,
-    isAuthUserInGroup: state.group.isAuthUserInGroup,
     shouldComponentRender: state.group.isAuthUserInGroup !== null,
   };
 };
@@ -60,6 +64,7 @@ export const _getIsAuthUserInGroup = (dispatch) => {
 
 const mapDispatchToProps = dispatch => ({
   getIsAuthUserInGroup: () => _getIsAuthUserInGroup(dispatch),
+  // Window width is used to determine when to fix content width in desktop mode
   saveWindowWidth: () => dispatch(actions.saveWindowWidth(window.innerWidth)),
 });
 

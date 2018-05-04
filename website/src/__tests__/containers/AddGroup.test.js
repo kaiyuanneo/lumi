@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import sinon from 'sinon';
 
 import * as actions from '../../actions';
-import * as NewUserContainer from '../../containers/NewUserContainer';
+import * as NewUserContainer from '../../containers/AddGroupContainer';
 import * as constants from '../../static/constants';
 
 

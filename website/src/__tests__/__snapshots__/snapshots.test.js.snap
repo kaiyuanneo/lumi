@@ -672,14 +672,23 @@ exports[`NavTopComponent 1`] = `
               onClick={[Function]}
               onKeyDown={[Function]}
               role="button"
+            />
+          </li>
+          <li
+            className=""
+            role="presentation"
+            style={undefined}
+          >
+            <a
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
             >
               Sign Out
             </a>
           </li>
         </ul>
-        <p
-          className="navbar-text navbar-right"
-        />
       </div>
     </div>
   </nav>

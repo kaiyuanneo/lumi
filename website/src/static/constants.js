@@ -94,6 +94,7 @@ export const PRODUCT_CODE_TIMELINE = 'timeline';
 export const PRODUCT_CODE_CHAT = 'chat';
 export const PRODUCT_CODE_SUMMARY = 'summary';
 export const PRODUCT_CODE_CARE_PROFILE = 'care-profile';
+export const PRODUCT_CODE_COPY_GROUP_ID = 'copy-group-id';
 export const PRODUCT_CODE_SWITCH_GROUPS = 'switch-groups';
 export const PRODUCT_CODE_CREATE_OR_JOIN_GROUP = 'create-or-join-group';
 export const PRODUCT_CODE_SIGN_OUT = 'sign-out';

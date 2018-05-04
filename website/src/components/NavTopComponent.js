@@ -45,14 +45,14 @@ class NavTopComponent extends Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight>
+              <NavItem eventKey={constants.PRODUCT_CODE_COPY_GROUP_ID}>
+                {this.props.groupIdLabel}
+              </NavItem>
               {getSwitchGroupsElement()}
               <NavItem eventKey={constants.PRODUCT_CODE_SIGN_OUT} onClick={this.props.signOut}>
                 {constants.NAVBAR_ITEM_SIGN_OUT}
               </NavItem>
             </Nav>
-            <Navbar.Text pullRight>
-              {this.props.groupIdLabel}
-            </Navbar.Text>
           </Navbar.Collapse>
         </Navbar>
       </div>

@@ -55,6 +55,16 @@ export const switchGroup = groupId => ({
   groupId,
 });
 
+export const saveGroupFirstNameFieldValue = groupFirstNameFieldValue => ({
+  type: constants.ACTION_SAVE_GROUP_FIRST_NAME_FIELD_VALUE,
+  groupFirstNameFieldValue,
+});
+
+export const saveGroupLastNameFieldValue = groupLastNameFieldValue => ({
+  type: constants.ACTION_SAVE_GROUP_LAST_NAME_FIELD_VALUE,
+  groupLastNameFieldValue,
+});
+
 export const saveGroupIdFieldValue = groupIdFieldValue => ({
   type: constants.ACTION_SAVE_GROUP_ID_FIELD_VALUE,
   groupIdFieldValue,

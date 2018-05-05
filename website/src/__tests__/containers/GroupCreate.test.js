@@ -24,13 +24,11 @@ describe('Create group', () => {
     const dbStub = sinon.stub(firebase, 'database').returns({ ref: refStub });
     const baseUtilsStub = sinon.stub(baseUtils, 'addUserToGroup');
 
-    const stubState = {
-      careProfile: {
-        firstNameFormFieldValue: stubFirstNameFieldValue,
-        lastNameFormFieldValue: stubLastNameFieldValue,
-      },
+    const stubStateProps = {
+      firstNameFieldValue: stubFirstNameFieldValue,
+      lastNameFieldValue: stubLastNameFieldValue,
     };
-    await GroupCreateContainer._createGroup(stubState);
+    await GroupCreateContainer._createGroup(stubStateProps);
 
     chai.assert.isTrue(dbStub.calledOnce);
     chai.assert.isTrue(refStub.calledTwice);

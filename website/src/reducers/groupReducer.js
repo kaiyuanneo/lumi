@@ -9,6 +9,9 @@ Group state structure.
   groups,
   groupId,
   groupName,
+  // Group field values are used for the field values in AddGroupComponent
+  groupFirstNameFieldValue,
+  groupLastNameFieldValue,
   groupIdFieldValue,
   groupJoinValidationState,
 }
@@ -20,6 +23,8 @@ const initialState = {
   groups: [],
   groupId: null,
   groupName: null,
+  groupFirstNameFieldValue: '',
+  groupLastNameFieldValue: '',
   groupIdFieldValue: '',
   groupJoinValidationState: null,
 };
@@ -61,6 +66,16 @@ const groupReducer = (state = initialState, action) => {
         groupId: action.groupId,
       };
     }
+    case constants.ACTION_SAVE_GROUP_FIRST_NAME_FIELD_VALUE:
+      return {
+        ...state,
+        groupFirstNameFieldValue: action.groupFirstNameFieldValue,
+      };
+    case constants.ACTION_SAVE_GROUP_LAST_NAME_FIELD_VALUE:
+      return {
+        ...state,
+        groupLastNameFieldValue: action.groupLastNameFieldValue,
+      };
     case constants.ACTION_SAVE_GROUP_ID_FIELD_VALUE:
       return {
         ...state,

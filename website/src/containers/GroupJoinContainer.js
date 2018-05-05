@@ -12,7 +12,6 @@ const mapStateToProps = state => ({
   groupIdFieldValue: state.group.groupIdFieldValue,
   groupJoinValidationState: state.group.groupJoinValidationState,
   isJoinButtonDisabled: state.group.groupJoinValidationState !== 'success',
-  joinGroup: () => baseUtils.addUserToGroup(state.group.groupIdFieldValue),
 });
 
 
@@ -34,12 +33,27 @@ export const _handleChange = async (dispatch, e) => {
 
 const mapDispatchToProps = dispatch => ({
   handleChange: e => _handleChange(dispatch, e),
+  clearGroupIdFieldValue: () => dispatch(actions.saveGroupIdFieldValue('')),
+  goToTimeline: () => dispatch(actions.saveCurrentProductCode(constants.PRODUCT_CODE_TIMELINE)),
+});
+
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => ({
+  ...stateProps,
+  ...dispatchProps,
+  ...ownProps,
+  joinGroup: async () => {
+    await baseUtils.addUserToGroup(stateProps.groupIdFieldValue);
+    dispatchProps.clearGroupIdFieldValue();
+    dispatchProps.goToTimeline();
+  },
 });
 
 
 const GroupJoinContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
+  mergeProps,
 )(GroupJoinComponent);
 
 export default GroupJoinContainer;

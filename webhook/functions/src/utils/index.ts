@@ -56,7 +56,15 @@ export const responseCodeToQuickReplyTitle = (responseCode) => {
 };
 
 
-export const responseCodeToResponseMessage = (receivedResponseCode, receivedMessage = null) => {
+export const responseCodeToResponseMessage = (
+  receivedResponseCode,
+  receivedMessage = null,
+  userGroups = null,
+  isOriginalMessageText = null,
+) => {
+  if (receivedResponseCode === constants.RESPONSE_CODE_NEW_MESSAGE && userGroups) {
+    return constants.RESPONSE_MESSAGE_NEW_MESSAGE_MULTIPLE_GROUPS;
+  }
   if (receivedResponseCode.indexOf('category') >= 0) {
     return (
       constants.RESPONSE_MESSAGE_CATEGORY_1 +
@@ -65,14 +73,17 @@ export const responseCodeToResponseMessage = (receivedResponseCode, receivedMess
     );
   }
   switch (receivedResponseCode) {
+    case constants.RESPONSE_CODE_CHOSE_GROUP:
+      // If original message is text, respond one way
+      if (isOriginalMessageText) {
+        return constants.RESPONSE_MESSAGE_NEW_MESSAGE_TEXT;
+      }
+      // Else if original message is image, respond another way
+      return constants.RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE;
     case constants.RESPONSE_CODE_NEW_MESSAGE:
       // If new message is text, respond one way
       if ('text' in receivedMessage) {
-        return (
-          constants.RESPONSE_MESSAGE_NEW_MESSAGE_TEXT_1 +
-          receivedMessage.text +
-          constants.RESPONSE_MESSAGE_NEW_MESSAGE_TEXT_2
-        );
+        return constants.RESPONSE_MESSAGE_NEW_MESSAGE_TEXT;
       }
       // Else if new message is image, respond another way
       return constants.RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE;

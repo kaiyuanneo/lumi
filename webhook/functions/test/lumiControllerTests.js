@@ -330,6 +330,27 @@ mocha.describe('Call Send API unit tests', () => {
 
 
 /**
+ * Test that Lumi gets group name from group ID properly
+ */
+mocha.describe('Get group name from group ID unit tests', () => {
+  mocha.it('Get group name success', async () => {
+    const stubGroupId = 'TEST_GROUP_ID';
+    const stubGroupName = 'TEST_GROUP_NAME';
+    const refParam = `${constants.DB_PATH_LUMI_GROUPS}/${stubGroupId}/name`;
+    const onceStub = sinon.stub().resolves(stubGroupName);
+    const refStub = sinon.stub().returns({ once: onceStub });
+    const dbStub = sinon.stub(admin, 'database').get(() => (() => ({ ref: refStub })));
+    const groupName =
+      await rewire(lumiControllerFilePath).__get__('getGroupNameFromGroupId')(stubGroupId);
+    chai.assert.deepEqual(groupName, stubGroupName);
+    chai.assert.isTrue(refStub.calledOnceWithExactly(refParam));
+    chai.assert.isTrue(onceStub.calledOnceWithExactly(constants.DB_EVENT_NAME_VALUE));
+    dbStub.restore();
+  });
+});
+
+
+/**
  * Test that Lumi generates the correct quick replies
  */
 mocha.describe('Get quick reply unit tests', () => {
@@ -340,12 +361,14 @@ mocha.describe('Get quick reply unit tests', () => {
       title: constants.QUICK_REPLY_TITLE_CATEGORY_OTHER,
       content_type: constants.QUICK_REPLY_CONTENT_TYPE_TEXT,
       payload: JSON.stringify({
+        groupId: null,
+        isOriginalMessageText: null,
         code: responseCode,
         messageKey: messageRef.key,
       }),
     };
     const quickReply =
-      rewire(lumiControllerFilePath).__get__('getQuickReply')(messageRef, responseCode);
+      await rewire(lumiControllerFilePath).__get__('getQuickReply')(messageRef, responseCode);
     chai.assert.deepEqual(quickReply, expectedQuickReply);
   });
 });
@@ -376,7 +399,28 @@ mocha.describe('Get response unit tests', () => {
     utilsStub.restore();
   });
 
-  mocha.it('Get response for new message text', () => {
+  mocha.it('Get response for new message when user in multiple groups', async () => {
+    const receivedMessage = { text: true };
+    const receivedResponseCode = constants.RESPONSE_CODE_NEW_MESSAGE;
+    const messageRef = { text: 'TEXT' };
+    const userGroups = ['GROUP'];
+    const expectedResponse = {
+      text: stubText,
+      quick_replies: [
+        stubQuickReply,
+      ],
+    };
+    const response = await rewiredLumiController
+      .__get__('getResponse')(receivedMessage, receivedResponseCode, messageRef, userGroups);
+    chai.assert.deepEqual(response, expectedResponse);
+    chai.assert.isTrue(getQuickReplyStub.calledOnce);
+    chai.assert.isTrue(getQuickReplyStub
+      .calledWith(messageRef, constants.RESPONSE_CODE_CHOSE_GROUP, userGroups[0], true));
+    chai.assert.isTrue((
+      utilsStub.calledOnceWithExactly(receivedResponseCode, receivedMessage, userGroups, null)));
+  });
+
+  mocha.it('Get response for new message text', async () => {
     const receivedMessage = { text: true };
     const receivedResponseCode = constants.RESPONSE_CODE_NEW_MESSAGE;
     const messageRef = {};
@@ -387,7 +431,7 @@ mocha.describe('Get response unit tests', () => {
         stubQuickReply,
       ],
     };
-    const response = rewiredLumiController
+    const response = await rewiredLumiController
       .__get__('getResponse')(receivedMessage, receivedResponseCode, messageRef);
     chai.assert.deepEqual(response, expectedResponse);
     chai.assert.isTrue(getQuickReplyStub.calledTwice);
@@ -395,10 +439,11 @@ mocha.describe('Get response unit tests', () => {
       getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_ATTACH_IMAGE_YES)));
     chai.assert.isTrue((
       getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_ATTACH_IMAGE_NO)));
-    chai.assert.isTrue(utilsStub.calledOnceWithExactly(receivedResponseCode, receivedMessage));
+    chai.assert.isTrue((
+      utilsStub.calledOnceWithExactly(receivedResponseCode, receivedMessage, null, null)));
   });
 
-  mocha.it('Get response for new message image', () => {
+  mocha.it('Get response for new message image', async () => {
     const receivedMessage = {};
     const receivedResponseCode = constants.RESPONSE_CODE_NEW_MESSAGE;
     const messageRef = {};
@@ -409,7 +454,7 @@ mocha.describe('Get response unit tests', () => {
         'QUICK_REPLY',
       ],
     };
-    const response = rewiredLumiController
+    const response = await rewiredLumiController
       .__get__('getResponse')(receivedMessage, receivedResponseCode, messageRef);
     chai.assert.deepEqual(response, expectedResponse);
     chai.assert.isTrue(getQuickReplyStub.calledTwice);
@@ -417,10 +462,61 @@ mocha.describe('Get response unit tests', () => {
       getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_ATTACH_TEXT_YES)));
     chai.assert.isTrue((
       getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_ATTACH_TEXT_NO)));
-    chai.assert.isTrue(utilsStub.calledOnceWithExactly(receivedResponseCode, receivedMessage));
+    chai.assert.isTrue((
+      utilsStub.calledOnceWithExactly(receivedResponseCode, receivedMessage, null, null)));
   });
 
-  mocha.it('Get response for message attachment', () => {
+  mocha.it('Get response for chose group, original message text', async () => {
+    const receivedMessage = { text: true };
+    const receivedResponseCode = constants.RESPONSE_CODE_CHOSE_GROUP;
+    const messageRef = {};
+    const userGroups = null;
+    const isOriginalMessageText = true;
+    const expectedResponse = {
+      text: stubText,
+      quick_replies: [
+        stubQuickReply,
+        stubQuickReply,
+      ],
+    };
+    const response = await rewiredLumiController.__get__('getResponse')(
+      receivedMessage, receivedResponseCode, messageRef, userGroups, isOriginalMessageText);
+    chai.assert.deepEqual(response, expectedResponse);
+    chai.assert.isTrue(getQuickReplyStub.calledTwice);
+    chai.assert.isTrue(
+      getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_ATTACH_IMAGE_YES));
+    chai.assert.isTrue(
+      getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_ATTACH_IMAGE_NO));
+    chai.assert.isTrue(utilsStub.calledOnceWithExactly(
+      receivedResponseCode, receivedMessage, userGroups, isOriginalMessageText));
+  });
+
+  mocha.it('Get response for chose group, original message image', async () => {
+    const receivedMessage = {};
+    const receivedResponseCode = constants.RESPONSE_CODE_CHOSE_GROUP;
+    const messageRef = {};
+    const userGroups = null;
+    const isOriginalMessageText = false;
+    const expectedResponse = {
+      text: stubText,
+      quick_replies: [
+        'QUICK_REPLY',
+        'QUICK_REPLY',
+      ],
+    };
+    const response = await rewiredLumiController.__get__('getResponse')(
+      receivedMessage, receivedResponseCode, messageRef, userGroups, isOriginalMessageText);
+    chai.assert.deepEqual(response, expectedResponse);
+    chai.assert.isTrue(getQuickReplyStub.calledTwice);
+    chai.assert.isTrue(
+      getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_ATTACH_TEXT_YES));
+    chai.assert.isTrue(
+      getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_ATTACH_TEXT_NO));
+    chai.assert.isTrue(utilsStub.calledOnceWithExactly(
+      receivedResponseCode, receivedMessage, userGroups, isOriginalMessageText));
+  });
+
+  mocha.it('Get response for message attachment', async () => {
     const receivedMessage = { text: true };
     const receivedResponseCode = constants.RESPONSE_CODE_ATTACH_IMAGE_NO;
     const messageRef = {};
@@ -431,7 +527,7 @@ mocha.describe('Get response unit tests', () => {
         'QUICK_REPLY',
       ],
     };
-    const response = rewiredLumiController
+    const response = await rewiredLumiController
       .__get__('getResponse')(receivedMessage, receivedResponseCode, messageRef);
     chai.assert.deepEqual(response, expectedResponse);
     chai.assert.strictEqual(getQuickReplyStub.callCount, 2);
@@ -439,7 +535,7 @@ mocha.describe('Get response unit tests', () => {
     chai.assert.isTrue(getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_STAR_NO));
   });
 
-  mocha.it('Get response for star response', () => {
+  mocha.it('Get response for star response', async () => {
     const receivedMessage = { text: true };
     const receivedResponseCode = constants.RESPONSE_CODE_STAR_NO;
     const messageRef = {};
@@ -455,7 +551,7 @@ mocha.describe('Get response unit tests', () => {
         'QUICK_REPLY',
       ],
     };
-    const response = rewiredLumiController
+    const response = await rewiredLumiController
       .__get__('getResponse')(receivedMessage, receivedResponseCode, messageRef);
     chai.assert.deepEqual(response, expectedResponse);
     chai.assert.strictEqual(getQuickReplyStub.callCount, 7);
@@ -473,7 +569,8 @@ mocha.describe('Get response unit tests', () => {
       getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_CATEGORY_CAREGIVER)));
     chai.assert.isTrue((
       getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_CATEGORY_OTHER)));
-    chai.assert.isTrue(utilsStub.calledOnceWithExactly(receivedResponseCode, receivedMessage));
+    chai.assert.isTrue((
+      utilsStub.calledOnceWithExactly(receivedResponseCode, receivedMessage, null, null)));
   });
 
   mocha.it('Get response for other message', async () => {
@@ -484,11 +581,12 @@ mocha.describe('Get response unit tests', () => {
       text: stubText,
       quick_replies: null,
     };
-    const response = rewiredLumiController
+    const response = await rewiredLumiController
       .__get__('getResponse')(receivedMessage, receivedResponseCode, messageRef);
     chai.assert.deepEqual(response, expectedResponse);
     chai.assert.isFalse(getQuickReplyStub.called);
-    chai.assert.isTrue(utilsStub.calledOnceWithExactly(receivedResponseCode, receivedMessage));
+    chai.assert.isTrue((
+      utilsStub.calledOnceWithExactly(receivedResponseCode, receivedMessage, null, null)));
   });
 });
 
@@ -496,145 +594,145 @@ mocha.describe('Get response unit tests', () => {
 /**
  * Test that Lumi saves messages to groups properly
  */
-mocha.describe('Save message to group unit tests', () => {
-  mocha.it('Save message to group success', async () => {
+mocha.describe('Handle message to group unit tests', () => {
+  mocha.it('Handle message to group success', async () => {
     // Params for DB references
     const psid = 'PSID';
     const uid = 'UID';
     const gid = 'GID';
-    const newMessageRefKey = 'KEY';
     const psidToUidRefParam = `${constants.DB_PATH_USER_PSID_TO_UID}/${psid}`;
     const userRefParam = `${constants.DB_PATH_USERS}/${uid}`;
-    const groupRefParam = `${constants.DB_PATH_LUMI_MESSAGES_GROUP}/${gid}`;
 
     // Method stubs
     const psidToUidValStub = sinon.stub().returns(uid);
     const psidToUidOnceStub = sinon.stub().withArgs(constants.DB_EVENT_NAME_VALUE).resolves({
       val: psidToUidValStub,
     });
-    const userValStub = sinon.stub().returns({ activeGroup: gid });
+    const userValStub = sinon.stub().returns({
+      activeGroup: gid,
+      groups: {},
+    });
     const userOnceStub = sinon.stub().withArgs(constants.DB_EVENT_NAME_VALUE).resolves({
       val: userValStub,
     });
-    const groupUpdateStub = sinon.stub();
     const refStub = sinon.stub();
     refStub.withArgs(psidToUidRefParam).returns({ once: psidToUidOnceStub });
     refStub.withArgs(userRefParam).returns({ once: userOnceStub });
-    refStub.withArgs(groupRefParam).returns({ update: groupUpdateStub });
     const dbStub = sinon.stub(admin, 'database').get(() => (() => ({ ref: refStub })));
-    const newMessageRef = {
-      key: newMessageRefKey,
-      update: sinon.stub(),
-    };
+    const newMessageRef = {};
 
     // Test saveMessageToGroup
-    await rewire(lumiControllerFilePath).__get__('saveMessageToGroup')(psid, newMessageRef);
-    chai.assert.isTrue(refStub.calledThrice);
+    await rewire(lumiControllerFilePath).__get__('handleMessageToGroup')(psid, newMessageRef);
+    chai.assert.isTrue(refStub.calledTwice);
     chai.assert.isTrue(refStub.calledWith(psidToUidRefParam));
     chai.assert.isTrue(refStub.calledWith(userRefParam));
-    chai.assert.isTrue(refStub.calledWith(groupRefParam));
     chai.assert.isTrue(psidToUidOnceStub.calledOnceWithExactly(constants.DB_EVENT_NAME_VALUE));
     chai.assert.isTrue(psidToUidValStub.calledOnce);
     chai.assert.isTrue(userOnceStub.calledOnceWithExactly(constants.DB_EVENT_NAME_VALUE));
     chai.assert.isTrue(userValStub.calledOnce);
-    chai.assert.isTrue(groupUpdateStub.calledOnceWithExactly({ [newMessageRefKey]: true }));
-    chai.assert.isTrue(newMessageRef.update.calledOnceWithExactly({ group: gid }));
 
     // Restore DB functions to prior state
     dbStub.restore();
   });
 
-  mocha.it('Save message to group no UID', async () => {
+  mocha.it('Handle message to group no UID', async () => {
     // Params for DB references
     const psid = 'PSID';
     const uid = '';
     const gid = 'GID';
-    const newMessageRefKey = 'KEY';
     const psidToUidRefParam = `${constants.DB_PATH_USER_PSID_TO_UID}/${psid}`;
     const userRefParam = `${constants.DB_PATH_USERS}/${uid}`;
-    const groupRefParam = `${constants.DB_PATH_LUMI_MESSAGES_GROUP}/${gid}`;
 
     // Method stubs
     const psidToUidValStub = sinon.stub().returns(uid);
     const psidToUidOnceStub = sinon.stub().withArgs(constants.DB_EVENT_NAME_VALUE).resolves({
       val: psidToUidValStub,
     });
-    const userValStub = sinon.stub().returns({ activeGroup: gid });
+    const userValStub = sinon.stub().returns({
+      activeGroup: gid,
+      groups: {},
+    });
     const userOnceStub = sinon.stub().withArgs(constants.DB_EVENT_NAME_VALUE).resolves({
       val: userValStub,
     });
-    const groupUpdateStub = sinon.stub();
     const refStub = sinon.stub();
     refStub.withArgs(psidToUidRefParam).returns({ once: psidToUidOnceStub });
     refStub.withArgs(userRefParam).returns({ once: userOnceStub });
-    refStub.withArgs(groupRefParam).returns({ update: groupUpdateStub });
     const dbStub = sinon.stub(admin, 'database').get(() => (() => ({ ref: refStub })));
-    const newMessageRef = {
-      key: newMessageRefKey,
-      update: sinon.stub(),
-    };
+    const newMessageRef = {};
 
     // Test saveMessageToGroup
-    await rewire(lumiControllerFilePath).__get__('saveMessageToGroup')(psid, newMessageRef);
+    await rewire(lumiControllerFilePath).__get__('handleMessageToGroup')(psid, newMessageRef);
     chai.assert.isTrue(refStub.calledOnce);
     chai.assert.isTrue(refStub.calledWith(psidToUidRefParam));
     chai.assert.isFalse(refStub.calledWith(userRefParam));
-    chai.assert.isFalse(refStub.calledWith(groupRefParam));
     chai.assert.isTrue(psidToUidOnceStub.calledOnceWithExactly(constants.DB_EVENT_NAME_VALUE));
     chai.assert.isTrue(psidToUidValStub.calledOnce);
     chai.assert.isFalse(userOnceStub.calledOnceWithExactly(constants.DB_EVENT_NAME_VALUE));
     chai.assert.isFalse(userValStub.calledOnce);
-    chai.assert.isFalse(groupUpdateStub.calledOnceWithExactly({ [newMessageRefKey]: true }));
-    chai.assert.isFalse(newMessageRef.update.calledOnceWithExactly({ group: gid }));
 
     // Restore DB functions to prior state
     dbStub.restore();
   });
 
-  mocha.it('Save message to group no UID', async () => {
+  mocha.it('Handle message to group no UID', async () => {
     // Params for DB references
     const psid = 'PSID';
     const uid = 'UID';
     const gid = '';
-    const newMessageRefKey = 'KEY';
     const psidToUidRefParam = `${constants.DB_PATH_USER_PSID_TO_UID}/${psid}`;
     const userRefParam = `${constants.DB_PATH_USERS}/${uid}`;
-    const groupRefParam = `${constants.DB_PATH_LUMI_MESSAGES_GROUP}/${gid}`;
 
     // Method stubs
     const psidToUidValStub = sinon.stub().returns(uid);
     const psidToUidOnceStub = sinon.stub().withArgs(constants.DB_EVENT_NAME_VALUE).resolves({
       val: psidToUidValStub,
     });
-    const userValStub = sinon.stub().returns({ activeGroup: gid });
+    const userValStub = sinon.stub().returns({
+      activeGroup: gid,
+      groups: {},
+    });
     const userOnceStub = sinon.stub().withArgs(constants.DB_EVENT_NAME_VALUE).resolves({
       val: userValStub,
     });
-    const groupUpdateStub = sinon.stub();
     const refStub = sinon.stub();
     refStub.withArgs(psidToUidRefParam).returns({ once: psidToUidOnceStub });
     refStub.withArgs(userRefParam).returns({ once: userOnceStub });
-    refStub.withArgs(groupRefParam).returns({ update: groupUpdateStub });
     const dbStub = sinon.stub(admin, 'database').get(() => (() => ({ ref: refStub })));
-    const newMessageRef = {
-      key: newMessageRefKey,
-      update: sinon.stub(),
-    };
+    const newMessageRef = {};
 
     // Test saveMessageToGroup
-    await rewire(lumiControllerFilePath).__get__('saveMessageToGroup')(psid, newMessageRef);
+    await rewire(lumiControllerFilePath).__get__('handleMessageToGroup')(psid, newMessageRef);
     chai.assert.isTrue(refStub.calledTwice);
     chai.assert.isTrue(refStub.calledWith(psidToUidRefParam));
     chai.assert.isTrue(refStub.calledWith(userRefParam));
-    chai.assert.isFalse(refStub.calledWith(groupRefParam));
     chai.assert.isTrue(psidToUidOnceStub.calledOnceWithExactly(constants.DB_EVENT_NAME_VALUE));
     chai.assert.isTrue(psidToUidValStub.calledOnce);
     chai.assert.isTrue(userOnceStub.calledOnceWithExactly(constants.DB_EVENT_NAME_VALUE));
     chai.assert.isTrue(userValStub.calledOnce);
-    chai.assert.isFalse(groupUpdateStub.calledOnceWithExactly({ [newMessageRefKey]: true }));
-    chai.assert.isFalse(newMessageRef.update.calledOnceWithExactly({ group: gid }));
 
     // Restore DB functions to prior state
+    dbStub.restore();
+  });
+});
+
+
+mocha.describe('Save message to group unit tests', () => {
+  mocha.it('Save success', () => {
+    const groupMessagesUpdateStub = sinon.stub();
+    const groupMessagesRefStub = sinon.stub().returns({ update: groupMessagesUpdateStub });
+    const dbStub = sinon.stub(admin, 'database').get(() => (() => ({ ref: groupMessagesRefStub })));
+    const stubMessageRef = ({
+      key: 'TEST_KEY',
+      update: sinon.stub(),
+    });
+    const stubGroupId = 'TEST_GROUP_ID';
+    const groupMessagesRefParam = `${constants.DB_PATH_LUMI_MESSAGES_GROUP}/${stubGroupId}`;
+    rewire(lumiControllerFilePath).__get__('saveMessageToGroup')(stubMessageRef, stubGroupId);
+    chai.assert.isTrue(stubMessageRef.update.calledOnceWithExactly({ group: stubGroupId }));
+    chai.assert.isTrue(groupMessagesRefStub.calledOnceWithExactly(groupMessagesRefParam));
+    chai.assert.isTrue(
+      groupMessagesUpdateStub.calledOnceWithExactly({ [stubMessageRef.key]: true }));
     dbStub.restore();
   });
 });
@@ -647,6 +745,7 @@ mocha.describe('Handle quick reply unit tests', () => {
   let rewiredLumiController;
   let revertLumiController;
   let getResponseStub;
+  let saveMessageToGroupStub;
   let jsonStub;
   let utilsStub;
   const stubCode = 'CODE';
@@ -655,8 +754,12 @@ mocha.describe('Handle quick reply unit tests', () => {
     rewiredLumiController = rewire(lumiControllerFilePath);
   });
   mocha.beforeEach(() => {
-    getResponseStub = sinon.stub().returns(stubResponse);
-    revertLumiController = rewiredLumiController.__set__('getResponse', getResponseStub);
+    getResponseStub = sinon.stub().resolves(stubResponse);
+    saveMessageToGroupStub = sinon.stub();
+    revertLumiController = rewiredLumiController.__set__({
+      getResponse: getResponseStub,
+      saveMessageToGroup: saveMessageToGroupStub,
+    });
     jsonStub = sinon.stub(JSON, 'parse').callsFake(object => object);
     utilsStub = sinon.stub(utils, 'responseCodeToMessageCategoryCode').returns(stubCode);
   });
@@ -668,7 +771,41 @@ mocha.describe('Handle quick reply unit tests', () => {
     utilsStub.restore();
   });
 
-  mocha.it('Handle message quick reply attach image', () => {
+  mocha.it('Handle quick reply chose group', async () => {
+    const messageKey = 'MESSAGE_KEY';
+    const responseCode = constants.RESPONSE_CODE_CHOSE_GROUP;
+    const receivedMessage = {
+      quick_reply: {
+        payload: {
+          code: responseCode,
+          messageKey,
+          isOriginalMessageText: true,
+        },
+      },
+    };
+    const messageRef = {
+      update: sinon.stub(),
+    };
+    const messagesRef = {
+      child: sinon.stub().returns(messageRef),
+    };
+    const userMessagesRef = {
+      update: sinon.stub(),
+    };
+
+    const response = await rewiredLumiController
+      .__get__('handleQuickReply')(receivedMessage, messagesRef, userMessagesRef);
+    chai.assert.strictEqual(response, stubResponse);
+    chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
+    chai.assert.isTrue(saveMessageToGroupStub.calledOnce);
+    chai.assert.isFalse(userMessagesRef.update.called);
+    chai.assert.isFalse(messageRef.update.called);
+    chai.assert.isFalse(utilsStub.called);
+    chai.assert.isTrue(getResponseStub
+      .calledOnceWithExactly(receivedMessage, responseCode, messageRef, null, true));
+  });
+
+  mocha.it('Handle quick reply attach image', async () => {
     const messageKey = 'MESSAGE_KEY';
     const responseCode = constants.RESPONSE_CODE_ATTACH_IMAGE_YES;
     const receivedMessage = {
@@ -676,6 +813,7 @@ mocha.describe('Handle quick reply unit tests', () => {
         payload: {
           code: responseCode,
           messageKey,
+          isOriginalMessageText: true,
         },
       },
     };
@@ -689,18 +827,19 @@ mocha.describe('Handle quick reply unit tests', () => {
       update: sinon.stub(),
     };
 
-    const response = rewiredLumiController
+    const response = await rewiredLumiController
       .__get__('handleQuickReply')(receivedMessage, messagesRef, userMessagesRef);
     chai.assert.strictEqual(response, stubResponse);
     chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
+    chai.assert.isFalse(saveMessageToGroupStub.called);
     chai.assert.isTrue(userMessagesRef.update.calledOnceWithExactly({ isAwaitingImage: true }));
     chai.assert.isFalse(messageRef.update.called);
     chai.assert.isFalse(utilsStub.called);
-    chai.assert.isTrue((
-      getResponseStub.calledOnceWithExactly(receivedMessage, responseCode, messageRef)));
+    chai.assert.isTrue(getResponseStub
+      .calledOnceWithExactly(receivedMessage, responseCode, messageRef, null, true));
   });
 
-  mocha.it('Handle message quick reply attach text', () => {
+  mocha.it('Handle quick reply attach text', async () => {
     const messageKey = 'MESSAGE_KEY';
     const responseCode = constants.RESPONSE_CODE_ATTACH_TEXT_YES;
     const receivedMessage = {
@@ -708,6 +847,7 @@ mocha.describe('Handle quick reply unit tests', () => {
         payload: {
           code: responseCode,
           messageKey,
+          isOriginalMessageText: true,
         },
       },
     };
@@ -721,18 +861,19 @@ mocha.describe('Handle quick reply unit tests', () => {
       update: sinon.stub(),
     };
 
-    const response = rewiredLumiController
+    const response = await rewiredLumiController
       .__get__('handleQuickReply')(receivedMessage, messagesRef, userMessagesRef);
     chai.assert.strictEqual(response, stubResponse);
     chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
+    chai.assert.isFalse(saveMessageToGroupStub.called);
     chai.assert.isTrue(userMessagesRef.update.calledOnceWithExactly({ isAwaitingText: true }));
     chai.assert.isFalse(messageRef.update.called);
     chai.assert.isFalse(utilsStub.called);
-    chai.assert.isTrue((
-      getResponseStub.calledOnceWithExactly(receivedMessage, responseCode, messageRef)));
+    chai.assert.isTrue(getResponseStub
+      .calledOnceWithExactly(receivedMessage, responseCode, messageRef, null, true));
   });
 
-  mocha.it('Handle message quick reply star', () => {
+  mocha.it('Handle quick reply star', async () => {
     const messageKey = 'MESSAGE_KEY';
     const responseCode = constants.RESPONSE_CODE_STAR_YES;
     const receivedMessage = {
@@ -740,6 +881,7 @@ mocha.describe('Handle quick reply unit tests', () => {
         payload: {
           code: responseCode,
           messageKey,
+          isOriginalMessageText: true,
         },
       },
     };
@@ -753,18 +895,19 @@ mocha.describe('Handle quick reply unit tests', () => {
       update: sinon.stub(),
     };
 
-    const response = rewiredLumiController
+    const response = await rewiredLumiController
       .__get__('handleQuickReply')(receivedMessage, messagesRef, userMessagesRef);
     chai.assert.strictEqual(response, stubResponse);
     chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
+    chai.assert.isFalse(saveMessageToGroupStub.called);
     chai.assert.isFalse(userMessagesRef.update.called);
     chai.assert.isTrue(messageRef.update.calledOnceWithExactly({ starred: true }));
     chai.assert.isFalse(utilsStub.called);
-    chai.assert.isTrue((
-      getResponseStub.calledOnceWithExactly(receivedMessage, responseCode, messageRef)));
+    chai.assert.isTrue(getResponseStub
+      .calledOnceWithExactly(receivedMessage, responseCode, messageRef, null, true));
   });
 
-  mocha.it('Handle message quick reply category', () => {
+  mocha.it('Handle quick reply category', async () => {
     const messageKey = 'MESSAGE_KEY';
     const responseCode = constants.RESPONSE_CODE_CATEGORY_OTHER;
     const receivedMessage = {
@@ -772,6 +915,7 @@ mocha.describe('Handle quick reply unit tests', () => {
         payload: {
           code: responseCode,
           messageKey,
+          isOriginalMessageText: true,
         },
       },
     };
@@ -785,18 +929,19 @@ mocha.describe('Handle quick reply unit tests', () => {
       update: sinon.stub(),
     };
 
-    const response = rewiredLumiController
+    const response = await rewiredLumiController
       .__get__('handleQuickReply')(receivedMessage, messagesRef, userMessagesRef);
     chai.assert.strictEqual(response, stubResponse);
     chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
+    chai.assert.isFalse(saveMessageToGroupStub.called);
     chai.assert.isFalse(userMessagesRef.update.called);
     chai.assert.isTrue(messageRef.update.calledOnceWithExactly({ category: stubCode }));
     chai.assert.isTrue(utilsStub.calledOnceWithExactly(responseCode));
-    chai.assert.isTrue((
-      getResponseStub.calledOnceWithExactly(receivedMessage, responseCode, messageRef)));
+    chai.assert.isTrue(getResponseStub
+      .calledOnceWithExactly(receivedMessage, responseCode, messageRef, null, true));
   });
 
-  mocha.it('Handle message quick reply other', () => {
+  mocha.it('Handle quick reply other', async () => {
     const messageKey = 'MESSAGE_KEY';
     const responseCode = constants.RESPONSE_CODE_ATTACH_IMAGE_NO;
     const receivedMessage = {
@@ -804,6 +949,7 @@ mocha.describe('Handle quick reply unit tests', () => {
         payload: {
           code: responseCode,
           messageKey,
+          isOriginalMessageText: true,
         },
       },
     };
@@ -817,15 +963,16 @@ mocha.describe('Handle quick reply unit tests', () => {
       update: sinon.stub(),
     };
 
-    const response = rewiredLumiController
+    const response = await rewiredLumiController
       .__get__('handleQuickReply')(receivedMessage, messagesRef, userMessagesRef);
     chai.assert.strictEqual(response, stubResponse);
     chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
+    chai.assert.isFalse(saveMessageToGroupStub.called);
     chai.assert.isFalse(userMessagesRef.update.called);
     chai.assert.isFalse(messageRef.update.called);
     chai.assert.isFalse(utilsStub.called);
-    chai.assert.isTrue((
-      getResponseStub.calledOnceWithExactly(receivedMessage, responseCode, messageRef)));
+    chai.assert.isTrue(getResponseStub
+      .calledOnceWithExactly(receivedMessage, responseCode, messageRef, null, true));
   });
 });
 
@@ -977,7 +1124,7 @@ mocha.describe('Handle text and attachments unit tests', () => {
   let isAwaitingTextRef;
   let isAwaitingTextSnapshot;
   let attachToPrevMessageStub;
-  let saveMessageToGroupStub;
+  let handleMessageToGroupStub;
   let getResponseStub;
   mocha.before(() => {
     rewiredLumiController = rewire(lumiControllerFilePath);
@@ -1004,12 +1151,12 @@ mocha.describe('Handle text and attachments unit tests', () => {
       once: sinon.stub().resolves(isAwaitingTextSnapshot),
     };
     userMessagesRef.child.withArgs(constants.IS_AWAITING_FLAG_TEXT).returns(isAwaitingTextRef);
-    attachToPrevMessageStub = sinon.stub().returns(stubResponseInfo);
-    saveMessageToGroupStub = sinon.stub();
-    getResponseStub = sinon.stub().returns(stubResponse);
+    attachToPrevMessageStub = sinon.stub().resolves(stubResponseInfo);
+    handleMessageToGroupStub = sinon.stub().resolves([]);
+    getResponseStub = sinon.stub().resolves(stubResponse);
     revertLumiController = rewiredLumiController.__set__({
       attachToPrevMessage: attachToPrevMessageStub,
-      saveMessageToGroup: saveMessageToGroupStub,
+      handleMessageToGroup: handleMessageToGroupStub,
       getResponse: getResponseStub,
     });
   });
@@ -1051,12 +1198,13 @@ mocha.describe('Handle text and attachments unit tests', () => {
       timestamp: webhookEvent.timestamp,
     }));
     chai.assert.isTrue(userMessagesRef.update.calledOnceWithExactly({ [newMessageKey]: true }));
-    chai.assert.isTrue((
-      saveMessageToGroupStub.calledOnceWithExactly(webhookEvent.sender.id, newMessageRef)));
+    chai.assert.isTrue(handleMessageToGroupStub
+      .calledOnceWithExactly(webhookEvent.sender.id, newMessageRef));
     chai.assert.isTrue(getResponseStub.calledOnceWithExactly(
       webhookEvent.message,
       stubResponseInfo.responseCode,
       stubResponseInfo.messageRef,
+      [],
     ));
   });
 
@@ -1093,12 +1241,13 @@ mocha.describe('Handle text and attachments unit tests', () => {
       timestamp: webhookEvent.timestamp,
     }));
     chai.assert.isTrue(userMessagesRef.update.calledOnceWithExactly({ [newMessageKey]: true }));
-    chai.assert.isTrue((
-      saveMessageToGroupStub.calledOnceWithExactly(webhookEvent.sender.id, newMessageRef)));
+    chai.assert.isTrue(handleMessageToGroupStub
+      .calledOnceWithExactly(webhookEvent.sender.id, newMessageRef));
     chai.assert.isTrue(getResponseStub.calledOnceWithExactly(
       webhookEvent.message,
       stubResponseInfo.responseCode,
       stubResponseInfo.messageRef,
+      [],
     ));
   });
 
@@ -1131,13 +1280,10 @@ mocha.describe('Handle text and attachments unit tests', () => {
       timestamp: webhookEvent.timestamp,
     }));
     chai.assert.isTrue(userMessagesRef.update.calledOnceWithExactly({ [newMessageKey]: true }));
-    chai.assert.isTrue((
-      saveMessageToGroupStub.calledOnceWithExactly(webhookEvent.sender.id, newMessageRef)));
-    chai.assert.isTrue(getResponseStub.calledOnceWithExactly(
-      webhookEvent.message,
-      defaultResponseCode,
-      newMessageRef,
-    ));
+    chai.assert.isTrue(handleMessageToGroupStub
+      .calledOnceWithExactly(webhookEvent.sender.id, newMessageRef));
+    chai.assert.isTrue(getResponseStub
+      .calledOnceWithExactly(webhookEvent.message, defaultResponseCode, newMessageRef, []));
   });
 });
 

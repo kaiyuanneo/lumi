@@ -149,13 +149,35 @@ const callSendApi = async (senderPsid, response) => {
 
 
 /**
+ * Get group name from DB given a group ID
+ */
+const getGroupNameFromGroupId = async (groupId) => {
+  const db = admin.database();
+  const groupNameRef = db.ref(`${constants.DB_PATH_LUMI_GROUPS}/${groupId}/name`);
+  return groupNameRef.once(constants.DB_EVENT_NAME_VALUE);
+};
+
+
+/**
  * Generate quick reply object for specific response
  */
-const getQuickReply = (messageRef, responseCode) => ({
-  title: utils.responseCodeToQuickReplyTitle(responseCode),
+const getQuickReply = async (
+  messageRef,
+  responseCode,
+  groupId = null,
+  // isOriginalMessageTest is only relevant for new messages where author belongs to multiple groups
+  isOriginalMessageText = null,
+) => ({
+  // If quick reply involves group ID, look up and use group name as title.
+  // Otherwise, get template quick reply title from utils.
+  title: groupId ?
+    await getGroupNameFromGroupId(groupId) :
+    utils.responseCodeToQuickReplyTitle(responseCode),
   content_type: constants.QUICK_REPLY_CONTENT_TYPE_TEXT,
   // Save quickReply payload as JSON string because payload only supports string values
   payload: JSON.stringify({
+    groupId,
+    isOriginalMessageText,
     code: responseCode,
     messageKey: messageRef.key,
   }),
@@ -165,62 +187,106 @@ const getQuickReply = (messageRef, responseCode) => ({
 /**
  * Get response for a specific message type from Lumi Chat
  */
-const getResponse = (receivedMessage, receivedResponseCode, messageRef) => {
+const getResponse = async (
+  receivedMessage,
+  receivedResponseCode,
+  messageRef,
+  // userGroups is only relevant when response code is NEW_MESSAGE
+  userGroups = null,
+  // isOriginalMessageText is only relevant when response code is CHOSE_GROUP
+  isOriginalMessageText = null,
+) => {
   console.log('Running function getResponse');
   let quickReplies = null;
-  if (receivedResponseCode === constants.RESPONSE_CODE_NEW_MESSAGE) {
-    // If the received message contains text, provide option to attach image
-    if ('text' in receivedMessage) {
-      quickReplies = [
-        getQuickReply(messageRef, constants.RESPONSE_CODE_ATTACH_IMAGE_YES),
-        getQuickReply(messageRef, constants.RESPONSE_CODE_ATTACH_IMAGE_NO),
-      ];
-    // If the received message contains image, provide option to attach text
-    } else {
-      quickReplies = [
-        getQuickReply(messageRef, constants.RESPONSE_CODE_ATTACH_TEXT_YES),
-        getQuickReply(messageRef, constants.RESPONSE_CODE_ATTACH_TEXT_NO),
-      ];
+  // If user is in multiple groups, ask user which group to save the message to
+  if (receivedResponseCode === constants.RESPONSE_CODE_NEW_MESSAGE && userGroups) {
+    quickReplies = [];
+    const responseCode = constants.RESPONSE_CODE_CHOSE_GROUP;
+    const isMessageText = 'text' in receivedMessage;
+    for (const groupId of userGroups) {
+      quickReplies.push(await getQuickReply(messageRef, responseCode, groupId, isMessageText));
     }
-  // Ask user to choose category once no further attachments
+  // If user is not in multiple groups or has just chosen group, ask user if they want to attach
+  // If the original message contains text, provide option to attach image
+  } else if (
+    (receivedResponseCode === constants.RESPONSE_CODE_NEW_MESSAGE && 'text' in receivedMessage) ||
+    (receivedResponseCode === constants.RESPONSE_CODE_CHOSE_GROUP && isOriginalMessageText)
+  ) {
+    quickReplies = [
+      await getQuickReply(messageRef, constants.RESPONSE_CODE_ATTACH_IMAGE_YES),
+      await getQuickReply(messageRef, constants.RESPONSE_CODE_ATTACH_IMAGE_NO),
+    ];
+  // If the original message contains image, provide option to attach text
+  } else if (
+    receivedResponseCode === constants.RESPONSE_CODE_NEW_MESSAGE ||
+    receivedResponseCode === constants.RESPONSE_CODE_CHOSE_GROUP
+  ) {
+    quickReplies = [
+      await getQuickReply(messageRef, constants.RESPONSE_CODE_ATTACH_TEXT_YES),
+      await getQuickReply(messageRef, constants.RESPONSE_CODE_ATTACH_TEXT_NO),
+    ];
+  // Ask user to choose star
   } else if (
     receivedResponseCode === constants.RESPONSE_CODE_ATTACH_IMAGE_NO ||
     receivedResponseCode === constants.RESPONSE_CODE_ATTACH_TEXT_NO ||
     receivedResponseCode.indexOf('attached') >= 0
   ) {
     quickReplies = [
-      getQuickReply(messageRef, constants.RESPONSE_CODE_STAR_YES),
-      getQuickReply(messageRef, constants.RESPONSE_CODE_STAR_NO),
+      await getQuickReply(messageRef, constants.RESPONSE_CODE_STAR_YES),
+      await getQuickReply(messageRef, constants.RESPONSE_CODE_STAR_NO),
     ];
+  // Ask user to choose category
   } else if (receivedResponseCode.indexOf('star') >= 0) {
     quickReplies = [
-      getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_ACTIVITY),
-      getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_BEHAVIOUR),
-      getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_MOOD),
-      getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_MEMORY),
-      getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_MEDICAL),
-      getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_CAREGIVER),
-      getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_OTHER),
+      await getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_ACTIVITY),
+      await getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_BEHAVIOUR),
+      await getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_MOOD),
+      await getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_MEMORY),
+      await getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_MEDICAL),
+      await getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_CAREGIVER),
+      await getQuickReply(messageRef, constants.RESPONSE_CODE_CATEGORY_OTHER),
     ];
   }
   return {
-    text: utils.responseCodeToResponseMessage(receivedResponseCode, receivedMessage),
+    text: utils.responseCodeToResponseMessage(
+      receivedResponseCode, receivedMessage, userGroups, isOriginalMessageText),
     quick_replies: quickReplies,
   };
 };
 
 
 /**
- * Handle quick reply responses from Lumi user
+ * Update DB to reference new message by the given group.
+ * Specifically, 1) update message to reference group ID, and 2) update relevant path in
+ * lumi-group-messages to reference this message key.
  */
-const handleQuickReply = (receivedMessage, messagesRef, userMessagesRef) => {
+const saveMessageToGroup = (messageRef, groupId) => {
+  // Store group ID in new message
+  messageRef.update({ group: groupId });
+  // Store new message key in lumi-messages-group path under the active group ID
+  const db = admin.database();
+  const groupMessagesRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES_GROUP}/${groupId}`);
+  groupMessagesRef.update({ [messageRef.key]: true });
+};
+
+
+/**
+ * Handle quick reply responses from Lumi user
+ * Async because getResponse returns a promise
+ */
+const handleQuickReply = async (receivedMessage, messagesRef, userMessagesRef) => {
   console.log('Running function handleQuickReply');
   // Save quickReply payload as JSON string because payload only supports string values
   const quickReplyPayload = JSON.parse(receivedMessage.quick_reply.payload);
   const responseCode = quickReplyPayload.code;
+  const groupId = quickReplyPayload.groupId;
+  const isOriginalMessageText = quickReplyPayload.isOriginalMessageText;
   const messageRef = messagesRef.child(quickReplyPayload.messageKey);
+  // If user chooses to save message to a group, update the message to reference the group
+  if (responseCode === constants.RESPONSE_CODE_CHOSE_GROUP) {
+    saveMessageToGroup(messageRef, groupId);
   // If user chooses to add attachment to prev message, set a flag to indicate this
-  if (responseCode === constants.RESPONSE_CODE_ATTACH_IMAGE_YES) {
+  } else if (responseCode === constants.RESPONSE_CODE_ATTACH_IMAGE_YES) {
     userMessagesRef.update({ isAwaitingImage: true });
   } else if (responseCode === constants.RESPONSE_CODE_ATTACH_TEXT_YES) {
     userMessagesRef.update({ isAwaitingText: true });
@@ -232,7 +298,7 @@ const handleQuickReply = (receivedMessage, messagesRef, userMessagesRef) => {
     messageRef.update({ category: utils.responseCodeToMessageCategoryCode(responseCode) });
   }
   // Generate response based on received response code
-  return getResponse(receivedMessage, responseCode, messageRef);
+  return getResponse(receivedMessage, responseCode, messageRef, null, isOriginalMessageText);
 };
 
 
@@ -310,8 +376,8 @@ const attachToPrevMessage = async (
  * Specifically, 1) update message to reference gid, and 2) update relevant path in
  * lumi-group-messages to reference this message key
  */
-const saveMessageToGroup = async (psid, newMessageRef) => {
-  console.log('Running function saveMessageToGroup');
+const handleMessageToGroup = async (psid, newMessageRef) => {
+  console.log('Running function handleMessageToGroup');
   const db = admin.database();
   const psidToUidRef = db.ref(`${constants.DB_PATH_USER_PSID_TO_UID}/${psid}`);
   const psidToUidSnapshot = await psidToUidRef.once(constants.DB_EVENT_NAME_VALUE);
@@ -319,29 +385,29 @@ const saveMessageToGroup = async (psid, newMessageRef) => {
   // Return if there is no entry for the given PSID in the user-psid-to-uid path
   // This means the user has not signed into lumicares.com yet.
   if (!uid) {
-    return;
+    return null;
   }
   const userRef = db.ref(`${constants.DB_PATH_USERS}/${uid}`);
   const userSnapshot = await userRef.once(constants.DB_EVENT_NAME_VALUE);
-  // TODO(kai): Allow user to select which group she wishes to save message to, instead
-  // of defaulting to active group
-  const gid = userSnapshot.val().activeGroup;
-  // Return if there is no activeGroup assigned to a user. This means a user may have
+  const user = userSnapshot.val();
+  const userGroups = user.groups;
+  const userGroupsArray = Object.keys(userGroups);
+  const numUserGroups = userGroupsArray.length;
+  // Return if user has no groups. This means a user may have
   // signed in to lumicares.com but not yet joined or created a group.
-  if (!gid) {
-    return;
+  if (!userGroups || numUserGroups <= 0) {
+    return null;
   }
-
-  // Store GID in new message
-  newMessageRef.update({
-    group: gid,
-  });
-
-  // Store new message key in lumi-messages-group path under the active GID
-  const groupMessagesRef = db.ref(`${constants.DB_PATH_LUMI_MESSAGES_GROUP}/${gid}`);
-  groupMessagesRef.update({
-    [newMessageRef.key]: true,
-  });
+  // If user has one group, then save message to active group
+  if (numUserGroups === 1) {
+    const groupId = user.activeGroup;
+    saveMessageToGroup(newMessageRef, groupId);
+    console.log('Saved Lumi message to DB!');
+    return null;
+  }
+  // If user has more than one group, return an array of the user's groups so getResponse
+  // knows to prompt user to choose a group to save the message to
+  return userGroupsArray;
 };
 
 
@@ -392,13 +458,15 @@ const handleTextAndAttachments = async (webhookEvent, messagesRef, userMessagesR
   // If user does not belong to any groups (i.e. hasn't signed into lumicares.com yet),
   // do not save her messages under any GID. These messages will be saved to the relevant
   // GID after she logs into lumicares.com and either joins or creates a group.
-  await saveMessageToGroup(senderPsid, newMessageRef);
-  console.log('Saved Lumi message to DB!');
-  // If response is not already referencing previous message, have it reference the new message.
+  // If user belongs to a single group, save the message to that group.
+  // If user belongs to multiple groups, userGroups is array of group IDs for user to choose from.
+  const userGroups = await handleMessageToGroup(senderPsid, newMessageRef);
+  // If response is not already referencing previous message because the new message
+  // was attached to the previous message, have the response reference the new message.
   if (!messageRef) {
     messageRef = newMessageRef;
   }
-  return getResponse(receivedMessage, responseCode, messageRef);
+  return getResponse(receivedMessage, responseCode, messageRef, userGroups);
 };
 
 
@@ -418,7 +486,7 @@ const handleMessage = async (webhookEvent) => {
   // Handle quick replies first because quick reply messages can also contain text
   const quickReply = receivedMessage.quick_reply;
   if (quickReply) {
-    response = handleQuickReply(receivedMessage, messagesRef, userMessagesRef);
+    response = await handleQuickReply(receivedMessage, messagesRef, userMessagesRef);
   // Handle free-form text and image messages
   } else if (receivedMessage.text || receivedMessage.attachments) {
     // If message contains image, store image in Firebase Storage and attach this URL to message

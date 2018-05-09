@@ -140,6 +140,12 @@ mocha.describe('Response code to response message tests', () => {
     responseCodeToQuickReplyTitleStub.restore();
   });
 
+  mocha.it('New message multiple groups', () => {
+    const responseCode = constants.RESPONSE_CODE_NEW_MESSAGE;
+    const responseMessage = utils.responseCodeToResponseMessage(responseCode, null, ['GROUP']);
+    chai.assert
+      .strictEqual(responseMessage, constants.RESPONSE_MESSAGE_NEW_MESSAGE_MULTIPLE_GROUPS);
+  });
   mocha.it('Activity category', () => {
     const responseCode = constants.RESPONSE_CODE_CATEGORY_ACTIVITY;
     const responseMessage = utils.responseCodeToResponseMessage(responseCode);
@@ -175,14 +181,21 @@ mocha.describe('Response code to response message tests', () => {
     const responseMessage = utils.responseCodeToResponseMessage(responseCode);
     chai.assert.strictEqual(responseMessage, expectedResponseMessageCategory);
   });
+  mocha.it('Chose group, original message text', () => {
+    const responseCode = constants.RESPONSE_CODE_CHOSE_GROUP;
+    const responseMessage = utils.responseCodeToResponseMessage(responseCode, null, null, true);
+    chai.assert.strictEqual(responseMessage, constants.RESPONSE_MESSAGE_NEW_MESSAGE_TEXT);
+  });
+  mocha.it('Chose group, original message image', () => {
+    const responseCode = constants.RESPONSE_CODE_CHOSE_GROUP;
+    const responseMessage = utils.responseCodeToResponseMessage(responseCode, null, null, false);
+    chai.assert.strictEqual(responseMessage, constants.RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE);
+  });
   mocha.it('New message text', () => {
     const responseCode = constants.RESPONSE_CODE_NEW_MESSAGE;
     const text = 'TEXT';
     const receivedMessage = { text };
-    const expectedResponseMessage = (
-      `${constants.RESPONSE_MESSAGE_NEW_MESSAGE_TEXT_1}${text}` +
-      `${constants.RESPONSE_MESSAGE_NEW_MESSAGE_TEXT_2}`
-    );
+    const expectedResponseMessage = constants.RESPONSE_MESSAGE_NEW_MESSAGE_TEXT;
     const responseMessage = utils.responseCodeToResponseMessage(responseCode, receivedMessage);
     chai.assert.strictEqual(responseMessage, expectedResponseMessage);
   });

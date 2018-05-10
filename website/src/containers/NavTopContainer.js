@@ -18,6 +18,7 @@ const mapStateToProps = (state) => {
   }
   return {
     groups: state.group.groups,
+    activeGroupId: state.group.groupId,
     // If user has not joined a group yet, do not display groupName and groupId in navbar
     groupIdLabel,
     groupNameLabel,
@@ -85,6 +86,14 @@ export const _handleNavSelect = async (eventKey, stateProps, dispatchProps) => {
     // Timeline, Summary, and Care Profile automatically update from listeners on activeGroup
     const authUid = firebase.auth().currentUser.uid;
     db.ref(`${constants.DB_PATH_USERS}/${authUid}`).update({ activeGroup: groupId });
+  } else if (eventKey === constants.PRODUCT_CODE_COPY_GROUP_ID) {
+    const tempInput = document.createElement('input');
+    tempInput.style = 'position: absolute; left: -1000px; top: -1000px';
+    tempInput.value = stateProps.activeGroupId;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
   } else if (eventKey === constants.PRODUCT_CODE_CREATE_OR_JOIN_GROUP) {
     dispatchProps.createOrJoinGroup();
   } else if (eventKey === constants.PRODUCT_CODE_SIGN_OUT) {

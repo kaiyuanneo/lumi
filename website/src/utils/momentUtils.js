@@ -46,6 +46,8 @@ export const _saveGroupMessagesLocally = async (dispatch, activeGroupSnapshot) =
   if (!authUserActiveGroup) {
     return;
   }
+  // Clear local messages to avoid mixing of messages
+  dispatch(actions.clearTimelineMessages());
   // Listen on auth user's active group's messages to update local state when messages change
   const groupMessagesRef =
     firebase.database().ref(`${constants.DB_PATH_LUMI_MESSAGES_GROUP}/${authUserActiveGroup}`);

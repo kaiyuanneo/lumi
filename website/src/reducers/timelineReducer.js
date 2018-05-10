@@ -41,6 +41,10 @@ const timelineReducer = (state = initialState, action) => {
           ...action.message,
         },
       };
+    case constants.ACTION_CLEAR_TIMELINE_MESSAGES:
+      return {
+        ...initialState,
+      };
     case constants.ACTION_DELETE_TIMELINE_MESSAGE: {
       const { messages } = state;
       delete messages[action.message.key];

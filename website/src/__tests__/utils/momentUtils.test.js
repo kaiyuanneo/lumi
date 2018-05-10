@@ -86,11 +86,15 @@ describe('Save group messages locally', () => {
   it('Save success', async () => {
     const stubActiveGroup = 'TEST_ACTIVE_GROUP';
     const stubNumChildren = 1;
-    const stubAction = 'TEST_ACTION';
+    const stubClearTimelineMessagesAction = 'TEST_CLEAR_TIMELINE_MESSAGES_ACTION';
+    const stubSaveNumMessagesAction = 'TEST_SAVE_NUM_MESSAGES_ACTION';
 
     const groupMessagesRefParam = `${constants.DB_PATH_LUMI_MESSAGES_GROUP}/${stubActiveGroup}`;
 
-    const saveNumMessagesStub = sinon.stub(actions, 'saveNumMessages').returns(stubAction);
+    const saveNumMessagesStub =
+      sinon.stub(actions, 'saveNumMessages').returns(stubSaveNumMessagesAction);
+    const clearTimelineMessagesStub =
+      sinon.stub(actions, 'clearTimelineMessages').returns(stubClearTimelineMessagesAction);
     const onStub = sinon.stub();
     const onceStub = sinon.stub().resolves({ numChildren: () => stubNumChildren });
     const refStub = sinon.stub().returns({
@@ -110,10 +114,13 @@ describe('Save group messages locally', () => {
     chai.assert.isTrue(dbStub.calledOnce);
     chai.assert.isTrue(refStub.calledOnceWithExactly(groupMessagesRefParam));
     chai.assert.isTrue(onStub.calledTwice);
-    chai.assert.isTrue(stubDispatch.calledOnceWithExactly(stubAction));
+    chai.assert.isTrue(stubDispatch.calledTwice);
+    chai.assert.isTrue(stubDispatch.calledWithExactly(stubClearTimelineMessagesAction));
+    chai.assert.isTrue(stubDispatch.calledWithExactly(stubSaveNumMessagesAction));
 
     dbStub.restore();
     saveNumMessagesStub.restore();
+    clearTimelineMessagesStub.restore();
   });
 
   it('No auth user active group', async () => {

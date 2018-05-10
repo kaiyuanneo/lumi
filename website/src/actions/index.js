@@ -133,6 +133,10 @@ export const saveNumMessages = numMessages => ({
   numMessages,
 });
 
+export const clearTimelineMessages = () => ({
+  type: constants.ACTION_CLEAR_TIMELINE_MESSAGES,
+});
+
 export const saveTimelineMessage = message => ({
   type: constants.ACTION_SAVE_TIMELINE_MESSAGE,
   message,

@@ -23,6 +23,9 @@ const mapStateToProps = (state) => {
     groupIdLabel,
     groupNameLabel,
     careRecipientUid: state.careProfile.uid,
+    // Disable copy button on mobile devices because document.execCommand does not work.
+    // Use window width as a proxy for whether devices are mobile or not.
+    disableCopyButton: state.home.windowWidth < constants.WINDOW_WIDTH_MAX,
   };
 };
 

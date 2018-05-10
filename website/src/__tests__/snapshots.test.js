@@ -240,6 +240,7 @@ it('NavTopComponent', () => {
   const component = TestRenderer.create((
     <NavTopComponent
       groups={[]}
+      disableCopyButton={false}
       getGroupInfo={() => {}}
       handleNavSelect={() => {}}
     />

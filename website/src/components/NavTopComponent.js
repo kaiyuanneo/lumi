@@ -53,7 +53,10 @@ class NavTopComponent extends Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight onSelect={this.props.handleNavSelect}>
-              <NavItem eventKey={constants.PRODUCT_CODE_COPY_GROUP_ID}>
+              <NavItem
+                eventKey={constants.PRODUCT_CODE_COPY_GROUP_ID}
+                disabled={this.props.disableCopyButton}
+              >
                 {this.props.groupIdLabel}
               </NavItem>
               {getSwitchGroupsElement()}
@@ -75,6 +78,7 @@ NavTopComponent.propTypes = {
   })).isRequired,
   groupIdLabel: PropTypes.string,
   groupNameLabel: PropTypes.string,
+  disableCopyButton: PropTypes.bool.isRequired,
   getGroupInfo: PropTypes.func.isRequired,
   handleNavSelect: PropTypes.func.isRequired,
 };

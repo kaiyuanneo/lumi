@@ -5,6 +5,7 @@ import { Table } from 'react-bootstrap';
 
 import HelpMomentsComponent from '../components/HelpMomentsComponent';
 import TimelineFiltersContainer from '../containers/TimelineFiltersContainer';
+import TimelineStoryFooterContainer from '../containers/TimelineStoryFooterContainer';
 import TimelineStoryHeaderContainer from '../containers/TimelineStoryHeaderContainer';
 import TimelineStoryContentComponent from '../components/TimelineStoryContentComponent';
 import * as constants from '../static/constants';
@@ -42,6 +43,7 @@ class TimelineComponent extends Component {
         <Flexbox flexDirection="column" alignItems="flex-start">
           <TimelineStoryHeaderContainer messageValue={messageValue} />
           <TimelineStoryContentComponent messageValue={messageValue} />
+          <TimelineStoryFooterContainer messageValue={messageValue} />
         </Flexbox>
       );
       // Wrap timeline story with a centering Flexbox if screen width above threshold

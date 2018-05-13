@@ -1,7 +1,7 @@
 // NB: Private functions are underscore-prefixed and exported for tests
 import { connect } from 'react-redux';
 
-import TimelineStoryHeaderComponent from '../components/TimelineStoryHeaderComponent';
+import TimelineStoryFooterComponent from '../components/TimelineStoryFooterComponent';
 import * as baseUtils from '../utils/baseUtils';
 
 
@@ -9,14 +9,14 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...stateProps,
   ...dispatchProps,
   ...ownProps,
-  getLocalDateString: timestamp => baseUtils.getLocalDateString(timestamp),
+  getCategoryName: categoryCode => baseUtils.categoryCodeToName(categoryCode),
 });
 
 
-const TimelineStoryHeaderContainer = connect(
+const TimelineStoryFooterContainer = connect(
   null,
   null,
   mergeProps,
-)(TimelineStoryHeaderComponent);
+)(TimelineStoryFooterComponent);
 
-export default TimelineStoryHeaderContainer;
+export default TimelineStoryFooterContainer;

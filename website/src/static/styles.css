@@ -111,7 +111,9 @@
   transform: translate(-50%, -50%);
 }
 
-
+.timeline-filter-star {
+  margin: 0px 5px;
+}
 .timeline-story-centred {
   /* Copy Instagram max width */
   width: 600px;
@@ -133,9 +135,13 @@
 .timeline-story-header-profile-image {
   height: 40px;
 }
-.timeline-star-filter {
-  margin: 0px 5px;
+.timeline-story-footer-category {
+  background-color: lightGrey;
 }
+.timeline-story-footer-star {
+  color: orange;
+}
+
 
 
 body {

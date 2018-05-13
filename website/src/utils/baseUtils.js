@@ -23,7 +23,7 @@ export const usToIsoDate = (usDate) => {
 /**
  * Convert timestamp to local date string
  */
-export const getLocalDateString = timestamp => new Date(timestamp).toLocaleString();
+export const getLocalDateString = timestamp => new Date(timestamp).toLocaleDateString();
 
 
 /**

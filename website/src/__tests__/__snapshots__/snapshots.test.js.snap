@@ -735,6 +735,27 @@ exports[`TimelineStoryContentComponent 1`] = `
 </Styled(Component)>
 `;
 
+exports[`TimelineStoryFooterComponent 1`] = `
+<Styled(Component)
+  alignItems="center"
+  className="timeline-story-padding"
+  display="flex"
+  element="div"
+>
+  <span
+    className="space-horizontal"
+  />
+  <Styled(Component)
+    display="flex"
+    element="div"
+  >
+    <div
+      className="timeline-story-footer-category"
+    />
+  </Styled(Component)>
+</Styled(Component)>
+`;
+
 exports[`TimelineStoryHeaderComponent 1`] = `
 <Styled(Component)
   alignItems="center"
@@ -755,20 +776,15 @@ exports[`TimelineStoryHeaderComponent 1`] = `
     className="space-horizontal"
   />
   <Styled(Component)
+    alignItems="flex-start"
     display="flex"
     element="div"
     flexDirection="column"
   >
     <div>
       undefined undefined
-       • 
     </div>
-    <Styled(Component)
-      display="flex"
-      element="div"
-    >
-      <div />
-    </Styled(Component)>
+    <div />
   </Styled(Component)>
 </Styled(Component)>
 `;

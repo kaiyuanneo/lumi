@@ -25,6 +25,7 @@ import RootComponent from '../components/RootComponent';
 import TimelineComponent from '../components/TimelineComponent';
 import TimelineStoryHeaderComponent from '../components/TimelineStoryHeaderComponent';
 import TimelineStoryContentComponent from '../components/TimelineStoryContentComponent';
+import TimelineStoryFooterComponent from '../components/TimelineStoryFooterComponent';
 
 
 describe('App', () => {
@@ -277,7 +278,6 @@ it('TimelineStoryHeaderComponent', () => {
   const renderer = new ShallowRenderer();
   const component = renderer.render((
     <TimelineStoryHeaderComponent
-      getCategoryName={() => {}}
       getLocalDateString={() => {}}
       messageValue={{}}
     />
@@ -290,6 +290,17 @@ it('TimelineStoryContentComponent', () => {
   const component = renderer.render((
     <TimelineStoryContentComponent
       messageValue={{ attachments: [{ payload: { url: '' } }] }}
+    />
+  ));
+  expect(component).toMatchSnapshot();
+});
+
+it('TimelineStoryFooterComponent', () => {
+  const renderer = new ShallowRenderer();
+  const component = renderer.render((
+    <TimelineStoryFooterComponent
+      getCategoryName={() => {}}
+      messageValue={{}}
     />
   ));
   expect(component).toMatchSnapshot();

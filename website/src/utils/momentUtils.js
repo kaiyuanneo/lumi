@@ -46,6 +46,7 @@ export const _saveGroupMessagesLocally = async (dispatch, activeGroupSnapshot) =
   if (!authUserActiveGroup) {
     return;
   }
+  // TODO(kai): Turn off groupMessagesRef listeners on all user groups other than the active group
   // Clear local messages to avoid mixing of messages
   dispatch(actions.clearTimelineMessages());
   // Listen on auth user's active group's messages to update local state when messages change

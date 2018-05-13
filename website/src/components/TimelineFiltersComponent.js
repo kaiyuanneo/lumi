@@ -29,7 +29,7 @@ const TimelineFiltersComponent = (props) => {
           value={props.filterMessagesStarDefaultValue}
           type="checkbox"
           onChange={props.filterMessagesStar}
-          className="timeline-star-filter"
+          className="timeline-filter-star"
         >
           <ToggleButton
             bsSize="small"

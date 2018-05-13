@@ -1,7 +1,7 @@
 import Flexbox from 'flexbox-react';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Image, Panel, PanelGroup, Table } from 'react-bootstrap';
+import { Image, Panel, PanelGroup } from 'react-bootstrap';
 
 import CareProfileBasicInfoComponent from '../components/CareProfileBasicInfoComponent';
 import CareProfileMedicalInfoComponent from '../components/CareProfileMedicalInfoComponent';
@@ -38,9 +38,7 @@ class CareProfileComponent extends Component {
                 <Panel.Title toggle>Basic Info</Panel.Title>
               </Panel.Heading>
               <Panel.Body collapsible>
-                <Table bordered>
-                  <CareProfileBasicInfoComponent />
-                </Table>
+                <CareProfileBasicInfoComponent />
               </Panel.Body>
             </Panel>
             <Panel eventKey="2">
@@ -48,9 +46,7 @@ class CareProfileComponent extends Component {
                 <Panel.Title toggle>Medical Info</Panel.Title>
               </Panel.Heading>
               <Panel.Body collapsible>
-                <Table bordered>
-                  <CareProfileMedicalInfoComponent />
-                </Table>
+                <CareProfileMedicalInfoComponent />
               </Panel.Body>
             </Panel>
             <Panel eventKey="3">
@@ -58,9 +54,7 @@ class CareProfileComponent extends Component {
                 <Panel.Title toggle>Care Info</Panel.Title>
               </Panel.Heading>
               <Panel.Body collapsible>
-                <Table bordered>
-                  <CareProfileCareInfoComponent />
-                </Table>
+                <CareProfileCareInfoComponent />
               </Panel.Body>
             </Panel>
           </PanelGroup>

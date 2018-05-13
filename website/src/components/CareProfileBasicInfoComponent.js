@@ -5,7 +5,7 @@ import * as constants from '../static/constants';
 import * as baseUtils from '../utils/baseUtils';
 
 
-const CareProfileBasicInfoComponent = () => (
+const CareProfileBasicInfoComponent = () => baseUtils.wrapWithTable((
   <tbody>
     <CareProfileEditWrapperContainer
       fieldId={constants.CARE_PROFILE_FIELD_ID_FIRST_NAME}
@@ -39,6 +39,6 @@ const CareProfileBasicInfoComponent = () => (
       formFieldGenerator={baseUtils.getAddressFieldGenerator()}
     />
   </tbody>
-);
+));
 
 export default CareProfileBasicInfoComponent;

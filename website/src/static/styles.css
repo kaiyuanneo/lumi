@@ -26,6 +26,10 @@
 }
 
 
+.care-profile-info-container {
+  text-align: left;
+}
+
 .nav-bottom-text {
   font-size: 12px !important;
 }
@@ -72,14 +76,6 @@
 .navbar-fixed-top {
   border: 0px !important;
   margin-bottom: 0px !important;
-}
-
-
-.product-table-header {
-  text-align: center;
-}
-.product-tabs {
-  margin: 0 auto;
 }
 
 
@@ -141,7 +137,6 @@
 .timeline-story-footer-star {
   color: orange;
 }
-
 
 
 body {

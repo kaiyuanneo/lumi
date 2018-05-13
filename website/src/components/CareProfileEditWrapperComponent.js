@@ -18,7 +18,7 @@ const CareProfileEditWrapperComponent = (props) => {
         <td>{props.title}</td>
         <td>{props.formField}</td>
         <td>
-          <Flexbox justifyContent="center">
+          <Flexbox>
             <ButtonToolbar>
               <Button
                 bsStyle="primary"

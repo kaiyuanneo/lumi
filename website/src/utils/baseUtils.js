@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 import React from 'react';
-import { FormControl, FormGroup } from 'react-bootstrap';
+import { FormControl, FormGroup, Table } from 'react-bootstrap';
 import DatePicker from 'react-16-bootstrap-date-picker';
 import validator from 'validator';
 
@@ -147,6 +147,16 @@ export const addUserToGroup = async (gid, uid = firebase.auth().currentUser.uid)
   });
   await db.ref(constants.DB_PATH_LUMI_MESSAGES).update(messageUpdates);
 };
+
+
+/**
+ * Wrap Care Profile info in Bootstrap table
+ */
+export const wrapWithTable = content => (
+  <Table bordered className="care-profile-info-container">
+    {content}
+  </Table>
+);
 
 
 /**

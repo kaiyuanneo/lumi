@@ -5,7 +5,7 @@ import * as constants from '../static/constants';
 import * as baseUtils from '../utils/baseUtils';
 
 
-const CareProfileCareInfoComponent = () => (
+const CareProfileCareInfoComponent = () => baseUtils.wrapWithTable((
   <tbody>
     <CareProfileEditWrapperContainer
       fieldId={constants.CARE_PROFILE_FIELD_ID_NEEDS_AND_PREFERENCES}
@@ -23,6 +23,6 @@ const CareProfileCareInfoComponent = () => (
       formFieldGenerator={baseUtils.getPlacesOfInterestFieldGenerator()}
     />
   </tbody>
-);
+));
 
 export default CareProfileCareInfoComponent;

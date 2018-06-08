@@ -133,10 +133,14 @@ export const _saveUserInfo = async (currentUser, existingUserInfo, facebookUserI
     [hash(facebookUserInfo.email)]: currentUser.uid,
   });
 
+  // If the user does not have a PSID, she hasn't chatted with Lumi Chat.
+  // The next time the user logs in with a PSID, it will get populated by the below code.
   // Create entry in user-psid-to-uid path so that Lumi can look up user info with PSID
-  await db.ref(constants.DB_PATH_USER_PSID_TO_UID).update({
-    [psid]: currentUser.uid,
-  });
+  if (psid) {
+    await db.ref(constants.DB_PATH_USER_PSID_TO_UID).update({
+      [psid]: currentUser.uid,
+    });
+  }
 
   // Store user info in user record
   const userRef = db.ref(`${constants.DB_PATH_USERS}/${currentUser.uid}`);
@@ -169,12 +173,6 @@ const _setUserInfo = async (currentUser, credential) => {
   const facebookUserInfo = await _getUserInfoFromFacebook(credential);
   const existingUserInfo = await _mergeExistingUserRecord(currentUser, facebookUserInfo);
   const psid = await _getUserPsid(facebookUserInfo);
-  // If the user does not have a PSID yet (i.e. hasn't chatted with Lumi Chat), return here
-  // and the next time the user logs in with a PSID, it will get populated by the below code.
-  if (!psid) {
-    return false;
-  }
-
   // Save info gathered above to Firebase
   await _saveUserInfo(currentUser, existingUserInfo, facebookUserInfo, psid);
   // Return false to avoid redirects after sign in

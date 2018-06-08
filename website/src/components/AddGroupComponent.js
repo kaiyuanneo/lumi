@@ -11,6 +11,9 @@ class NewUserComponent extends Component {
     this.props.getUserFirstName();
   }
   render() {
+    if (!this.props.firstName) {
+      return null;
+    }
     return (
       <div>
         <h1>{`${constants.NEW_USER_PAGE_TITLE}${this.props.firstName}!`}</h1>

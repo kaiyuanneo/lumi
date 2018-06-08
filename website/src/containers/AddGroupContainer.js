@@ -15,8 +15,15 @@ const mapStateToProps = state => ({
 export const _getUserFirstName = async (dispatch) => {
   const { uid } = firebase.auth().currentUser;
   const firstNameRef = firebase.database().ref(`${constants.DB_PATH_USERS}/${uid}/firstName`);
-  const firstNameSnapshot = await firstNameRef.once(constants.DB_EVENT_NAME_VALUE);
-  dispatch(actions.saveAuthUserFirstName(firstNameSnapshot.val()));
+  firstNameRef.on(constants.DB_EVENT_NAME_VALUE, (firstNameSnapshot) => {
+    // Do nothing if first name is not yet populated
+    if (!firstNameSnapshot.val()) {
+      return;
+    }
+    // Remove callback on firstNameRef
+    firstNameRef.off();
+    dispatch(actions.saveAuthUserFirstName(firstNameSnapshot.val()));
+  });
 };
 
 

@@ -251,6 +251,7 @@ export const URL_FACEBOOK_GRAPH_API_ME = `${URL_FACEBOOK_GRAPH_API}/me`;
 export const URL_LUMI_WEBHOOK = 'https://us-central1-lumi-cares.cloudfunctions.net/webhook/lumi';
 export const URL_LUMI_PSID = `${URL_LUMI_WEBHOOK}/psid`;
 export const URL_LUMI_SAVE_IMAGE = `${URL_LUMI_WEBHOOK}/save-image`;
+export const URL_LUMI_CHAT = 'http://m.me/lumicares';
 
 export const WEBSITE_TITLE = 'Lumi';
 

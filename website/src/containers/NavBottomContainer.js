@@ -15,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
   switchProduct: (eventKey) => {
     // Clicking Chat will open Messenger
     if (eventKey === constants.PRODUCT_CODE_CHAT) {
-      window.location.assign('https://urlgeni.us/fb_messenger/lumi');
+      window.location.assign(constants.URL_LUMI_CHAT);
       return;
     }
     // Event keys are product codes

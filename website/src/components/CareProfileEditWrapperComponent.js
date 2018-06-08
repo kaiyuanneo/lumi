@@ -40,7 +40,7 @@ const CareProfileEditWrapperComponent = (props) => {
   return (
     <tr>
       <td>{props.title}</td>
-      <td className="multiline">{props.displayFieldValue}</td>
+      <td>{props.displayFieldValue}</td>
       <td>
         <Button onClick={props.enterEditMode}>
           <Glyphicon className="button-icon" glyph="pencil" />

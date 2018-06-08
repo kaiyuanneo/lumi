@@ -144,7 +144,3 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
-
-td.multiline {
-  white-space:pre;
-}

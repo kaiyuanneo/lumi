@@ -117,9 +117,7 @@ exports[`CareProfileEditWrapperComponent 1`] = `
   <td>
     
   </td>
-  <td
-    className="multiline"
-  >
+  <td>
     
   </td>
   <td>

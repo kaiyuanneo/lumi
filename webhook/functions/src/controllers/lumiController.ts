@@ -39,17 +39,13 @@ export const verify = (req, res) => {
  */
 export const getPsidFromAsid = async (req, res) => {
   console.log('Running function getPsidFromAsid');
-  // Get relevant app access token based on environment at deploy time
-  const appAccessToken = functions.config().lumi.env === constants.ENV_PROD ?
-    functions.config().lumi.token_app_access :
-    functions.config().lumi.token_app_access_staging;
 
   // Get PSIDs from FB Graph API
   const psidRequestOptions = {
     uri: `${constants.URL_FB_GRAPH_API}/${req.query.asid}`,
     qs: {
       fields: 'ids_for_pages',
-      access_token: appAccessToken,
+      access_token: utils.getAppAccessToken(),
     },
     json: true,
   };
@@ -125,15 +121,10 @@ const callSendApi = async (senderPsid, response) => {
     message: response,
   };
 
-  // Get relevant page access token based on environment at deploy time
-  const pageAccessToken = functions.config().lumi.env === constants.ENV_PROD ?
-    functions.config().lumi.token_page_access :
-    functions.config().lumi.token_page_access_staging;
-
   // Construct request options
   const sendApiRequestOptions = {
     uri: constants.URL_FB_SEND_API,
-    qs: { access_token: pageAccessToken },
+    qs: { access_token: utils.getPageAccessToken() },
     method: 'POST',
     json: requestBody,
   };
@@ -281,7 +272,9 @@ const handleQuickReply = async (receivedMessage, messagesRef, userMessagesRef) =
   const responseCode = quickReplyPayload.code;
   const groupId = quickReplyPayload.groupId;
   const isOriginalMessageText = quickReplyPayload.isOriginalMessageText;
-  const messageRef = messagesRef.child(quickReplyPayload.messageKey);
+  // Quick replies from the Get Started message do not have messageKey
+  const messageKey = quickReplyPayload.messageKey;
+  const messageRef = messageKey ? messagesRef.child(messageKey) : null;
   // If user chooses to save message to a group, update the message to reference the group
   if (responseCode === constants.RESPONSE_CODE_CHOSE_GROUP) {
     saveMessageToGroup(messageRef, groupId);
@@ -503,6 +496,46 @@ const handleMessage = async (webhookEvent) => {
 
 
 /**
+ * Handle postback events from Messenger Platform
+ * TODO(kai): Write tests
+ */
+const handlePostback = async (webhookEvent) => {
+  const senderPsid = webhookEvent.sender.id;
+  const firstName = await utils.getUserFirstName(senderPsid);
+
+  // TODO(kai): Integrate this with getResponse
+  // Generate response
+  let response = { text: 'bad response', quick_replies: null };
+  if (webhookEvent.postback.payload === constants.POSTBACK_CODE_GET_STARTED) {
+    response = {
+      text: `Hey ${firstName}! ${constants.RESPONSE_MESSAGE_GET_STARTED}`,
+      quick_replies: [
+        {
+          title: 'Create Care Group',
+          content_type: constants.QUICK_REPLY_CONTENT_TYPE_TEXT,
+          // Save quickReply payload as JSON string because payload only supports string values
+          payload: JSON.stringify({
+            code: constants.RESPONSE_CODE_CREATE_CARE_GROUP,
+          }),
+        },
+        {
+          title: 'Not Now',
+          content_type: constants.QUICK_REPLY_CONTENT_TYPE_TEXT,
+          // Save quickReply payload as JSON string because payload only supports string values
+          payload: JSON.stringify({
+            code: constants.RESPONSE_CODE_NOT_NOW,
+          }),
+        }
+      ],
+    };
+  }
+
+  // Send the response message
+  await callSendApi(senderPsid, response);
+};
+
+
+/**
  * Triage events from Messenger Platform
  */
 export const message = async (req, res) => {
@@ -522,6 +555,8 @@ export const message = async (req, res) => {
     // Currently Lumi only handles message events
     if (webhookEvent.message) {
       await handleMessage(webhookEvent);
+    } else if (webhookEvent.postback) {
+      await handlePostback(webhookEvent);
     }
   }));
   // Return 200 to all requests to Lumi the Page to signal message received

@@ -36,6 +36,8 @@ export const PAGE_ID_LUMI = '159838238099782';
 
 export const PORT = 1337;
 
+export const POSTBACK_CODE_GET_STARTED = 'GET_STARTED';
+
 export const QUICK_REPLY_CONTENT_TYPE_TEXT = 'text';
 
 export const QUICK_REPLY_TITLE_YES = 'Yes';
@@ -48,6 +50,12 @@ export const QUICK_REPLY_TITLE_CATEGORY_MEDICAL = 'Medical';
 export const QUICK_REPLY_TITLE_CATEGORY_CAREGIVER = 'Caregiver';
 export const QUICK_REPLY_TITLE_CATEGORY_OTHER = 'Other';
 
+// Get started response codes
+export const RESPONSE_CODE_GET_STARTED = 'get-started';
+export const RESPONSE_CODE_CREATE_CARE_GROUP = 'create-care-group';
+export const RESPONSE_CODE_NOT_NOW = 'not-now';
+
+// Free message response codes
 export const RESPONSE_CODE_NEW_MESSAGE = 'new-message';
 export const RESPONSE_CODE_ATTACH_IMAGE_YES = 'attach-image-yes';
 export const RESPONSE_CODE_ATTACH_IMAGE_NO = 'attach-image-no';
@@ -66,34 +74,44 @@ export const RESPONSE_CODE_CATEGORY_MEDICAL = 'category-medical';
 export const RESPONSE_CODE_CATEGORY_CAREGIVER = 'category-caregiver';
 export const RESPONSE_CODE_CATEGORY_OTHER = 'category-other';
 
+// Disable TSLint max-line-length for rest of file because messages are naturally long and clunky
+/* tslint:disable:max-line-length */
+
+// Get Started message
+export const RESPONSE_MESSAGE_GET_STARTED =
+`I am Lumi 😊
+
+I can help you record moments in your caregiving journey, recommend interesting resources and activities to help you, and summarise moments for you and your loved one.
+
+First, create a care group 👪 for your loved one at journal.lumicares.com.
+
+Once you've created a care group, you can start sharing moments with me here through pictures or text 📝
+
+I'll do the job of keeping them safe for you 💜 You can view your collection of moments at journal.lumicares.com anytime!`;
+
+// Menu messages
+export const RESPONSE_MESSAGE_CREATE_CARE_GROUP = 'Create your care group here! journal.lumicares.com';
+export const RESPONSE_MESSAGE_NOT_NOW = 'No problem! We can do this any time. I can only save your shared moments once you have a care group. I\'m here whenever you\'re ready 😊 ';
+
 // Handle new messages
-export const RESPONSE_MESSAGE_NEW_MESSAGE_MULTIPLE_GROUPS =
-  'Which group would you like to save this message to?';
-export const RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE =
-  'I have saved this image to your Timeline! Would you like to attach a message?';
-export const RESPONSE_MESSAGE_NEW_MESSAGE_TEXT =
-  'I have saved this message to your Timeline. Would you like to attach an image?';
+export const RESPONSE_MESSAGE_NEW_MESSAGE_MULTIPLE_GROUPS = 'Which group would you like to save this message to?';
+export const RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE = 'I have saved this image to your Timeline! Would you like to attach a message?';
+export const RESPONSE_MESSAGE_NEW_MESSAGE_TEXT = 'I have saved this message to your Timeline. Would you like to attach an image?';
 
 // Handle pre-attach responses
-export const RESPONSE_MESSAGE_ATTACH_IMAGE_YES =
-  'Great! Please send me the image you wish to attach.';
-export const RESPONSE_MESSAGE_ATTACH_TEXT_YES =
-  'Great! Please send me the message you wish to attach.';
+export const RESPONSE_MESSAGE_ATTACH_IMAGE_YES = 'Great! Please send me the image you wish to attach.';
+export const RESPONSE_MESSAGE_ATTACH_TEXT_YES = 'Great! Please send me the message you wish to attach.';
 
 // Handle post-attach responses
 const RESPONSE_MESSAGE_STAR_QUESTION = 'Would you like to star this message?';
 export const RESPONSE_MESSAGE_ATTACH_NO = `Ok! ${RESPONSE_MESSAGE_STAR_QUESTION}`;
-export const RESPONSE_MESSAGE_ATTACHED_IMAGE =
-  `Perfect! I have attached this image to the previous message. ${RESPONSE_MESSAGE_STAR_QUESTION}`;
-export const RESPONSE_MESSAGE_ATTACHED_TEXT =
-  `Perfect! I have attached this message to the previous image. ${RESPONSE_MESSAGE_STAR_QUESTION}`;
+export const RESPONSE_MESSAGE_ATTACHED_IMAGE = `Perfect! I have attached this image to the previous message. ${RESPONSE_MESSAGE_STAR_QUESTION}`;
+export const RESPONSE_MESSAGE_ATTACHED_TEXT = `Perfect! I have attached this message to the previous image. ${RESPONSE_MESSAGE_STAR_QUESTION}`;
 
 // Handle star responses
 const RESPONSE_MESSAGE_CATEGORY_QUESTION = 'Which category is most relevant?';
-export const RESPONSE_MESSAGE_STARRED_YES =
-  `Great! I have starred the message. ${RESPONSE_MESSAGE_CATEGORY_QUESTION}`;
-export const RESPONSE_MESSAGE_STARRED_NO =
-  `Sounds good! ${RESPONSE_MESSAGE_CATEGORY_QUESTION}`;
+export const RESPONSE_MESSAGE_STARRED_YES = `Great! I have starred the message. ${RESPONSE_MESSAGE_CATEGORY_QUESTION}`;
+export const RESPONSE_MESSAGE_STARRED_NO = `Sounds good! ${RESPONSE_MESSAGE_CATEGORY_QUESTION}`;
 
 // Handle category responses
 export const RESPONSE_MESSAGE_CATEGORY_1 = 'Great! Saved under category ';

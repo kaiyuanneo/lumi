@@ -1,4 +1,34 @@
+import * as functions from 'firebase-functions';
+import * as rp from 'request-promise';
+
 import * as constants from '../static/constants';
+
+
+// Get relevant app access token based on environment at deploy time
+export const getAppAccessToken = () => functions.config().lumi.env === constants.ENV_PROD ?
+  functions.config().lumi.token_app_access :
+  functions.config().lumi.token_app_access_staging;
+
+
+// Get relevant page access token based on environment at deploy time
+export const getPageAccessToken = () => functions.config().lumi.env === constants.ENV_PROD ?
+  functions.config().lumi.token_page_access :
+  functions.config().lumi.token_page_access_staging;
+
+
+export const getUserFirstName = async (senderPsid) => {
+  // Get first name from FB Graph API
+  const firstNameRequestOptions = {
+    uri: `${constants.URL_FB_GRAPH_API}/${senderPsid}`,
+    qs: {
+      fields: 'first_name',
+      access_token: getPageAccessToken(),
+    },
+    json: true,
+  };
+  const firstNameParsedBody = await rp(firstNameRequestOptions);
+  return firstNameParsedBody.first_name;
+};
 
 
 export const responseCodeToMessageCategoryCode = (responseCode) => {
@@ -73,6 +103,10 @@ export const responseCodeToResponseMessage = (
     );
   }
   switch (receivedResponseCode) {
+    case constants.RESPONSE_CODE_CREATE_CARE_GROUP:
+      return constants.RESPONSE_MESSAGE_CREATE_CARE_GROUP;
+    case constants.RESPONSE_CODE_NOT_NOW:
+      return constants.RESPONSE_MESSAGE_NOT_NOW;
     case constants.RESPONSE_CODE_CHOSE_GROUP:
       // If original message is text, respond one way
       if (isOriginalMessageText) {

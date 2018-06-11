@@ -400,7 +400,7 @@ mocha.describe('Get response unit tests', () => {
   });
 
   mocha.it('Get response for new message when user in multiple groups', async () => {
-    const receivedMessage = { text: true };
+    const webhookEvent = { message: { text: true } };
     const receivedResponseCode = constants.RESPONSE_CODE_NEW_MESSAGE;
     const messageRef = { text: 'TEXT' };
     const userGroups = ['GROUP'];
@@ -411,17 +411,17 @@ mocha.describe('Get response unit tests', () => {
       ],
     };
     const response = await rewiredLumiController
-      .__get__('getResponse')(receivedMessage, receivedResponseCode, messageRef, userGroups);
+      .__get__('getResponse')(webhookEvent, receivedResponseCode, messageRef, userGroups);
     chai.assert.deepEqual(response, expectedResponse);
     chai.assert.isTrue(getQuickReplyStub.calledOnce);
     chai.assert.isTrue(getQuickReplyStub
       .calledWith(messageRef, constants.RESPONSE_CODE_CHOSE_GROUP, userGroups[0], true));
     chai.assert.isTrue((
-      utilsStub.calledOnceWithExactly(receivedResponseCode, receivedMessage, userGroups, null)));
+      utilsStub.calledOnceWithExactly(receivedResponseCode, webhookEvent, userGroups, null)));
   });
 
   mocha.it('Get response for new message text', async () => {
-    const receivedMessage = { text: true };
+    const webhookEvent = { message: { text: true } };
     const receivedResponseCode = constants.RESPONSE_CODE_NEW_MESSAGE;
     const messageRef = {};
     const expectedResponse = {
@@ -432,7 +432,7 @@ mocha.describe('Get response unit tests', () => {
       ],
     };
     const response = await rewiredLumiController
-      .__get__('getResponse')(receivedMessage, receivedResponseCode, messageRef);
+      .__get__('getResponse')(webhookEvent, receivedResponseCode, messageRef);
     chai.assert.deepEqual(response, expectedResponse);
     chai.assert.isTrue(getQuickReplyStub.calledTwice);
     chai.assert.isTrue((
@@ -440,11 +440,11 @@ mocha.describe('Get response unit tests', () => {
     chai.assert.isTrue((
       getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_ATTACH_IMAGE_NO)));
     chai.assert.isTrue((
-      utilsStub.calledOnceWithExactly(receivedResponseCode, receivedMessage, null, null)));
+      utilsStub.calledOnceWithExactly(receivedResponseCode, webhookEvent, null, null)));
   });
 
   mocha.it('Get response for new message image', async () => {
-    const receivedMessage = {};
+    const webhookEvent = { message: {} };
     const receivedResponseCode = constants.RESPONSE_CODE_NEW_MESSAGE;
     const messageRef = {};
     const expectedResponse = {
@@ -455,7 +455,7 @@ mocha.describe('Get response unit tests', () => {
       ],
     };
     const response = await rewiredLumiController
-      .__get__('getResponse')(receivedMessage, receivedResponseCode, messageRef);
+      .__get__('getResponse')(webhookEvent, receivedResponseCode, messageRef);
     chai.assert.deepEqual(response, expectedResponse);
     chai.assert.isTrue(getQuickReplyStub.calledTwice);
     chai.assert.isTrue((
@@ -463,11 +463,11 @@ mocha.describe('Get response unit tests', () => {
     chai.assert.isTrue((
       getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_ATTACH_TEXT_NO)));
     chai.assert.isTrue((
-      utilsStub.calledOnceWithExactly(receivedResponseCode, receivedMessage, null, null)));
+      utilsStub.calledOnceWithExactly(receivedResponseCode, webhookEvent, null, null)));
   });
 
   mocha.it('Get response for chose group, original message text', async () => {
-    const receivedMessage = { text: true };
+    const webhookEvent = { message: { text: true } };
     const receivedResponseCode = constants.RESPONSE_CODE_CHOSE_GROUP;
     const messageRef = {};
     const userGroups = null;
@@ -480,7 +480,7 @@ mocha.describe('Get response unit tests', () => {
       ],
     };
     const response = await rewiredLumiController.__get__('getResponse')(
-      receivedMessage, receivedResponseCode, messageRef, userGroups, isOriginalMessageText);
+      webhookEvent, receivedResponseCode, messageRef, userGroups, isOriginalMessageText);
     chai.assert.deepEqual(response, expectedResponse);
     chai.assert.isTrue(getQuickReplyStub.calledTwice);
     chai.assert.isTrue(
@@ -488,11 +488,11 @@ mocha.describe('Get response unit tests', () => {
     chai.assert.isTrue(
       getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_ATTACH_IMAGE_NO));
     chai.assert.isTrue(utilsStub.calledOnceWithExactly(
-      receivedResponseCode, receivedMessage, userGroups, isOriginalMessageText));
+      receivedResponseCode, webhookEvent, userGroups, isOriginalMessageText));
   });
 
   mocha.it('Get response for chose group, original message image', async () => {
-    const receivedMessage = {};
+    const webhookEvent = { message: {} };
     const receivedResponseCode = constants.RESPONSE_CODE_CHOSE_GROUP;
     const messageRef = {};
     const userGroups = null;
@@ -505,7 +505,7 @@ mocha.describe('Get response unit tests', () => {
       ],
     };
     const response = await rewiredLumiController.__get__('getResponse')(
-      receivedMessage, receivedResponseCode, messageRef, userGroups, isOriginalMessageText);
+      webhookEvent, receivedResponseCode, messageRef, userGroups, isOriginalMessageText);
     chai.assert.deepEqual(response, expectedResponse);
     chai.assert.isTrue(getQuickReplyStub.calledTwice);
     chai.assert.isTrue(
@@ -513,11 +513,11 @@ mocha.describe('Get response unit tests', () => {
     chai.assert.isTrue(
       getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_ATTACH_TEXT_NO));
     chai.assert.isTrue(utilsStub.calledOnceWithExactly(
-      receivedResponseCode, receivedMessage, userGroups, isOriginalMessageText));
+      receivedResponseCode, webhookEvent, userGroups, isOriginalMessageText));
   });
 
   mocha.it('Get response for message attachment', async () => {
-    const receivedMessage = { text: true };
+    const webhookEvent = { message: { text: true } };
     const receivedResponseCode = constants.RESPONSE_CODE_ATTACH_IMAGE_NO;
     const messageRef = {};
     const expectedResponse = {
@@ -528,7 +528,7 @@ mocha.describe('Get response unit tests', () => {
       ],
     };
     const response = await rewiredLumiController
-      .__get__('getResponse')(receivedMessage, receivedResponseCode, messageRef);
+      .__get__('getResponse')(webhookEvent, receivedResponseCode, messageRef);
     chai.assert.deepEqual(response, expectedResponse);
     chai.assert.strictEqual(getQuickReplyStub.callCount, 2);
     chai.assert.isTrue(getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_STAR_YES));
@@ -536,7 +536,7 @@ mocha.describe('Get response unit tests', () => {
   });
 
   mocha.it('Get response for star response', async () => {
-    const receivedMessage = { text: true };
+    const webhookEvent = { message: { text: true } };
     const receivedResponseCode = constants.RESPONSE_CODE_STAR_NO;
     const messageRef = {};
     const expectedResponse = {
@@ -552,7 +552,7 @@ mocha.describe('Get response unit tests', () => {
       ],
     };
     const response = await rewiredLumiController
-      .__get__('getResponse')(receivedMessage, receivedResponseCode, messageRef);
+      .__get__('getResponse')(webhookEvent, receivedResponseCode, messageRef);
     chai.assert.deepEqual(response, expectedResponse);
     chai.assert.strictEqual(getQuickReplyStub.callCount, 7);
     chai.assert.isTrue((
@@ -570,11 +570,11 @@ mocha.describe('Get response unit tests', () => {
     chai.assert.isTrue((
       getQuickReplyStub.calledWith(messageRef, constants.RESPONSE_CODE_CATEGORY_OTHER)));
     chai.assert.isTrue((
-      utilsStub.calledOnceWithExactly(receivedResponseCode, receivedMessage, null, null)));
+      utilsStub.calledOnceWithExactly(receivedResponseCode, webhookEvent, null, null)));
   });
 
   mocha.it('Get response for other message', async () => {
-    const receivedMessage = {};
+    const webhookEvent = { message: {} };
     const receivedResponseCode = '';
     const messageRef = {};
     const expectedResponse = {
@@ -582,11 +582,11 @@ mocha.describe('Get response unit tests', () => {
       quick_replies: null,
     };
     const response = await rewiredLumiController
-      .__get__('getResponse')(receivedMessage, receivedResponseCode, messageRef);
+      .__get__('getResponse')(webhookEvent, receivedResponseCode, messageRef);
     chai.assert.deepEqual(response, expectedResponse);
     chai.assert.isFalse(getQuickReplyStub.called);
     chai.assert.isTrue((
-      utilsStub.calledOnceWithExactly(receivedResponseCode, receivedMessage, null, null)));
+      utilsStub.calledOnceWithExactly(receivedResponseCode, webhookEvent, null, null)));
   });
 });
 
@@ -783,6 +783,7 @@ mocha.describe('Handle quick reply unit tests', () => {
         },
       },
     };
+    const webhookEvent = { message: receivedMessage };
     const messageRef = {
       update: sinon.stub(),
     };
@@ -794,7 +795,7 @@ mocha.describe('Handle quick reply unit tests', () => {
     };
 
     const response = await rewiredLumiController
-      .__get__('handleQuickReply')(receivedMessage, messagesRef, userMessagesRef);
+      .__get__('handleQuickReply')(webhookEvent, messagesRef, userMessagesRef);
     chai.assert.strictEqual(response, stubResponse);
     chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
     chai.assert.isTrue(saveMessageToGroupStub.calledOnce);
@@ -802,7 +803,7 @@ mocha.describe('Handle quick reply unit tests', () => {
     chai.assert.isFalse(messageRef.update.called);
     chai.assert.isFalse(utilsStub.called);
     chai.assert.isTrue(getResponseStub
-      .calledOnceWithExactly(receivedMessage, responseCode, messageRef, null, true));
+      .calledOnceWithExactly(webhookEvent, responseCode, messageRef, null, true));
   });
 
   mocha.it('Handle quick reply attach image', async () => {
@@ -817,6 +818,7 @@ mocha.describe('Handle quick reply unit tests', () => {
         },
       },
     };
+    const webhookEvent = { message: receivedMessage };
     const messageRef = {
       update: sinon.stub(),
     };
@@ -828,7 +830,7 @@ mocha.describe('Handle quick reply unit tests', () => {
     };
 
     const response = await rewiredLumiController
-      .__get__('handleQuickReply')(receivedMessage, messagesRef, userMessagesRef);
+      .__get__('handleQuickReply')(webhookEvent, messagesRef, userMessagesRef);
     chai.assert.strictEqual(response, stubResponse);
     chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
     chai.assert.isFalse(saveMessageToGroupStub.called);
@@ -836,7 +838,7 @@ mocha.describe('Handle quick reply unit tests', () => {
     chai.assert.isFalse(messageRef.update.called);
     chai.assert.isFalse(utilsStub.called);
     chai.assert.isTrue(getResponseStub
-      .calledOnceWithExactly(receivedMessage, responseCode, messageRef, null, true));
+      .calledOnceWithExactly(webhookEvent, responseCode, messageRef, null, true));
   });
 
   mocha.it('Handle quick reply attach text', async () => {
@@ -851,6 +853,7 @@ mocha.describe('Handle quick reply unit tests', () => {
         },
       },
     };
+    const webhookEvent = { message: receivedMessage };
     const messageRef = {
       update: sinon.stub(),
     };
@@ -862,7 +865,7 @@ mocha.describe('Handle quick reply unit tests', () => {
     };
 
     const response = await rewiredLumiController
-      .__get__('handleQuickReply')(receivedMessage, messagesRef, userMessagesRef);
+      .__get__('handleQuickReply')(webhookEvent, messagesRef, userMessagesRef);
     chai.assert.strictEqual(response, stubResponse);
     chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
     chai.assert.isFalse(saveMessageToGroupStub.called);
@@ -870,7 +873,7 @@ mocha.describe('Handle quick reply unit tests', () => {
     chai.assert.isFalse(messageRef.update.called);
     chai.assert.isFalse(utilsStub.called);
     chai.assert.isTrue(getResponseStub
-      .calledOnceWithExactly(receivedMessage, responseCode, messageRef, null, true));
+      .calledOnceWithExactly(webhookEvent, responseCode, messageRef, null, true));
   });
 
   mocha.it('Handle quick reply star', async () => {
@@ -885,6 +888,7 @@ mocha.describe('Handle quick reply unit tests', () => {
         },
       },
     };
+    const webhookEvent = { message: receivedMessage };
     const messageRef = {
       update: sinon.stub(),
     };
@@ -896,7 +900,7 @@ mocha.describe('Handle quick reply unit tests', () => {
     };
 
     const response = await rewiredLumiController
-      .__get__('handleQuickReply')(receivedMessage, messagesRef, userMessagesRef);
+      .__get__('handleQuickReply')(webhookEvent, messagesRef, userMessagesRef);
     chai.assert.strictEqual(response, stubResponse);
     chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
     chai.assert.isFalse(saveMessageToGroupStub.called);
@@ -904,7 +908,7 @@ mocha.describe('Handle quick reply unit tests', () => {
     chai.assert.isTrue(messageRef.update.calledOnceWithExactly({ starred: true }));
     chai.assert.isFalse(utilsStub.called);
     chai.assert.isTrue(getResponseStub
-      .calledOnceWithExactly(receivedMessage, responseCode, messageRef, null, true));
+      .calledOnceWithExactly(webhookEvent, responseCode, messageRef, null, true));
   });
 
   mocha.it('Handle quick reply category', async () => {
@@ -919,6 +923,7 @@ mocha.describe('Handle quick reply unit tests', () => {
         },
       },
     };
+    const webhookEvent = { message: receivedMessage };
     const messageRef = {
       update: sinon.stub(),
     };
@@ -930,7 +935,7 @@ mocha.describe('Handle quick reply unit tests', () => {
     };
 
     const response = await rewiredLumiController
-      .__get__('handleQuickReply')(receivedMessage, messagesRef, userMessagesRef);
+      .__get__('handleQuickReply')(webhookEvent, messagesRef, userMessagesRef);
     chai.assert.strictEqual(response, stubResponse);
     chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
     chai.assert.isFalse(saveMessageToGroupStub.called);
@@ -938,7 +943,7 @@ mocha.describe('Handle quick reply unit tests', () => {
     chai.assert.isTrue(messageRef.update.calledOnceWithExactly({ category: stubCode }));
     chai.assert.isTrue(utilsStub.calledOnceWithExactly(responseCode));
     chai.assert.isTrue(getResponseStub
-      .calledOnceWithExactly(receivedMessage, responseCode, messageRef, null, true));
+      .calledOnceWithExactly(webhookEvent, responseCode, messageRef, null, true));
   });
 
   mocha.it('Handle quick reply other', async () => {
@@ -953,6 +958,7 @@ mocha.describe('Handle quick reply unit tests', () => {
         },
       },
     };
+    const webhookEvent = { message: receivedMessage };
     const messageRef = {
       update: sinon.stub(),
     };
@@ -964,7 +970,7 @@ mocha.describe('Handle quick reply unit tests', () => {
     };
 
     const response = await rewiredLumiController
-      .__get__('handleQuickReply')(receivedMessage, messagesRef, userMessagesRef);
+      .__get__('handleQuickReply')(webhookEvent, messagesRef, userMessagesRef);
     chai.assert.strictEqual(response, stubResponse);
     chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
     chai.assert.isFalse(saveMessageToGroupStub.called);
@@ -972,7 +978,7 @@ mocha.describe('Handle quick reply unit tests', () => {
     chai.assert.isFalse(messageRef.update.called);
     chai.assert.isFalse(utilsStub.called);
     chai.assert.isTrue(getResponseStub
-      .calledOnceWithExactly(receivedMessage, responseCode, messageRef, null, true));
+      .calledOnceWithExactly(webhookEvent, responseCode, messageRef, null, true));
   });
 });
 
@@ -1201,7 +1207,7 @@ mocha.describe('Handle text and attachments unit tests', () => {
     chai.assert.isTrue(handleMessageToGroupStub
       .calledOnceWithExactly(webhookEvent.sender.id, newMessageRef));
     chai.assert.isTrue(getResponseStub.calledOnceWithExactly(
-      webhookEvent.message,
+      webhookEvent,
       stubResponseInfo.responseCode,
       stubResponseInfo.messageRef,
       [],
@@ -1244,7 +1250,7 @@ mocha.describe('Handle text and attachments unit tests', () => {
     chai.assert.isTrue(handleMessageToGroupStub
       .calledOnceWithExactly(webhookEvent.sender.id, newMessageRef));
     chai.assert.isTrue(getResponseStub.calledOnceWithExactly(
-      webhookEvent.message,
+      webhookEvent,
       stubResponseInfo.responseCode,
       stubResponseInfo.messageRef,
       [],
@@ -1283,7 +1289,7 @@ mocha.describe('Handle text and attachments unit tests', () => {
     chai.assert.isTrue(handleMessageToGroupStub
       .calledOnceWithExactly(webhookEvent.sender.id, newMessageRef));
     chai.assert.isTrue(getResponseStub
-      .calledOnceWithExactly(webhookEvent.message, defaultResponseCode, newMessageRef, []));
+      .calledOnceWithExactly(webhookEvent, defaultResponseCode, newMessageRef, []));
   });
 });
 
@@ -1303,6 +1309,7 @@ mocha.describe('Handle message unit tests', () => {
   let rewiredLumiController;
   let revertLumiController;
   let dbStub;
+  let jsonStub;
   let refStub;
   let handleQuickReplyStub;
   let handleTextAndAttachmentsStub;
@@ -1315,6 +1322,7 @@ mocha.describe('Handle message unit tests', () => {
     refStub.withArgs(messagesRefParam).returns(messagesRef);
     refStub.withArgs(userMessagesRefParam).returns(userMessagesRef);
     dbStub = sinon.stub(admin, 'database').get(() => (() => ({ ref: refStub })));
+    jsonStub = sinon.stub(JSON, 'parse').callsFake(object => object);
     handleQuickReplyStub = sinon.stub().returns(stubResponse);
     handleTextAndAttachmentsStub = sinon.stub().resolves(stubResponse);
     callSendApiStub = sinon.stub();
@@ -1327,14 +1335,19 @@ mocha.describe('Handle message unit tests', () => {
   mocha.afterEach(() => {
     // Revert changes to affected modules
     dbStub.restore();
+    jsonStub.restore();
     revertLumiController();
   });
 
-  mocha.it('Handle quick reply message', async () => {
+  mocha.it('Handle message quick reply', async () => {
     const webhookEvent = {
       message: {
-        quick_reply: 'QUICK_REPLY',
-        text: '',
+        quick_reply: {
+          payload: {
+            code: 'CODE',
+          },
+        },
+        text: null,
       },
       sender: { id: senderPsid },
     };
@@ -1343,7 +1356,7 @@ mocha.describe('Handle message unit tests', () => {
     chai.assert.isTrue(refStub.calledWith(messagesRefParam));
     chai.assert.isTrue(refStub.calledWith(userMessagesRefParam));
     chai.assert.isTrue(handleQuickReplyStub.calledOnceWithExactly(
-      webhookEvent.message,
+      webhookEvent,
       messagesRef,
       userMessagesRef,
     ));
@@ -1351,10 +1364,10 @@ mocha.describe('Handle message unit tests', () => {
     chai.assert.isTrue(callSendApiStub.calledOnceWithExactly(senderPsid, stubResponse));
   });
 
-  mocha.it('Handle text and attachments message', async () => {
+  mocha.it('Handle message text and attachments', async () => {
     const webhookEvent = {
       message: {
-        quick_reply: '',
+        quick_reply: null,
         text: 'TEXT',
       },
       sender: { id: senderPsid },
@@ -1375,8 +1388,8 @@ mocha.describe('Handle message unit tests', () => {
   mocha.it('Handle neither message', async () => {
     const webhookEvent = {
       message: {
-        quick_reply: '',
-        text: '',
+        quick_reply: null,
+        text: null,
       },
       sender: { id: senderPsid },
     };

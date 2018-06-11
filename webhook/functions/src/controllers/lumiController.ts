@@ -140,6 +140,36 @@ const callSendApi = async (senderPsid, response) => {
 
 
 /**
+ * Send default message that should be the last message Lumi sends always
+ */
+const sendWelcomeMessage = async (senderPsid, firstName) => {
+  const response = {
+    text: `Hey ${firstName}! How are you and LO doing? Share a moment from today with me 😊`,
+    quick_replies: [
+      {
+        title: 'Share moment',
+        content_type: constants.QUICK_REPLY_CONTENT_TYPE_TEXT,
+        // Save quickReply payload as JSON string because payload only supports string values
+        payload: JSON.stringify({
+          code: constants.RESPONSE_CODE_SHARE_MOMENT_YES,
+        }),
+      },
+      {
+        title: 'Maybe another time',
+        content_type: constants.QUICK_REPLY_CONTENT_TYPE_TEXT,
+        // Save quickReply payload as JSON string because payload only supports string values
+        payload: JSON.stringify({
+          code: constants.RESPONSE_CODE_SHARE_MOMENT_NO,
+        }),
+      }
+    ],
+  };
+
+  await callSendApi(senderPsid, response);
+};
+
+
+/**
  * Get group name from DB given a group ID
  */
 const getGroupNameFromGroupId = async (groupId) => {
@@ -179,7 +209,7 @@ const getQuickReply = async (
  * Get response for a specific message type from Lumi Chat
  */
 const getResponse = async (
-  receivedMessage,
+  webhookEvent,
   receivedResponseCode,
   messageRef,
   // userGroups is only relevant when response code is NEW_MESSAGE
@@ -188,6 +218,7 @@ const getResponse = async (
   isOriginalMessageText = null,
 ) => {
   console.log('Running function getResponse');
+  const receivedMessage = webhookEvent.message;
   let quickReplies = null;
   // If user is in multiple groups, ask user which group to save the message to
   if (receivedResponseCode === constants.RESPONSE_CODE_NEW_MESSAGE && userGroups) {
@@ -239,8 +270,8 @@ const getResponse = async (
     ];
   }
   return {
-    text: utils.responseCodeToResponseMessage(
-      receivedResponseCode, receivedMessage, userGroups, isOriginalMessageText),
+    text: await utils.responseCodeToResponseMessage(
+      receivedResponseCode, webhookEvent, userGroups, isOriginalMessageText),
     quick_replies: quickReplies,
   };
 };
@@ -265,10 +296,10 @@ const saveMessageToGroup = (messageRef, groupId) => {
  * Handle quick reply responses from Lumi user
  * Async because getResponse returns a promise
  */
-const handleQuickReply = async (receivedMessage, messagesRef, userMessagesRef) => {
+const handleQuickReply = async (webhookEvent, messagesRef, userMessagesRef) => {
   console.log('Running function handleQuickReply');
   // Save quickReply payload as JSON string because payload only supports string values
-  const quickReplyPayload = JSON.parse(receivedMessage.quick_reply.payload);
+  const quickReplyPayload = JSON.parse(webhookEvent.message.quick_reply.payload);
   const responseCode = quickReplyPayload.code;
   const groupId = quickReplyPayload.groupId;
   const isOriginalMessageText = quickReplyPayload.isOriginalMessageText;
@@ -291,7 +322,7 @@ const handleQuickReply = async (receivedMessage, messagesRef, userMessagesRef) =
     messageRef.update({ category: utils.responseCodeToMessageCategoryCode(responseCode) });
   }
   // Generate response based on received response code
-  return getResponse(receivedMessage, responseCode, messageRef, null, isOriginalMessageText);
+  return getResponse(webhookEvent, responseCode, messageRef, null, isOriginalMessageText);
 };
 
 
@@ -459,7 +490,7 @@ const handleTextAndAttachments = async (webhookEvent, messagesRef, userMessagesR
   if (!messageRef) {
     messageRef = newMessageRef;
   }
-  return getResponse(receivedMessage, responseCode, messageRef, userGroups);
+  return getResponse(webhookEvent, responseCode, messageRef, userGroups);
 };
 
 
@@ -479,7 +510,7 @@ const handleMessage = async (webhookEvent) => {
   // Handle quick replies first because quick reply messages can also contain text
   const quickReply = receivedMessage.quick_reply;
   if (quickReply) {
-    response = await handleQuickReply(receivedMessage, messagesRef, userMessagesRef);
+    response = await handleQuickReply(webhookEvent, messagesRef, userMessagesRef);
   // Handle free-form text and image messages
   } else if (receivedMessage.text || receivedMessage.attachments) {
     // If message contains image, store image in Firebase Storage and attach this URL to message
@@ -492,6 +523,23 @@ const handleMessage = async (webhookEvent) => {
 
   // Send the response message
   await callSendApi(senderPsid, response);
+
+  // If received message is end of sequence, send welcome message
+  if (quickReply) {
+    const quickReplyPayload = JSON.parse(quickReply.payload);
+    const responseCode = quickReplyPayload.code;
+    if (
+      responseCode.includes('category') ||
+      [
+        constants.RESPONSE_CODE_CREATE_CARE_GROUP_YES,
+        constants.RESPONSE_CODE_CREATE_CARE_GROUP_NO,
+        constants.RESPONSE_CODE_SHARE_MOMENT_NO,
+      ].indexOf(responseCode) >= 0
+    ) {
+      const firstName = await utils.getUserFirstName(senderPsid);
+      await sendWelcomeMessage(senderPsid, firstName);
+    }
+  }
 };
 
 
@@ -511,11 +559,11 @@ const handlePostback = async (webhookEvent) => {
       text: `Hey ${firstName}! ${constants.RESPONSE_MESSAGE_GET_STARTED}`,
       quick_replies: [
         {
-          title: 'Create Care Group',
+          title: 'Create Care Circle',
           content_type: constants.QUICK_REPLY_CONTENT_TYPE_TEXT,
           // Save quickReply payload as JSON string because payload only supports string values
           payload: JSON.stringify({
-            code: constants.RESPONSE_CODE_CREATE_CARE_GROUP,
+            code: constants.RESPONSE_CODE_CREATE_CARE_GROUP_YES,
           }),
         },
         {
@@ -523,7 +571,7 @@ const handlePostback = async (webhookEvent) => {
           content_type: constants.QUICK_REPLY_CONTENT_TYPE_TEXT,
           // Save quickReply payload as JSON string because payload only supports string values
           payload: JSON.stringify({
-            code: constants.RESPONSE_CODE_NOT_NOW,
+            code: constants.RESPONSE_CODE_CREATE_CARE_GROUP_NO,
           }),
         }
       ],

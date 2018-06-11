@@ -52,8 +52,12 @@ export const QUICK_REPLY_TITLE_CATEGORY_OTHER = 'Other';
 
 // Get started response codes
 export const RESPONSE_CODE_GET_STARTED = 'get-started';
-export const RESPONSE_CODE_CREATE_CARE_GROUP = 'create-care-group';
-export const RESPONSE_CODE_NOT_NOW = 'not-now';
+export const RESPONSE_CODE_CREATE_CARE_GROUP_YES = 'create-care-group-yes';
+export const RESPONSE_CODE_CREATE_CARE_GROUP_NO = 'create-care-group-no';
+
+// Welcome message response codes
+export const RESPONSE_CODE_SHARE_MOMENT_YES = 'share-moment-yes';
+export const RESPONSE_CODE_SHARE_MOMENT_NO = 'share-moment-no';
 
 // Free message response codes
 export const RESPONSE_CODE_NEW_MESSAGE = 'new-message';
@@ -83,18 +87,23 @@ export const RESPONSE_MESSAGE_GET_STARTED =
 
 I can help you record moments in your caregiving journey, recommend interesting resources and activities to help you, and summarise moments for you and your loved one.
 
-First, create a care group 👪 for your loved one at journal.lumicares.com.
+First, create a care circle 👪 for your loved one at journal.lumicares.com.
 
-Once you've created a care group, you can start sharing moments with me here through pictures or text 📝
+Once you've created a care circle, you can start sharing moments with me here through pictures or text 📝
 
 I'll do the job of keeping them safe for you 💜 You can view your collection of moments at journal.lumicares.com anytime!`;
 
-// Menu messages
-export const RESPONSE_MESSAGE_CREATE_CARE_GROUP = 'Create your care group here! journal.lumicares.com';
-export const RESPONSE_MESSAGE_NOT_NOW = 'No problem! We can do this any time. I can only save your shared moments once you have a care group. I\'m here whenever you\'re ready 😊 ';
+// Get started messages
+export const RESPONSE_MESSAGE_CREATE_CARE_GROUP_YES = 'Create your care circle here! journal.lumicares.com';
+export const RESPONSE_MESSAGE_CREATE_CARE_GROUP_NO = 'No problem! We can do this any time. I can only save your shared moments once you have a care circle. I\'m here whenever you\'re ready 😊 ';
+
+// Welcome messages
+export const RESPONSE_MESSAGE_SHARE_MOMENT_YES = 'Attach a picture from today or type your thoughts here 💬';
+export const RESPONSE_MESSAGE_SHARE_MOMENT_NO = firstName => `Sure thing! I hope all is well on your end ${firstName}. Know that you aren't alone in this journey! Hear from you soon 💜`;
+
 
 // Handle new messages
-export const RESPONSE_MESSAGE_NEW_MESSAGE_MULTIPLE_GROUPS = 'Which group would you like to save this message to?';
+export const RESPONSE_MESSAGE_NEW_MESSAGE_MULTIPLE_GROUPS = 'Which circle would you like to save this message to?';
 export const RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE = 'I have saved this image to your Timeline! Would you like to attach a message?';
 export const RESPONSE_MESSAGE_NEW_MESSAGE_TEXT = 'I have saved this message to your Timeline. Would you like to attach an image?';
 

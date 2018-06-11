@@ -16,6 +16,7 @@ export const getPageAccessToken = () => functions.config().lumi.env === constant
   functions.config().lumi.token_page_access_staging;
 
 
+// TODO(kai): Write unit tests
 export const getUserFirstName = async (senderPsid) => {
   // Get first name from FB Graph API
   const firstNameRequestOptions = {
@@ -86,9 +87,9 @@ export const responseCodeToQuickReplyTitle = (responseCode) => {
 };
 
 
-export const responseCodeToResponseMessage = (
+export const responseCodeToResponseMessage = async (
   receivedResponseCode,
-  receivedMessage = null,
+  webhookEvent = null,
   userGroups = null,
   isOriginalMessageText = null,
 ) => {
@@ -103,10 +104,27 @@ export const responseCodeToResponseMessage = (
     );
   }
   switch (receivedResponseCode) {
-    case constants.RESPONSE_CODE_CREATE_CARE_GROUP:
-      return constants.RESPONSE_MESSAGE_CREATE_CARE_GROUP;
-    case constants.RESPONSE_CODE_NOT_NOW:
-      return constants.RESPONSE_MESSAGE_NOT_NOW;
+    // TODO(kai): Write tests for care group and share moment responses
+    // Create care group responses
+    case constants.RESPONSE_CODE_CREATE_CARE_GROUP_YES:
+      return constants.RESPONSE_MESSAGE_CREATE_CARE_GROUP_YES;
+    case constants.RESPONSE_CODE_CREATE_CARE_GROUP_NO:
+      return constants.RESPONSE_MESSAGE_CREATE_CARE_GROUP_NO;
+
+    // Share moment responses
+    case constants.RESPONSE_CODE_SHARE_MOMENT_YES: {
+      return constants.RESPONSE_MESSAGE_SHARE_MOMENT_YES;
+    }
+    case constants.RESPONSE_CODE_SHARE_MOMENT_NO: {
+      const senderPsid = webhookEvent.sender.id;
+      if (!senderPsid) {
+        console.error('No sender PSID when user declines to share moment');
+      }
+      const firstName = await getUserFirstName(senderPsid);
+      return constants.RESPONSE_MESSAGE_SHARE_MOMENT_NO(firstName);
+    }
+
+    // Share moment sequence responses
     case constants.RESPONSE_CODE_CHOSE_GROUP:
       // If original message is text, respond one way
       if (isOriginalMessageText) {
@@ -116,7 +134,7 @@ export const responseCodeToResponseMessage = (
       return constants.RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE;
     case constants.RESPONSE_CODE_NEW_MESSAGE:
       // If new message is text, respond one way
-      if ('text' in receivedMessage) {
+      if ('text' in webhookEvent.message) {
         return constants.RESPONSE_MESSAGE_NEW_MESSAGE_TEXT;
       }
       // Else if new message is image, respond another way

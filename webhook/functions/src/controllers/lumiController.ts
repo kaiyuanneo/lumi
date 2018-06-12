@@ -607,7 +607,7 @@ const isUserInGroup = async (psid) => {
   }
   const userGroupsRef = db.ref(`${constants.DB_PATH_USERS}/${uid}/groups`);
   const userGroupsSnapshot = await userGroupsRef.once(constants.DB_EVENT_NAME_VALUE);
-  const numUserGroups = userGroupsSnapshot.getChildrenCount();
+  const numUserGroups = userGroupsSnapshot.numChildren();
   if (numUserGroups > 0) {
     return true;
   }

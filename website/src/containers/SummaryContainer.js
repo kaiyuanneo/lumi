@@ -54,7 +54,6 @@ export const _getMessageStats = (state) => {
 
 
 const mapStateToProps = state => ({
-  groupName: state.group.groupName,
   // Initial value in state is null to indicate that messages have not been fetched yet
   numMessagesState: state.timeline.numMessages,
   // messageStats is an object with the following as keys and values:

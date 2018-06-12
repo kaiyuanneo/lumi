@@ -23,7 +23,7 @@ class SummaryComponent extends Component {
     if (this.props.numMessagesState === 0) {
       return (
         <Flexbox flexDirection="column" alignItems="center">
-          <h4>{this.props.groupName} Group Summary</h4>
+          <h4>Group Summary</h4>
           <HelpMomentsComponent />
         </Flexbox>
       );
@@ -119,7 +119,7 @@ class SummaryComponent extends Component {
     // Render summary elements
     return (
       <Flexbox flexDirection="column" alignItems="center">
-        <h4>{this.props.groupName} Group Summary</h4>
+        <h4>Group Summary</h4>
         {numTotalMomentsElement}
         <br />
         {numStarredMomentsElement}
@@ -144,7 +144,6 @@ class SummaryComponent extends Component {
 }
 
 SummaryComponent.propTypes = {
-  groupName: PropTypes.string,
   numMessagesState: PropTypes.number,
   messageStats: PropTypes.shape({
     numMessages: PropTypes.number,
@@ -170,7 +169,6 @@ SummaryComponent.propTypes = {
 };
 
 SummaryComponent.defaultProps = {
-  groupName: null,
   numMessagesState: null,
 };
 

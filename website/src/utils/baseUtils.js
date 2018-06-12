@@ -1,3 +1,4 @@
+import dateFormat from 'dateformat';
 import * as firebase from 'firebase';
 import React from 'react';
 import { FormControl, FormGroup, Table } from 'react-bootstrap';
@@ -23,7 +24,7 @@ export const usToIsoDate = (usDate) => {
 /**
  * Convert timestamp to local date string
  */
-export const getLocalDateString = timestamp => new Date(timestamp).toLocaleDateString();
+export const getDateString = timestamp => dateFormat(new Date(timestamp), 'd mmm yyyy');
 
 
 /**

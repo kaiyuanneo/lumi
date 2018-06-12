@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import TimelineComponent from '../components/TimelineComponent';
 import * as constants from '../static/constants';
-import * as baseUtils from '../utils/baseUtils';
 import * as momentUtils from '../utils/momentUtils';
 
 
@@ -56,19 +55,9 @@ const mapDispatchToProps = dispatch => ({
 });
 
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => ({
-  ...stateProps,
-  ...dispatchProps,
-  ...ownProps,
-  getCategoryName: categoryCode => baseUtils.categoryCodeToName(categoryCode),
-  getLocalDateString: timestamp => baseUtils.getLocalDateString(timestamp),
-});
-
-
 const TimelineContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
-  mergeProps,
 )(TimelineComponent);
 
 export default TimelineContainer;

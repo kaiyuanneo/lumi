@@ -9,7 +9,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...stateProps,
   ...dispatchProps,
   ...ownProps,
-  getLocalDateString: timestamp => baseUtils.getLocalDateString(timestamp),
+  getDateString: timestamp => baseUtils.getDateString(timestamp),
 });
 
 

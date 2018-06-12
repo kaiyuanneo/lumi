@@ -278,7 +278,7 @@ it('TimelineStoryHeaderComponent', () => {
   const renderer = new ShallowRenderer();
   const component = renderer.render((
     <TimelineStoryHeaderComponent
-      getLocalDateString={() => {}}
+      getDateString={() => {}}
       messageValue={{}}
     />
   ));

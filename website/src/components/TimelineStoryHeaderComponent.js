@@ -7,7 +7,7 @@ import { Image } from 'react-bootstrap';
 const TimelineStoryHeaderComponent = (props) => {
   const senderFullName =
     `${props.messageValue.senderFirstName} ${props.messageValue.senderLastName}`;
-  const messageTimestamp = props.getLocalDateString(props.messageValue.timestamp);
+  const messageTimestamp = props.getDateString(props.messageValue.timestamp);
   return (
     <Flexbox alignItems="center" className="timeline-story-padding">
       <Image
@@ -25,7 +25,7 @@ const TimelineStoryHeaderComponent = (props) => {
 };
 
 TimelineStoryHeaderComponent.propTypes = {
-  getLocalDateString: PropTypes.func.isRequired,
+  getDateString: PropTypes.func.isRequired,
   messageValue: PropTypes.shape({
     category: PropTypes.string,
     senderFirstName: PropTypes.string,

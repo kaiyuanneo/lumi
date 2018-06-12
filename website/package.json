@@ -10,6 +10,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "dateformat": "^3.0.3",
     "firebase": "^4.12.1",
     "flexbox-react": "^4.4.0",
     "prop-types": "^15.6.0",

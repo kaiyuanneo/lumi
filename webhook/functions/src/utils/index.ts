@@ -103,6 +103,11 @@ export const responseCodeToResponseMessage = async (
       constants.RESPONSE_MESSAGE_CATEGORY_2
     );
   }
+  const senderPsid = webhookEvent.sender.id;
+  if (!senderPsid) {
+    console.error('No sender PSID to respond to');
+  }
+  const firstName = await getUserFirstName(senderPsid);
   switch (receivedResponseCode) {
     // TODO(kai): Write tests for care group and share moment responses
     // Create care group responses
@@ -116,11 +121,6 @@ export const responseCodeToResponseMessage = async (
       return constants.RESPONSE_MESSAGE_SHARE_MOMENT_YES;
     }
     case constants.RESPONSE_CODE_SHARE_MOMENT_NO: {
-      const senderPsid = webhookEvent.sender.id;
-      if (!senderPsid) {
-        console.error('No sender PSID when user declines to share moment');
-      }
-      const firstName = await getUserFirstName(senderPsid);
       return constants.RESPONSE_MESSAGE_SHARE_MOMENT_NO(firstName);
     }
 
@@ -128,17 +128,17 @@ export const responseCodeToResponseMessage = async (
     case constants.RESPONSE_CODE_CHOSE_GROUP:
       // If original message is text, respond one way
       if (isOriginalMessageText) {
-        return constants.RESPONSE_MESSAGE_NEW_MESSAGE_TEXT;
+        return constants.RESPONSE_MESSAGE_NEW_MESSAGE_TEXT(firstName);
       }
       // Else if original message is image, respond another way
-      return constants.RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE;
+      return constants.RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE(firstName);
     case constants.RESPONSE_CODE_NEW_MESSAGE:
       // If new message is text, respond one way
       if ('text' in webhookEvent.message) {
-        return constants.RESPONSE_MESSAGE_NEW_MESSAGE_TEXT;
+        return constants.RESPONSE_MESSAGE_NEW_MESSAGE_TEXT(firstName);
       }
       // Else if new message is image, respond another way
-      return constants.RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE;
+      return constants.RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE(firstName);
     case constants.RESPONSE_CODE_ATTACH_IMAGE_YES:
       return constants.RESPONSE_MESSAGE_ATTACH_IMAGE_YES;
     case constants.RESPONSE_CODE_ATTACH_TEXT_YES:

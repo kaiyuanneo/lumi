@@ -122,27 +122,29 @@ export const RESPONSE_MESSAGE_NO_CARE_GROUP = firstName =>
 
 // Handle new messages
 export const RESPONSE_MESSAGE_NEW_MESSAGE_MULTIPLE_GROUPS = 'Which circle would you like to save this message to?';
-export const RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE = 'I have saved this image to your Timeline! Would you like to attach a message?';
-export const RESPONSE_MESSAGE_NEW_MESSAGE_TEXT = 'I have saved this message to your Timeline. Would you like to attach an image?';
+export const RESPONSE_MESSAGE_NEW_MESSAGE_IMAGE = firstName =>
+`Thanks for sharing that moment with me, ${firstName}. I've saved it to your Timeline. Would you like to include a description?`;
+export const RESPONSE_MESSAGE_NEW_MESSAGE_TEXT = firstName =>
+`Thanks for sharing that moment with me, ${firstName}. I've saved it to your Timeline. Would you like to attach a picture?`;
 
 // Handle pre-attach responses
-export const RESPONSE_MESSAGE_ATTACH_IMAGE_YES = 'Great! Please send me the image you wish to attach.';
-export const RESPONSE_MESSAGE_ATTACH_TEXT_YES = 'Great! Please send me the message you wish to attach.';
+export const RESPONSE_MESSAGE_ATTACH_IMAGE_YES = 'Great! Could you share the picture with me? 📷';
+export const RESPONSE_MESSAGE_ATTACH_TEXT_YES = 'Great! How would you describe this moment? ✏️';
 
 // Handle post-attach responses
-const RESPONSE_MESSAGE_STAR_QUESTION = 'Would you like to star this message?';
+const RESPONSE_MESSAGE_STAR_QUESTION = 'Would you like to star this moment?';
 export const RESPONSE_MESSAGE_ATTACH_NO = `Ok! ${RESPONSE_MESSAGE_STAR_QUESTION}`;
-export const RESPONSE_MESSAGE_ATTACHED_IMAGE = `Perfect! I have attached this image to the previous message. ${RESPONSE_MESSAGE_STAR_QUESTION}`;
-export const RESPONSE_MESSAGE_ATTACHED_TEXT = `Perfect! I have attached this message to the previous image. ${RESPONSE_MESSAGE_STAR_QUESTION}`;
+export const RESPONSE_MESSAGE_ATTACHED_IMAGE = `Thanks for sharing that picture! I have attached it to the moment description. ${RESPONSE_MESSAGE_STAR_QUESTION}`;
+export const RESPONSE_MESSAGE_ATTACHED_TEXT = `Thanks for sharing that description! I have attached it to the earlier picture. ${RESPONSE_MESSAGE_STAR_QUESTION}`;
 
 // Handle star responses
-const RESPONSE_MESSAGE_CATEGORY_QUESTION = 'Which category is most relevant?';
+const RESPONSE_MESSAGE_CATEGORY_QUESTION = 'Which category best describes this moment?';
 export const RESPONSE_MESSAGE_STARRED_YES = `Great! I have starred the message. ${RESPONSE_MESSAGE_CATEGORY_QUESTION}`;
 export const RESPONSE_MESSAGE_STARRED_NO = `Sounds good! ${RESPONSE_MESSAGE_CATEGORY_QUESTION}`;
 
 // Handle category responses
-export const RESPONSE_MESSAGE_CATEGORY_1 = 'Great! Saved under category ';
-export const RESPONSE_MESSAGE_CATEGORY_2 = '. You can view your Timeline anytime at lumicares.com!';
+export const RESPONSE_MESSAGE_CATEGORY_1 = `Got you! I've saved your moment under category `;
+export const RESPONSE_MESSAGE_CATEGORY_2 = `. All saved for you. Feel free to view your collection of moments or share another moment with me any time 💜`;
 
 export const ROUTE_LUMI = '/lumi';
 export const ROUTE_LUMI_ROOT = '/';

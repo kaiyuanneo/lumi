@@ -37,6 +37,8 @@ export const PAGE_ID_LUMI = '159838238099782';
 export const PORT = 1337;
 
 export const POSTBACK_CODE_GET_STARTED = 'GET_STARTED';
+export const POSTBACK_CODE_ADD_MOMENT = 'ADD_MOMENT';
+export const POSTBACK_CODE_VIEW_MOMENTS = 'VIEW_MOMENTS';
 
 export const QUICK_REPLY_CONTENT_TYPE_TEXT = 'text';
 
@@ -81,6 +83,8 @@ export const RESPONSE_CODE_CATEGORY_OTHER = 'category-other';
 // Disable TSLint max-line-length for rest of file because messages are naturally long and clunky
 /* tslint:disable:max-line-length */
 
+export const MESSENGER_WEBVIEW_NOTICE = 'Note: journal.lumicares.com is not accessible in Messenger. We must use other browsers such as Chrome or Safari.';
+
 // Get Started message
 export const RESPONSE_MESSAGE_GET_STARTED =
 `I am Lumi 😊
@@ -91,16 +95,30 @@ First, create a care circle 👪 for your loved one at journal.lumicares.com.
 
 Once you've created a care circle, you can start sharing moments with me here through pictures or text 📝
 
-I'll do the job of keeping them safe for you 💜 You can view your collection of moments at journal.lumicares.com anytime!`;
+I'll do the job of keeping them safe for you 💜 You can view your collection of moments at journal.lumicares.com anytime!
+
+${MESSENGER_WEBVIEW_NOTICE}`;
 
 // Get started messages
-export const RESPONSE_MESSAGE_CREATE_CARE_GROUP_YES = 'Create your care circle here! journal.lumicares.com';
+export const RESPONSE_MESSAGE_CREATE_CARE_GROUP_YES =
+`Create your care circle here! journal.lumicares.com
+
+${MESSENGER_WEBVIEW_NOTICE}`;
 export const RESPONSE_MESSAGE_CREATE_CARE_GROUP_NO = 'No problem! We can do this any time. I can only save your shared moments once you have a care circle. I\'m here whenever you\'re ready 😊 ';
 
 // Welcome messages
 export const RESPONSE_MESSAGE_SHARE_MOMENT_YES = 'Attach a picture from today or type your thoughts here 💬';
 export const RESPONSE_MESSAGE_SHARE_MOMENT_NO = firstName => `Sure thing! I hope all is well on your end ${firstName}. Know that you aren't alone in this journey! Hear from you soon 💜`;
 
+// Persistent menu messsages
+export const RESPONSE_MESSAGE_VIEW_MOMENTS =
+`View your moments any time at journal.lumicares.com!
+
+${MESSENGER_WEBVIEW_NOTICE}`;
+
+// Error messages
+export const RESPONSE_MESSAGE_NO_CARE_GROUP = firstName =>
+`Hey ${firstName}, I notice that you haven't created a Care Circle. I can only start saving your shared moments once you have created a care circle. 👪 Would you like to create one now?`;
 
 // Handle new messages
 export const RESPONSE_MESSAGE_NEW_MESSAGE_MULTIPLE_GROUPS = 'Which circle would you like to save this message to?';

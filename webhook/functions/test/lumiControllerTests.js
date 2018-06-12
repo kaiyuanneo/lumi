@@ -1408,6 +1408,7 @@ mocha.describe('Handle message unit tests', () => {
  * Test that Lumi receives messages properly
  */
 mocha.describe('Receive message unit tests', () => {
+  let isUserInGroupStub;
   let handleMessageStub;
   let res;
   let rewiredLumiController;
@@ -1416,13 +1417,17 @@ mocha.describe('Receive message unit tests', () => {
     rewiredLumiController = rewire(lumiControllerFilePath);
   });
   mocha.beforeEach(() => {
+    isUserInGroupStub = sinon.stub().resolves(true);
     handleMessageStub = sinon.stub();
     res = {
       sendStatus: sinon.stub(),
       status: sinon.stub().returnsThis(),
       send: sinon.stub(),
     };
-    revertLumiController = rewiredLumiController.__set__('handleMessage', handleMessageStub);
+    revertLumiController = rewiredLumiController.__set__({
+      isUserInGroup: isUserInGroupStub,
+      handleMessage: handleMessageStub,
+    });
   });
   mocha.afterEach(() => {
     // Revert changes to affected modules
@@ -1430,66 +1435,75 @@ mocha.describe('Receive message unit tests', () => {
   });
 
   mocha.it('Test receive message success', async () => {
+    const webhookEvent = {
+      message: 'MESSAGE',
+      sender: {
+        id: 'ID',
+      },
+    };
     const req = {
       body: {
         object: 'page',
         entry: [
           {
-            messaging: [
-              {
-                message: 'MESSAGE',
-              },
-            ],
+            messaging: [webhookEvent],
           },
         ],
       },
     };
     await rewiredLumiController.message(req, res);
     chai.assert.isFalse(res.sendStatus.called);
-    chai.assert.isTrue(handleMessageStub.calledOnceWithExactly(req.body.entry[0].messaging[0]));
+    chai.assert.isTrue(isUserInGroupStub.calledOnceWithExactly(webhookEvent.sender.id));
+    chai.assert.isTrue(handleMessageStub.calledOnceWithExactly(webhookEvent));
     chai.assert.isTrue(res.status.calledOnceWithExactly(200));
     chai.assert.isTrue(res.send.calledOnceWithExactly('EVENT_RECEIVED'));
   });
 
   mocha.it('Test receive message from non-page', async () => {
+    const webhookEvent = {
+      message: 'MESSAGE',
+      sender: {
+        id: 'ID',
+      },
+    };
     const req = {
       body: {
         object: '',
         entry: [
           {
-            messaging: [
-              {
-                message: 'MESSAGE',
-              },
-            ],
+            messaging: [webhookEvent],
           },
         ],
       },
     };
     await rewiredLumiController.message(req, res);
     chai.assert.isTrue(res.sendStatus.calledOnceWithExactly(404));
+    chai.assert.isFalse(isUserInGroupStub.called);
     chai.assert.isFalse(handleMessageStub.called);
     chai.assert.isFalse(res.status.called);
     chai.assert.isFalse(res.send.called);
   });
 
   mocha.it('Test receive message with no message', async () => {
+    const webhookEvent = {
+      message: '',
+      sender: {
+        id: 'ID',
+      },
+    };
     const req = {
       body: {
         object: 'page',
         entry: [
           {
-            messaging: [
-              {
-                message: '',
-              },
-            ],
+            messaging: [webhookEvent],
           },
         ],
       },
     };
     await rewiredLumiController.message(req, res);
     chai.assert.isFalse(res.sendStatus.called);
+    chai.assert.isFalse(isUserInGroupStub.called);
     chai.assert.isFalse(handleMessageStub.called);
     chai.assert.isTrue(res.status.calledOnceWithExactly(200));
     chai.assert.isTrue(res.send.calledOnceWithExactly('EVENT_RECEIVED'));

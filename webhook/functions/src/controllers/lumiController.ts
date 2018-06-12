@@ -544,6 +544,29 @@ const handleMessage = async (webhookEvent) => {
 
 
 /**
+ * Get quick replies that prompt user to create care group
+ */
+const getCreateCareGroupQuickReplies = () => [
+  {
+    title: 'Create Care Circle',
+    content_type: constants.QUICK_REPLY_CONTENT_TYPE_TEXT,
+    // Save quickReply payload as JSON string because payload only supports string values
+    payload: JSON.stringify({
+      code: constants.RESPONSE_CODE_CREATE_CARE_GROUP_YES,
+    }),
+  },
+  {
+    title: 'Not Now',
+    content_type: constants.QUICK_REPLY_CONTENT_TYPE_TEXT,
+    // Save quickReply payload as JSON string because payload only supports string values
+    payload: JSON.stringify({
+      code: constants.RESPONSE_CODE_CREATE_CARE_GROUP_NO,
+    }),
+  }
+];
+
+
+/**
  * Handle postback events from Messenger Platform
  * TODO(kai): Write tests
  */
@@ -553,32 +576,55 @@ const handlePostback = async (webhookEvent) => {
 
   // TODO(kai): Integrate this with getResponse
   // Generate response
-  let response = { text: 'bad response', quick_replies: null };
-  if (webhookEvent.postback.payload === constants.POSTBACK_CODE_GET_STARTED) {
+  let response = { text: 'Unrecognised postback', quick_replies: null };
+  const postbackPayload = webhookEvent.postback.payload;
+  if (postbackPayload === constants.POSTBACK_CODE_GET_STARTED) {
     response = {
       text: `Hey ${firstName}! ${constants.RESPONSE_MESSAGE_GET_STARTED}`,
-      quick_replies: [
-        {
-          title: 'Create Care Circle',
-          content_type: constants.QUICK_REPLY_CONTENT_TYPE_TEXT,
-          // Save quickReply payload as JSON string because payload only supports string values
-          payload: JSON.stringify({
-            code: constants.RESPONSE_CODE_CREATE_CARE_GROUP_YES,
-          }),
-        },
-        {
-          title: 'Not Now',
-          content_type: constants.QUICK_REPLY_CONTENT_TYPE_TEXT,
-          // Save quickReply payload as JSON string because payload only supports string values
-          payload: JSON.stringify({
-            code: constants.RESPONSE_CODE_CREATE_CARE_GROUP_NO,
-          }),
-        }
-      ],
+      quick_replies: getCreateCareGroupQuickReplies(),
     };
+  } else if (postbackPayload === constants.POSTBACK_CODE_ADD_MOMENT) {
+    response.text = constants.RESPONSE_MESSAGE_SHARE_MOMENT_YES;
+  } else if (postbackPayload === constants.POSTBACK_CODE_VIEW_MOMENTS) {
+    response.text = constants.RESPONSE_MESSAGE_VIEW_MOMENTS;
   }
 
   // Send the response message
+  await callSendApi(senderPsid, response);
+};
+
+
+/**
+ * Check if user belongs to a group
+ */
+const isUserInGroup = async (psid) => {
+  const db = admin.database();
+  const uidRef = db.ref(`${constants.DB_PATH_USER_PSID_TO_UID}/${psid}`);
+  const uidSnapshot = await uidRef.once(constants.DB_EVENT_NAME_VALUE);
+  const uid = uidSnapshot.val();
+  if (!uid) {
+    return false;
+  }
+  const userGroupsRef = db.ref(`${constants.DB_PATH_USERS}/${uid}/groups`);
+  const userGroupsSnapshot = await userGroupsRef.once(constants.DB_EVENT_NAME_VALUE);
+  const numUserGroups = userGroupsSnapshot.getChildrenCount();
+  if (numUserGroups > 0) {
+    return true;
+  }
+  return false;
+};
+
+
+/**
+ * Send message to prompt user to join care group
+ */
+const sendCareGroupError = async (webhookEvent) => {
+  const senderPsid = webhookEvent.sender.id;
+  const userFirstName = await utils.getUserFirstName(senderPsid);
+  const response = {
+    text: constants.RESPONSE_MESSAGE_NO_CARE_GROUP(userFirstName),
+    quick_replies: getCreateCareGroupQuickReplies(),
+  };
   await callSendApi(senderPsid, response);
 };
 
@@ -602,7 +648,12 @@ export const message = async (req, res) => {
     console.log(webhookEvent);
     // Currently Lumi only handles message events
     if (webhookEvent.message) {
-      await handleMessage(webhookEvent);
+      // If user does not have care group and message is not quick reply, send error message
+      if (!(await isUserInGroup(webhookEvent.sender.id)) && !webhookEvent.message.quick_reply) {
+        await sendCareGroupError(webhookEvent);
+      } else {
+        await handleMessage(webhookEvent);
+      }
     } else if (webhookEvent.postback) {
       await handlePostback(webhookEvent);
     }

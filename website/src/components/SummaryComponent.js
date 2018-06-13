@@ -121,23 +121,29 @@ class SummaryComponent extends Component {
     return (
       <Flexbox flexDirection="column" alignItems="center">
         <h4>Group Summary</h4>
-        {numTotalMomentsElement}
+        <Flexbox justifyContent="space-around" className="summary-card-group">
+          {numTotalMomentsElement}
+          {numStarredMomentsElement}
+        </Flexbox>
         <br />
-        {numStarredMomentsElement}
+        <Flexbox justifyContent="space-around" className="summary-card-group">
+          {numActivityMomentsElement}
+          {numBehaviourMomentsElement}
+        </Flexbox>
         <br />
-        {numActivityMomentsElement}
+        <Flexbox justifyContent="space-around" className="summary-card-group">
+          {numMoodMomentsElement}
+          {numMemoryMomentsElement}
+        </Flexbox>
         <br />
-        {numBehaviourMomentsElement}
+        <Flexbox justifyContent="space-around" className="summary-card-group">
+          {numMedicalMomentsElement}
+          {numCaregiverMomentsElement}
+        </Flexbox>
         <br />
-        {numMoodMomentsElement}
-        <br />
-        {numMemoryMomentsElement}
-        <br />
-        {numMedicalMomentsElement}
-        <br />
-        {numCaregiverMomentsElement}
-        <br />
-        {numOtherMomentsElement}
+        <Flexbox justifyContent="space-around" className="summary-card-group">
+          {numOtherMomentsElement}
+        </Flexbox>
         <br />
       </Flexbox>
     );

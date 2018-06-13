@@ -1,26 +1,13 @@
-import Flexbox from 'flexbox-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Image } from 'react-bootstrap';
 
 
 const TimelineStoryHeaderComponent = (props) => {
-  const senderFullName =
-    `${props.messageValue.senderFirstName} ${props.messageValue.senderLastName}`;
   const messageTimestamp = props.getDateString(props.messageValue.timestamp);
   return (
-    <Flexbox alignItems="center" className="timeline-story-padding">
-      <Image
-        className="timeline-story-header-profile-image"
-        src={props.messageValue.senderProfilePic}
-        circle
-      />
-      <span className="space-horizontal" />
-      <Flexbox flexDirection="column" alignItems="flex-start">
-        <div>{senderFullName}</div>
-        <div>{messageTimestamp}</div>
-      </Flexbox>
-    </Flexbox>
+    <div className="timeline-story-padding timeline-story-padding-header">
+      <h4>{messageTimestamp}</h4>
+    </div>
   );
 };
 

@@ -119,25 +119,31 @@ Green: #53B9A5
 .timeline-filter-star {
   margin: 0px 5px;
 }
-.timeline-story-centred {
+.timeline-story-width {
   /* Copy Instagram max width */
   width: 600px;
 }
-/* Add padding around non-image feed elements such as story header and story content text */
-.timeline-story-padding {
-  padding: 10px;
-}
-/* Remove default padding around table data */
-.timeline-story-table-data {
-  padding: 0 !important;
-}
-.timeline-story-content-image {
+.timeline-story-width-content {
   /* Copy Instagram max width */
   max-width: 600px !important;
   width: 100vw;
   height: auto;
 }
-.timeline-story-header-profile-image {
+/* Add padding around non-image feed elements such as story header and story content text */
+.timeline-story-padding {
+  padding: 10px;
+}
+.timeline-story-padding-header {
+  padding-bottom: 0px;
+}
+/* Remove default padding around table data */
+.timeline-story-padding-table-data {
+  padding: 0 !important;
+}
+.timeline-story-footer-profile {
+  margin-left: 10px;
+}
+.timeline-story-footer-profile-image {
   height: 40px;
 }
 .timeline-story-footer-category {

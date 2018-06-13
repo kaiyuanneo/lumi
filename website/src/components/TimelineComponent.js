@@ -50,7 +50,7 @@ class TimelineComponent extends Component {
       if (this.props.windowWidth > constants.WINDOW_WIDTH_MAX) {
         timelineStory = (
           <Flexbox flexDirection="column" alignItems="center">
-            <div className="timeline-story-centred">
+            <div className="timeline-story-width">
               {timelineStory}
             </div>
           </Flexbox>
@@ -58,7 +58,7 @@ class TimelineComponent extends Component {
       }
       return (
         <tr key={messageKey}>
-          <td className="timeline-story-table-data">
+          <td className="timeline-story-padding-table-data">
             {timelineStory}
             <br />
           </td>

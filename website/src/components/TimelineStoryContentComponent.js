@@ -9,7 +9,7 @@ const TimelineStoryContentComponent = (props) => {
   if ('attachments' in props.messageValue) {
     imageContent = (
       <Image
-        className="timeline-story-content-image"
+        className="timeline-story-width-content"
         src={props.messageValue.attachments[0].payload.url}
         responsive
       />

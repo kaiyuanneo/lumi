@@ -742,7 +742,7 @@ exports[`TimelineStoryContentComponent 1`] = `
   <Image
     bsClass="img"
     circle={false}
-    className="timeline-story-content-image"
+    className="timeline-story-width-content"
     responsive={true}
     rounded={false}
     src=""
@@ -754,13 +754,11 @@ exports[`TimelineStoryContentComponent 1`] = `
 exports[`TimelineStoryFooterComponent 1`] = `
 <Styled(Component)
   alignItems="center"
-  className="timeline-story-padding"
+  className="timeline-story-padding timeline-story-width-content"
   display="flex"
   element="div"
+  justifyContent="space-between"
 >
-  <span
-    className="space-horizontal"
-  />
   <Styled(Component)
     display="flex"
     element="div"
@@ -769,38 +767,35 @@ exports[`TimelineStoryFooterComponent 1`] = `
       className="timeline-story-footer-category"
     />
   </Styled(Component)>
+  <Styled(Component)
+    alignItems="center"
+    className="timeline-story-footer-profile"
+    display="flex"
+    element="div"
+  >
+    <Image
+      bsClass="img"
+      circle={true}
+      className="timeline-story-footer-profile-image"
+      responsive={false}
+      rounded={false}
+      src={undefined}
+      thumbnail={false}
+    />
+    <span
+      className="space-horizontal"
+    />
+    <div>
+      undefined undefined
+    </div>
+  </Styled(Component)>
 </Styled(Component)>
 `;
 
 exports[`TimelineStoryHeaderComponent 1`] = `
-<Styled(Component)
-  alignItems="center"
-  className="timeline-story-padding"
-  display="flex"
-  element="div"
+<div
+  className="timeline-story-padding timeline-story-padding-header"
 >
-  <Image
-    bsClass="img"
-    circle={true}
-    className="timeline-story-header-profile-image"
-    responsive={false}
-    rounded={false}
-    src={undefined}
-    thumbnail={false}
-  />
-  <span
-    className="space-horizontal"
-  />
-  <Styled(Component)
-    alignItems="flex-start"
-    display="flex"
-    element="div"
-    flexDirection="column"
-  >
-    <div>
-      undefined undefined
-    </div>
-    <div />
-  </Styled(Component)>
-</Styled(Component)>
+  <h4 />
+</div>
 `;

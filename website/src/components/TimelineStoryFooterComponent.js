@@ -1,6 +1,7 @@
 import Flexbox from 'flexbox-react';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Image } from 'react-bootstrap';
 import StarIcon from 'react-icons/lib/fa/star';
 
 
@@ -12,12 +13,26 @@ const TimelineStoryFooterComponent = (props) => {
       <div className="timeline-story-footer-star"><StarIcon /></div>
     </Flexbox>
   ) : null;
+  const senderFullName =
+    `${props.messageValue.senderFirstName} ${props.messageValue.senderLastName}`;
   return (
-    <Flexbox alignItems="center" className="timeline-story-padding">
-      <span className="space-horizontal" />
+    <Flexbox
+      alignItems="center"
+      justifyContent="space-between"
+      className="timeline-story-padding timeline-story-width-content"
+    >
       <Flexbox>
         <div className="timeline-story-footer-category">{messageCategory}</div>
         {starIcon}
+      </Flexbox>
+      <Flexbox alignItems="center" className="timeline-story-footer-profile">
+        <Image
+          className="timeline-story-footer-profile-image"
+          src={props.messageValue.senderProfilePic}
+          circle
+        />
+        <span className="space-horizontal" />
+        <div>{senderFullName}</div>
       </Flexbox>
     </Flexbox>
   );

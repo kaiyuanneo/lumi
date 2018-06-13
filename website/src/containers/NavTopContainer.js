@@ -76,6 +76,16 @@ const mapDispatchToProps = dispatch => ({
 });
 
 
+export const _copyGroupId = (stateProps) => {
+  const tempInput = document.createElement('input');
+  tempInput.style = 'position: absolute; left: -1000px; top: -1000px';
+  tempInput.value = stateProps.activeGroupId;
+  document.body.appendChild(tempInput);
+  tempInput.select();
+  document.execCommand('copy');
+  document.body.removeChild(tempInput);
+};
+
 export const _handleNavSelect = async (eventKey, stateProps, dispatchProps) => {
   if (eventKey.startsWith(constants.PRODUCT_CODE_SELECT_GROUP)) {
     const db = firebase.database();
@@ -90,13 +100,7 @@ export const _handleNavSelect = async (eventKey, stateProps, dispatchProps) => {
     const authUid = firebase.auth().currentUser.uid;
     db.ref(`${constants.DB_PATH_USERS}/${authUid}`).update({ activeGroup: groupId });
   } else if (eventKey === constants.PRODUCT_CODE_COPY_GROUP_ID) {
-    const tempInput = document.createElement('input');
-    tempInput.style = 'position: absolute; left: -1000px; top: -1000px';
-    tempInput.value = stateProps.activeGroupId;
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    document.execCommand('copy');
-    document.body.removeChild(tempInput);
+    _copyGroupId(stateProps);
   } else if (eventKey === constants.PRODUCT_CODE_CREATE_OR_JOIN_GROUP) {
     dispatchProps.createOrJoinGroup();
   } else if (eventKey === constants.PRODUCT_CODE_SIGN_OUT) {
@@ -110,6 +114,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...dispatchProps,
   ...ownProps,
   handleNavSelect: eventKey => _handleNavSelect(eventKey, stateProps, dispatchProps),
+  copyGroupId: () => _copyGroupId(stateProps),
 });
 
 

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { MenuItem, Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap';
+import { MenuItem, Nav, Navbar, NavDropdown, NavItem, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import * as constants from '../static/constants';
 
@@ -10,6 +10,11 @@ class NavTopComponent extends Component {
     this.props.getGroupInfo();
   }
   render() {
+    const copyGroupIdTooltip = (
+      <Tooltip id="copy-group-id">
+        Click me to copy group ID!
+      </Tooltip>
+    );
     // groupInfo is an object with id and name as keys
     const generateSwitchGroupsMenuItem = groupInfo => (
       <MenuItem
@@ -53,12 +58,18 @@ class NavTopComponent extends Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight onSelect={this.props.handleNavSelect}>
-              <NavItem
-                eventKey={constants.PRODUCT_CODE_COPY_GROUP_ID}
-                disabled={this.props.disableCopyButton}
+              <OverlayTrigger
+                placement="bottom"
+                overlay={copyGroupIdTooltip}
+                onClick={this.props.copyGroupId}
               >
-                {this.props.groupIdLabel}
-              </NavItem>
+                <NavItem
+                  eventKey={constants.PRODUCT_CODE_COPY_GROUP_ID}
+                  disabled={this.props.disableCopyButton}
+                >
+                  {this.props.groupIdLabel}
+                </NavItem>
+              </OverlayTrigger>
               {getSwitchGroupsElement()}
               <NavItem eventKey={constants.PRODUCT_CODE_SIGN_OUT}>
                 {constants.NAVBAR_ITEM_SIGN_OUT}
@@ -79,6 +90,7 @@ NavTopComponent.propTypes = {
   groupIdLabel: PropTypes.string,
   groupNameLabel: PropTypes.string,
   disableCopyButton: PropTypes.bool.isRequired,
+  copyGroupId: PropTypes.func.isRequired,
   getGroupInfo: PropTypes.func.isRequired,
   handleNavSelect: PropTypes.func.isRequired,
 };

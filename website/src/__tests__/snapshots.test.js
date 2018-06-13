@@ -242,6 +242,7 @@ it('NavTopComponent', () => {
     <NavTopComponent
       groups={[]}
       disableCopyButton={false}
+      copyGroupId={() => {}}
       getGroupInfo={() => {}}
       handleNavSelect={() => {}}
     />

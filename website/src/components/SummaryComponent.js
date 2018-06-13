@@ -37,6 +37,7 @@ class SummaryComponent extends Component {
           alt="blabla"
           className="summary-card-background-image"
         />
+        <div className="summary-card-overlay" />
         <div className="summary-card-text">
           {text}
         </div>

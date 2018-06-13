@@ -1,3 +1,12 @@
+/*
+PWF colour codes
+Dark purple: #6F27BF
+Light purple: #8A34FB
+Gray: #53585F
+Green: #53B9A5
+*/
+
+
 .App {
   text-align: center;
 }
@@ -132,7 +141,9 @@
   height: 40px;
 }
 .timeline-story-footer-category {
-  background-color: lightGrey;
+  background-color: #6F27BF;
+  color: whiteSmoke;
+  padding: 0px 5px;
 }
 .timeline-story-footer-star {
   color: orange;

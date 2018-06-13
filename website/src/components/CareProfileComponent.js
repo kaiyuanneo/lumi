@@ -2,11 +2,13 @@ import Flexbox from 'flexbox-react';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Image, Panel, PanelGroup } from 'react-bootstrap';
+import DropDownIcon from 'react-icons/lib/md/arrow-drop-down';
 
 import CareProfileBasicInfoComponent from '../components/CareProfileBasicInfoComponent';
 import CareProfileMedicalInfoComponent from '../components/CareProfileMedicalInfoComponent';
 import CareProfileCareInfoComponent from '../components/CareProfileCareInfoComponent';
 import CareProfileSelectCareRecipientContainer from '../containers/CareProfileSelectCareRecipientContainer';
+import * as constants from '../static/constants';
 
 
 class CareProfileComponent extends Component {
@@ -35,7 +37,10 @@ class CareProfileComponent extends Component {
           <PanelGroup accordion id="care-profile">
             <Panel eventKey="1">
               <Panel.Heading>
-                <Panel.Title toggle>Basic Info</Panel.Title>
+                <Panel.Title toggle>
+                  Basic Info
+                  <DropDownIcon size={constants.CARE_PROFILE_ICON_SIZE} />
+                </Panel.Title>
               </Panel.Heading>
               <Panel.Body collapsible>
                 <CareProfileBasicInfoComponent />
@@ -43,7 +48,10 @@ class CareProfileComponent extends Component {
             </Panel>
             <Panel eventKey="2">
               <Panel.Heading>
-                <Panel.Title toggle>Medical Info</Panel.Title>
+                <Panel.Title toggle>
+                  Medical Info
+                  <DropDownIcon size={constants.CARE_PROFILE_ICON_SIZE} />
+                </Panel.Title>
               </Panel.Heading>
               <Panel.Body collapsible>
                 <CareProfileMedicalInfoComponent />
@@ -51,7 +59,10 @@ class CareProfileComponent extends Component {
             </Panel>
             <Panel eventKey="3">
               <Panel.Heading>
-                <Panel.Title toggle>Care Info</Panel.Title>
+                <Panel.Title toggle>
+                  Care Info
+                  <DropDownIcon size={constants.CARE_PROFILE_ICON_SIZE} />
+                </Panel.Title>
               </Panel.Heading>
               <Panel.Body collapsible>
                 <CareProfileCareInfoComponent />

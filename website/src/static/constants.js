@@ -109,6 +109,8 @@ export const STORAGE_PATH_LUMI_IMAGES = 'lumi/images';
 /*
  * CareProfile field IDs: Field IDs correspond to user properties in the DB
  */
+export const CARE_PROFILE_ICON_SIZE = 24;
+
 // New care recipient
 export const CARE_PROFILE_FIELD_ID_USER_LIST = 'userList';
 // Basic

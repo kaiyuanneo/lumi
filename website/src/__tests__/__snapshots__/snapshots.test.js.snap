@@ -742,7 +742,7 @@ exports[`TimelineStoryContentComponent 1`] = `
   <Image
     bsClass="img"
     circle={false}
-    className="timeline-story-width-content"
+    className="timeline-story-width-content timeline-story-height-content-image"
     responsive={true}
     rounded={false}
     src=""

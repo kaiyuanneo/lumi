@@ -119,6 +119,12 @@ Green: #53B9A5
 .timeline-filter-star {
   margin: 0px 5px;
 }
+.timeline-story-height-content-image {
+  /* Square images */
+  max-height: 600px;
+  height: 100vw !important;
+  object-fit: cover;
+}
 .timeline-story-width {
   /* Copy Instagram max width */
   width: 600px;
@@ -127,7 +133,6 @@ Green: #53B9A5
   /* Copy Instagram max width */
   max-width: 600px !important;
   width: 100vw;
-  height: auto;
 }
 /* Add padding around non-image feed elements such as story header and story content text */
 .timeline-story-padding {

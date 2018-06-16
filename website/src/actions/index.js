@@ -99,9 +99,9 @@ export const saveCareProfileFieldValueLocally = (fieldId, fieldValue) => ({
   fieldValue,
 });
 
-export const saveCareProfileFieldIsInEditMode = (fieldId, isInEditMode) => ({
-  type: constants.ACTION_SAVE_CARE_PROFILE_FIELD_IS_IN_EDIT_MODE,
-  fieldId,
+export const saveCareProfileIsInEditMode = (infoTypeId, isInEditMode) => ({
+  type: constants.ACTION_SAVE_CARE_PROFILE_IS_IN_EDIT_MODE,
+  infoTypeId,
   isInEditMode,
 });
 

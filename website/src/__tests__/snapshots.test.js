@@ -8,11 +8,10 @@ import App from '../App';
 import AddGroupComponent from '../components/AddGroupComponent';
 import AuthComponent from '../components/AuthComponent';
 import BootstrapStyleComponent from '../components/BootstrapStyleComponent';
-import CareProfileBasicInfoComponent from '../components/CareProfileBasicInfoComponent';
-import CareProfileCareInfoComponent from '../components/CareProfileCareInfoComponent';
+import CareProfileInfoBasicComponent from '../components/CareProfileInfoBasicComponent';
+import CareProfileInfoMedicalComponent from '../components/CareProfileInfoMedicalComponent';
+import CareProfileInfoCareComponent from '../components/CareProfileInfoCareComponent';
 import CareProfileComponent from '../components/CareProfileComponent';
-import CareProfileEditWrapperComponent from '../components/CareProfileEditWrapperComponent';
-import CareProfileMedicalInfoComponent from '../components/CareProfileMedicalInfoComponent';
 import CareProfileNewMemberComponent from '../components/CareProfileNewMemberComponent';
 import CareProfileNewMemberFormFieldComponent from '../components/CareProfileNewMemberFormFieldComponent';
 import CareProfileSelectCareRecipientComponent from '../components/CareProfileSelectCareRecipientComponent';
@@ -77,16 +76,70 @@ it('BootstrapStyleComponent', () => {
 });
 
 
-it('CareProfileBasicInfoComponent', () => {
+it('CareProfileInfoBasicComponent', () => {
   const renderer = new ShallowRenderer();
-  const component = renderer.render(<CareProfileBasicInfoComponent />);
+  const component = renderer.render(<CareProfileInfoBasicComponent
+    isInEditMode={false}
+    saveButtonDisabled={false}
+    displayFieldValueFirstName=""
+    displayFieldValueLastName=""
+    displayFieldValueBirthday=""
+    displayFieldValueGender=""
+    displayFieldValueEmail=""
+    displayFieldValueAddress=""
+    formFieldValueFirstName=""
+    formFieldValueLastName=""
+    formFieldValueBirthday=""
+    formFieldValueGender=""
+    formFieldValueEmail=""
+    formFieldValueAddress=""
+    getOnChangeFuncDate={() => {}}
+    getOnChangeFuncNormal={() => {}}
+    enterEditMode={() => {}}
+    cancelEdits={() => {}}
+    saveFieldValuesToDb={() => {}}
+  />);
   expect(component).toMatchSnapshot();
 });
 
 
-it('CareProfileCareInfoComponent', () => {
+it('CareProfileInfoMedicalComponent', () => {
   const renderer = new ShallowRenderer();
-  const component = renderer.render(<CareProfileCareInfoComponent />);
+  const component = renderer.render(<CareProfileInfoMedicalComponent
+    isInEditMode
+    displayFieldValueTypeOfDementia=""
+    displayFieldValueDateOfDiagnosis=""
+    displayFieldValueMedications=""
+    displayFieldValueProviders=""
+    formFieldValueTypeOfDementia=""
+    formFieldValueDateOfDiagnosis=""
+    formFieldValueMedications=""
+    formFieldValueProviders=""
+    getOnChangeFuncDate={() => {}}
+    getOnChangeFuncNormal={() => {}}
+    enterEditMode={() => {}}
+    cancelEdits={() => {}}
+    saveFieldValuesToDb={() => {}}
+  />);
+  expect(component).toMatchSnapshot();
+});
+
+
+it('CareProfileInfoCareComponent', () => {
+  const renderer = new ShallowRenderer();
+  const component = renderer.render(<CareProfileInfoCareComponent
+    isInEditMode={false}
+    displayFieldValueNeedsAndPreferences=""
+    displayFieldValueThingsThatDelight=""
+    displayFieldValuePlacesOfInterest=""
+    formFieldValueNeedsAndPreferences=""
+    formFieldValueThingsThatDelight=""
+    formFieldValuePlacesOfInterest=""
+    getOnChangeFuncNormal={() => {}}
+    enterEditMode={() => {}}
+    cancelEdits={() => {}}
+    saveFieldValuesToDb={() => {}}
+  />);
   expect(component).toMatchSnapshot();
 });
 
@@ -104,30 +157,6 @@ it('CareProfileComponent', () => {
       uid=""
     />
   )).toJSON();
-  expect(component).toMatchSnapshot();
-});
-
-
-it('CareProfileEditWrapperComponent', () => {
-  const component = TestRenderer.create((
-    <CareProfileEditWrapperComponent
-      cancelEdits={() => {}}
-      displayFieldValue=""
-      enterEditMode={() => {}}
-      formField={<div />}
-      isInEditMode={false}
-      saveButtonDisabled={false}
-      saveFieldValueToDb={() => {}}
-      title=""
-    />
-  )).toJSON();
-  expect(component).toMatchSnapshot();
-});
-
-
-it('CareProfileMedicalInfoComponent', () => {
-  const renderer = new ShallowRenderer();
-  const component = renderer.render(<CareProfileMedicalInfoComponent />);
   expect(component).toMatchSnapshot();
 });
 

@@ -36,21 +36,6 @@ their changes, the field value will revert to that of the DB.
   thingsThatDelight,
   placesOfInterest,
 
-  firstNameIsInEditMode,
-  lastNameIsInEditMode,
-  genderIsInEditMode,
-  birthdayIsInEditMode,
-  profilePicIsInEditMode,
-  emailIsInEditMode,
-  addressIsInEditMode,
-  typeOfDementiaIsInEditMode,
-  dateOfDiagnosisIsInEditMode,
-  medicationsIsInEditMode,
-  providersIsInEditMode,
-  needsAndPreferencesIsInEditMode,
-  thingsThatDelightIsInEditMode,
-  placesOfInterestIsInEditMode,
-
   firstNameFormFieldValue,
   lastNameFormFieldValue,
   genderFormFieldValue,
@@ -65,6 +50,26 @@ their changes, the field value will revert to that of the DB.
   needsAndPreferencesFormFieldValue,
   thingsThatDelightFormFieldValue,
   placesOfInterestFormFieldValue,
+
+  basicInfoIsInEditMode,
+  medicalInfoIsInEditMode,
+  careInfoIsInEditMode,
+
+  // TODO(kai): Delete this section
+  firstNameIsInEditMode,
+  lastNameIsInEditMode,
+  genderIsInEditMode,
+  birthdayIsInEditMode,
+  profilePicIsInEditMode,
+  emailIsInEditMode,
+  addressIsInEditMode,
+  typeOfDementiaIsInEditMode,
+  dateOfDiagnosisIsInEditMode,
+  medicationsIsInEditMode,
+  providersIsInEditMode,
+  needsAndPreferencesIsInEditMode,
+  thingsThatDelightIsInEditMode,
+  placesOfInterestIsInEditMode,
 }
 */
 
@@ -107,13 +112,11 @@ const initialState = {
   thingsThatDelightFormFieldValue: '',
   placesOfInterestFormFieldValue: '',
 
-  firstNameIsInEditMode: false,
-  lastNameIsInEditMode: false,
-  genderIsInEditMode: false,
-  birthdayIsInEditMode: false,
-  profilePicIsInEditMode: false,
-  emailIsInEditMode: false,
-  addressIsInEditMode: false,
+  basicInfoIsInEditMode: false,
+  medicalInfoIsInEditMode: false,
+  careInfoIsInEditMode: false,
+
+  // TODO(kai): Delete this section
   typeOfDementiaIsInEditMode: false,
   dateOfDiagnosisIsInEditMode: false,
   medicationsIsInEditMode: false,
@@ -160,10 +163,10 @@ const careProfileReducer = (state = initialState, action) => {
         ...state,
         [`${action.fieldId}FormFieldValue`]: action.fieldValue,
       };
-    case constants.ACTION_SAVE_CARE_PROFILE_FIELD_IS_IN_EDIT_MODE:
+    case constants.ACTION_SAVE_CARE_PROFILE_IS_IN_EDIT_MODE:
       return {
         ...state,
-        [`${action.fieldId}IsInEditMode`]: action.isInEditMode,
+        [`${action.infoTypeId}IsInEditMode`]: action.isInEditMode,
       };
     case constants.ACTION_UNMOUNT_CARE_PROFILE_NEW_MEMBER_FORM:
       return {

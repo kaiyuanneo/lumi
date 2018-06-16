@@ -7,6 +7,7 @@ import * as actions from '../actions';
 import CareProfileNewMemberComponent from '../components/CareProfileNewMemberComponent';
 import * as constants from '../static/constants';
 import * as baseUtils from '../utils/baseUtils';
+import * as careProfileUtils from '../utils/careProfileUtils';
 
 
 // TODO(kai): Implement profile pic upload capability
@@ -65,55 +66,55 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...stateProps,
     ...dispatchProps,
     ...ownProps,
-    firstNameFormField: baseUtils.getFirstNameFieldGenerator()(
+    firstNameFormField: careProfileUtils.getFirstNameField(
       stateProps.firstName,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_FIRST_NAME),
     ),
-    lastNameFormField: baseUtils.getLastNameFieldGenerator()(
+    lastNameFormField: careProfileUtils.getLastNameField(
       stateProps.lastName,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_LAST_NAME),
     ),
-    birthdayFormField: baseUtils.getBirthdayFieldGenerator()(
-      stateProps.birthday ? baseUtils.usToIsoDate(stateProps.birthday) : '',
+    birthdayFormField: careProfileUtils.getBirthdayField(
+      careProfileUtils.sanitiseDateFormFieldValue(stateProps.birthday),
       getHandleChangeDateFunc(constants.CARE_PROFILE_FIELD_ID_BIRTHDAY),
     ),
-    genderFormField: baseUtils.getGenderFieldGenerator()(
+    genderFormField: careProfileUtils.getGenderField(
       stateProps.gender,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_GENDER),
     ),
-    emailFormField: baseUtils.getEmailFieldGenerator()(
+    emailFormField: careProfileUtils.getEmailField(
       stateProps.email,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_EMAIL),
     ),
-    addressFormField: baseUtils.getAddressFieldGenerator()(
+    addressFormField: careProfileUtils.getAddressField(
       stateProps.address,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_ADDRESS),
     ),
-    typeOfDementiaFormField: baseUtils.getTypeOfDementiaFieldGenerator()(
+    typeOfDementiaFormField: careProfileUtils.getTypeOfDementiaField(
       stateProps.typeOfDementia,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_TYPE_OF_DEMENTIA),
     ),
-    dateOfDiagnosisFormField: baseUtils.getDateOfDiagnosisFieldGenerator()(
+    dateOfDiagnosisFormField: careProfileUtils.getDateOfDiagnosisField(
       stateProps.dateOfDiagnosis ? baseUtils.usToIsoDate(stateProps.dateOfDiagnosis) : '',
       getHandleChangeDateFunc(constants.CARE_PROFILE_FIELD_ID_DATE_OF_DIAGNOSIS),
     ),
-    medicationsFormField: baseUtils.getMedicationsFieldGenerator()(
+    medicationsFormField: careProfileUtils.getMedicationsField(
       stateProps.medications,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_MEDICATIONS),
     ),
-    providersFormField: baseUtils.getProvidersFieldGenerator()(
+    providersFormField: careProfileUtils.getProvidersField(
       stateProps.providers,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_PROVIDERS),
     ),
-    needsAndPreferencesFormField: baseUtils.getNeedsAndPreferencesFieldGenerator()(
+    needsAndPreferencesFormField: careProfileUtils.getNeedsAndPreferencesField(
       stateProps.needsAndPreferences,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_NEEDS_AND_PREFERENCES),
     ),
-    thingsThatDelightFormField: baseUtils.getThingsThatDelightFieldGenerator()(
+    thingsThatDelightFormField: careProfileUtils.getThingsThatDelightField(
       stateProps.thingsThatDelight,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_THINGS_THAT_DELIGHT),
     ),
-    placesOfInterestFormField: baseUtils.getPlacesOfInterestFieldGenerator()(
+    placesOfInterestFormField: careProfileUtils.getPlacesOfInterestField(
       stateProps.placesOfInterest,
       getHandleChangeFunc(constants.CARE_PROFILE_FIELD_ID_PLACES_OF_INTEREST),
     ),

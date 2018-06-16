@@ -4,9 +4,9 @@ import React, { Component } from 'react';
 import { Image, Panel, PanelGroup } from 'react-bootstrap';
 import DropDownIcon from 'react-icons/lib/md/arrow-drop-down';
 
-import CareProfileBasicInfoComponent from '../components/CareProfileBasicInfoComponent';
-import CareProfileMedicalInfoComponent from '../components/CareProfileMedicalInfoComponent';
-import CareProfileCareInfoComponent from '../components/CareProfileCareInfoComponent';
+import CareProfileInfoBasicContainer from '../containers/CareProfileInfoBasicContainer';
+import CareProfileInfoMedicalContainer from '../containers/CareProfileInfoMedicalContainer';
+import CareProfileInfoCareContainer from '../containers/CareProfileInfoCareContainer';
 import CareProfileSelectCareRecipientContainer from '../containers/CareProfileSelectCareRecipientContainer';
 import * as constants from '../static/constants';
 
@@ -43,7 +43,7 @@ class CareProfileComponent extends Component {
                 </Panel.Title>
               </Panel.Heading>
               <Panel.Body collapsible>
-                <CareProfileBasicInfoComponent />
+                <CareProfileInfoBasicContainer />
               </Panel.Body>
             </Panel>
             <Panel eventKey="2">
@@ -54,7 +54,7 @@ class CareProfileComponent extends Component {
                 </Panel.Title>
               </Panel.Heading>
               <Panel.Body collapsible>
-                <CareProfileMedicalInfoComponent />
+                <CareProfileInfoMedicalContainer />
               </Panel.Body>
             </Panel>
             <Panel eventKey="3">
@@ -65,7 +65,7 @@ class CareProfileComponent extends Component {
                 </Panel.Title>
               </Panel.Heading>
               <Panel.Body collapsible>
-                <CareProfileCareInfoComponent />
+                <CareProfileInfoCareContainer />
               </Panel.Body>
             </Panel>
           </PanelGroup>

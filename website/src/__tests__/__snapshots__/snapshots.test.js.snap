@@ -34,142 +34,340 @@ exports[`BootstrapStyleComponent 1`] = `
 />
 `;
 
-exports[`CareProfileBasicInfoComponent 1`] = `
-<Table
-  bordered={true}
-  bsClass="table"
-  className="care-profile-info-container"
-  condensed={false}
-  hover={false}
-  responsive={false}
-  striped={false}
->
-  <tbody>
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="firstName"
-      formFieldGenerator={[Function]}
-      title="First Name"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="lastName"
-      formFieldGenerator={[Function]}
-      title="Last Name"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="birthday"
-      formFieldGenerator={[Function]}
-      isDateField={true}
-      title="Birthday"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="gender"
-      formFieldGenerator={[Function]}
-      title="Gender"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="email"
-      formFieldGenerator={[Function]}
-      title="Email"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="address"
-      formFieldGenerator={[Function]}
-      title="Address"
-    />
-  </tbody>
-</Table>
-`;
-
-exports[`CareProfileCareInfoComponent 1`] = `
-<Table
-  bordered={true}
-  bsClass="table"
-  className="care-profile-info-container"
-  condensed={false}
-  hover={false}
-  responsive={false}
-  striped={false}
->
-  <tbody>
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="needsAndPreferences"
-      formFieldGenerator={[Function]}
-      title="Needs and Preferences"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="thingsThatDelight"
-      formFieldGenerator={[Function]}
-      title="Things that Delight"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="placesOfInterest"
-      formFieldGenerator={[Function]}
-      title="Places of Interest"
-    />
-  </tbody>
-</Table>
-`;
-
 exports[`CareProfileComponent 1`] = `null`;
 
-exports[`CareProfileEditWrapperComponent 1`] = `
-<tr>
-  <td>
-    
-  </td>
-  <td>
-    
-  </td>
-  <td>
-    <button
-      className="btn btn-default"
-      disabled={false}
-      onClick={[Function]}
-      type="button"
-    >
-      <span
-        className="button-icon glyphicon glyphicon-pencil"
-      />
-      Edit
-    </button>
-  </td>
-</tr>
+exports[`CareProfileInfoBasicComponent 1`] = `
+<div
+  className="care-profile-info-container"
+>
+  <div>
+    <b>
+      First Name
+    </b>
+    <div>
+      
+      <br />
+      <br />
+    </div>
+  </div>
+  <div>
+    <b>
+      Last Name
+    </b>
+    <div>
+      
+      <br />
+      <br />
+    </div>
+  </div>
+  <div>
+    <b>
+      Birthday
+    </b>
+    <div>
+      
+      <br />
+      <br />
+    </div>
+  </div>
+  <div>
+    <b>
+      Gender
+    </b>
+    <div>
+      
+      <br />
+      <br />
+    </div>
+  </div>
+  <div>
+    <b>
+      Email
+    </b>
+    <div>
+      
+      <br />
+      <br />
+    </div>
+  </div>
+  <div>
+    <b>
+      Address
+    </b>
+    <div>
+      
+      <br />
+      <br />
+    </div>
+  </div>
+  <Button
+    active={false}
+    block={false}
+    bsClass="btn"
+    bsStyle="default"
+    disabled={false}
+    onClick={[Function]}
+  >
+    <Glyphicon
+      bsClass="glyphicon"
+      className="button-icon"
+      glyph="pencil"
+    />
+    Edit
+  </Button>
+</div>
 `;
 
-exports[`CareProfileMedicalInfoComponent 1`] = `
-<Table
-  bordered={true}
-  bsClass="table"
+exports[`CareProfileInfoCareComponent 1`] = `
+<div
   className="care-profile-info-container"
-  condensed={false}
-  hover={false}
-  responsive={false}
-  striped={false}
 >
-  <tbody>
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="typeOfDementia"
-      formFieldGenerator={[Function]}
-      title="Type of Dementia"
+  <div>
+    <b>
+      Needs and Preferences
+    </b>
+    <div>
+      
+      <br />
+      <br />
+    </div>
+  </div>
+  <div>
+    <b>
+      Things that Delight
+    </b>
+    <div>
+      
+      <br />
+      <br />
+    </div>
+  </div>
+  <div>
+    <b>
+      Places of Interest
+    </b>
+    <div>
+      
+      <br />
+      <br />
+    </div>
+  </div>
+  <Button
+    active={false}
+    block={false}
+    bsClass="btn"
+    bsStyle="default"
+    disabled={false}
+    onClick={[Function]}
+  >
+    <Glyphicon
+      bsClass="glyphicon"
+      className="button-icon"
+      glyph="pencil"
     />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="dateOfDiagnosis"
-      formFieldGenerator={[Function]}
-      isDateField={true}
-      title="Date of Diagnosis"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="medications"
-      formFieldGenerator={[Function]}
-      title="Medications"
-    />
-    <Connect(CareProfileEditWrapperComponent)
-      fieldId="providers"
-      formFieldGenerator={[Function]}
-      title="Providers"
-    />
-  </tbody>
-</Table>
+    Edit
+  </Button>
+</div>
+`;
+
+exports[`CareProfileInfoMedicalComponent 1`] = `
+<div
+  className="care-profile-info-container"
+>
+  <div>
+    <b>
+      Type of Dementia
+    </b>
+    <FormGroup
+      bsClass="form-group"
+      controlId="typeOfDementia"
+      validationState={null}
+    >
+      <FormControl
+        bsClass="form-control"
+        componentClass="select"
+        onChange={undefined}
+        placeholder="Select type of dementia"
+        value=""
+      >
+        <option
+          value="unspecified"
+        >
+          Unspecified
+        </option>
+        <option
+          value="alzheimers"
+        >
+          Alzheimer's disease
+        </option>
+        <option
+          value="vascular"
+        >
+          Vascular dementia
+        </option>
+        <option
+          value="lewy"
+        >
+          Dementia with Lewy bodies
+        </option>
+        <option
+          value="frontotemporal"
+        >
+          Frontotemporal dementia
+        </option>
+        <option
+          value="creutzfeldt-jakob"
+        >
+          Creutzfeldt-Jakob disease
+        </option>
+        <option
+          value="wernicke-korsakoff"
+        >
+          Wernicke-Korsakoff syndrome
+        </option>
+        <option
+          value="mixed"
+        >
+          Mixed dementia
+        </option>
+        <option
+          value="other"
+        >
+          Other
+        </option>
+        <option
+          value="unknown"
+        >
+          Unknown
+        </option>
+      </FormControl>
+    </FormGroup>
+  </div>
+  <div>
+    <b>
+      Date of Diagnosis
+    </b>
+    <FormGroup
+      bsClass="form-group"
+      controlId="dateOfDiagnosis"
+      validationState={null}
+    >
+      <DatePicker
+        autoComplete="on"
+        autoFocus={false}
+        calendarPlacement="bottom"
+        cellPadding="5px"
+        clearButtonElement="×"
+        dateFormat="MM/DD/YYYY"
+        dayLabels={
+          Array [
+            "Sun",
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thu",
+            "Fri",
+            "Sat",
+          ]
+        }
+        disabled={false}
+        id="dateOfDiagnosis"
+        instanceCount={0}
+        monthLabels={
+          Array [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ]
+        }
+        nextButtonElement=">"
+        noValidate={false}
+        onChange={undefined}
+        previousButtonElement="<"
+        roundedCorners={false}
+        showClearButton={true}
+        showTodayButton={false}
+        showWeeks={false}
+        style={
+          Object {
+            "width": "100%",
+          }
+        }
+        todayButtonLabel="Today"
+        value=""
+      />
+    </FormGroup>
+  </div>
+  <div>
+    <b>
+      Medications
+    </b>
+    <FormGroup
+      bsClass="form-group"
+      controlId="medications"
+      validationState={null}
+    >
+      <FormControl
+        bsClass="form-control"
+        componentClass="textarea"
+        onChange={undefined}
+        placeholder="Enter medications"
+        value=""
+      />
+    </FormGroup>
+  </div>
+  <div>
+    <b>
+      Providers
+    </b>
+    <FormGroup
+      bsClass="form-group"
+      controlId="providers"
+      validationState={null}
+    >
+      <FormControl
+        bsClass="form-control"
+        componentClass="textarea"
+        onChange={undefined}
+        placeholder="Enter providers"
+        value=""
+      />
+    </FormGroup>
+  </div>
+  <ButtonToolbar
+    bsClass="btn-toolbar"
+  >
+    <Button
+      active={false}
+      block={false}
+      bsClass="btn"
+      bsStyle="primary"
+      disabled={false}
+      onClick={[Function]}
+    >
+      Save
+    </Button>
+    <Button
+      active={false}
+      block={false}
+      bsClass="btn"
+      bsStyle="default"
+      disabled={false}
+      onClick={[Function]}
+    >
+      Cancel
+    </Button>
+  </ButtonToolbar>
+</div>
 `;
 
 exports[`CareProfileNewMemberComponent 1`] = `

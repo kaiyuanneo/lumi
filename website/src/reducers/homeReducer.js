@@ -10,7 +10,7 @@ Home state structure. Stores state for Home and NavBar components
 */
 
 const initialState = {
-  currentProductCode: constants.PRODUCT_CODE_TIMELINE,
+  currentProductCode: constants.PRODUCT_CODE_CARE_PROFILE,
   windowWidth: window.innerWidth,
 };
 

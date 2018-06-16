@@ -54,22 +54,6 @@ their changes, the field value will revert to that of the DB.
   basicInfoIsInEditMode,
   medicalInfoIsInEditMode,
   careInfoIsInEditMode,
-
-  // TODO(kai): Delete this section
-  firstNameIsInEditMode,
-  lastNameIsInEditMode,
-  genderIsInEditMode,
-  birthdayIsInEditMode,
-  profilePicIsInEditMode,
-  emailIsInEditMode,
-  addressIsInEditMode,
-  typeOfDementiaIsInEditMode,
-  dateOfDiagnosisIsInEditMode,
-  medicationsIsInEditMode,
-  providersIsInEditMode,
-  needsAndPreferencesIsInEditMode,
-  thingsThatDelightIsInEditMode,
-  placesOfInterestIsInEditMode,
 }
 */
 
@@ -115,15 +99,6 @@ const initialState = {
   basicInfoIsInEditMode: false,
   medicalInfoIsInEditMode: false,
   careInfoIsInEditMode: false,
-
-  // TODO(kai): Delete this section
-  typeOfDementiaIsInEditMode: false,
-  dateOfDiagnosisIsInEditMode: false,
-  medicationsIsInEditMode: false,
-  providersIsInEditMode: false,
-  needsAndPreferencesIsInEditMode: false,
-  thingsThatDelightIsInEditMode: false,
-  placesOfInterestIsInEditMode: false,
 };
 
 const careProfileReducer = (state = initialState, action) => {

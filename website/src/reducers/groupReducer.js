@@ -4,6 +4,8 @@ import * as constants from '../static/constants';
 Group state structure.
 {
   isAuthUserInGroup,
+  // State that determines which UI to render on the group add page
+  groupAddState,
   // Array of all the groups the auth user is currently a member of. Each group is an object
   // that contains 2 keys "id" and "name".
   groups,
@@ -20,6 +22,7 @@ Group state structure.
 const initialState = {
   // Null is an initial value to indicate that this information has not been fetched yet
   isAuthUserInGroup: null,
+  groupAddState: constants.GROUP_ADD_STATE_CREATE_OR_JOIN,
   groups: [],
   groupId: null,
   groupName: null,
@@ -80,6 +83,11 @@ const groupReducer = (state = initialState, action) => {
       return {
         ...state,
         groupIdFieldValue: action.groupIdFieldValue,
+      };
+    case constants.ACTION_SAVE_GROUP_ADD_STATE:
+      return {
+        ...state,
+        groupAddState: action.groupAddState,
       };
     case constants.ACTION_SAVE_GROUP_JOIN_VALIDATION_STATE:
       return {

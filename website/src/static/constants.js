@@ -1,3 +1,6 @@
+/*
+ * ACTION IDENTIFIERS
+ */
 // Auth actions
 export const ACTION_SAVE_IS_SIGNED_IN = 'SAVE_IS_SIGNED_IN';
 export const ACTION_SAVE_AUTH_USER_FIRST_NAME = 'SAVE_AUTH_USER_FIRST_NAME';
@@ -12,6 +15,7 @@ export const ACTION_SWITCH_GROUP = 'SWITCH_GROUP';
 export const ACTION_SAVE_GROUP_FIRST_NAME_FIELD_VALUE = 'SAVE_GROUP_FIRST_NAME_FIELD_VALUE';
 export const ACTION_SAVE_GROUP_LAST_NAME_FIELD_VALUE = 'SAVE_GROUP_LAST_NAME_FIELD_VALUE';
 export const ACTION_SAVE_GROUP_ID_FIELD_VALUE = 'SAVE_GROUP_ID_FIELD_VALUE';
+export const ACTION_SAVE_GROUP_ADD_STATE = 'SAVE_GROUP_ADD_STATE';
 export const ACTION_SAVE_GROUP_JOIN_VALIDATION_STATE = 'SAVE_GROUP_JOIN_VALIDATION_STATE';
 // CareProfile actions
 export const ACTION_SAVE_FETCHED_CARE_RECIPIENT = 'SAVE_FETCHED_CARE_RECIPIENT';
@@ -31,6 +35,10 @@ export const ACTION_DELETE_TIMELINE_MESSAGE = 'DELETE_TIMELINE_MESSAGE';
 export const ACTION_SAVE_TIMELINE_FILTER_CATEGORIES = 'SAVE_TIMELINE_FILTER_CATEGORIES';
 export const ACTION_TOGGLE_TIMELINE_FILTER_BUTTONS = 'TOGGLE_TIMELINE_FILTER_BUTTONS';
 
+
+/*
+ * GENERAL
+ */
 export const BOOTSTRAP_CSS_URL =
   'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css';
 export const BOOTSTRAP_CSS_HASH =
@@ -40,6 +48,7 @@ export const BUTTON_TEXT_CANCEL = 'Cancel';
 export const BUTTON_TEXT_EDIT = 'Edit';
 export const BUTTON_TEXT_SAVE = 'Save';
 export const BUTTON_TEXT_SELECT = 'Select';
+export const BUTTON_TEXT_BACK = 'Back';
 
 // Use the US date format to be consistent with Facebook
 export const US_DATE_FORMAT = 'MM/DD/YYYY';
@@ -65,20 +74,12 @@ export const FIREBASE_STORAGE_BUCKET = 'lumi-cares.appspot.com';
 export const FORM_VALIDATION_SUCCESS = 'success';
 export const FORM_VALIDATION_ERROR = 'error';
 
-export const GROUP_CREATE_TITLE = 'Create New Group';
-export const GROUP_CREATE_BUTTON_TEXT = 'Create Group';
-export const GROUP_CREATE_FIRST_NAME_FIELD_PLACEHOLDER = 'Enter care recipient first name';
-export const GROUP_CREATE_LAST_NAME_FIELD_PLACEHOLDER = 'Enter care recipient last name';
-export const GROUP_JOIN_TITLE = 'Join Existing Group';
-export const GROUP_JOIN_BUTTON_TEXT = 'Join Group';
-export const GROUP_ID_FIELD_PLACEHOLDER = 'Enter Lumi Group ID';
-export const GROUP_ID_FIELD_PROMPT = 'Join an existing Lumi Group';
-export const GROUP_ID_FIELD_HELP = 'This ID must be a valid group ID of an existing Lumi Group';
-export const GROUP_NAME_FIELD_PROMPT =
-  'Lumi will use the full name of your loved one as the group name.';
-export const GROUP_NAME_FIELD_HELP =
-  'Lumi will generate a Group ID to share with family and friends on the next page';
+export const STORAGE_PATH_LUMI_IMAGES = 'lumi/images';
 
+
+/*
+ * NAVBAR
+ */
 export const NAVBAR_HEADER_TITLE = 'Lumi';
 export const NAVBAR_ICON_SIZE = 24;
 export const NAVBAR_ITEM_TIMELINE = 'Timeline';
@@ -90,9 +91,10 @@ export const NAVBAR_ITEM_SWITCH_GROUPS = 'Switch Groups';
 export const NAVBAR_ITEM_CREATE_OR_JOIN_GROUP = 'Create or Join Group';
 export const NAVBAR_ITEM_SIGN_OUT = 'Sign Out';
 
-export const NEW_USER_PAGE_TITLE = 'Welcome to Lumi, ';
-export const NEW_USER_PAGE_SUBTITLE = 'Please create or join a Lumi Group.';
 
+/*
+ * PRODUCT
+ */
 export const PRODUCT_CODE_TIMELINE = 'timeline';
 export const PRODUCT_CODE_CHAT = 'chat';
 export const PRODUCT_CODE_SUMMARY = 'summary';
@@ -104,17 +106,54 @@ export const PRODUCT_CODE_ADD_GROUP = 'add-group';
 export const PRODUCT_CODE_CREATE_OR_JOIN_GROUP = 'create-or-join-group';
 export const PRODUCT_CODE_SIGN_OUT = 'sign-out';
 
-export const STORAGE_PATH_LUMI_IMAGES = 'lumi/images';
 
 /*
- * CareProfile field IDs: Field IDs correspond to user properties in the DB
+ * HELP NO MOMENTS
+ */
+export const HELP_NO_MOMENTS_PROMPT =
+`You have not shared any moments with Lumi.
+
+Moments help communicate what is happening with your loved one to your Care Circle.
+
+To share moments on Lumi, please visit Lumi Chat by tapping the "Add" button below!`;
+
+
+/*
+ * GROUP_ADD
+ */
+// Group add state determines which UI to render within the Group Add page
+export const GROUP_ADD_STATE_CREATE_OR_JOIN = 'CREATE_OR_JOIN';
+export const GROUP_ADD_STATE_CREATE = 'CREATE';
+export const GROUP_ADD_STATE_JOIN = 'JOIN';
+export const GROUP_ADD_CREATE_OR_JOIN_SUBTITLE =
+'Before we begin, please create or join a Care Circle. ' +
+'A Care Circle is a group of people that provide care for an individual. ' +
+'For example, this may be you, family members, and care services providing care for your parent.';
+export const GROUP_ADD_CREATE_TITLE = 'Create Care Circle';
+export const GROUP_ADD_CREATE_BUTTON_TEXT = 'Create Care Circle';
+export const GROUP_ADD_CREATE_FIRST_NAME_FIELD_PLACEHOLDER = 'Care recipient first name';
+export const GROUP_ADD_CREATE_LAST_NAME_FIELD_PLACEHOLDER = 'Care recipient last name';
+export const GROUP_ADD_JOIN_TITLE = 'Join Existing Circle';
+export const GROUP_ADD_JOIN_BUTTON_TEXT = 'Join Care Circle';
+export const GROUP_ADD_ID_FIELD_PLACEHOLDER = 'Lumi Circle ID';
+export const GROUP_ADD_ID_FIELD_PROMPT = 'Join an existing Lumi Care Circle';
+export const GROUP_ADD_ID_FIELD_HELP = 'This ID must be a valid ID of an existing Lumi Circle';
+export const GROUP_ADD_NAME_FIELD_PROMPT = 'Whom are you caring for?';
+export const GROUP_ADD_NAME_FIELD_HELP =
+  'Lumi will generate a Circle ID to share with family and friends on the next page';
+
+
+/*
+ * CARE PROFILE
  */
 export const CARE_PROFILE_ICON_SIZE = 24;
 
 export const CARE_PROFILE_INFO_TYPE_ID_BASIC = 'basicInfo';
 export const CARE_PROFILE_INFO_TYPE_ID_MEDICAL = 'medicalInfo';
 export const CARE_PROFILE_INFO_TYPE_ID_CARE = 'careInfo';
-
+/*
+ * CareProfile field IDs: Field IDs correspond to user properties in the DB
+ */
 // New care recipient
 export const CARE_PROFILE_FIELD_ID_USER_LIST = 'userList';
 // Basic
@@ -173,7 +212,6 @@ export const CARE_PROFILE_FIELD_TITLE_NEEDS_AND_PREFERENCES = 'Needs and Prefere
 export const CARE_PROFILE_FIELD_TITLE_THINGS_THAT_DELIGHT = 'Things that Delight';
 export const CARE_PROFILE_FIELD_TITLE_PLACES_OF_INTEREST = 'Places of Interest';
 
-
 /*
  * CareProfile unspecified options
  */
@@ -230,6 +268,10 @@ export const CARE_PROFILE_TABLE_HEADER_FIELD = 'Field';
 export const CARE_PROFILE_TABLE_HEADER_VALUE = 'Value';
 export const CARE_PROFILE_TABLE_HEADER_OPTIONS = 'Options';
 
+
+/*
+ * TIMELINE
+ */
 export const TIMELINE_CATEGORY_CODE_STAR = 'star';
 export const TIMELINE_CATEGORY_CODE_ALL = 'all';
 export const TIMELINE_CATEGORY_CODE_ACTIVITY = 'activity';

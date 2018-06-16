@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as firebase from 'firebase';
 
 import * as actions from '../actions';
-import GroupCreateComponent from '../components/GroupCreateComponent';
+import GroupAddCreateComponent from '../components/GroupAddCreateComponent';
 import * as constants from '../static/constants';
 import * as baseUtils from '../utils/baseUtils';
 
@@ -32,9 +32,11 @@ const mapDispatchToProps = dispatch => ({
   saveCareProfileFirstName: e => dispatch(actions.saveGroupFirstNameFieldValue(e.target.value)),
   saveCareProfileLastName: e => dispatch(actions.saveGroupLastNameFieldValue(e.target.value)),
   clearGroupFirstLastNameFieldValues: () => {
-    actions.saveGroupFirstNameFieldValue('');
-    actions.saveGroupLastNameFieldValue('');
+    dispatch(actions.saveGroupFirstNameFieldValue(''));
+    dispatch(actions.saveGroupLastNameFieldValue(''));
   },
+  clearGroupAddState:
+    () => dispatch(actions.saveGroupAddState(constants.GROUP_ADD_STATE_CREATE_OR_JOIN)),
   goToTimeline: () => dispatch(actions.saveCurrentProductCode(constants.PRODUCT_CODE_TIMELINE)),
 });
 
@@ -67,15 +69,16 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   createGroup: async () => {
     await _createGroup(stateProps);
     dispatchProps.clearGroupFirstLastNameFieldValues();
+    dispatchProps.clearGroupAddState();
     dispatchProps.goToTimeline();
   },
 });
 
 
-const GroupCreateContainer = connect(
+const GroupAddCreateContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps,
-)(GroupCreateComponent);
+)(GroupAddCreateComponent);
 
-export default GroupCreateContainer;
+export default GroupAddCreateContainer;

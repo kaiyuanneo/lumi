@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as firebase from 'firebase';
 
 import * as actions from '../actions';
-import GroupJoinComponent from '../components/GroupJoinComponent';
+import GroupAddJoinComponent from '../components/GroupAddJoinComponent';
 import * as constants from '../static/constants';
 import * as baseUtils from '../utils/baseUtils';
 
@@ -34,6 +34,8 @@ export const _handleChange = async (dispatch, e) => {
 const mapDispatchToProps = dispatch => ({
   handleChange: e => _handleChange(dispatch, e),
   clearGroupIdFieldValue: () => dispatch(actions.saveGroupIdFieldValue('')),
+  clearGroupAddState:
+    () => dispatch(actions.saveGroupAddState(constants.GROUP_ADD_STATE_CREATE_OR_JOIN)),
   goToTimeline: () => dispatch(actions.saveCurrentProductCode(constants.PRODUCT_CODE_TIMELINE)),
 });
 
@@ -45,15 +47,16 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   joinGroup: async () => {
     await baseUtils.addUserToGroup(stateProps.groupIdFieldValue);
     dispatchProps.clearGroupIdFieldValue();
+    dispatchProps.clearGroupAddState();
     dispatchProps.goToTimeline();
   },
 });
 
 
-const GroupJoinContainer = connect(
+const GroupAddJoinContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps,
-)(GroupJoinComponent);
+)(GroupAddJoinComponent);
 
-export default GroupJoinContainer;
+export default GroupAddJoinContainer;

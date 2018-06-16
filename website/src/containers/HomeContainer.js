@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import AddGroupContainer from './AddGroupContainer';
+import GroupAddContainer from './GroupAddContainer';
 import CareProfileContainer from './CareProfileContainer';
 import SummaryContainer from './SummaryContainer';
 import TimelineContainer from './TimelineContainer';
@@ -27,13 +27,13 @@ const mapStateToProps = (state) => {
         productComponent = <CareProfileContainer />;
         break;
       case constants.PRODUCT_CODE_ADD_GROUP:
-        productComponent = <AddGroupContainer />;
+        productComponent = <GroupAddContainer />;
         break;
       default:
         productComponent = <TimelineContainer />;
     }
   } else {
-    productComponent = <AddGroupContainer />;
+    productComponent = <GroupAddContainer />;
   }
   return {
     productComponent,

@@ -70,6 +70,11 @@ export const saveGroupIdFieldValue = groupIdFieldValue => ({
   groupIdFieldValue,
 });
 
+export const saveGroupAddState = groupAddState => ({
+  type: constants.ACTION_SAVE_GROUP_ADD_STATE,
+  groupAddState,
+});
+
 export const saveGroupJoinValidationState = groupJoinValidationState => ({
   type: constants.ACTION_SAVE_GROUP_JOIN_VALIDATION_STATE,
   groupJoinValidationState,

@@ -5,7 +5,6 @@ import ShallowRenderer from 'react-test-renderer/shallow';
 import sinon from 'sinon';
 
 import App from '../App';
-import AddGroupComponent from '../components/AddGroupComponent';
 import AuthComponent from '../components/AuthComponent';
 import BootstrapStyleComponent from '../components/BootstrapStyleComponent';
 import CareProfileInfoBasicComponent from '../components/CareProfileInfoBasicComponent';
@@ -15,8 +14,9 @@ import CareProfileComponent from '../components/CareProfileComponent';
 import CareProfileNewMemberComponent from '../components/CareProfileNewMemberComponent';
 import CareProfileNewMemberFormFieldComponent from '../components/CareProfileNewMemberFormFieldComponent';
 import CareProfileSelectCareRecipientComponent from '../components/CareProfileSelectCareRecipientComponent';
-import GroupCreateComponent from '../components/GroupCreateComponent';
-import GroupJoinComponent from '../components/GroupJoinComponent';
+import GroupAddComponent from '../components/GroupAddComponent';
+import GroupAddCreateComponent from '../components/GroupAddCreateComponent';
+import GroupAddJoinComponent from '../components/GroupAddJoinComponent';
 import HomeComponent from '../components/HomeComponent';
 import NavBottomComponent from '../components/NavBottomComponent';
 import NavTopComponent from '../components/NavTopComponent';
@@ -43,18 +43,6 @@ describe('App', () => {
     const component = TestRenderer.create(<App />).toTree();
     expect(component).toBeTruthy();
   });
-});
-
-
-it('AddGroupComponent', () => {
-  const renderer = new ShallowRenderer();
-  const component = renderer.render((
-    <AddGroupComponent
-      firstName=""
-      getUserFirstName={() => {}}
-    />
-  ));
-  expect(component).toMatchSnapshot();
 });
 
 
@@ -213,29 +201,43 @@ it('CareProfileSelectCareRecipientComponent', () => {
 });
 
 
-it('GroupCreateComponent', () => {
+it('GroupAddComponent', () => {
+  const renderer = new ShallowRenderer();
+  const component = renderer.render((
+    <GroupAddComponent
+      firstName=""
+      groupAddFormContainer={<div />}
+      getUserFirstName={() => {}}
+    />
+  ));
+  expect(component).toMatchSnapshot();
+});
+
+
+it('GroupAddCreateComponent', () => {
   const component = TestRenderer.create((
-    <GroupCreateComponent
+    <GroupAddCreateComponent
       firstNameFieldValue=""
       lastNameFieldValue=""
       isCreateButtonDisabled={false}
       createGroup={() => {}}
       saveCareProfileFirstName={() => {}}
       saveCareProfileLastName={() => {}}
+      clearGroupAddState={() => {}}
     />
   )).toJSON();
   expect(component).toMatchSnapshot();
 });
 
 
-it('GroupJoinComponent', () => {
+it('GroupAddJoinComponent', () => {
   const component = TestRenderer.create((
-    <GroupJoinComponent
+    <GroupAddJoinComponent
       groupIdFieldValue=""
       isJoinButtonDisabled={false}
       joinGroup={() => {}}
       handleChange={() => {}}
-      handle
+      clearGroupAddState={() => {}}
     />
   )).toJSON();
   expect(component).toMatchSnapshot();

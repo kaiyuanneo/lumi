@@ -2,7 +2,7 @@ import chai from 'chai';
 import * as firebase from 'firebase';
 import sinon from 'sinon';
 
-import * as NewUserContainer from '../../containers/AddGroupContainer';
+import * as GroupAddContainer from '../../containers/GroupAddContainer';
 import * as constants from '../../static/constants';
 
 
@@ -18,7 +18,7 @@ describe('Get user first name', () => {
     const authStub = sinon.stub(firebase, 'auth').returns({ currentUser: { uid: stubAuthUid } });
     const stubDispatch = sinon.stub();
 
-    await NewUserContainer._getUserFirstName(stubDispatch);
+    await GroupAddContainer._getUserFirstName(stubDispatch);
 
     chai.assert.isTrue(authStub.calledOnce);
     chai.assert.isTrue(dbStub.calledOnce);

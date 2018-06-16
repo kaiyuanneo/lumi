@@ -1,7 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AddGroupComponent 1`] = `null`;
-
 exports[`AuthComponent 1`] = `
 <div>
   <header
@@ -556,97 +554,113 @@ exports[`CareProfileSelectCareRecipientComponent 1`] = `
 </div>
 `;
 
-exports[`GroupCreateComponent 1`] = `
+exports[`GroupAddComponent 1`] = `null`;
+
+exports[`GroupAddCreateComponent 1`] = `
 <div>
-  <h2>
-    Create New Group
-  </h2>
-  <form>
-    <div
-      className="form-group has-feedback"
+  <h3>
+    Create Care Circle
+  </h3>
+  <div
+    className="form-group has-feedback"
+  >
+    <label
+      className="control-label"
+      htmlFor="formGroupNewGroupFirstName"
     >
-      <label
-        className="control-label"
-        htmlFor="formGroupNewGroupFirstName"
-      >
-        Lumi will use the full name of your loved one as the group name.
-      </label>
-      <input
-        className="form-control"
-        id="formGroupNewGroupFirstName"
-        onChange={[Function]}
-        placeholder="Enter care recipient first name"
-        type="text"
-        value=""
-      />
-    </div>
-    <div
-      className="form-group has-feedback"
+      Whom are you caring for?
+    </label>
+    <input
+      className="form-control"
+      id="formGroupNewGroupFirstName"
+      onChange={[Function]}
+      placeholder="Care recipient first name"
+      type="text"
+      value=""
+    />
+  </div>
+  <div
+    className="form-group has-feedback"
+  >
+    <input
+      className="form-control"
+      id="formGroupNewGroupLastName"
+      onChange={[Function]}
+      placeholder="Care recipient last name"
+      type="text"
+      value=""
+    />
+    <span
+      className="help-block"
     >
-      <input
-        className="form-control"
-        id="formGroupNewGroupLastName"
-        onChange={[Function]}
-        placeholder="Enter care recipient last name"
-        type="text"
-        value=""
-      />
-      <span
-        className="help-block"
-      >
-        Lumi will generate a Group ID to share with family and friends on the next page
-      </span>
-    </div>
-    <button
-      className="btn btn-lg btn-primary btn-block"
-      disabled={false}
-      onClick={[Function]}
-      type="button"
-    >
-      Create Group
-    </button>
-  </form>
+      Lumi will generate a Circle ID to share with family and friends on the next page
+    </span>
+  </div>
+  <button
+    className="button-primary btn btn-lg btn-default btn-block"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    Create Care Circle
+  </button>
+  <br />
+  <button
+    className="button-default btn btn-sm btn-default btn-block"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    Back
+  </button>
 </div>
 `;
 
-exports[`GroupJoinComponent 1`] = `
+exports[`GroupAddJoinComponent 1`] = `
 <div>
-  <h2>
-    Join Existing Group
-  </h2>
-  <form>
-    <div
-      className="form-group has-feedback"
+  <h3>
+    Join Existing Circle
+  </h3>
+  <div
+    className="form-group has-feedback"
+  >
+    <label
+      className="control-label"
+      htmlFor="formGroupJoinGroup"
     >
-      <label
-        className="control-label"
-        htmlFor="formGroupJoinGroup"
-      >
-        Join an existing Lumi Group
-      </label>
-      <input
-        className="form-control"
-        id="formGroupJoinGroup"
-        onChange={[Function]}
-        placeholder="Enter Lumi Group ID"
-        type="text"
-        value=""
-      />
-      <span
-        className="help-block"
-      >
-        This ID must be a valid group ID of an existing Lumi Group
-      </span>
-    </div>
-    <button
-      className="btn btn-lg btn-default btn-block"
-      disabled={false}
-      onClick={[Function]}
-      type="button"
+      Join an existing Lumi Care Circle
+    </label>
+    <input
+      className="form-control"
+      id="formGroupJoinGroup"
+      onChange={[Function]}
+      placeholder="Lumi Circle ID"
+      type="text"
+      value=""
+    />
+    <span
+      className="help-block"
     >
-      Join Group
-    </button>
-  </form>
+      This ID must be a valid ID of an existing Lumi Circle
+    </span>
+  </div>
+  <button
+    className="button-primary btn btn-lg btn-default btn-block"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    Join Care Circle
+  </button>
+  <br />
+  <button
+    className="button-default btn btn-sm btn-default btn-block"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    Back
+  </button>
 </div>
 `;
 

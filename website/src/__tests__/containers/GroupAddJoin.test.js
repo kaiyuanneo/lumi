@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import sinon from 'sinon';
 
 import * as actions from '../../actions';
-import * as GroupJoinContainer from '../../containers/GroupJoinContainer';
+import * as GroupAddJoinContainer from '../../containers/GroupAddJoinContainer';
 import * as constants from '../../static/constants';
 
 
@@ -32,7 +32,7 @@ describe('Handle change', () => {
       },
     };
 
-    await GroupJoinContainer._handleChange(stubDispatch, stubE);
+    await GroupAddJoinContainer._handleChange(stubDispatch, stubE);
 
     chai.assert.isTrue(stubDispatch.calledTwice);
     chai.assert.isTrue(stubDispatch.calledWithExactly(stubActionSaveGroupIdFieldValue));
@@ -70,7 +70,7 @@ describe('Handle change', () => {
       },
     };
 
-    await GroupJoinContainer._handleChange(stubDispatch, stubE);
+    await GroupAddJoinContainer._handleChange(stubDispatch, stubE);
 
     chai.assert.isTrue(stubDispatch.calledTwice);
     chai.assert.isTrue(stubDispatch.calledWithExactly(stubActionSaveGroupIdFieldValue));
@@ -111,7 +111,7 @@ describe('Handle change', () => {
       },
     };
 
-    await GroupJoinContainer._handleChange(stubDispatch, stubE);
+    await GroupAddJoinContainer._handleChange(stubDispatch, stubE);
 
     chai.assert.isTrue(stubDispatch.calledTwice);
     chai.assert.isTrue(stubDispatch.calledWithExactly(stubActionSaveGroupIdFieldValue));

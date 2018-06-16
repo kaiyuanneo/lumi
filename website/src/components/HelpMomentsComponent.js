@@ -1,9 +1,11 @@
 import React from 'react';
 
+import * as constants from '../static/constants';
+
 
 const HelpMomentsComponent = () => (
-  <div>
-    You have not shared any moments yet. To share moments on Lumi, please visit m.me/lumicares!
+  <div className="app-padding help-moments-text">
+    {constants.HELP_NO_MOMENTS_PROMPT}
   </div>
 );
 

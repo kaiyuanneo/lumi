@@ -2,7 +2,7 @@ import chai from 'chai';
 import * as firebase from 'firebase';
 import sinon from 'sinon';
 
-import * as GroupCreateContainer from '../../containers/GroupCreateContainer';
+import * as GroupAddCreateContainer from '../../containers/GroupAddCreateContainer';
 import * as constants from '../../static/constants';
 import * as baseUtils from '../../utils/baseUtils';
 
@@ -28,7 +28,7 @@ describe('Create group', () => {
       firstNameFieldValue: stubFirstNameFieldValue,
       lastNameFieldValue: stubLastNameFieldValue,
     };
-    await GroupCreateContainer._createGroup(stubStateProps);
+    await GroupAddCreateContainer._createGroup(stubStateProps);
 
     chai.assert.isTrue(dbStub.calledOnce);
     chai.assert.isTrue(refStub.calledTwice);

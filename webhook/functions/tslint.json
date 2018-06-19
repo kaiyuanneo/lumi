@@ -3,6 +3,10 @@
     "tslint-config-airbnb"
   ],
   "rules": {
+    // Custom rules
+    // Allow 2 consecutive blank lines
+    "no-consecutive-blank-lines": [true, 2],
+
     // -- Strict errors --
     // These lint rules are likely always a good idea.
 

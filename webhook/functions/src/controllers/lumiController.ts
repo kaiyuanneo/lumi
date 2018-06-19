@@ -293,10 +293,89 @@ const saveMessageToGroup = (messageRef, groupId) => {
 
 
 /**
+ * Log the user's chosen quick reply to Google Analytics
+ */
+const logQuickReply = (responseCode, googleAnalytics) => {
+  switch (responseCode) {
+    case constants.RESPONSE_CODE_CREATE_CARE_GROUP_YES:
+      googleAnalytics
+        .event(constants.GA_CATEGORY_QUICK_REPLY, constants.GA_ACTION_CREATE_CARE_GROUP_YES);
+      break;
+    case constants.RESPONSE_CODE_CREATE_CARE_GROUP_NO:
+      googleAnalytics
+        .event(constants.GA_CATEGORY_QUICK_REPLY, constants.GA_ACTION_CREATE_CARE_GROUP_NO);
+      break;
+    case constants.RESPONSE_CODE_SHARE_MOMENT_YES:
+      googleAnalytics
+        .event(constants.GA_CATEGORY_QUICK_REPLY, constants.GA_ACTION_SHARE_MOMENT_YES);
+      break;
+    case constants.RESPONSE_CODE_SHARE_MOMENT_NO:
+      googleAnalytics
+        .event(constants.GA_CATEGORY_QUICK_REPLY, constants.GA_ACTION_SHARE_MOMENT_NO);
+      break;
+    case constants.RESPONSE_CODE_ATTACH_IMAGE_YES: 'attach-image-yes';
+      googleAnalytics
+        .event(constants.GA_CATEGORY_QUICK_REPLY, constants.GA_ACTION_ATTACH_IMAGE_YES);
+      break;
+    case constants.RESPONSE_CODE_ATTACH_IMAGE_NO: 'attach-image-no';
+      googleAnalytics
+        .event(constants.GA_CATEGORY_QUICK_REPLY, constants.GA_ACTION_ATTACH_IMAGE_NO);
+      break;
+    case constants.RESPONSE_CODE_ATTACH_TEXT_YES: 'attach-text-yes';
+      googleAnalytics
+        .event(constants.GA_CATEGORY_QUICK_REPLY, constants.GA_ACTION_ATTACH_TEXT_YES);
+      break;
+    case constants.RESPONSE_CODE_ATTACH_TEXT_NO: 'attach-text-no';
+      googleAnalytics
+        .event(constants.GA_CATEGORY_QUICK_REPLY, constants.GA_ACTION_ATTACH_TEXT_NO);
+      break;
+    case constants.RESPONSE_CODE_CHOSE_GROUP: 'chose-group';
+      googleAnalytics.event(constants.GA_CATEGORY_QUICK_REPLY, constants.GA_ACTION_CHOSE_GROUP);
+      break;
+    case constants.RESPONSE_CODE_STAR_YES: 'star-yes';
+      googleAnalytics.event(constants.GA_CATEGORY_QUICK_REPLY, constants.GA_ACTION_STAR_YES);
+      break;
+    case constants.RESPONSE_CODE_STAR_NO: 'star-no';
+      googleAnalytics.event(constants.GA_CATEGORY_QUICK_REPLY, constants.GA_ACTION_STAR_NO);
+      break;
+    case constants.RESPONSE_CODE_CATEGORY_ACTIVITY: 'category-activity';
+      googleAnalytics
+        .event(constants.GA_CATEGORY_QUICK_REPLY, constants.GA_ACTION_CHOSE_CATEGORY_ACTIVITY);
+      break;
+    case constants.RESPONSE_CODE_CATEGORY_BEHAVIOUR: 'category-behaviour';
+      googleAnalytics
+        .event(constants.GA_CATEGORY_QUICK_REPLY, constants.GA_ACTION_CHOSE_CATEGORY_BEHAVIOUR);
+      break;
+    case constants.RESPONSE_CODE_CATEGORY_MOOD: 'category-mood';
+      googleAnalytics
+        .event(constants.GA_CATEGORY_QUICK_REPLY, constants.GA_ACTION_CHOSE_CATEGORY_MOOD);
+      break;
+    case constants.RESPONSE_CODE_CATEGORY_MEMORY: 'category-memory';
+      googleAnalytics
+        .event(constants.GA_CATEGORY_QUICK_REPLY, constants.GA_ACTION_CHOSE_CATEGORY_MEMORY);
+      break;
+    case constants.RESPONSE_CODE_CATEGORY_MEDICAL: 'category-medical';
+      googleAnalytics
+        .event(constants.GA_CATEGORY_QUICK_REPLY, constants.GA_ACTION_CHOSE_CATEGORY_MEDICAL);
+      break;
+    case constants.RESPONSE_CODE_CATEGORY_CAREGIVER: 'category-caregiver';
+      googleAnalytics
+        .event(constants.GA_CATEGORY_QUICK_REPLY, constants.GA_ACTION_CHOSE_CATEGORY_CAREGIVER);
+      break;
+    case constants.RESPONSE_CODE_CATEGORY_OTHER: 'category-other';
+      googleAnalytics
+        .event(constants.GA_CATEGORY_QUICK_REPLY, constants.GA_ACTION_CHOSE_CATEGORY_OTHER);
+      break;
+    default:
+  }
+};
+
+
+/**
  * Handle quick reply responses from Lumi user
  * Async because getResponse returns a promise
  */
-const handleQuickReply = async (webhookEvent, messagesRef, userMessagesRef) => {
+const handleQuickReply = async (webhookEvent, messagesRef, userMessagesRef, googleAnalytics) => {
   console.log('Running function handleQuickReply');
   // Save quickReply payload as JSON string because payload only supports string values
   const quickReplyPayload = JSON.parse(webhookEvent.message.quick_reply.payload);
@@ -306,6 +385,8 @@ const handleQuickReply = async (webhookEvent, messagesRef, userMessagesRef) => {
   // Quick replies from the Get Started message do not have messageKey
   const messageKey = quickReplyPayload.messageKey;
   const messageRef = messageKey ? messagesRef.child(messageKey) : null;
+  // Log the user's chosen quick reply to Google Analytics
+  logQuickReply(responseCode, googleAnalytics);
   // If user chooses to save message to a group, update the message to reference the group
   if (responseCode === constants.RESPONSE_CODE_CHOSE_GROUP) {
     saveMessageToGroup(messageRef, groupId);
@@ -497,7 +578,7 @@ const handleTextAndAttachments = async (webhookEvent, messagesRef, userMessagesR
 /**
  * Handle message events from Messenger Platform
  */
-const handleMessage = async (webhookEvent) => {
+const handleMessage = async (webhookEvent, googleAnalytics) => {
   console.log('Running function handleMessage');
   let response = null;
   const receivedMessage = webhookEvent.message;
@@ -510,13 +591,16 @@ const handleMessage = async (webhookEvent) => {
   // Handle quick replies first because quick reply messages can also contain text
   const quickReply = receivedMessage.quick_reply;
   if (quickReply) {
-    response = await handleQuickReply(webhookEvent, messagesRef, userMessagesRef);
+    response = await handleQuickReply(webhookEvent, messagesRef, userMessagesRef, googleAnalytics);
   // Handle free-form text and image messages
   } else if (receivedMessage.text || receivedMessage.attachments) {
     // If message contains image, store image in Firebase Storage and attach this URL to message
     if (receivedMessage.attachments) {
+      googleAnalytics.event(constants.GA_CATEGORY_TEXT_OR_IMAGE, constants.GA_ACTION_IMAGE).send();
       const originalImageUrl = receivedMessage.attachments['0'].payload.url;
       receivedMessage.attachments['0'].payload.url = await saveImageToDb(originalImageUrl);
+    } else {
+      googleAnalytics.event(constants.GA_CATEGORY_TEXT_OR_IMAGE, constants.GA_ACTION_TEXT).send();
     }
     response = await handleTextAndAttachments(webhookEvent, messagesRef, userMessagesRef);
   }
@@ -570,7 +654,7 @@ const getCreateCareGroupQuickReplies = () => [
  * Handle postback events from Messenger Platform
  * TODO(kai): Write tests
  */
-const handlePostback = async (webhookEvent) => {
+const handlePostback = async (webhookEvent, googleAnalytics) => {
   const senderPsid = webhookEvent.sender.id;
   const firstName = await utils.getUserFirstName(senderPsid);
 
@@ -579,13 +663,16 @@ const handlePostback = async (webhookEvent) => {
   let response = { text: 'Unrecognised postback', quick_replies: null };
   const postbackPayload = webhookEvent.postback.payload;
   if (postbackPayload === constants.POSTBACK_CODE_GET_STARTED) {
+    googleAnalytics.event(constants.GA_CATEGORY_POSTBACK, constants.GA_ACTION_GET_STARTED).send();
     response = {
       text: `Hey ${firstName}! ${constants.RESPONSE_MESSAGE_GET_STARTED}`,
       quick_replies: getCreateCareGroupQuickReplies(),
     };
   } else if (postbackPayload === constants.POSTBACK_CODE_ADD_MOMENT) {
+    googleAnalytics.event(constants.GA_CATEGORY_POSTBACK, constants.GA_ACTION_ADD_MOMENT).send();
     response.text = constants.RESPONSE_MESSAGE_SHARE_MOMENT_YES;
   } else if (postbackPayload === constants.POSTBACK_CODE_VIEW_MOMENTS) {
+    googleAnalytics.event(constants.GA_CATEGORY_POSTBACK, constants.GA_ACTION_VIEW_MOMENTS).send();
     response.text = constants.RESPONSE_MESSAGE_VIEW_MOMENTS;
   }
 
@@ -634,6 +721,10 @@ const sendCareGroupError = async (webhookEvent) => {
  */
 export const message = async (req, res) => {
   console.log('Running function message');
+  // Get Google Analytics tracker
+  const googleAnalytics = req.app.get('googleAnalytics');
+  googleAnalytics.event(constants.GA_CATEGORY_MESSAGE, constants.GA_ACTION_RECEIVED_MESSAGE).send();
+
   // Return 404 if event not from page subscription
   if (req.body.object !== 'page') {
     res.sendStatus(404);
@@ -652,10 +743,10 @@ export const message = async (req, res) => {
       if (!(await isUserInGroup(webhookEvent.sender.id)) && !webhookEvent.message.quick_reply) {
         await sendCareGroupError(webhookEvent);
       } else {
-        await handleMessage(webhookEvent);
+        await handleMessage(webhookEvent, googleAnalytics);
       }
     } else if (webhookEvent.postback) {
-      await handlePostback(webhookEvent);
+      await handlePostback(webhookEvent, googleAnalytics);
     }
   }));
   // Return 200 to all requests to Lumi the Page to signal message received

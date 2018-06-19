@@ -123,7 +123,6 @@ export const responseCodeToResponseMessage = async (
     case constants.RESPONSE_CODE_SHARE_MOMENT_NO: {
       return constants.RESPONSE_MESSAGE_SHARE_MOMENT_NO(firstName);
     }
-
     // Share moment sequence responses
     case constants.RESPONSE_CODE_CHOSE_GROUP:
       // If original message is text, respond one way

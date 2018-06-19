@@ -745,6 +745,7 @@ mocha.describe('Handle quick reply unit tests', () => {
   let rewiredLumiController;
   let revertLumiController;
   let getResponseStub;
+  let logQuickReplyStub;
   let saveMessageToGroupStub;
   let jsonStub;
   let utilsStub;
@@ -755,10 +756,12 @@ mocha.describe('Handle quick reply unit tests', () => {
   });
   mocha.beforeEach(() => {
     getResponseStub = sinon.stub().resolves(stubResponse);
+    logQuickReplyStub = sinon.stub();
     saveMessageToGroupStub = sinon.stub();
     revertLumiController = rewiredLumiController.__set__({
       getResponse: getResponseStub,
       saveMessageToGroup: saveMessageToGroupStub,
+      logQuickReply: logQuickReplyStub,
     });
     jsonStub = sinon.stub(JSON, 'parse').callsFake(object => object);
     utilsStub = sinon.stub(utils, 'responseCodeToMessageCategoryCode').returns(stubCode);
@@ -793,11 +796,13 @@ mocha.describe('Handle quick reply unit tests', () => {
     const userMessagesRef = {
       update: sinon.stub(),
     };
+    const googleAnalytics = {};
 
     const response = await rewiredLumiController
-      .__get__('handleQuickReply')(webhookEvent, messagesRef, userMessagesRef);
+      .__get__('handleQuickReply')(webhookEvent, messagesRef, userMessagesRef, googleAnalytics);
     chai.assert.strictEqual(response, stubResponse);
     chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
+    chai.assert.isTrue(logQuickReplyStub.calledOnce);
     chai.assert.isTrue(saveMessageToGroupStub.calledOnce);
     chai.assert.isFalse(userMessagesRef.update.called);
     chai.assert.isFalse(messageRef.update.called);
@@ -828,11 +833,13 @@ mocha.describe('Handle quick reply unit tests', () => {
     const userMessagesRef = {
       update: sinon.stub(),
     };
+    const googleAnalytics = {};
 
     const response = await rewiredLumiController
-      .__get__('handleQuickReply')(webhookEvent, messagesRef, userMessagesRef);
+      .__get__('handleQuickReply')(webhookEvent, messagesRef, userMessagesRef, googleAnalytics);
     chai.assert.strictEqual(response, stubResponse);
     chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
+    chai.assert.isTrue(logQuickReplyStub.calledOnce);
     chai.assert.isFalse(saveMessageToGroupStub.called);
     chai.assert.isTrue(userMessagesRef.update.calledOnceWithExactly({ isAwaitingImage: true }));
     chai.assert.isFalse(messageRef.update.called);
@@ -863,11 +870,13 @@ mocha.describe('Handle quick reply unit tests', () => {
     const userMessagesRef = {
       update: sinon.stub(),
     };
+    const googleAnalytics = {};
 
     const response = await rewiredLumiController
-      .__get__('handleQuickReply')(webhookEvent, messagesRef, userMessagesRef);
+      .__get__('handleQuickReply')(webhookEvent, messagesRef, userMessagesRef, googleAnalytics);
     chai.assert.strictEqual(response, stubResponse);
     chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
+    chai.assert.isTrue(logQuickReplyStub.calledOnce);
     chai.assert.isFalse(saveMessageToGroupStub.called);
     chai.assert.isTrue(userMessagesRef.update.calledOnceWithExactly({ isAwaitingText: true }));
     chai.assert.isFalse(messageRef.update.called);
@@ -898,11 +907,13 @@ mocha.describe('Handle quick reply unit tests', () => {
     const userMessagesRef = {
       update: sinon.stub(),
     };
+    const googleAnalytics = {};
 
     const response = await rewiredLumiController
-      .__get__('handleQuickReply')(webhookEvent, messagesRef, userMessagesRef);
+      .__get__('handleQuickReply')(webhookEvent, messagesRef, userMessagesRef, googleAnalytics);
     chai.assert.strictEqual(response, stubResponse);
     chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
+    chai.assert.isTrue(logQuickReplyStub.calledOnce);
     chai.assert.isFalse(saveMessageToGroupStub.called);
     chai.assert.isFalse(userMessagesRef.update.called);
     chai.assert.isTrue(messageRef.update.calledOnceWithExactly({ starred: true }));
@@ -933,11 +944,13 @@ mocha.describe('Handle quick reply unit tests', () => {
     const userMessagesRef = {
       update: sinon.stub(),
     };
+    const googleAnalytics = {};
 
     const response = await rewiredLumiController
-      .__get__('handleQuickReply')(webhookEvent, messagesRef, userMessagesRef);
+      .__get__('handleQuickReply')(webhookEvent, messagesRef, userMessagesRef, googleAnalytics);
     chai.assert.strictEqual(response, stubResponse);
     chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
+    chai.assert.isTrue(logQuickReplyStub.calledOnce);
     chai.assert.isFalse(saveMessageToGroupStub.called);
     chai.assert.isFalse(userMessagesRef.update.called);
     chai.assert.isTrue(messageRef.update.calledOnceWithExactly({ category: stubCode }));
@@ -968,11 +981,13 @@ mocha.describe('Handle quick reply unit tests', () => {
     const userMessagesRef = {
       update: sinon.stub(),
     };
+    const googleAnalytics = {};
 
     const response = await rewiredLumiController
-      .__get__('handleQuickReply')(webhookEvent, messagesRef, userMessagesRef);
+      .__get__('handleQuickReply')(webhookEvent, messagesRef, userMessagesRef, googleAnalytics);
     chai.assert.strictEqual(response, stubResponse);
     chai.assert.isTrue(messagesRef.child.calledOnceWithExactly(messageKey));
+    chai.assert.isTrue(logQuickReplyStub.calledOnce);
     chai.assert.isFalse(saveMessageToGroupStub.called);
     chai.assert.isFalse(userMessagesRef.update.called);
     chai.assert.isFalse(messageRef.update.called);
@@ -1351,7 +1366,11 @@ mocha.describe('Handle message unit tests', () => {
       },
       sender: { id: senderPsid },
     };
-    await rewiredLumiController.__get__('handleMessage')(webhookEvent);
+    const googleAnalytics = {
+      event: sinon.stub().returnsThis(),
+      send: sinon.stub(),
+    };
+    await rewiredLumiController.__get__('handleMessage')(webhookEvent, googleAnalytics);
     chai.assert.isTrue(refStub.calledTwice);
     chai.assert.isTrue(refStub.calledWith(messagesRefParam));
     chai.assert.isTrue(refStub.calledWith(userMessagesRefParam));
@@ -1359,7 +1378,10 @@ mocha.describe('Handle message unit tests', () => {
       webhookEvent,
       messagesRef,
       userMessagesRef,
+      googleAnalytics,
     ));
+    chai.assert.isFalse(googleAnalytics.event.called);
+    chai.assert.isFalse(googleAnalytics.send.called);
     chai.assert.isFalse(handleTextAndAttachmentsStub.called);
     chai.assert.isTrue(callSendApiStub.calledOnceWithExactly(senderPsid, stubResponse));
   });
@@ -1372,11 +1394,18 @@ mocha.describe('Handle message unit tests', () => {
       },
       sender: { id: senderPsid },
     };
-    await rewiredLumiController.__get__('handleMessage')(webhookEvent);
+    const googleAnalytics = {
+      event: sinon.stub().returnsThis(),
+      send: sinon.stub(),
+    };
+    await rewiredLumiController.__get__('handleMessage')(webhookEvent, googleAnalytics);
     chai.assert.isTrue(refStub.calledTwice);
     chai.assert.isTrue(refStub.calledWith(messagesRefParam));
     chai.assert.isTrue(refStub.calledWith(userMessagesRefParam));
     chai.assert.isFalse(handleQuickReplyStub.called);
+    chai.assert.isTrue(googleAnalytics.event.calledOnceWithExactly(
+      constants.GA_CATEGORY_TEXT_OR_IMAGE, constants.GA_ACTION_TEXT));
+    chai.assert.isTrue(googleAnalytics.send.calledOnce);
     chai.assert.isTrue(handleTextAndAttachmentsStub.calledOnceWithExactly(
       webhookEvent,
       messagesRef,
@@ -1393,11 +1422,17 @@ mocha.describe('Handle message unit tests', () => {
       },
       sender: { id: senderPsid },
     };
+    const googleAnalytics = {
+      event: sinon.stub().returnsThis(),
+      send: sinon.stub(),
+    };
     await rewiredLumiController.__get__('handleMessage')(webhookEvent);
     chai.assert.isTrue(refStub.calledTwice);
     chai.assert.isTrue(refStub.calledWith(messagesRefParam));
     chai.assert.isTrue(refStub.calledWith(userMessagesRefParam));
     chai.assert.isFalse(handleQuickReplyStub.called);
+    chai.assert.isFalse(googleAnalytics.event.called);
+    chai.assert.isFalse(googleAnalytics.send.called);
     chai.assert.isFalse(handleTextAndAttachmentsStub.called);
     chai.assert.isTrue(callSendApiStub.calledOnceWithExactly(senderPsid, defaultResponse));
   });
@@ -1441,7 +1476,14 @@ mocha.describe('Receive message unit tests', () => {
         id: 'ID',
       },
     };
+    const googleAnalytics = {
+      event: sinon.stub().returnsThis(),
+      send: sinon.stub(),
+    };
     const req = {
+      app: {
+        get: sinon.stub().returns(googleAnalytics),
+      },
       body: {
         object: 'page',
         entry: [
@@ -1452,9 +1494,13 @@ mocha.describe('Receive message unit tests', () => {
       },
     };
     await rewiredLumiController.message(req, res);
+    chai.assert.isTrue(req.app.get.calledOnceWithExactly('googleAnalytics'));
+    chai.assert.isTrue(googleAnalytics.event.calledOnceWithExactly(
+      constants.GA_CATEGORY_MESSAGE, constants.GA_ACTION_RECEIVED_MESSAGE));
+    chai.assert.isTrue(googleAnalytics.send.calledOnce);
     chai.assert.isFalse(res.sendStatus.called);
     chai.assert.isTrue(isUserInGroupStub.calledOnceWithExactly(webhookEvent.sender.id));
-    chai.assert.isTrue(handleMessageStub.calledOnceWithExactly(webhookEvent));
+    chai.assert.isTrue(handleMessageStub.calledOnceWithExactly(webhookEvent, googleAnalytics));
     chai.assert.isTrue(res.status.calledOnceWithExactly(200));
     chai.assert.isTrue(res.send.calledOnceWithExactly('EVENT_RECEIVED'));
   });
@@ -1466,7 +1512,14 @@ mocha.describe('Receive message unit tests', () => {
         id: 'ID',
       },
     };
+    const googleAnalytics = {
+      event: sinon.stub().returnsThis(),
+      send: sinon.stub(),
+    };
     const req = {
+      app: {
+        get: sinon.stub().returns(googleAnalytics),
+      },
       body: {
         object: '',
         entry: [
@@ -1477,6 +1530,10 @@ mocha.describe('Receive message unit tests', () => {
       },
     };
     await rewiredLumiController.message(req, res);
+    chai.assert.isTrue(req.app.get.calledOnceWithExactly('googleAnalytics'));
+    chai.assert.isTrue(googleAnalytics.event.calledOnceWithExactly(
+      constants.GA_CATEGORY_MESSAGE, constants.GA_ACTION_RECEIVED_MESSAGE));
+    chai.assert.isTrue(googleAnalytics.send.calledOnce);
     chai.assert.isTrue(res.sendStatus.calledOnceWithExactly(404));
     chai.assert.isFalse(isUserInGroupStub.called);
     chai.assert.isFalse(handleMessageStub.called);
@@ -1491,7 +1548,14 @@ mocha.describe('Receive message unit tests', () => {
         id: 'ID',
       },
     };
+    const googleAnalytics = {
+      event: sinon.stub().returnsThis(),
+      send: sinon.stub(),
+    };
     const req = {
+      app: {
+        get: sinon.stub().returns(googleAnalytics),
+      },
       body: {
         object: 'page',
         entry: [
@@ -1502,6 +1566,10 @@ mocha.describe('Receive message unit tests', () => {
       },
     };
     await rewiredLumiController.message(req, res);
+    chai.assert.isTrue(req.app.get.calledOnceWithExactly('googleAnalytics'));
+    chai.assert.isTrue(googleAnalytics.event.calledOnceWithExactly(
+      constants.GA_CATEGORY_MESSAGE, constants.GA_ACTION_RECEIVED_MESSAGE));
+    chai.assert.isTrue(googleAnalytics.send.calledOnce);
     chai.assert.isFalse(res.sendStatus.called);
     chai.assert.isFalse(isUserInGroupStub.called);
     chai.assert.isFalse(handleMessageStub.called);

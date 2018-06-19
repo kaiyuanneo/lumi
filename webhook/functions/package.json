@@ -36,7 +36,8 @@
     "request-promise": "^4.2.2",
     "rewire": "^3.0.2",
     "sinon": "^4.4.5",
-    "ts-md5": "^1.2.4"
+    "ts-md5": "^1.2.4",
+    "universal-analytics": "^0.4.17"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

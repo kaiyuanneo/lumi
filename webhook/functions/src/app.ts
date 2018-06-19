@@ -3,6 +3,7 @@ import * as cors from 'cors';
 import * as express from 'express';
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
+import * as ua from 'universal-analytics';
 
 import * as constants from './static/constants';
 import routes from './routes';
@@ -31,6 +32,10 @@ const server = app.listen(port, () => console.log(constants.MESSAGE_WEBHOOK_STAR
 // CORS is necessary for sites outside of Firebase to access the Lumi API
 app.use(cors());
 app.use(routes);
+
+// Initialise Google Analytics
+const googleAnalytics = ua('UA-120992883-1');
+app.set('googleAnalytics', googleAnalytics);
 
 // Deploy method in package.json controls whether we deploy staging or prod webhook
 export const webhook = functions.https.onRequest(app);

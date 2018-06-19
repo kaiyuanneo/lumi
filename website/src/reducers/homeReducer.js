@@ -1,3 +1,5 @@
+import ReactGA from 'react-ga';
+
 import * as constants from '../static/constants';
 
 /*
@@ -16,11 +18,13 @@ const initialState = {
 
 const homeReducer = (state = initialState, action) => {
   switch (action.type) {
-    case constants.ACTION_SAVE_CURRENT_PRODUCT_CODE:
+    case constants.ACTION_SAVE_CURRENT_PRODUCT_CODE: {
+      ReactGA.pageview(`/${action.currentProductCode}`);
       return {
         ...state,
         currentProductCode: action.currentProductCode,
       };
+    }
     case constants.ACTION_SAVE_WINDOW_WIDTH:
       return {
         ...state,

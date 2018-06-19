@@ -8,6 +8,8 @@ import * as constants from '../static/constants';
 class NavTopComponent extends Component {
   componentDidMount() {
     this.props.getGroupInfo();
+    // Attach Google Analytics tag to brand link in navbar
+    this.props.logTapsBrand();
   }
   render() {
     const copyGroupIdTooltip = (
@@ -48,13 +50,13 @@ class NavTopComponent extends Component {
         <Navbar collapseOnSelect fixedTop>
           <Navbar.Header>
             <Navbar.Brand>
-              <a href="/">
+              <a href="/" id="brand">
                 <div className="button-text-accent">
                   <b>{constants.NAVBAR_HEADER_TITLE}</b>{this.props.groupNameLabel}
                 </div>
               </a>
             </Navbar.Brand>
-            <Navbar.Toggle />
+            <Navbar.Toggle onClick={this.props.logTapsHamburger} />
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight onSelect={this.props.handleNavSelect}>
@@ -93,6 +95,8 @@ NavTopComponent.propTypes = {
   copyGroupId: PropTypes.func.isRequired,
   getGroupInfo: PropTypes.func.isRequired,
   handleNavSelect: PropTypes.func.isRequired,
+  logTapsBrand: PropTypes.func.isRequired,
+  logTapsHamburger: PropTypes.func.isRequired,
 };
 
 NavTopComponent.defaultProps = {

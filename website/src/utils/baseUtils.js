@@ -1,6 +1,5 @@
 import dateFormat from 'dateformat';
 import * as firebase from 'firebase';
-
 import validator from 'validator';
 
 import * as constants from '../static/constants';

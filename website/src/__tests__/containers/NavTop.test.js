@@ -1,5 +1,6 @@
 import chai from 'chai';
 import * as firebase from 'firebase';
+import ReactGA from 'react-ga';
 import sinon from 'sinon';
 
 import * as actions from '../../actions';
@@ -138,6 +139,7 @@ describe('Handle nav select', () => {
       currentUser: { uid: stubAuthUid },
       signOut: signOutStub,
     });
+    const gaStub = sinon.stub(ReactGA, 'event');
 
     const stubEventKey = `${constants.PRODUCT_CODE_SELECT_GROUP}${stubGroupId}`;
     const stubStateProps = { careRecipientUid: stubCareRecipientUid };
@@ -156,6 +158,7 @@ describe('Handle nav select', () => {
 
     dbStub.restore();
     authStub.restore();
+    gaStub.restore();
   });
 
   it('Product code sign out', () => {
@@ -176,6 +179,7 @@ describe('Handle nav select', () => {
       currentUser: { uid: stubAuthUid },
       signOut: signOutStub,
     });
+    const gaStub = sinon.stub(ReactGA, 'event');
 
     const stubEventKey = constants.PRODUCT_CODE_SIGN_OUT;
     const stubStateProps = { careRecipientUid: stubCareRecipientUid };
@@ -192,5 +196,6 @@ describe('Handle nav select', () => {
 
     dbStub.restore();
     authStub.restore();
+    gaStub.restore();
   });
 });

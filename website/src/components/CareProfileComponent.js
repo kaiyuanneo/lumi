@@ -34,8 +34,12 @@ class CareProfileComponent extends Component {
         </Flexbox>
         <br />
         <Flexbox flexDirection="column" alignContent="center">
-          <PanelGroup accordion id="care-profile">
-            <Panel eventKey="1">
+          <PanelGroup
+            accordion
+            id="care-profile"
+            onSelect={this.props.logPanelSelection}
+          >
+            <Panel eventKey={constants.CARE_PROFILE_INFO_TYPE_ID_BASIC}>
               <Panel.Heading>
                 <Panel.Title toggle>
                   Basic Info
@@ -46,7 +50,7 @@ class CareProfileComponent extends Component {
                 <CareProfileInfoBasicContainer />
               </Panel.Body>
             </Panel>
-            <Panel eventKey="2">
+            <Panel eventKey={constants.CARE_PROFILE_INFO_TYPE_ID_MEDICAL}>
               <Panel.Heading>
                 <Panel.Title toggle>
                   Medical Info
@@ -57,7 +61,7 @@ class CareProfileComponent extends Component {
                 <CareProfileInfoMedicalContainer />
               </Panel.Body>
             </Panel>
-            <Panel eventKey="3">
+            <Panel eventKey={constants.CARE_PROFILE_INFO_TYPE_ID_CARE}>
               <Panel.Heading>
                 <Panel.Title toggle>
                   Care Info
@@ -82,6 +86,7 @@ CareProfileComponent.propTypes = {
   profilePic: PropTypes.string.isRequired,
   // Props that call dispatch actions
   getCareRecipient: PropTypes.func.isRequired,
+  logPanelSelection: PropTypes.func.isRequired,
 };
 
 export default CareProfileComponent;

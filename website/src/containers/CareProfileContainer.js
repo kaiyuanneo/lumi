@@ -1,5 +1,6 @@
 // NB: Private functions are underscore-prefixed and exported for tests
 import * as firebase from 'firebase';
+import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 
 import * as actions from '../actions';
@@ -66,10 +67,40 @@ const mapDispatchToProps = dispatch => ({
 });
 
 
+export const _logPanelSelection = (panelKey) => {
+  let gaAction;
+  switch (panelKey) {
+    case constants.CARE_PROFILE_INFO_TYPE_ID_BASIC:
+      gaAction = constants.GA_ACTION_TAP_BASIC_INFO;
+      break;
+    case constants.CARE_PROFILE_INFO_TYPE_ID_MEDICAL:
+      gaAction = constants.GA_ACTION_TAP_MEDICAL_INFO;
+      break;
+    case constants.CARE_PROFILE_INFO_TYPE_ID_CARE:
+      gaAction = constants.GA_ACTION_TAP_CARE_INFO;
+      break;
+    default:
+      gaAction = constants.GA_ACTION_TAP_CLOSE_PANEL;
+  }
+  ReactGA.event({
+    category: constants.GA_CATEGORY_CARE_PROFILE,
+    action: gaAction,
+  });
+};
+
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => ({
+  ...stateProps,
+  ...dispatchProps,
+  ...ownProps,
+  logPanelSelection: panelKey => _logPanelSelection(panelKey),
+});
+
+
 const CareProfileContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
-  null,
+  mergeProps,
 )(CareProfileComponent);
 
 export default CareProfileContainer;

@@ -142,6 +142,7 @@ it('CareProfileComponent', () => {
       infoCategory=""
       profilePic=""
       saveCareProfileInfoCategory={() => {}}
+      logPanelSelection={() => {}}
       uid=""
     />
   )).toJSON();
@@ -276,6 +277,8 @@ it('NavTopComponent', () => {
       copyGroupId={() => {}}
       getGroupInfo={() => {}}
       handleNavSelect={() => {}}
+      logTapsBrand={() => {}}
+      logTapsHamburger={() => {}}
     />
   )).toJSON();
   expect(component).toMatchSnapshot();

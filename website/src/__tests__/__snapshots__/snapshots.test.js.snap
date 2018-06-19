@@ -16,10 +16,14 @@ exports[`AuthComponent 1`] = `
       Lumi
     </h1>
   </header>
-  <FirebaseAuth
-    firebaseAuth={undefined}
-    uiConfig={Object {}}
-  />
+  <div
+    id="sign-in"
+  >
+    <FirebaseAuth
+      firebaseAuth={undefined}
+      uiConfig={Object {}}
+    />
+  </div>
 </div>
 `;
 
@@ -866,6 +870,7 @@ exports[`NavTopComponent 1`] = `
         <a
           className="navbar-brand"
           href="/"
+          id="brand"
         >
           <div
             className="button-text-accent"

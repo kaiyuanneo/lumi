@@ -1,5 +1,6 @@
 // NB: Private functions are underscore-prefixed and exported for tests
 import * as firebase from 'firebase';
+import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 
 import * as actions from '../actions';
@@ -77,6 +78,10 @@ const mapDispatchToProps = dispatch => ({
 
 
 export const _copyGroupId = (stateProps) => {
+  ReactGA.event({
+    category: constants.GA_CATEGORY_NAV,
+    action: constants.GA_ACTION_TAP_COPY_GROUP_ID,
+  });
   const tempInput = document.createElement('input');
   tempInput.style = 'position: absolute; left: -1000px; top: -1000px';
   tempInput.value = stateProps.activeGroupId;
@@ -86,8 +91,13 @@ export const _copyGroupId = (stateProps) => {
   document.body.removeChild(tempInput);
 };
 
+
 export const _handleNavSelect = async (eventKey, stateProps, dispatchProps) => {
   if (eventKey.startsWith(constants.PRODUCT_CODE_SELECT_GROUP)) {
+    ReactGA.event({
+      category: constants.GA_CATEGORY_NAV,
+      action: constants.GA_ACTION_TAP_SWITCH_GROUPS_GROUP,
+    });
     const db = firebase.database();
     // Turn off listener on current care recipient
     db.ref(`${constants.DB_PATH_USERS}/${stateProps.careRecipientUid}`).off();
@@ -100,10 +110,19 @@ export const _handleNavSelect = async (eventKey, stateProps, dispatchProps) => {
     const authUid = firebase.auth().currentUser.uid;
     db.ref(`${constants.DB_PATH_USERS}/${authUid}`).update({ activeGroup: groupId });
   } else if (eventKey === constants.PRODUCT_CODE_COPY_GROUP_ID) {
+    // ReactGA event is inside _copyGroupId because _copyGroupId is called from multiple places
     _copyGroupId(stateProps);
   } else if (eventKey === constants.PRODUCT_CODE_CREATE_OR_JOIN_GROUP) {
+    ReactGA.event({
+      category: constants.GA_CATEGORY_NAV,
+      action: constants.GA_ACTION_TAP_CREATE_OR_JOIN_GROUP,
+    });
     dispatchProps.createOrJoinGroup();
   } else if (eventKey === constants.PRODUCT_CODE_SIGN_OUT) {
+    ReactGA.event({
+      category: constants.GA_CATEGORY_NAV,
+      action: constants.GA_ACTION_TAP_SIGN_OUT,
+    });
     firebase.auth().signOut();
   }
 };
@@ -115,6 +134,16 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
   handleNavSelect: eventKey => _handleNavSelect(eventKey, stateProps, dispatchProps),
   copyGroupId: () => _copyGroupId(stateProps),
+  logTapsBrand: () => document.getElementById('brand').addEventListener('click', () => {
+    ReactGA.event({
+      category: constants.GA_CATEGORY_NAV,
+      action: constants.GA_ACTION_TAP_BRAND,
+    });
+  }),
+  logTapsHamburger: () => ReactGA.event({
+    category: constants.GA_CATEGORY_NAV,
+    action: constants.GA_ACTION_TAP_HAMBURGER,
+  }),
 });
 
 

@@ -1,4 +1,5 @@
 // NB: Private functions are underscore-prefixed and exported for tests
+import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 
 import * as actions from '../actions';
@@ -84,13 +85,31 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   getOnChangeFuncNormal: fieldId =>
     e => dispatchProps.saveFieldValueLocally(fieldId, e.target.value),
   // UI navigation functions
-  enterEditMode: () => dispatchProps.saveIsInEditMode(true),
+  enterEditMode: () => {
+    ReactGA.event({
+      category: constants.GA_CATEGORY_CARE_PROFILE,
+      action: constants.GA_ACTION_TAP_MEDICAL_EDIT,
+    });
+    dispatchProps.saveIsInEditMode(true);
+  },
   // Reset form field values to DB field values and exit edit mode
-  cancelEdits: () => _cancelEdits(stateProps, dispatchProps),
+  cancelEdits: () => {
+    ReactGA.event({
+      category: constants.GA_CATEGORY_CARE_PROFILE,
+      action: constants.GA_ACTION_TAP_MEDICAL_CANCEL,
+    });
+    _cancelEdits(stateProps, dispatchProps);
+  },
   // Save field values to user record
   // NB: All data that overlaps with public data from the care recipient's Facebook profile
   // will be overwritten the next time the care recipient logs in with Facebook
-  saveFieldValuesToDb: () => _saveFieldValuesToDb(stateProps, dispatchProps),
+  saveFieldValuesToDb: () => {
+    ReactGA.event({
+      category: constants.GA_CATEGORY_CARE_PROFILE,
+      action: constants.GA_ACTION_TAP_MEDICAL_SAVE,
+    });
+    _saveFieldValuesToDb(stateProps, dispatchProps);
+  },
 });
 
 
